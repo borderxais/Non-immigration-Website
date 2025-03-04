@@ -1,70 +1,19 @@
-# Dependencies
-frontend/node_modules
-frontend/.pnp
-frontend/.pnp.js
-
-# Testing
-frontend/coverage
-
-# Production
-frontend/build
-
-# Development
-frontend/.env.local
-frontend/.env.development.local
-frontend/.env.test.local
-frontend/.env.production.local
-
-# Logs
-frontend/npm-debug.log*
-frontend/yarn-debug.log*
-frontend/yarn-error.log*
+# Frontend dependencies and build
+frontend/node_modules/
+frontend/build/
 
 # Python
-**/__pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
-backend/env/
-backend/venv/
+__pycache__/
+*.pyc
+
+# Environment
 venv/
-ENV/
-env/
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
+.env
+.env.local
 
 # IDE
 .idea/
 .vscode/
-*.swp
-*.swo
-.DS_Store
-
-# Environment variables
-.env
-.env.local
-.env.*.local
 
 # Database
-*.sqlite
-*.sqlite3
-instance/
-*.db
-
-# Logs
-*.log
-logs/
+instance/*.db
