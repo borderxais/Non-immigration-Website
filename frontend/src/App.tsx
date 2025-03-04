@@ -13,6 +13,7 @@ import AIConsultation from './pages/AIConsultation';
 import VisaEvaluation from './pages/VisaEvaluation';
 import InterviewPractice from './pages/InterviewPractice';
 import InterviewEvaluation from './pages/InterviewEvaluation';
+import InterviewSimulation from './pages/InterviewSimulation';
 import PlatformWechat from './pages/PlatformWechat';
 import PlatformApp from './pages/PlatformApp';
 
@@ -46,6 +47,7 @@ const App: React.FC = () => {
                 {/* Interview Routes */}
                 <Route path="/interview/practice" element={<InterviewPractice />} />
                 <Route path="/interview/evaluation" element={<InterviewEvaluation />} />
+                <Route path="/interview/simulation" element={<InterviewSimulation />} />
                 
                 {/* Platform Routes */}
                 <Route path="/platform/wechat" element={<PlatformWechat />} />

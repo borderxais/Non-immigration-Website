@@ -1,4 +1,4 @@
-from flask_restx import Namespace, Resource
+from flask_restx import Namespace, Resource, fields
 from flask import request, jsonify
 from services.ai import AIService
 import asyncio
@@ -7,13 +7,24 @@ api = Namespace("consultation", description="AI Consultation API")
 ai_service = AIService()
 
 
+ask_model = api.model(
+    "AskModel",
+    {
+        "question": fields.String(
+            required=True, description="Your question to the AI service"
+        )
+    },
+)
+
+
 @api.route("/ask")
 class AskQuestionResource(Resource):
+    @api.expect(ask_model)
     def post(self):
         """Handle AI consultation questions"""
         data = request.json
         question = data.get("question")
-        response = asyncio.run(ai_service.get_response(question))  # Fix async issue
+        response = asyncio.run(ai_service.get_response(question))
         return jsonify(response)
 
 

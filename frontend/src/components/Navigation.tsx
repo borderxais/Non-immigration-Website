@@ -67,6 +67,10 @@ const Navigation: React.FC = () => {
           key: '/interview/evaluation',
           label: '面签评估',
         },
+        {
+          key: '/interview/simulation',
+          label: '面签模拟',
+        },
       ]
     },
     {
