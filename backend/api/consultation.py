@@ -1,31 +1,36 @@
-from flask import Blueprint, request, jsonify
+from flask_restx import Namespace, Resource
+from flask import request, jsonify
 from services.ai import AIService
+import asyncio
 
-consultation_bp = Blueprint('consultation', __name__)
+api = Namespace("consultation", description="AI Consultation API")
 ai_service = AIService()
 
-@consultation_bp.route('/ask', methods=['POST'])
-async def ask_question():
-    """Handle AI consultation questions"""
-    data = request.json
-    question = data.get('question')
-    response = await ai_service.get_response(question)
-    return jsonify(response)
 
-@consultation_bp.route('/evaluate', methods=['POST'])
-def evaluate():
-    """Evaluate visa application and estimate success rate"""
-    data = request.json
-    result = ai_service.evaluate_application(data)
-    return jsonify(result)
+@api.route("/ask")
+class AskQuestionResource(Resource):
+    def post(self):
+        """Handle AI consultation questions"""
+        data = request.json
+        question = data.get("question")
+        response = asyncio.run(ai_service.get_response(question))  # Fix async issue
+        return jsonify(response)
 
-@consultation_bp.route('/interview/simulate', methods=['POST'])
-def simulate_interview():
-    """Generate mock interview questions"""
-    data = request.json
-    visa_type = data.get('visa_type')
-    questions = ai_service.generate_interview_questions(visa_type)
-    return jsonify({
-        'questions': questions,
-        'tips': []
-    })
+
+@api.route("/evaluate")
+class EvaluateResource(Resource):
+    def post(self):
+        """Evaluate visa application and estimate success rate"""
+        data = request.json
+        result = ai_service.evaluate_application(data)
+        return jsonify(result)
+
+
+@api.route("/interview/simulate")
+class SimulateInterviewResource(Resource):
+    def post(self):
+        """Generate mock interview questions"""
+        data = request.json
+        visa_type = data.get("visa_type")
+        questions = ai_service.generate_interview_questions(visa_type)
+        return jsonify({"questions": questions, "tips": []})

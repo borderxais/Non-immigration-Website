@@ -1,36 +1,41 @@
+# app.py
 from flask import Flask
 from flask_cors import CORS
-from flask_sqlalchemy import SQLAlchemy
 from dotenv import load_dotenv
+from flask_restx import Api
 import os
 
-# Load environment variables
 load_dotenv()
 
-# Initialize Flask app
+from core.extensions import db  # Import the shared db instance
+
 app = Flask(__name__)
+api = Api(app, doc="/docs", prefix="/api")
+
 CORS(app)
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///:memory:"
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
-# Configure database
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'sqlite:///visa_assistant.db')
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-db = SQLAlchemy(app)
+# Initialize the SQLAlchemy instance with the app
+db.init_app(app)
 
-# Import routes after app initialization to avoid circular imports
-from api.ds160 import ds160_bp
-from api.consultation import consultation_bp
-from api.auth import auth_bp
+# Import namespaces after db is initialized
+from api.ds160 import api as ds160_ns
+from api.consultation import api as consultation_ns
+from api.auth import api as auth_ns
 
-# Register blueprints
-app.register_blueprint(ds160_bp, url_prefix='/api/ds160')
-app.register_blueprint(consultation_bp, url_prefix='/api/consultation')
-app.register_blueprint(auth_bp, url_prefix='/api/auth')
+# Register namespaces
+api.add_namespace(ds160_ns, path="/ds160")
+api.add_namespace(consultation_ns, path="/consultation")
+api.add_namespace(auth_ns, path="/auth")
 
-@app.route('/health')
+
+@app.route("/health")
 def health_check():
-    return {'status': 'healthy', 'version': '1.0.0'}
+    return {"status": "healthy", "version": "1.0.0"}
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     with app.app_context():
-        db.create_all()
-    app.run(debug=os.getenv('FLASK_DEBUG', 'True') == 'True')
+        db.create_all()  # Create tables
+    app.run(debug=os.getenv("FLASK_DEBUG", "True") == "True")
