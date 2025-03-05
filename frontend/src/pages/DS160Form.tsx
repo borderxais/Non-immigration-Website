@@ -1,6 +1,5 @@
 import React from 'react';
 import { Card, Steps, Form, Input, Select, DatePicker, Radio, Space, Button, Typography, Divider } from 'antd';
-import type { FormInstance } from 'antd/es/form';
 
 const { TextArea } = Input;
 const { Title, Text } = Typography;

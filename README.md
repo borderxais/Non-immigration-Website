@@ -58,7 +58,7 @@ python run.py
 │   ├── api/            # API routes
 │   ├── models/         # Database models
 │   ├── services/       # Business logic
-│   └── utils/          # Helper functions
+│   └── core/           # Helper functions
 ├── frontend/
 │   ├── src/
 │   └── public/
