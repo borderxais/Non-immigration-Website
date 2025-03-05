@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Card, Input, Button, List, Typography } from 'antd';
+import { Card, Input, Button, List } from 'antd';
+import { askQuestion } from '../apis/consultationApi';
 
 const { TextArea } = Input;
-const { Title } = Typography;
 
 interface Message {
   content: string;
@@ -22,8 +22,9 @@ const AIConsultation: React.FC = () => {
 
     // TODO: Send to backend API
     // For now, just mock the AI response
+    const res = await askQuestion(input);
     const aiMessage: Message = {
-      content: "我是您的签证顾问AI助手。我会尽力回答您的问题，并提供专业的建议。",
+      content: res.response,
       type: 'ai'
     };
     
