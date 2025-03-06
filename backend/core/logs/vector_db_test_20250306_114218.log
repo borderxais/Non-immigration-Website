@@ -1,0 +1,37 @@
+2025-03-06 11:42:18,217 - INFO - Python executable: C:\Users\njian\OneDrive\Desktop\BorderX\Non-Immigration-Website\venv\Scripts\python.exe
+2025-03-06 11:42:18,217 - INFO - Python version: 3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]
+2025-03-06 11:42:18,217 - INFO - Current working directory: C:\Users\njian\OneDrive\Desktop\BorderX\Non-Immigration-Website
+2025-03-06 11:42:18,217 - INFO - Importing pymilvus...
+2025-03-06 11:42:18,217 - INFO - pymilvus imported successfully!
+2025-03-06 11:42:18,217 - INFO - Importing sentence_transformers...
+2025-03-06 11:42:18,219 - INFO - sentence_transformers imported successfully!
+2025-03-06 11:42:18,219 - INFO - Importing vector_db module...
+2025-03-06 11:42:18,219 - INFO - vector_db module imported successfully!
+2025-03-06 11:42:18,219 - INFO - 
+Checking environment variables:
+2025-03-06 11:42:18,220 - INFO - ZILLIZ_CLOUD_URI: Set
+2025-03-06 11:42:18,220 - INFO - ZILLIZ_CLOUD_TOKEN: Set
+2025-03-06 11:42:18,220 - INFO - ZILLIZ_COLLECTION_NAME: visa_assistant_vectors
+2025-03-06 11:42:18,220 - INFO - EMBEDDING_MODEL: all-MiniLM-L6-v2
+2025-03-06 11:42:18,220 - INFO - 
+Initializing VectorDB...
+2025-03-06 11:42:18,220 - INFO - VectorDB initialized successfully!
+2025-03-06 11:42:18,220 - INFO - 
+Testing document insertion...
+2025-03-06 11:42:18,220 - INFO - Adding 2 test documents...
+2025-03-06 11:42:21,719 - INFO - Documents added successfully!
+2025-03-06 11:42:21,720 - INFO - 
+Testing similarity search...
+2025-03-06 11:42:21,720 - INFO - Query: 'What is a DS-160 form?'
+2025-03-06 11:42:21,809 - INFO - Found 2 results:
+2025-03-06 11:42:21,809 - INFO - Result 1:
+2025-03-06 11:42:21,810 - INFO -   Content: The DS-160 is an online form for US nonimmigrant visa applications.
+2025-03-06 11:42:21,810 - INFO -   Metadata: {'category': 'visa_form', 'type': 'DS-160'}
+2025-03-06 11:42:21,811 - INFO -   Score: 0.7029942274093628
+2025-03-06 11:42:21,811 - INFO - Result 2:
+2025-03-06 11:42:21,811 - INFO -   Content: The DS-160 is an online form for US nonimmigrant visa applications.
+2025-03-06 11:42:21,811 - INFO -   Metadata: {'category': 'visa_form', 'type': 'DS-160'}
+2025-03-06 11:42:21,811 - INFO -   Score: 0.7029942274093628
+2025-03-06 11:42:21,812 - INFO - 
+All tests completed successfully!
+2025-03-06 11:42:21,812 - INFO - Log file created at: C:\Users\njian\OneDrive\Desktop\BorderX\Non-Immigration-Website\backend\core\logs\vector_db_test_20250306_114218.log
