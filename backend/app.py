@@ -33,12 +33,16 @@ from api.ds160 import api as ds160_ns
 from api.consultation import api as consultation_ns
 from api.auth import api as auth_ns
 from api.search import api as search_ns
+from api.chat import chat_bp
 
 # Register namespaces
 api.add_namespace(ds160_ns, path="/ds160")
 api.add_namespace(consultation_ns, path="/consultation")
 api.add_namespace(auth_ns, path="/auth")
 api.add_namespace(search_ns, path="/search")
+
+# Register blueprints
+app.register_blueprint(chat_bp, url_prefix='/api/chat')
 
 
 @app.route("/health")

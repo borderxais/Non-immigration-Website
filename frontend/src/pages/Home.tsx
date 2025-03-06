@@ -25,13 +25,6 @@ const Home: React.FC = () => {
       color: '#e6f7ff',
     },
     {
-      title: 'AI 签证咨询',
-      icon: <RobotOutlined style={{ fontSize: '32px', color: '#52c41a' }} />,
-      description: '智能问答系统，专业签证评估，基于大数据分析提供个性化建议',
-      link: '/consultation/chat',
-      color: '#f6ffed',
-    },
-    {
       title: '模拟面签',
       icon: <TeamOutlined style={{ fontSize: '32px', color: '#722ed1' }} />,
       description: 'AI模拟面试官，真实场景对话，提升面签通过率',

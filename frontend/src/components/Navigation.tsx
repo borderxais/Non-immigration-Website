@@ -3,11 +3,10 @@ import { Menu, Button, Space } from 'antd';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { 
   FormOutlined, 
-  RobotOutlined, 
   TeamOutlined, 
   MobileOutlined,
   HomeOutlined,
-  UserOutlined 
+  UserOutlined
 } from '@ant-design/icons';
 
 const Navigation: React.FC = () => {
@@ -36,21 +35,6 @@ const Navigation: React.FC = () => {
         {
           key: '/ds160/history',
           label: '历史记录',
-        },
-      ]
-    },
-    {
-      key: '/consultation',
-      icon: <RobotOutlined />,
-      label: 'AI 签证咨询',
-      children: [
-        {
-          key: '/consultation/chat',
-          label: '智能问答',
-        },
-        {
-          key: '/consultation/evaluation',
-          label: '签证评估',
         },
       ]
     },

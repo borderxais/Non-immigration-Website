@@ -1,0 +1,93 @@
+.floating-chat-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+.chat-button {
+  width: 60px;
+  height: 60px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chat-button .anticon {
+  font-size: 24px;
+}
+
+/* Drawer styling */
+.chat-drawer {
+  z-index: 1001;
+}
+
+.chat-drawer .ant-drawer-header {
+  background-color: #001529;
+  color: white;
+  padding: 16px 24px;
+}
+
+.chat-drawer .ant-drawer-title {
+  color: white;
+  font-size: 16px;
+}
+
+.chat-drawer .ant-drawer-close {
+  color: white;
+}
+
+.chat-drawer .ant-drawer-body {
+  padding: 0;
+}
+
+.chat-drawer .ant-drawer-content-wrapper {
+  height: 70% !important;
+  bottom: 0;
+  top: auto !important;
+}
+
+.drawer-chat-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Animation for the chat button */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+}
+
+.floating-chat-button:hover .chat-button {
+  animation: pulse 1s infinite;
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+  .chat-drawer .ant-drawer-content-wrapper {
+    width: 100% !important;
+    height: 80% !important;
+  }
+  
+  .floating-chat-button {
+    bottom: 15px;
+    right: 15px;
+  }
+  
+  .chat-button {
+    width: 50px;
+    height: 50px;
+  }
+}

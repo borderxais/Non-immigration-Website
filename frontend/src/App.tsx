@@ -1,16 +1,15 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Layout } from 'antd';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
 import PageHeader from './components/PageHeader';
+import FloatingChatButton from './components/Chat/FloatingChatButton';
 
 // Pages
 import Home from './pages/Home';
 import DS160Form from './pages/DS160Form';
 import DS160Upload from './pages/DS160Upload';
 import DS160History from './pages/DS160History';
-import AIConsultation from './pages/AIConsultation';
-import VisaEvaluation from './pages/VisaEvaluation';
 import InterviewPractice from './pages/InterviewPractice';
 import InterviewEvaluation from './pages/InterviewEvaluation';
 import InterviewSimulation from './pages/InterviewSimulation';
@@ -25,6 +24,14 @@ import ForgotPassword from './pages/auth/ForgotPassword';
 const { Content, Footer } = Layout;
 
 const App: React.FC = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+
+  useEffect(() => {
+    // Check if user is authenticated
+    const token = localStorage.getItem('token');
+    setIsAuthenticated(!!token);
+  }, []);
+
   return (
     <AuthProvider>
       <Router>
@@ -39,10 +46,6 @@ const App: React.FC = () => {
                 <Route path="/ds160/fill" element={<DS160Form />} />
                 <Route path="/ds160/upload" element={<DS160Upload />} />
                 <Route path="/ds160/history" element={<DS160History />} />
-                
-                {/* AI Consultation Routes */}
-                <Route path="/consultation/chat" element={<AIConsultation />} />
-                <Route path="/consultation/evaluation" element={<VisaEvaluation />} />
                 
                 {/* Interview Routes */}
                 <Route path="/interview/practice" element={<InterviewPractice />} />
@@ -63,6 +66,9 @@ const App: React.FC = () => {
           <Footer style={{ textAlign: 'center' }}>
             BorderX {new Date().getFullYear()} - 美国非移民签证智能辅助系统
           </Footer>
+          
+          {/* Floating Chat Button - visible on all pages */}
+          <FloatingChatButton isAuthenticated={isAuthenticated} />
         </Layout>
       </Router>
     </AuthProvider>
