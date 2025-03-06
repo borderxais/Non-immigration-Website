@@ -25,6 +25,20 @@ const Home: React.FC = () => {
       color: '#e6f7ff',
     },
     {
+      title: '签证咨询',
+      icon: <RobotOutlined style={{ fontSize: '32px', color: '#52c41a' }} />,
+      description: '智能问答系统，专业签证评估，基于大数据分析提供个性化建议',
+      link: '#',
+      color: '#f6ffed',
+      onClick: () => {
+        // Open the floating chat widget instead of navigating
+        const chatButton = document.querySelector('.floating-chat-button .chat-button') as HTMLElement;
+        if (chatButton) {
+          chatButton.click();
+        }
+      }
+    },
+    {
       title: '模拟面签',
       icon: <TeamOutlined style={{ fontSize: '32px', color: '#722ed1' }} />,
       description: 'AI模拟面试官，真实场景对话，提升面签通过率',
@@ -58,6 +72,14 @@ const Home: React.FC = () => {
     },
   ];
 
+  const handleFeatureClick = (feature: any) => {
+    if (feature.onClick) {
+      feature.onClick();
+    } else if (feature.link) {
+      navigate(feature.link);
+    }
+  };
+
   return (
     <>
       {/* Hero Section */}
@@ -72,7 +94,15 @@ const Home: React.FC = () => {
           <Button type="primary" size="large" onClick={() => navigate('/ds160/fill')}>
             开始填写DS-160
           </Button>
-          <Button size="large" onClick={() => navigate('/consultation/chat')}>
+          <Button 
+            size="large" 
+            onClick={() => {
+              const chatButton = document.querySelector('.floating-chat-button .chat-button') as HTMLElement;
+              if (chatButton) {
+                chatButton.click();
+              }
+            }}
+          >
             咨询签证问题
           </Button>
         </Space>
@@ -108,7 +138,7 @@ const Home: React.FC = () => {
                 backgroundColor: feature.color,
                 borderRadius: '8px',
               }}
-              onClick={() => navigate(feature.link)}
+              onClick={() => handleFeatureClick(feature)}
             >
               <div style={{ textAlign: 'center', marginBottom: 24 }}>
                 {feature.icon}
