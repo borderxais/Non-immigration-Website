@@ -1,4 +1,4 @@
-from app import db
+from core.extensions import db
 from datetime import datetime
 
 class DS160Form(db.Model):

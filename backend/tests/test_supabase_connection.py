@@ -1,11 +1,7 @@
 import os
-try:
-    # Try importing psycopg2 first (if installed)
-    import psycopg2
-except ImportError:
-    # If not found, try importing from psycopg2-binary
-    print("Using psycopg2-binary instead of psycopg2")
-    import psycopg2
+
+import psycopg2
+
 from dotenv import load_dotenv
 
 # Load environment variables from .env

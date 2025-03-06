@@ -3,9 +3,13 @@ import os
 from dotenv import load_dotenv
 from supabase import create_client, Client
 import urllib.parse
+from flask_sqlalchemy import SQLAlchemy
 
 # Load environment variables
 load_dotenv()
+
+# Initialize SQLAlchemy
+db = SQLAlchemy()
 
 # Parse the DATABASE_URL to extract Supabase credentials
 database_url = os.getenv("SUPABASE_URL", "")
@@ -28,18 +32,30 @@ if database_url:
 # Note: This is a simplified approach. In production, you should store the actual Supabase URL and key
 supabase_url = f"https://{project_ref}.supabase.co"
 # Since we don't have the actual API key in the DATABASE_URL, we'll need to use an environment variable
-# or prompt the user to add it
+# We need the service role secret key for backend operations, not the anon public key
 supabase_key = os.getenv("SUPABASE_KEY", "")
 
 if not supabase_key:
     print("Warning: SUPABASE_KEY not found in environment variables.")
-    print("Please add SUPABASE_KEY to your .env file or set it as an environment variable.")
+    print("Please add your service role secret API key as SUPABASE_KEY to your .env file.")
+    print("You can find this key in your Supabase dashboard under Project Settings > API.")
 
 # Create a singleton instance of the Supabase client
 supabase = None
 if supabase_url and supabase_key:
     try:
+        # Create client without any extra arguments that might cause issues
         supabase = create_client(supabase_url, supabase_key)
+    except TypeError as e:
+        # If there's a TypeError about unexpected arguments, try a more basic approach
+        if "unexpected keyword argument" in str(e):
+            print(f"Warning: {e}")
+            print("Attempting to create Supabase client with basic parameters...")
+            try:
+                from supabase.client import Client as SupabaseClient
+                supabase = SupabaseClient(supabase_url, supabase_key)
+            except Exception as inner_e:
+                print(f"Error creating Supabase client with basic parameters: {inner_e}")
     except Exception as e:
         print(f"Error initializing Supabase client: {e}")
 

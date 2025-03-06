@@ -13,7 +13,16 @@ app = Flask(__name__)
 api = Api(app, doc="/docs", prefix="/api")
 
 CORS(app)
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///:memory:"
+
+# Configure database - use Supabase PostgreSQL
+supabase_url = os.getenv("SUPABASE_URL")
+if supabase_url:
+    # Use Supabase PostgreSQL in production/development
+    app.config["SQLALCHEMY_DATABASE_URI"] = supabase_url
+else:
+    # Fallback to SQLite for testing or if Supabase URL is not provided
+    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///:memory:"
+
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 # Initialize the SQLAlchemy instance with the app
@@ -23,11 +32,13 @@ db.init_app(app)
 from api.ds160 import api as ds160_ns
 from api.consultation import api as consultation_ns
 from api.auth import api as auth_ns
+from api.search import api as search_ns
 
 # Register namespaces
 api.add_namespace(ds160_ns, path="/ds160")
 api.add_namespace(consultation_ns, path="/consultation")
 api.add_namespace(auth_ns, path="/auth")
+api.add_namespace(search_ns, path="/search")
 
 
 @app.route("/health")

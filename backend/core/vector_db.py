@@ -138,13 +138,22 @@ class VectorDB:
         return documents
 
 
-# Singleton instance
-vector_db = None
-
+# Create a singleton instance
+_vector_db_instance = None
 
 def get_vector_db() -> VectorDB:
-    """Get the vector database client."""
-    global vector_db
-    if vector_db is None:
-        vector_db = VectorDB()
-    return vector_db
+    """
+    Returns the initialized VectorDB instance.
+    
+    Returns:
+        VectorDB: The vector database instance
+    """
+    global _vector_db_instance
+    
+    if _vector_db_instance is None:
+        try:
+            _vector_db_instance = VectorDB()
+        except Exception as e:
+            raise ValueError(f"Failed to initialize VectorDB: {e}")
+    
+    return _vector_db_instance
