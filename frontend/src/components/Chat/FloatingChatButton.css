@@ -18,40 +18,50 @@
   font-size: 24px;
 }
 
-/* Drawer styling */
-.chat-drawer {
+/* Modal styling */
+.chat-modal {
   z-index: 1001;
 }
 
-.chat-drawer .ant-drawer-header {
+.chat-modal .ant-modal-header {
   background-color: #001529;
   color: white;
-  padding: 16px 24px;
+  padding: 12px 16px;
+  border-radius: 8px 8px 0 0;
+  border-bottom: 1px solid #e8e8e8;
 }
 
-.chat-drawer .ant-drawer-title {
+.chat-modal .ant-modal-title {
   color: white;
   font-size: 16px;
 }
 
-.chat-drawer .ant-drawer-close {
+.chat-modal .ant-modal-close {
   color: white;
 }
 
-.chat-drawer .ant-drawer-body {
-  padding: 0;
+.chat-modal .ant-modal-body {
+  padding: 0 !important;
 }
 
-.chat-drawer .ant-drawer-content-wrapper {
-  height: 70% !important;
-  bottom: 0;
-  top: auto !important;
+.chat-modal .ant-modal-content {
+  overflow: hidden;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  padding: 0 !important;
 }
 
-.drawer-chat-container {
+.modal-chat-container {
   height: 100%;
   display: flex;
   flex-direction: column;
+  width: 100%;
+  padding: 0;
+}
+
+/* Ensure message bubbles adapt to the wider container */
+.modal-chat-container .message-bubble {
+  max-width: 85%;
 }
 
 /* Animation for the chat button */
@@ -76,9 +86,13 @@
 
 /* Responsive adjustments */
 @media (max-width: 576px) {
-  .chat-drawer .ant-drawer-content-wrapper {
-    width: 100% !important;
-    height: 80% !important;
+  .chat-modal {
+    max-width: calc(100vw - 16px) !important;
+    margin: 0 auto;
+  }
+  
+  .chat-modal .ant-modal-body {
+    height: 70vh !important;
   }
   
   .floating-chat-button {
@@ -89,5 +103,9 @@
   .chat-button {
     width: 50px;
     height: 50px;
+  }
+
+  .modal-chat-container .message-bubble {
+    max-width: 90%;
   }
 }

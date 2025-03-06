@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Button, Badge, Drawer, ConfigProvider } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Button, Badge, Modal, ConfigProvider } from 'antd';
 import { MessageOutlined, CloseOutlined } from '@ant-design/icons';
 import ChatInterface from './ChatInterface';
 import chatService from '../../services/chatService';
@@ -12,6 +12,7 @@ interface FloatingChatButtonProps {
 const FloatingChatButton: React.FC<FloatingChatButtonProps> = ({ isAuthenticated = false }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [hasUnreadMessages, setHasUnreadMessages] = useState(false);
+  const [modalWidth, setModalWidth] = useState(500);
 
   const handleOpenChat = () => {
     setIsOpen(true);
@@ -43,6 +44,27 @@ const FloatingChatButton: React.FC<FloatingChatButtonProps> = ({ isAuthenticated
     }
   };
 
+  // Calculate modal width based on screen size
+  useEffect(() => {
+    const handleResize = () => {
+      const screenWidth = window.innerWidth;
+      if (screenWidth <= 576) {
+        setModalWidth(Math.min(screenWidth - 16, 350)); // Mobile size with minimal padding
+      } else if (screenWidth <= 992) {
+        setModalWidth(500); // Tablet size
+      } else {
+        setModalWidth(600); // Desktop size
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    handleResize();
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
   return (
     <>
       <div className="floating-chat-button">
@@ -61,31 +83,40 @@ const FloatingChatButton: React.FC<FloatingChatButtonProps> = ({ isAuthenticated
       <ConfigProvider
         theme={{
           components: {
-            Drawer: {
-              paddingLG: 0,
+            Modal: {
+              paddingMD: 0,
+              paddingContentHorizontalLG: 0,
+              paddingContentVerticalLG: 0,
+              borderRadiusLG: 8,
             },
           },
         }}
       >
-        <Drawer
+        <Modal
           title="签证助手 | Visa Assistant"
-          placement="right"
-          onClose={handleCloseChat}
           open={isOpen}
-          width={380}
-          height="70%"
-          closeIcon={<CloseOutlined />}
-          className="chat-drawer"
-          style={{ position: 'fixed' }}
-          mask={true}
-          maskClosable={true}
+          onCancel={handleCloseChat}
           footer={null}
-          bodyStyle={{ padding: 0, height: '100%', overflow: 'hidden' }}
+          width={modalWidth}
+          centered
+          closeIcon={<CloseOutlined />}
+          className="chat-modal"
+          maskClosable={true}
+          bodyStyle={{ 
+            padding: 0, 
+            height: '60vh', 
+            overflow: 'hidden',
+            borderRadius: '0 0 8px 8px'
+          }}
+          style={{ top: 20 }}
         >
-          <div className="drawer-chat-container">
-            <ChatInterface onSendMessage={handleSendMessage} />
+          <div className="modal-chat-container">
+            <ChatInterface 
+              onSendMessage={handleSendMessage} 
+              showHeader={false}
+            />
           </div>
-        </Drawer>
+        </Modal>
       </ConfigProvider>
     </>
   );

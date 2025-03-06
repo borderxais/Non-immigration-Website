@@ -14,9 +14,13 @@ interface Message {
 
 interface ChatInterfaceProps {
   onSendMessage?: (message: string) => Promise<string>;
+  showHeader?: boolean;
 }
 
-const ChatInterface: React.FC<ChatInterfaceProps> = ({ onSendMessage }) => {
+const ChatInterface: React.FC<ChatInterfaceProps> = ({ 
+  onSendMessage,
+  showHeader = false 
+}) => {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
@@ -103,9 +107,11 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ onSendMessage }) => {
 
   return (
     <div className="chat-container">
-      <div className="chat-header">
-        <Typography.Title level={4} style={{ margin: 0 }}>Visa Assistant</Typography.Title>
-      </div>
+      {showHeader && (
+        <div className="chat-header">
+          <Typography.Title level={4} style={{ margin: 0 }}>Visa Assistant</Typography.Title>
+        </div>
+      )}
       
       <div className="chat-messages">
         {messages.map((message) => (
