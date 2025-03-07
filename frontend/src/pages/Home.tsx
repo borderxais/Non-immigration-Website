@@ -8,8 +8,7 @@ import {
   MobileOutlined,
   CheckCircleOutlined,
   SafetyOutlined,
-  GlobalOutlined,
-  ArrowRightOutlined
+  GlobalOutlined
 } from '@ant-design/icons';
 
 const { Title, Paragraph } = Typography;
