@@ -9,6 +9,7 @@ interface ChatResponse {
     score: number;
     source: string;
   }>;
+  response_source?: string;
 }
 
 // Sample fallback responses for when the backend is unavailable
@@ -150,7 +151,8 @@ class ChatService {
   async enhancedProcessMessage(message: string, isAuthenticated: boolean = false): Promise<ChatResponse> {
     if (!this.isBackendAvailable) {
       return {
-        answer: this.getLocalFallbackResponse(message)
+        answer: this.getLocalFallbackResponse(message),
+        response_source: 'fallback'
       };
     }
 
@@ -171,7 +173,8 @@ class ChatService {
       if (response.data && response.data.answer) {
         return {
           answer: response.data.answer,
-          sources: response.data.sources
+          sources: response.data.sources,
+          response_source: response.data.response_source || 'unknown'
         };
       } else {
         // Fallback to using the search API
@@ -181,7 +184,8 @@ class ChatService {
         
         return {
           answer: this.formatResponse(message, searchResults.results),
-          sources: searchResults.results
+          sources: searchResults.results,
+          response_source: 'vector_db'  // Since we're using the search API directly
         };
       }
     } catch (error) {
@@ -195,12 +199,14 @@ class ChatService {
         console.warn('Multiple connection errors, switching to local fallback mode');
         this.isBackendAvailable = false;
         return {
-          answer: this.getLocalFallbackResponse(message)
+          answer: this.getLocalFallbackResponse(message),
+          response_source: 'fallback'
         };
       }
       
       return {
-        answer: this.getLocalFallbackResponse(message)
+        answer: this.getLocalFallbackResponse(message),
+        response_source: 'fallback'
       };
     }
   }
@@ -231,7 +237,7 @@ class ChatService {
   /**
    * Save chat message to history (for authenticated users)
    */
-  async saveChatHistory(message: string, response: string): Promise<boolean> {
+  async saveChatHistory(message: string, response: string, responseSource: string = 'unknown'): Promise<boolean> {
     if (!this.isBackendAvailable) {
       console.warn('Backend unavailable, skipping chat history save');
       return false;
@@ -243,8 +249,9 @@ class ChatService {
       
       await api.post('/chat/history', {
         user_id: userId,
-        message,
-        response
+        user_message: message,
+        ai_response: response,
+        response_source: responseSource
       });
       
       return true;
@@ -267,7 +274,7 @@ class ChatService {
   /**
    * Get chat history for the current user
    */
-  async getChatHistory(): Promise<Array<{message: string, response: string, created_at: string}>> {
+  async getChatHistory(): Promise<Array<{user_message: string, ai_response: string, response_source: string, created_at: string}>> {
     if (!this.isBackendAvailable) {
       console.warn('Backend unavailable, returning empty chat history');
       return [];

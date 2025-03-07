@@ -21,6 +21,7 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
+  min-height: 200px; /* Reduced from 300px to a more appropriate size */
 }
 
 .message {
@@ -63,6 +64,30 @@
   text-align: left;
 }
 
+.message-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 4px;
+}
+
+.user-message .message-footer {
+  flex-direction: row-reverse;
+}
+
+.message-source {
+  display: flex;
+  align-items: center;
+}
+
+.message-source .ant-tag {
+  margin-right: 0;
+  font-size: 10px;
+  line-height: 14px;
+  height: 18px;
+  padding: 0 4px;
+}
+
 .user-message .message-timestamp {
   text-align: right;
 }
@@ -79,7 +104,6 @@
 }
 
 .message-timestamp {
-  margin-top: 4px;
   font-size: 12px;
 }
 
@@ -96,9 +120,16 @@
 }
 
 /* Styles for the chat interface when used in a drawer */
+.drawer-chat-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
 .drawer-chat-container .chat-container {
   border-radius: 0;
   height: 100%;
+  flex: 1;
 }
 
 .drawer-chat-container .chat-header {
@@ -120,5 +151,10 @@
   
   .user-message .message-bubble {
     margin-left: 4px;
+  }
+  
+  .message-source .ant-tag {
+    font-size: 9px;
+    padding: 0 2px;
   }
 }

@@ -162,7 +162,7 @@ const Home: React.FC = () => {
       </Title>
       <Row gutter={[48, 48]}>
         <Col xs={24} md={8}>
-          <Card bordered={false}>
+          <Card variant="borderless">
             <div style={{ textAlign: 'center', marginBottom: 24 }}>
               <SafetyOutlined style={{ fontSize: '48px', color: '#1890ff' }} />
             </div>
@@ -173,7 +173,7 @@ const Home: React.FC = () => {
           </Card>
         </Col>
         <Col xs={24} md={8}>
-          <Card bordered={false}>
+          <Card variant="borderless">
             <div style={{ textAlign: 'center', marginBottom: 24 }}>
               <CheckCircleOutlined style={{ fontSize: '48px', color: '#52c41a' }} />
             </div>
@@ -184,7 +184,7 @@ const Home: React.FC = () => {
           </Card>
         </Col>
         <Col xs={24} md={8}>
-          <Card bordered={false}>
+          <Card variant="borderless">
             <div style={{ textAlign: 'center', marginBottom: 24 }}>
               <GlobalOutlined style={{ fontSize: '48px', color: '#722ed1' }} />
             </div>

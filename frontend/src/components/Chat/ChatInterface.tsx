@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Input, Button, Typography, Avatar, Spin } from 'antd';
-import { SendOutlined, UserOutlined, RobotOutlined } from '@ant-design/icons';
+import { Input, Button, Typography, Avatar, Spin, Tag } from 'antd';
+import { SendOutlined, UserOutlined, RobotOutlined, ApiOutlined, DatabaseOutlined, WarningOutlined } from '@ant-design/icons';
 import './ChatInterface.css';
 
 const { Text } = Typography;
@@ -10,10 +10,14 @@ interface Message {
   text: string;
   sender: 'user' | 'ai';
   timestamp: Date;
+  source?: string;
 }
 
 interface ChatInterfaceProps {
-  onSendMessage?: (message: string) => Promise<string>;
+  onSendMessage?: (message: string) => Promise<{
+    answer: string;
+    response_source?: string;
+  }>;
   showHeader?: boolean;
 }
 
@@ -27,6 +31,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
       text: 'Hello! I\'m your visa assistant. How can I help you today?',
       sender: 'ai',
       timestamp: new Date(),
+      source: 'openai'
     },
   ]);
   const [inputValue, setInputValue] = useState('');
@@ -63,9 +68,10 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
         
         const aiMessage: Message = {
           id: (Date.now() + 1).toString(),
-          text: response,
+          text: response.answer,
           sender: 'ai',
           timestamp: new Date(),
+          source: response.response_source || 'unknown'
         };
         
         setMessages((prev) => [...prev, aiMessage]);
@@ -77,6 +83,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
             text: `I received your message: "${inputValue}". This is a placeholder response. Connect this component to your backend API to get real responses.`,
             sender: 'ai',
             timestamp: new Date(),
+            source: 'fallback'
           };
           
           setMessages((prev) => [...prev, aiMessage]);
@@ -91,6 +98,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
         text: 'Sorry, I encountered an error processing your request. Please try again later.',
         sender: 'ai',
         timestamp: new Date(),
+        source: 'fallback'
       };
       
       setMessages((prev) => [...prev, errorMessage]);
@@ -102,6 +110,22 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       handleSendMessage();
+    }
+  };
+
+  // Function to render the source tag for AI messages
+  const renderSourceTag = (source?: string) => {
+    if (!source || source === 'unknown') return null;
+    
+    switch (source) {
+      case 'openai':
+        return <Tag color="green" icon={<ApiOutlined />}>OpenAI</Tag>;
+      case 'vector_db':
+        return <Tag color="blue" icon={<DatabaseOutlined />}>Vector DB</Tag>;
+      case 'fallback':
+        return <Tag color="orange" icon={<WarningOutlined />}>Local Cache</Tag>;
+      default:
+        return null;
     }
   };
 
@@ -128,10 +152,17 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
             </div>
             <div className="message-bubble">
               <div className="message-content">{message.text}</div>
-              <div className="message-timestamp">
-                <Text type="secondary" style={{ fontSize: '12px' }}>
-                  {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                </Text>
+              <div className="message-footer">
+                <div className="message-timestamp">
+                  <Text type="secondary" style={{ fontSize: '12px' }}>
+                    {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                  </Text>
+                </div>
+                {message.sender === 'ai' && message.source && (
+                  <div className="message-source">
+                    {renderSourceTag(message.source)}
+                  </div>
+                )}
               </div>
             </div>
           </div>

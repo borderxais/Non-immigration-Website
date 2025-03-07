@@ -23,7 +23,7 @@ const FloatingChatButton: React.FC<FloatingChatButtonProps> = ({ isAuthenticated
     setIsOpen(false);
   };
 
-  const handleSendMessage = async (message: string): Promise<string> => {
+  const handleSendMessage = async (message: string) => {
     try {
       // Use the enhanced process message with authentication status
       const response = await chatService.enhancedProcessMessage(message, isAuthenticated);
@@ -31,16 +31,19 @@ const FloatingChatButton: React.FC<FloatingChatButtonProps> = ({ isAuthenticated
       // Save to chat history if user is authenticated
       if (isAuthenticated) {
         try {
-          await chatService.saveChatHistory(message, response.answer);
+          await chatService.saveChatHistory(message, response.answer, response.response_source || 'unknown');
         } catch (error) {
           console.error('Error saving chat history:', error);
         }
       }
       
-      return response.answer;
+      return response;
     } catch (error) {
       console.error('Error sending message:', error);
-      return "I'm sorry, I encountered an error processing your request. Please try again later.";
+      return {
+        answer: "I'm sorry, I encountered an error processing your request. Please try again later.",
+        response_source: 'fallback'
+      };
     }
   };
 
@@ -49,30 +52,32 @@ const FloatingChatButton: React.FC<FloatingChatButtonProps> = ({ isAuthenticated
     const handleResize = () => {
       const screenWidth = window.innerWidth;
       if (screenWidth <= 576) {
-        setModalWidth(Math.min(screenWidth - 16, 350)); // Mobile size with minimal padding
-      } else if (screenWidth <= 992) {
-        setModalWidth(500); // Tablet size
+        setModalWidth(screenWidth - 32); // Full width minus some padding on mobile
+      } else if (screenWidth <= 768) {
+        setModalWidth(450);
       } else {
-        setModalWidth(600); // Desktop size
+        setModalWidth(500);
       }
     };
 
-    window.addEventListener('resize', handleResize);
+    // Set initial width
     handleResize();
 
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
+    // Add event listener
+    window.addEventListener('resize', handleResize);
+
+    // Clean up
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   return (
     <>
       <div className="floating-chat-button">
         <Badge dot={hasUnreadMessages}>
-          <Button 
-            type="primary" 
-            shape="circle" 
-            icon={<MessageOutlined />} 
+          <Button
+            type="primary"
+            shape="circle"
+            icon={<MessageOutlined />}
             size="large"
             onClick={handleOpenChat}
             className="chat-button"
@@ -84,37 +89,33 @@ const FloatingChatButton: React.FC<FloatingChatButtonProps> = ({ isAuthenticated
         theme={{
           components: {
             Modal: {
-              paddingMD: 0,
-              paddingContentHorizontalLG: 0,
-              paddingContentVerticalLG: 0,
-              borderRadiusLG: 8,
+              contentBg: 'transparent',
+              headerBg: '#001529',
+              titleColor: 'white',
             },
           },
         }}
       >
         <Modal
-          title="签证助手 | Visa Assistant"
+          title="Visa Assistant"
           open={isOpen}
           onCancel={handleCloseChat}
           footer={null}
           width={modalWidth}
-          centered
-          closeIcon={<CloseOutlined />}
           className="chat-modal"
+          closeIcon={<CloseOutlined style={{ color: 'white' }} />}
           maskClosable={true}
-          bodyStyle={{ 
-            padding: 0, 
-            height: '60vh', 
-            overflow: 'hidden',
-            borderRadius: '0 0 8px 8px'
+          centered
+          styles={{
+            body: {
+              padding: 0,
+              height: '60vh', // Adjusted back to a more moderate height
+              overflow: 'hidden',
+            }
           }}
-          style={{ top: 20 }}
         >
-          <div className="modal-chat-container">
-            <ChatInterface 
-              onSendMessage={handleSendMessage} 
-              showHeader={false}
-            />
+          <div className="drawer-chat-container">
+            <ChatInterface onSendMessage={handleSendMessage} />
           </div>
         </Modal>
       </ConfigProvider>

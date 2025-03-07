@@ -2,7 +2,7 @@ from flask import Blueprint, request, jsonify
 from flask_restx import Api, Resource, Namespace
 import openai
 import os
-from core.extensions import get_supabase_client
+from core.extensions import get_pg_connection, execute_pg_query
 from core.vector_db import VectorDB
 from models.user import User
 import logging
@@ -12,9 +12,9 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # Create Blueprint
-chat_bp = Blueprint('chat', __name__)
+chat_bp = Blueprint('chat', __name__, url_prefix='/api/chat')  # Add url_prefix to the Blueprint
 api = Api(chat_bp, version='1.0', title='Chat API', description='Chat API for visa assistant')
-ns = Namespace('chat', description='Chat operations')
+ns = Namespace('', description='Chat operations')  # Empty namespace path since the blueprint already has the prefix
 api.add_namespace(ns)
 
 # Initialize VectorDB
@@ -50,92 +50,98 @@ class ChatResource(Resource):
             user_data = []
             if user_id:
                 try:
-                    # Connect to Supabase
-                    supabase = get_supabase_client()
-                    
-                    # Query user-specific data
-                    user = User.get_by_id(supabase, user_id)
-                    if user:
-                        # Get user's DS-160 forms and other relevant data
-                        user_data = User.get_user_data(supabase, user_id)
+                    # Query PostgreSQL directly instead of using Supabase client
+                    sql_query = """
+                    SELECT u.id, u.email, u.full_name, f.form_type, f.status, f.submission_date
+                    FROM users u
+                    LEFT JOIN forms f ON u.id = f.user_id
+                    WHERE u.id = %s
+                    """
+                    user_data = execute_pg_query(sql_query, (user_id,))
                 except Exception as e:
-                    logger.error(f"Error fetching user data: {str(e)}")
+                    logger.error(f"Error getting user data: {str(e)}")
             
-            # Combine search results
+            # Combine vector search results and user data
             context = []
             
             # Add vector search results to context
             for result in vector_results:
                 context.append({
-                    "content": result.get("content", ""),
-                    "source": "vector_db",
-                    "score": result.get("score", 0)
+                    "content": result["content"],
+                    "metadata": result["metadata"],
+                    "score": result["score"],
+                    "source": "vector_db"
                 })
             
-            # Add user data to context
+            # Add user data to context if available
             for item in user_data:
                 context.append({
-                    "content": str(item),
-                    "source": "user_data",
-                    "score": 1.0  # User data is highly relevant
+                    "content": f"User {item.get('full_name', 'unknown')} has submitted a {item.get('form_type', 'unknown')} form with status {item.get('status', 'unknown')}.",
+                    "metadata": item,
+                    "score": 1.0,  # High relevance for user-specific data
+                    "source": "user_db"
                 })
             
-            # Generate response
-            if openai_api_key and context:
+            # If OpenAI API key is available, use it to generate a response
+            if openai_api_key:
+                openai.api_key = openai_api_key
+                
+                # Prepare messages for OpenAI
+                messages = [
+                    {"role": "system", "content": "You are a helpful visa assistant. Use the provided context to answer the user's question accurately. If you don't know the answer, say so."},
+                ]
+                
+                # Add context to the messages
+                if context:
+                    context_text = "\n\n".join([f"Source {i+1}: {item['content']}" for i, item in enumerate(context)])
+                    messages.append({"role": "system", "content": f"Here is some context that might help you answer the user's question:\n\n{context_text}"})
+                
+                # Add user query
+                messages.append({"role": "user", "content": query})
+                
+                # Call OpenAI API
                 try:
-                    # Format context for OpenAI
-                    formatted_context = "\n\n".join([item["content"] for item in context])
-                    
-                    # Create system prompt
-                    system_prompt = f"""You are a helpful visa assistant for BorderX, a company that helps people with US non-immigrant visa applications.
-                    Use the following information to answer the user's question. If you don't know the answer based on the provided information, 
-                    say that you don't have enough information and suggest they contact a visa consultant for personalized advice.
-                    
-                    CONTEXT INFORMATION:
-                    {formatted_context}
-                    """
-                    
-                    # Call OpenAI API
-                    client = openai.OpenAI(api_key=openai_api_key)
-                    response = client.chat.completions.create(
+                    response = openai.ChatCompletion.create(
                         model="gpt-3.5-turbo",
-                        messages=[
-                            {"role": "system", "content": system_prompt},
-                            {"role": "user", "content": query}
-                        ],
-                        temperature=0.7,
-                        max_tokens=500
+                        messages=messages,
+                        max_tokens=500,
+                        temperature=0.7
                     )
                     
                     answer = response.choices[0].message.content
                     
                     return {
                         "answer": answer,
-                        "sources": context
+                        "sources": context,
+                        "response_source": "openai"  # Indicate that response came from OpenAI
                     }
-                    
                 except Exception as e:
                     logger.error(f"Error calling OpenAI API: {str(e)}")
-                    # Fall back to basic response
+                    # Fall back to basic response if OpenAI fails
             
-            # If OpenAI is not available or failed, return basic response
+            # If OpenAI is not available or fails, use a basic response based on the context
             if context:
-                # Use the most relevant result as the answer
-                answer = context[0]["content"]
+                answer = f"Based on my information: {context[0]['content']}"
+                if len(context) > 1:
+                    answer += f"\n\nI also found: {context[1]['content']}"
+                
                 return {
                     "answer": answer,
-                    "sources": context
+                    "sources": context,
+                    "response_source": "vector_db"  # Indicate that response came from vector database
                 }
             else:
-                return {
-                    "answer": "I don't have specific information about that. Could you please ask something about visa applications or the DS-160 form?",
-                    "sources": []
-                }
+                answer = "I'm sorry, I couldn't find any relevant information to answer your question."
                 
+                return {
+                    "answer": answer,
+                    "sources": [],
+                    "response_source": "fallback"  # Indicate that response is a fallback
+                }
+            
         except Exception as e:
-            logger.error(f"Error in chat endpoint: {str(e)}")
+            logger.error(f"Error processing chat request: {str(e)}")
             return {"error": str(e)}, 500
-
 
 @ns.route('/history')
 class ChatHistoryResource(Resource):
@@ -149,16 +155,23 @@ class ChatHistoryResource(Resource):
             if not user_id:
                 return {"error": "No user_id provided"}, 400
             
-            # Connect to Supabase
-            supabase = get_supabase_client()
-            
-            # Query chat history
-            result = supabase.table("chat_history").select("*").eq("user_id", user_id).execute()
-            
-            return {"history": result.data}
-            
+            try:
+                # Query PostgreSQL directly instead of using Supabase client
+                sql_query = """
+                SELECT * FROM chat_history
+                WHERE user_id = %s
+                ORDER BY timestamp DESC
+                LIMIT 50
+                """
+                chat_history = execute_pg_query(sql_query, (user_id,))
+                
+                return {"history": chat_history}
+            except Exception as e:
+                logger.error(f"Error getting chat history: {str(e)}")
+                return {"error": str(e)}, 500
+                
         except Exception as e:
-            logger.error(f"Error getting chat history: {str(e)}")
+            logger.error(f"Error processing chat history request: {str(e)}")
             return {"error": str(e)}, 500
     
     def post(self):
@@ -168,25 +181,27 @@ class ChatHistoryResource(Resource):
         try:
             data = request.json
             user_id = data.get("user_id")
-            message = data.get("message")
-            response = data.get("response")
+            user_message = data.get("user_message")
+            ai_response = data.get("ai_response")
+            response_source = data.get("response_source", "unknown")  # Add response source to history
             
-            if not user_id or not message:
+            if not user_id or not user_message or not ai_response:
                 return {"error": "Missing required fields"}, 400
             
-            # Connect to Supabase
-            supabase = get_supabase_client()
-            
-            # Save chat message
-            result = supabase.table("chat_history").insert({
-                "user_id": user_id,
-                "message": message,
-                "response": response,
-                "created_at": "now()"
-            }).execute()
-            
-            return {"success": True, "id": result.data[0]["id"]}
-            
+            try:
+                # Insert into PostgreSQL directly instead of using Supabase client
+                sql_query = """
+                INSERT INTO chat_history (user_id, user_message, ai_response, response_source)
+                VALUES (%s, %s, %s, %s)
+                RETURNING id
+                """
+                result = execute_pg_query(sql_query, (user_id, user_message, ai_response, response_source))
+                
+                return {"success": True, "id": result[0]['id'] if result else None}
+            except Exception as e:
+                logger.error(f"Error saving chat history: {str(e)}")
+                return {"error": str(e)}, 500
+                
         except Exception as e:
-            logger.error(f"Error saving chat history: {str(e)}")
+            logger.error(f"Error processing save chat history request: {str(e)}")
             return {"error": str(e)}, 500
