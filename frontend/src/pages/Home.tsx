@@ -9,6 +9,7 @@ import {
   CheckCircleOutlined,
   SafetyOutlined,
   GlobalOutlined,
+  ArrowRightOutlined
 } from '@ant-design/icons';
 
 const { Title, Paragraph } = Typography;

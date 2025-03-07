@@ -124,6 +124,8 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
         return <Tag color="blue" icon={<DatabaseOutlined />}>Vector DB</Tag>;
       case 'fallback':
         return <Tag color="orange" icon={<WarningOutlined />}>Local Cache</Tag>;
+      case 'error':
+        return <Tag color="red" icon={<WarningOutlined />}>Connection Error</Tag>;
       default:
         return null;
     }

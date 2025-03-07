@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Badge, Modal, ConfigProvider } from 'antd';
+import { Button, Badge, Modal, ConfigProvider, message as antMessage } from 'antd';
 import { MessageOutlined, CloseOutlined } from '@ant-design/icons';
 import ChatInterface from './ChatInterface';
 import chatService from '../../services/chatService';
@@ -40,10 +40,10 @@ const FloatingChatButton: React.FC<FloatingChatButtonProps> = ({ isAuthenticated
       return response;
     } catch (error) {
       console.error('Error sending message:', error);
-      return {
-        answer: "I'm sorry, I encountered an error processing your request. Please try again later.",
-        response_source: 'fallback'
-      };
+      antMessage.error('Failed to connect to the chat service. Please try again.');
+      
+      // Use the centralized error handling in ChatService
+      return chatService.handleSendMessageError(error);
     }
   };
 
@@ -68,6 +68,22 @@ const FloatingChatButton: React.FC<FloatingChatButtonProps> = ({ isAuthenticated
 
     // Clean up
     return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // Check if the backend is running when the component mounts
+  useEffect(() => {
+    const checkBackendStatus = async () => {
+      try {
+        // Make a simple request to check if the backend is available
+        await fetch('/api/health', { method: 'GET' });
+        console.log('Backend is available');
+      } catch (error) {
+        console.error('Backend may not be running:', error);
+        antMessage.warning('Chat service may have limited functionality. Some features may not work properly.');
+      }
+    };
+    
+    checkBackendStatus();
   }, []);
 
   return (
