@@ -1,11 +1,19 @@
 from flask import Blueprint, request, jsonify
 from flask_restx import Api, Resource, Namespace
-import openai
 import os
 from core.extensions import get_pg_connection, execute_pg_query
 from core.vector_db import VectorDB
 from models.user import User
 import logging
+
+# Import OpenAI with new client
+try:
+    from openai import OpenAI
+    USING_NEW_CLIENT = True
+except ImportError:
+    # Fallback to old client for compatibility
+    import openai
+    USING_NEW_CLIENT = False
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -24,6 +32,16 @@ vector_db = VectorDB()
 openai_api_key = os.getenv("OPENAI_API_KEY")
 if not openai_api_key:
     logger.warning("OPENAI_API_KEY not found in environment variables. Chat responses will be limited.")
+else:
+    logger.info("OpenAI API key found. Chat responses will use OpenAI.")
+    # Initialize OpenAI client if using new version
+    if USING_NEW_CLIENT:
+        openai_client = OpenAI(api_key=openai_api_key)
+        logger.info("Using new OpenAI client")
+    else:
+        # Set API key for old client
+        openai.api_key = openai_api_key
+        logger.info("Using legacy OpenAI client")
 
 @ns.route('')
 class ChatResource(Resource):
@@ -43,6 +61,7 @@ class ChatResource(Resource):
             vector_results = []
             try:
                 vector_results = vector_db.similarity_search(query, top_k=3)
+                logger.info(f"Found {len(vector_results)} results from vector search")
             except Exception as e:
                 logger.error(f"Error searching vector database: {str(e)}")
             
@@ -58,6 +77,7 @@ class ChatResource(Resource):
                     WHERE u.id = %s
                     """
                     user_data = execute_pg_query(sql_query, (user_id,))
+                    logger.info(f"Found {len(user_data)} user-specific data points")
                 except Exception as e:
                     logger.error(f"Error getting user data: {str(e)}")
             
@@ -84,8 +104,6 @@ class ChatResource(Resource):
             
             # If OpenAI API key is available, use it to generate a response
             if openai_api_key:
-                openai.api_key = openai_api_key
-                
                 # Prepare messages for OpenAI
                 messages = [
                     {"role": "system", "content": "You are a helpful visa assistant. Use the provided context to answer the user's question accurately. If you don't know the answer, say so."},
@@ -101,14 +119,28 @@ class ChatResource(Resource):
                 
                 # Call OpenAI API
                 try:
-                    response = openai.ChatCompletion.create(
-                        model="gpt-3.5-turbo",
-                        messages=messages,
-                        max_tokens=500,
-                        temperature=0.7
-                    )
+                    logger.info("Calling OpenAI API...")
                     
-                    answer = response.choices[0].message.content
+                    if USING_NEW_CLIENT:
+                        # Use new OpenAI client
+                        response = openai_client.chat.completions.create(
+                            model="gpt-3.5-turbo",
+                            messages=messages,
+                            max_tokens=500,
+                            temperature=0.7
+                        )
+                        answer = response.choices[0].message.content
+                    else:
+                        # Use legacy OpenAI client
+                        response = openai.ChatCompletion.create(
+                            model="gpt-3.5-turbo",
+                            messages=messages,
+                            max_tokens=500,
+                            temperature=0.7
+                        )
+                        answer = response.choices[0].message.content
+                    
+                    logger.info("Successfully received response from OpenAI")
                     
                     return {
                         "answer": answer,
@@ -117,6 +149,7 @@ class ChatResource(Resource):
                     }
                 except Exception as e:
                     logger.error(f"Error calling OpenAI API: {str(e)}")
+                    logger.error("Falling back to vector database response")
                     # Fall back to basic response if OpenAI fails
             
             # If OpenAI is not available or fails, use a basic response based on the context
@@ -151,57 +184,49 @@ class ChatHistoryResource(Resource):
         """
         try:
             user_id = request.args.get("user_id")
-            
             if not user_id:
                 return {"error": "No user_id provided"}, 400
             
-            try:
-                # Query PostgreSQL directly instead of using Supabase client
-                sql_query = """
-                SELECT * FROM chat_history
-                WHERE user_id = %s
-                ORDER BY timestamp DESC
-                LIMIT 50
-                """
-                chat_history = execute_pg_query(sql_query, (user_id,))
-                
-                return {"history": chat_history}
-            except Exception as e:
-                logger.error(f"Error getting chat history: {str(e)}")
-                return {"error": str(e)}, 500
-                
+            # Query chat history from database
+            sql_query = """
+            SELECT user_message, ai_response, response_source, created_at
+            FROM chat_history
+            WHERE user_id = %s
+            ORDER BY created_at DESC
+            LIMIT 50
+            """
+            
+            history = execute_pg_query(sql_query, (user_id,))
+            
+            return {"history": history}
         except Exception as e:
-            logger.error(f"Error processing chat history request: {str(e)}")
+            logger.error(f"Error getting chat history: {str(e)}")
             return {"error": str(e)}, 500
     
     def post(self):
         """
-        Save a chat message to history
+        Save a chat message and response to history
         """
         try:
             data = request.json
             user_id = data.get("user_id")
             user_message = data.get("user_message")
             ai_response = data.get("ai_response")
-            response_source = data.get("response_source", "unknown")  # Add response source to history
+            response_source = data.get("response_source", "unknown")
             
-            if not user_id or not user_message or not ai_response:
+            if not all([user_id, user_message, ai_response]):
                 return {"error": "Missing required fields"}, 400
             
-            try:
-                # Insert into PostgreSQL directly instead of using Supabase client
-                sql_query = """
-                INSERT INTO chat_history (user_id, user_message, ai_response, response_source)
-                VALUES (%s, %s, %s, %s)
-                RETURNING id
-                """
-                result = execute_pg_query(sql_query, (user_id, user_message, ai_response, response_source))
-                
-                return {"success": True, "id": result[0]['id'] if result else None}
-            except Exception as e:
-                logger.error(f"Error saving chat history: {str(e)}")
-                return {"error": str(e)}, 500
-                
+            # Insert chat history into database
+            sql_query = """
+            INSERT INTO chat_history (user_id, user_message, ai_response, response_source)
+            VALUES (%s, %s, %s, %s)
+            RETURNING id
+            """
+            
+            result = execute_pg_query(sql_query, (user_id, user_message, ai_response, response_source), fetch_one=True)
+            
+            return {"success": True, "id": result.get("id")}
         except Exception as e:
-            logger.error(f"Error processing save chat history request: {str(e)}")
+            logger.error(f"Error saving chat history: {str(e)}")
             return {"error": str(e)}, 500
