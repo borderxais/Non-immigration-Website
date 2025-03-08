@@ -14,23 +14,38 @@ from core.extensions import db  # Import the shared db instance
 app = Flask(__name__)
 
 # Configure CORS to allow requests from the frontend
-CORS(app, resources={r"/*": {"origins": ["http://localhost:3000", "http://localhost:3001", "http://127.0.0.1:3000", "http://127.0.0.1:3001"], 
-                            "methods": ["GET", "POST", "OPTIONS", "PUT", "DELETE"],
-                            "allow_headers": ["Content-Type", "Authorization"]}})
+CORS(
+    app,
+    resources={
+        r"/*": {
+            "origins": [
+                "http://localhost:3000",
+                "http://localhost:3001",
+                "http://127.0.0.1:3000",
+                "http://127.0.0.1:3001",
+            ],
+            "methods": ["GET", "POST", "OPTIONS", "PUT", "DELETE"],
+            "allow_headers": ["Content-Type", "Authorization"],
+        }
+    },
+)
+
 
 # Add CORS headers to all responses
-@app.after_request
-def after_request(response):
-    response.headers.add('Access-Control-Allow-Origin', '*')
-    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
-    return response
+# @app.after_request
+# def after_request(response):
+#     response.headers.add("Access-Control-Allow-Origin", "*")
+#     response.headers.add("Access-Control-Allow-Headers", "Content-Type,Authorization")
+#     response.headers.add("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS")
+#     return response
+
 
 # Handle OPTIONS requests explicitly
-@app.route('/<path:path>', methods=['OPTIONS'])
-@app.route('/', methods=['OPTIONS'])
+@app.route("/<path:path>", methods=["OPTIONS"])
+@app.route("/", methods=["OPTIONS"])
 def options_handler(*args, **kwargs):
     return jsonify({})
+
 
 api = Api(app, doc="/docs", prefix="/api")
 
@@ -68,6 +83,7 @@ api.add_namespace(search_ns, path="/search")
 
 # Register blueprints
 app.register_blueprint(chat_bp)
+
 
 @app.route("/health")
 def health_check():

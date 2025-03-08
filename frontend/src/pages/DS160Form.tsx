@@ -1,5 +1,6 @@
 import React from 'react';
 import { Card, Steps, Form, Input, Select, DatePicker, Radio, Space, Button, Typography, Divider } from 'antd';
+import ds160Service from '../services/ds160Service';
 
 const { TextArea } = Input;
 const { Title, Text } = Typography;
@@ -7,6 +8,17 @@ const { Title, Text } = Typography;
 const DS160Form: React.FC = () => {
   const [currentStep, setCurrentStep] = React.useState(0);
   const [form] = Form.useForm();
+  const handleSubmit = async (values: any) => {
+    try {
+      console.log('Submitting form:', values);
+      const response = await ds160Service.createForm(values);
+      console.log('Form submitted successfully:', response);
+      // You might navigate to a confirmation page or update your UI here
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      // Handle the error, e.g., show an error message to the user
+    }
+  };
 
   const formItemLayout = {
     labelCol: { span: 24 },
@@ -603,19 +615,22 @@ const DS160Form: React.FC = () => {
     },
   ];
 
-  const next = () => {
-    form.validateFields().then(() => {
-      setCurrentStep(currentStep + 1);
-    });
+  const [formData, setFormData] = React.useState({});
+  const next = async () => {
+    const values = await form.validateFields();
+    setFormData({ ...formData, ...values });
+    setCurrentStep(currentStep + 1);
+    form.resetFields(); // Optionally reset fields for the next step
   };
 
   const prev = () => {
     setCurrentStep(currentStep - 1);
   };
 
-  const onFinish = (values: any) => {
-    console.log('Success:', values);
-    // TODO: 提交表单数据到后端
+  const onFinish = (values: { [key: string]: any }) => {
+    const finalData = { ...formData, ...values };
+    handleSubmit(finalData);
+    console.log('Success');
   };
 
   return (
@@ -626,6 +641,7 @@ const DS160Form: React.FC = () => {
         layout="vertical"
         onFinish={onFinish}
         scrollToFirstError
+        preserve={true}
       >
         <Steps
           current={currentStep}

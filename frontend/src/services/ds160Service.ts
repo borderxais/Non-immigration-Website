@@ -21,7 +21,10 @@ export interface ValidationResult {
  */
 const createForm = async (formData: Omit<DS160Form, 'id'>): Promise<DS160Form> => {
   const token = localStorage.getItem('token');
-  const response = await axios.post(`${API_URL}/ds160`, formData, {
+  if (!token) {
+    throw new Error('No token found. Please log in.');
+  }
+  const response = await axios.post(`${API_URL}/ds160/form`, formData, {
     headers: {
       Authorization: `Bearer ${token}`
     }

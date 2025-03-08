@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Menu, Button, Space } from 'antd';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { 
@@ -8,10 +8,12 @@ import {
   HomeOutlined,
   UserOutlined
 } from '@ant-design/icons';
+import { useAuth } from '../contexts/AuthContext';
 
 const Navigation: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { user, isAuthenticated } = useAuth();
 
   const menuItems = [
     {
@@ -82,14 +84,25 @@ const Navigation: React.FC = () => {
         style={{ lineHeight: '64px', flex: 1 }}
       />
       <Space style={{ marginLeft: 16 }}>
-        <Button 
-          type="primary" 
-          ghost 
-          icon={<UserOutlined />}
-          onClick={() => navigate('/auth/login')}
-        >
-          登录/注册
-        </Button>
+        {isAuthenticated && user ? (
+          <Button 
+            type="primary" 
+            ghost 
+            icon={<UserOutlined />}
+            onClick={() => navigate('/profile')}
+          >
+            {user.username}
+          </Button>
+        ) : (
+          <Button 
+            type="primary" 
+            ghost 
+            icon={<UserOutlined />}
+            onClick={() => navigate('/auth/login')}
+          >
+            登录/注册
+          </Button>
+        )}
       </Space>
     </div>
   );

@@ -28,7 +28,7 @@ class RegisterResource(Resource):
 
         # Generate access token
         access_token = create_access_token(
-            identity=user.id, expires_delta=timedelta(days=1)
+            identity=str(user.id), expires_delta=timedelta(days=1)
         )
 
         return (
@@ -55,7 +55,7 @@ class LoginResource(Resource):
         if user and user.check_password(data["password"]):
             # Generate access token
             access_token = create_access_token(
-                identity=user.id, expires_delta=timedelta(days=1)
+                identity=str(user.id), expires_delta=timedelta(days=1)
             )
 
             return (
