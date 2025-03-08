@@ -69,6 +69,7 @@ const DS160Form: React.FC = () => {
             <Input placeholder="例如：ZHANG" />
           </QuestionItem>
 
+          
           <QuestionItem
             number="2"
             question="名（拼音，与护照一致）"
@@ -79,6 +80,14 @@ const DS160Form: React.FC = () => {
 
           <QuestionItem
             number="3"
+            question="全名（本地语言书写）"
+            name="fullNameNative"
+          >
+            <Input placeholder="如不适用/技术不可用，请填写 '不适用'" />
+          </QuestionItem>
+          
+          <QuestionItem
+            number="4"
             question="您是否曾使用其他姓名？（包括曾用名、英文名、别名等）"
             name="hasOtherNames"
           >
@@ -88,11 +97,21 @@ const DS160Form: React.FC = () => {
             </Radio.Group>
           </QuestionItem>
 
+          <QuestionItem
+            number="5"
+            question="您是否有代表您姓名的电码？"
+            name="hasTelecode"
+          >
+            <Radio.Group>
+              <Radio value={true}>是</Radio>
+              <Radio value={false}>否</Radio>
+            </Radio.Group>
+          </QuestionItem>
           <Divider />
           
           <Title level={5}>基本信息</Title>
           <QuestionItem
-            number="4"
+            number="6"
             question="性别"
             name="gender"
           >
@@ -103,7 +122,7 @@ const DS160Form: React.FC = () => {
           </QuestionItem>
 
           <QuestionItem
-            number="5"
+            number="7"
             question="婚姻状况"
             name="maritalStatus"
           >
@@ -116,7 +135,7 @@ const DS160Form: React.FC = () => {
           </QuestionItem>
 
           <QuestionItem
-            number="6"
+            number="8"
             question="出生日期"
             name="dateOfBirth"
           >
@@ -124,7 +143,7 @@ const DS160Form: React.FC = () => {
           </QuestionItem>
 
           <QuestionItem
-            number="7"
+            number="9"
             question="出生地（城市，国家）"
             name="birthPlace"
           >
@@ -132,11 +151,26 @@ const DS160Form: React.FC = () => {
           </QuestionItem>
 
           <QuestionItem
-            number="8"
-            question="国籍"
-            name="nationality"
+            number="10"
+            question="省/州"
+            name="birthState"
+            required={false}
           >
-            <Input placeholder="例如：中国" />
+            <Input placeholder="例如：北京市" />
+          </QuestionItem>
+
+          <QuestionItem
+            number="11"
+            question="出生国家/地区"
+            name="birthCountry"
+          >
+            <Select placeholder="- 选择一个 -">
+              <Select.Option value="CHN">中国</Select.Option>
+              <Select.Option value="HKG">中国香港</Select.Option>
+              <Select.Option value="MAC">中国澳门</Select.Option>
+              <Select.Option value="TWN">中国台湾</Select.Option>
+              {/* Add more countries as needed */}
+            </Select>
           </QuestionItem>
         </>
       ),
