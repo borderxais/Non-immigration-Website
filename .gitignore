@@ -17,3 +17,5 @@ venv/
 
 # Database
 instance/*.db
+frontend/.DS_Store
+.DS_Store
