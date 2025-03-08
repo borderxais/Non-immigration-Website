@@ -1,5 +1,6 @@
 from flask_restx import Namespace, Resource
 from flask import request, jsonify
+from models import ds160
 from models.user import User
 from core.extensions import db
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
@@ -19,10 +20,7 @@ class RegisterResource(Resource):
             return jsonify({"error": "Email already registered"}), 400
 
         # Create new user
-        user = User(
-            email=data["email"], 
-            username=data["username"]
-        )
+        user = User(email=data["email"], username=data["username"])
         user.set_password(data["password"])
 
         db.session.add(user)
@@ -30,19 +28,21 @@ class RegisterResource(Resource):
 
         # Generate access token
         access_token = create_access_token(
-            identity=user.id,
-            expires_delta=timedelta(days=1)
+            identity=user.id, expires_delta=timedelta(days=1)
         )
 
-        return jsonify({
-            "user": {
-                "id": str(user.id),
-                "username": user.username,
-                "email": user.email,
-                "createdAt": user.created_at.isoformat()
+        return (
+            {
+                "user": {
+                    "id": str(user.id),
+                    "username": user.username,
+                    "email": user.email,
+                    "createdAt": user.created_at.isoformat(),
+                },
+                "token": access_token,
             },
-            "token": access_token
-        }), 201
+            201,
+        )
 
 
 @api.route("/login")
@@ -55,21 +55,23 @@ class LoginResource(Resource):
         if user and user.check_password(data["password"]):
             # Generate access token
             access_token = create_access_token(
-                identity=user.id,
-                expires_delta=timedelta(days=1)
+                identity=user.id, expires_delta=timedelta(days=1)
             )
 
-            return jsonify({
-                "user": {
-                    "id": str(user.id),
-                    "username": user.username,
-                    "email": user.email,
-                    "createdAt": user.created_at.isoformat()
+            return (
+                {
+                    "user": {
+                        "id": str(user.id),
+                        "username": user.username,
+                        "email": user.email,
+                        "createdAt": user.created_at.isoformat(),
+                    },
+                    "token": access_token,
                 },
-                "token": access_token
-            }), 200
+                200,
+            )
 
-        return jsonify({"error": "Invalid credentials"}), 401
+        return {"error": "Invalid credentials"}, 401
 
 
 @api.route("/me")
@@ -83,12 +85,15 @@ class UserResource(Resource):
         if not user:
             return jsonify({"error": "User not found"}), 404
 
-        return jsonify({
-            "id": str(user.id),
-            "username": user.username,
-            "email": user.email,
-            "createdAt": user.created_at.isoformat()
-        }), 200
+        return (
+            {
+                "id": str(user.id),
+                "username": user.username,
+                "email": user.email,
+                "createdAt": user.created_at.isoformat(),
+            },
+            200,
+        )
 
 
 @api.route("/reset-password")
@@ -100,11 +105,11 @@ class PasswordResetRequestResource(Resource):
 
         if not user:
             # Don't reveal that the user doesn't exist
-            return jsonify({"success": True}), 200
+            return {"success": True}, 200
 
         # TODO: Generate reset token and send email
         # For now, just return success
-        return jsonify({"success": True}), 200
+        return {"success": True}, 200
 
 
 @api.route("/reset-password/confirm")
@@ -113,7 +118,7 @@ class PasswordResetConfirmResource(Resource):
         """Complete password reset"""
         data = request.json
         # TODO: Validate reset token and update password
-        return jsonify({"success": True}), 200
+        return {"success": True}, 200
 
 
 @api.route("/change-password")
@@ -134,7 +139,7 @@ class ChangePasswordResource(Resource):
         user.set_password(data["new_password"])
         db.session.commit()
 
-        return jsonify({"success": True}), 200
+        return {"success": True}, 200
 
 
 @api.route("/profile")
@@ -155,9 +160,12 @@ class ProfileResource(Resource):
 
         db.session.commit()
 
-        return jsonify({
-            "id": str(user.id),
-            "username": user.username,
-            "email": user.email,
-            "createdAt": user.created_at.isoformat()
-        }), 200
+        return (
+            {
+                "id": str(user.id),
+                "username": user.username,
+                "email": user.email,
+                "createdAt": user.created_at.isoformat(),
+            },
+            200,
+        )
