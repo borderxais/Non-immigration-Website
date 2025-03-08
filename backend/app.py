@@ -3,7 +3,9 @@ from flask import Flask, jsonify
 from flask_cors import CORS
 from dotenv import load_dotenv
 from flask_restx import Api
+from flask_jwt_extended import JWTManager
 import os
+from datetime import timedelta
 
 load_dotenv()
 
@@ -42,6 +44,11 @@ else:
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///:memory:"
 
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
+# Configure JWT
+app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY", "dev-secret-key")
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(days=1)
+jwt = JWTManager(app)
 
 # Initialize the SQLAlchemy instance with the app
 db.init_app(app)

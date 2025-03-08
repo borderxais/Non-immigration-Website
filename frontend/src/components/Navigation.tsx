@@ -29,10 +29,6 @@ const Navigation: React.FC = () => {
           label: '在线填写',
         },
         {
-          key: '/ds160/upload',
-          label: '上传表格',
-        },
-        {
           key: '/ds160/history',
           label: '历史记录',
         },
