@@ -65,7 +65,7 @@ app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY", "dev-secret-key")
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(days=1)
 jwt = JWTManager(app)
 
-# Initialize the SQLAlchemy instance with the app
+# Initialize the database instance with the app
 db.init_app(app)
 
 # Import namespaces after db is initialized

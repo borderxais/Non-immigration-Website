@@ -1,6 +1,7 @@
 import React from 'react';
-import { Card, Steps, Form, Input, Select, DatePicker, Radio, Space, Button, Typography, Divider } from 'antd';
+import { Card, Steps, Form, Input, Select, DatePicker, Radio, Space, Button, Typography, Divider, message } from 'antd';
 import ds160Service from '../services/ds160Service';
+import { useNavigate } from 'react-router-dom';
 
 const { TextArea } = Input;
 const { Title, Text } = Typography;
@@ -8,15 +9,18 @@ const { Title, Text } = Typography;
 const DS160Form: React.FC = () => {
   const [currentStep, setCurrentStep] = React.useState(0);
   const [form] = Form.useForm();
+  const navigate = useNavigate();
   const handleSubmit = async (values: any) => {
     try {
       console.log('Submitting form:', values);
       const response = await ds160Service.createForm(values);
       console.log('Form submitted successfully:', response);
-      // You might navigate to a confirmation page or update your UI here
+      message.success('表格提交成功！');
+      // Redirect to a success page
+      navigate('/ds160-success');
     } catch (error) {
       console.error('Error submitting form:', error);
-      // Handle the error, e.g., show an error message to the user
+      message.error('提交表格时出错，请稍后再试。');
     }
   };
 

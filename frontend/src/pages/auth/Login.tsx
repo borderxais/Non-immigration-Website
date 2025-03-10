@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import { Form, Input, Button, Card, Typography, Divider, message, Checkbox } from 'antd';
-import { UserOutlined, LockOutlined, WechatOutlined } from '@ant-design/icons';
+import { UserOutlined, LockOutlined, WechatOutlined, LogoutOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { LoginCredentials } from '../../types/auth';
 
-const { Title, Paragraph } = Typography;
+const { Title, Text } = Typography;
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login, user, logout, isAuthenticated } = useAuth();
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
 
@@ -26,6 +26,13 @@ const Login: React.FC = () => {
     }
   };
 
+  const handleLogout = () => {
+    logout();
+    message.success('已成功退出登录');
+    // Force a page reload to ensure all components update with the new auth state
+    window.location.reload();
+  };
+
   return (
     <div style={{ 
       maxWidth: 400, 
@@ -36,61 +43,78 @@ const Login: React.FC = () => {
         <Title level={2} style={{ textAlign: 'center', marginBottom: 32 }}>
           欢迎回来
         </Title>
-        
-        <Form
-          form={form}
-          name="login"
-          onFinish={onFinish}
-          autoComplete="off"
-          layout="vertical"
-        >
-          <Form.Item
-            name="email"
-            rules={[
-              { required: true, message: '请输入邮箱' },
-              { type: 'email', message: '请输入有效的邮箱地址' }
-            ]}
-          >
-            <Input 
-              prefix={<UserOutlined />} 
-              placeholder="邮箱" 
-              size="large"
-            />
-          </Form.Item>
 
-          <Form.Item
-            name="password"
-            rules={[{ required: true, message: '请输入密码' }]}
-          >
-            <Input.Password
-              prefix={<LockOutlined />}
-              placeholder="密码"
-              size="large"
-            />
-          </Form.Item>
-
-          <Form.Item name="remember" valuePropName="checked">
-            <Checkbox>记住我</Checkbox>
-          </Form.Item>
-
-          <Form.Item>
+        {/* Display username and logout button if logged in */}
+        {isAuthenticated && user ? (
+          <div style={{ textAlign: 'center', marginBottom: 24 }}>
+            <Text style={{ display: 'block', marginBottom: 16 }}>
+              已登录为: <strong>{user.username}</strong>
+            </Text>
             <Button 
               type="primary" 
-              htmlType="submit" 
-              block 
-              size="large"
-              loading={loading}
+              danger
+              icon={<LogoutOutlined />}
+              onClick={handleLogout}
             >
-              登录
+              退出登录
             </Button>
-          </Form.Item>
+          </div>
+        ) : (
+          <Form
+            form={form}
+            name="login"
+            onFinish={onFinish}
+            autoComplete="off"
+            layout="vertical"
+          >
+            <Form.Item
+              name="email"
+              rules={[
+                { required: true, message: '请输入邮箱' },
+                { type: 'email', message: '请输入有效的邮箱地址' }
+              ]}
+            >
+              <Input 
+                prefix={<UserOutlined />} 
+                placeholder="邮箱" 
+                size="large"
+              />
+            </Form.Item>
 
-          <Form.Item style={{ textAlign: 'center' }}>
-            <Button type="link" onClick={() => navigate('/auth/forgot-password')}>
-              忘记密码？
-            </Button>
-          </Form.Item>
-        </Form>
+            <Form.Item
+              name="password"
+              rules={[{ required: true, message: '请输入密码' }]}
+            >
+              <Input.Password
+                prefix={<LockOutlined />}
+                placeholder="密码"
+                size="large"
+              />
+            </Form.Item>
+
+            <Form.Item name="remember" valuePropName="checked">
+              <Checkbox>记住我</Checkbox>
+            </Form.Item>
+
+            <Form.Item>
+              <Button 
+                type="primary" 
+                htmlType="submit" 
+                block 
+                size="large"
+                loading={loading}
+              >
+                登录
+              </Button>
+            </Form.Item>
+
+            <Form.Item style={{ textAlign: 'center' }}>
+              <Button type="link" onClick={() => navigate('/auth/forgot-password')}>
+                忘记密码？
+              </Button>
+            </Form.Item>
+          </Form>
+        )}
 
         <Divider>或</Divider>
 
@@ -108,12 +132,12 @@ const Login: React.FC = () => {
           微信登录
         </Button>
 
-        <Paragraph style={{ textAlign: 'center', marginTop: 16 }}>
-          还没有账号？
+        <div style={{ textAlign: 'center', marginTop: 16 }}>
+          <Text>还没有账号？</Text>
           <Button type="link" onClick={() => navigate('/auth/register')}>
             立即注册
           </Button>
-        </Paragraph>
+        </div>
       </Card>
     </div>
   );
