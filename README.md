@@ -35,7 +35,7 @@ python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 ```
 
-2. Install dependencies:
+2. Change to backend directory andInstall dependencies:
 ```bash
 pip install -r requirements.txt
 ```
@@ -62,14 +62,6 @@ python run.py
 ├── frontend/
 │   ├── src/
 │   └── public/
-├── ai/
-│   ├── models/         # AI model configurations
-│   └── training/       # Training scripts
 └── wechat/            # WeChat mini-program
 ```
 
-## Development Timeline
-
-- Phase 1 (1-3 months): Architecture and basic DS-160 functionality
-- Phase 2 (4-6 months): AI features and interview simulation
-- Phase 3 (7-9 months): Mobile app and production optimization
