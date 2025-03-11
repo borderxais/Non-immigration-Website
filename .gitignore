@@ -19,3 +19,6 @@ venv/
 instance/*.db
 frontend/.DS_Store
 .DS_Store
+
+backend/app.yaml
+backend/.gcloudignore

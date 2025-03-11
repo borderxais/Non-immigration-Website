@@ -23,6 +23,7 @@ CORS(
                 "http://localhost:3001",
                 "http://127.0.0.1:3000",
                 "http://127.0.0.1:3001",
+                "https://visaimmigration.netlify.app",
             ],
             "methods": ["GET", "POST", "OPTIONS", "PUT", "DELETE"],
             "allow_headers": ["Content-Type", "Authorization"],
