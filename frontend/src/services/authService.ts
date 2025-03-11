@@ -1,8 +1,9 @@
 import axios from 'axios';
 import { LoginCredentials, RegisterData, User } from '../types/auth';
 
-// Define the API URL directly in this file to avoid import issues
-const API_URL = 'http://localhost:5000/api';
+// Access environment variables using Vite's import.meta.env
+const API_ENDPOINT = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+const API_URL = `${API_ENDPOINT}/api`;
 
 export interface AuthResponse {
   user: User;
@@ -21,6 +22,7 @@ const register = async (data: RegisterData): Promise<AuthResponse> => {
  * Login a user
  */
 const login = async (credentials: LoginCredentials): Promise<AuthResponse> => {
+  console.log(API_URL);
   const response = await axios.post(`${API_URL}/auth/login`, credentials);
   return response.data;
 };
