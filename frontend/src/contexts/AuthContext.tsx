@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { AuthContextType, AuthState, LoginCredentials, RegisterData, User } from '../types/auth';
-import authService, { AuthResponse } from '../services/authService';
+import { AuthContextType, AuthState, LoginCredentials, RegisterData } from '../types/auth';
+import authService from '../services/authService';
 
 const initialState: AuthState = {
   user: null,

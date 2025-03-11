@@ -1,28 +1,20 @@
-import React, { useContext } from 'react';
-import { Menu, Button, Space, Dropdown, message } from 'antd';
+import React from 'react';
+
+import { Menu, Button, Space } from 'antd';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { 
   FormOutlined, 
   TeamOutlined, 
   MobileOutlined,
   HomeOutlined,
-  UserOutlined,
-  LogoutOutlined
+  UserOutlined
 } from '@ant-design/icons';
 import { useAuth } from '../contexts/AuthContext';
-import type { MenuProps } from 'antd';
 
 const Navigation: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { user, isAuthenticated, logout } = useAuth();
-
-  const handleLogout = () => {
-    logout();
-    message.success('已成功退出登录');
-    // Force a page reload to ensure all components update with the new auth state
-    window.location.reload();
-  };
+  const { user, isAuthenticated } = useAuth();
 
   const menuItems = [
     {
@@ -81,22 +73,6 @@ const Navigation: React.FC = () => {
     },
   ];
 
-  // User dropdown menu items
-  const userMenuItems: MenuProps['items'] = [
-    {
-      key: 'profile',
-      icon: <UserOutlined />,
-      label: '个人中心',
-      onClick: () => navigate('/profile'),
-    },
-    {
-      key: 'logout',
-      icon: <LogoutOutlined />,
-      label: '退出登录',
-      onClick: handleLogout,
-    },
-  ];
-
   return (
     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
       <Menu
@@ -110,15 +86,14 @@ const Navigation: React.FC = () => {
       />
       <Space style={{ marginLeft: 16 }}>
         {isAuthenticated && user ? (
-          <Dropdown menu={{ items: userMenuItems }} placement="bottomRight">
-            <Button 
-              type="primary" 
-              ghost 
-              icon={<UserOutlined />}
+          <Button 
+            type="primary" 
+            ghost 
+            icon={<UserOutlined />}
+            onClick={() => navigate('/profile')}
             >
               {user.username}
             </Button>
-          </Dropdown>
         ) : (
           <Button 
             type="primary" 

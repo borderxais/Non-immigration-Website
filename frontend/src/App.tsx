@@ -16,12 +16,12 @@ import InterviewEvaluation from './pages/InterviewEvaluation';
 import InterviewSimulation from './pages/InterviewSimulation';
 import PlatformWechat from './pages/PlatformWechat';
 import PlatformApp from './pages/PlatformApp';
+import Profile from './pages/Profile';
 
 // Auth Pages
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
 import ForgotPassword from './pages/auth/ForgotPassword';
-import Profile from './pages/auth/Profile';
 
 const { Content, Footer } = Layout;
 
@@ -82,3 +82,5 @@ const App: React.FC = () => {
 };
 
 export default App;
+
+
