@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // Define the API URL
-const API_ENDPOINT = process.env.REACT_SERVER_API_URL || 'http://localhost:5000';
+const API_ENDPOINT = process.env.REACT_APP_SERVER_API_URL || 'http://localhost:5000';
 const API_URL = `${API_ENDPOINT}/api`;
 
 export interface InterviewAssessment {
