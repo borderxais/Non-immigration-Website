@@ -681,35 +681,43 @@ const DS160Form: React.FC = () => {
         scrollToFirstError
         preserve={true}
       >
-        <Steps
-          current={currentStep}
-          items={steps.map(item => ({
-            title: item.title,
-            description: item.description,
-          }))}
-          style={{ marginBottom: 32 }}
-        />
-        
-        <Card style={{ marginTop: 24 }}>
-          {steps[currentStep].content}
-        </Card>
+        <div style={{ display: 'flex', gap: '24px' }}>
+          {/* Left sidebar with steps */}
+          <div style={{ width: '25%', minWidth: '200px' }}>
+            <Steps
+              current={currentStep}
+              direction="vertical"
+              items={steps.map(item => ({
+                title: item.title,
+                description: item.description,
+              }))}
+             />
+          </div>
+          
+          {/* Right content area */}
+          <div style={{ flex: 1 }}>
+            <Card>
+              {steps[currentStep].content}
+            </Card>
 
-        <div style={{ marginTop: 24, textAlign: 'right' }}>
-          {currentStep > 0 && (
-            <Button style={{ margin: '0 8px' }} onClick={prev}>
-              上一步
-            </Button>
-          )}
-          {currentStep < steps.length - 1 && (
-            <Button type="primary" onClick={next}>
-              下一步
-            </Button>
-          )}
-          {currentStep === steps.length - 1 && (
-            <Button type="primary" onClick={() => form.submit()}>
-              提交申请
-            </Button>
-          )}
+            <div style={{ marginTop: 24, textAlign: 'right' }}>
+              {currentStep > 0 && (
+                <Button style={{ margin: '0 8px' }} onClick={prev}>
+                  上一步
+                </Button>
+              )}
+              {currentStep < steps.length - 1 && (
+                <Button type="primary" onClick={next}>
+                  下一步
+                </Button>
+              )}
+              {currentStep === steps.length - 1 && (
+                <Button type="primary" onClick={() => form.submit()}>
+                  提交申请
+                </Button>
+              )}
+            </div>
+          </div>
         </div>
       </Form>
     </Card>
