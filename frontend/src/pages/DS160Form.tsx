@@ -55,7 +55,7 @@ const DS160Form: React.FC = () => {
         <Title level={4}>安全问题</Title>
       
           <QuestionItem
-            number="1"
+            number=""
             question="请选择一个安全问题"
             name="securityQuestion"
           >
@@ -84,7 +84,7 @@ const DS160Form: React.FC = () => {
           </QuestionItem>
           
           <QuestionItem
-            number="2"
+            number=""
             question="您的回答(英文)"
             name="securityAnswer"
           >
@@ -98,7 +98,7 @@ const DS160Form: React.FC = () => {
 
           <Title level={4}>申请地点</Title>
             <QuestionItem
-              number="3"
+              number=""
               question="您计划在哪个使领馆申请签证？"
               name="location"
             >
