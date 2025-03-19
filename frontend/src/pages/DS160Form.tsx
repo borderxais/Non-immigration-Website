@@ -38,7 +38,7 @@ const DS160Form: React.FC = () => {
   }> = ({ number, question, name, required = true, children }) => (
     <div style={{ marginBottom: 24 }}>
       <Space direction="vertical" style={{ width: '100%' }} size={8}>
-        <Text strong>{number}. {question}</Text>
+        <Text strong>{number ? `${number}. ` : ''}{question}</Text>
         <Form.Item 
           name={name} 
           required={required} 
