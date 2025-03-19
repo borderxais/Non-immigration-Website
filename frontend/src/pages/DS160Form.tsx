@@ -112,7 +112,7 @@ const DS160Form: React.FC = () => {
     
     return (
       <Row gutter={24} style={{ marginBottom: 24 }}>
-        <Col span={18}>
+        <Col span={16}>
           <Space direction="vertical" style={{ width: '100%' }} size={8}>
             <Text strong>{number ? `${number}. ` : ''}{question}{required && <span style={{ color: '#ff4d4f', marginLeft: '4px' }}>*</span>}</Text>
             <Form.Item 
@@ -136,7 +136,7 @@ const DS160Form: React.FC = () => {
           </Space>
         </Col>
         {explanation && (
-          <Col span={6}>
+          <Col span={8}>
             <div style={{ padding: '10px', backgroundColor: '#f9f9f9', borderRadius: '4px', height: '100%' }}>
               <Paragraph style={{ fontSize: '13px', color: '#666' }}>{explanation}</Paragraph>
             </div>
@@ -217,9 +217,7 @@ const DS160Form: React.FC = () => {
         <>
           <Title level={4}>B. 个人信息</Title>
           
-          <Title level={5}>姓名信息</Title>
           <QuestionItem
-            number="1"
             question="姓（拼音，与护照一致）"
             name="surname"
             explanation="输入您护照上列出的所有姓氏。如果只有一个，请输入这一个。"
@@ -228,7 +226,6 @@ const DS160Form: React.FC = () => {
           </QuestionItem>
 
           <QuestionItem
-            number="2"
             question="名（拼音，与护照一致）"
             name="givenName"
             explanation="如果您的护照上不包括名字信息，请在名字栏内输入'FNU'。"
@@ -237,7 +234,6 @@ const DS160Form: React.FC = () => {
           </QuestionItem>
 
           <QuestionItem
-            number="3"
             question="全名（本地语言书写）"
             name="fullNameNative"
             explanation="请用中文填写您的全名。如不适用/技术不可用，请勾选下方的复选框。"
@@ -248,7 +244,6 @@ const DS160Form: React.FC = () => {
           </QuestionItem>
           
           <QuestionItem
-            number="4"
             question="您是否曾使用其他姓名？（包括曾用名、英文名、别名等）"
             name="hasOtherNames"
             explanation="其它姓名包括您的婚前用名, 宗教用名、职业用名; 或任何为人所知的其它名字；或在过去为别人所知的其它名字。"
@@ -260,7 +255,6 @@ const DS160Form: React.FC = () => {
           </QuestionItem>
 
           <QuestionItem
-            number="5"
             question="您是否有代表您姓名的电码？"
             name="hasTelecode"
             explanation="电码由4位数字组成，代表着一些非罗马字母拼写而成的名字的字体。"
@@ -273,30 +267,31 @@ const DS160Form: React.FC = () => {
           
           <Divider />
           
-          <Title level={5}>基本信息</Title>
           <QuestionItem
-            number="6"
             question="性别"
             name="gender"
             explanation="请选择您的性别，必须与护照上的信息一致。"
           >
-            <Radio.Group>
-              <Radio value="M">男</Radio>
-              <Radio value="F">女</Radio>
-            </Radio.Group>
+            <Select placeholder="选择一个">
+              <Select.Option value="M">男</Select.Option>
+              <Select.Option value="F">女</Select.Option>
+            </Select>
           </QuestionItem>
 
           <QuestionItem
-            number="7"
             question="婚姻状况"
             name="maritalStatus"
             explanation="请选择您目前的婚姻状况。"
           >
-            <Select placeholder="选择婚姻状况">
-              <Select.Option value="single">未婚</Select.Option>
-              <Select.Option value="married">已婚</Select.Option>
-              <Select.Option value="divorced">离异</Select.Option>
-              <Select.Option value="widowed">丧偶</Select.Option>
+            <Select placeholder="选择一个">
+            <Select.Option value="M">已婚</Select.Option>
+              <Select.Option value="C">普通法婚姻</Select.Option>
+              <Select.Option value="P">民事结合/同居伴侣关系</Select.Option>
+              <Select.Option value="S">未婚</Select.Option>
+              <Select.Option value="W">丧偶</Select.Option>
+              <Select.Option value="D">离异</Select.Option>
+              <Select.Option value="L">合法分居</Select.Option>
+              <Select.Option value="O">其他</Select.Option>
             </Select>
           </QuestionItem>
 
@@ -304,9 +299,53 @@ const DS160Form: React.FC = () => {
             number="8"
             question="出生日期"
             name="dateOfBirth"
-            explanation="若不知道具体日期或月份，请按护照所示填写。"
+            explanation="若不知道具体日期或月份，请按护照所示填写。格式：日-月-年"
           >
-            <DatePicker style={{ width: '100%' }} />
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <Form.Item 
+                name="dobDay" 
+                noStyle
+                rules={[{ required: true, message: '请选择日期' }]}
+              >
+                <Select style={{ width: '70px' }} placeholder="日">
+                  {Array.from({ length: 31 }, (_, i) => {
+                    const day = (i + 1).toString().padStart(2, '0');
+                    return <Select.Option key={day} value={day}>{day}</Select.Option>;
+                  })}
+                </Select>
+              </Form.Item>
+              <Form.Item 
+                name="dobMonth" 
+                noStyle
+                rules={[{ required: true, message: '请选择月份' }]}
+              >
+                <Select style={{ width: '80px' }} placeholder="月">
+                  <Select.Option value="JAN">一月</Select.Option>
+                  <Select.Option value="FEB">二月</Select.Option>
+                  <Select.Option value="MAR">三月</Select.Option>
+                  <Select.Option value="APR">四月</Select.Option>
+                  <Select.Option value="MAY">五月</Select.Option>
+                  <Select.Option value="JUN">六月</Select.Option>
+                  <Select.Option value="JUL">七月</Select.Option>
+                  <Select.Option value="AUG">八月</Select.Option>
+                  <Select.Option value="SEP">九月</Select.Option>
+                  <Select.Option value="OCT">十月</Select.Option>
+                  <Select.Option value="NOV">十一月</Select.Option>
+                  <Select.Option value="DEC">十二月</Select.Option>
+                </Select>
+              </Form.Item>
+              <Form.Item 
+                name="dobYear" 
+                noStyle
+                rules={[
+                  { required: true, message: '请输入年份' },
+                  { pattern: /^\d{4}$/, message: '请输入4位数年份' }
+                ]}
+              >
+                <Input placeholder="年" style={{ width: '80px' }} maxLength={4} />
+              </Form.Item>
+              <Text type="secondary" style={{ fontSize: '12px' }}>(格式: 日-月-年)</Text>
+            </div>
           </QuestionItem>
 
           <QuestionItem
