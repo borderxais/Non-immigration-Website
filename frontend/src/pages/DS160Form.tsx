@@ -91,12 +91,12 @@ const DS160Form: React.FC = () => {
             <Input placeholder="请输入您的安全问题答案" />
           </QuestionItem>
           
-          <Divider />
-          
           <Title level={5}>提示</Title>
           <p>为了保护您的个人信息安全，请记住您的安全问题和答案。如果您需要恢复您的申请，将需要提供此信息。</p>
 
-          <Title level={4}>A. 申请地点</Title>
+          <Divider />
+
+          <Title level={4}>申请地点</Title>
             <QuestionItem
               number="3"
               question="您计划在哪个使领馆申请签证？"
