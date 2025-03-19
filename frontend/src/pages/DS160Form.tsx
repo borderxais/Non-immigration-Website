@@ -299,95 +299,99 @@ const DS160Form: React.FC = () => {
           <h4 style={{ marginBottom: '10px', marginTop: '20px' }}>
             <span>出生日期与出生地</span>
           </h4>
+        
+          <div className="field-group callout" style={{ backgroundColor: '#f0f7ff', padding: '16px', borderRadius: '4px', border: '1px solid #d0e3ff' }}>
+  
+            <QuestionItem
+              question="日期"
+              name="dateOfBirth"
+              explanation="若不知道具体日期或月份，请按护照所示填写。"
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                <Form.Item 
+                  name="dobDay" 
+                  noStyle
+                  rules={[{ required: true, message: '请选择日期' }]}
+                >
+                  <Select style={{ width: '60px' }} placeholder="">
+                    <Select.Option value="">  </Select.Option>
+                    {Array.from({ length: 31 }, (_, i) => {
+                      const day = (i + 1).toString().padStart(2, '0');
+                      return <Select.Option key={day} value={day}>{day}</Select.Option>;
+                    })}
+                  </Select>
+                </Form.Item>
 
-          <QuestionItem
-            question="日期"
-            name="dateOfBirth"
-            explanation="若不知道具体日期或月份，请按护照所示填写。"
-          >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-              <Form.Item 
-                name="dobDay" 
-                noStyle
-                rules={[{ required: true, message: '请选择日期' }]}
-              >
-                <Select style={{ width: '60px' }} placeholder="">
-                  <Select.Option value="">  </Select.Option>
-                  {Array.from({ length: 31 }, (_, i) => {
-                    const day = (i + 1).toString().padStart(2, '0');
-                    return <Select.Option key={day} value={day}>{day}</Select.Option>;
-                  })}
-                </Select>
-              </Form.Item>
+                <Form.Item 
+                  name="dobMonth" 
+                  noStyle
+                  rules={[{ required: true, message: '请选择月份' }]}
+                >
+                  <Select style={{ width: '70px' }} placeholder="">
+                    <Select.Option value="">  </Select.Option>
+                    <Select.Option value="JAN">一月</Select.Option>
+                    <Select.Option value="FEB">二月</Select.Option>
+                    <Select.Option value="MAR">三月</Select.Option>
+                    <Select.Option value="APR">四月</Select.Option>
+                    <Select.Option value="MAY">五月</Select.Option>
+                    <Select.Option value="JUN">六月</Select.Option>
+                    <Select.Option value="JUL">七月</Select.Option>
+                    <Select.Option value="AUG">八月</Select.Option>
+                    <Select.Option value="SEP">九月</Select.Option>
+                    <Select.Option value="OCT">十月</Select.Option>
+                    <Select.Option value="NOV">十一月</Select.Option>
+                    <Select.Option value="DEC">十二月</Select.Option>
+                  </Select>
+                </Form.Item>
 
-              <Form.Item 
-                name="dobMonth" 
-                noStyle
-                rules={[{ required: true, message: '请选择月份' }]}
-              >
-                <Select style={{ width: '70px' }} placeholder="">
-                  <Select.Option value="">  </Select.Option>
-                  <Select.Option value="JAN">一月</Select.Option>
-                  <Select.Option value="FEB">二月</Select.Option>
-                  <Select.Option value="MAR">三月</Select.Option>
-                  <Select.Option value="APR">四月</Select.Option>
-                  <Select.Option value="MAY">五月</Select.Option>
-                  <Select.Option value="JUN">六月</Select.Option>
-                  <Select.Option value="JUL">七月</Select.Option>
-                  <Select.Option value="AUG">八月</Select.Option>
-                  <Select.Option value="SEP">九月</Select.Option>
-                  <Select.Option value="OCT">十月</Select.Option>
-                  <Select.Option value="NOV">十一月</Select.Option>
-                  <Select.Option value="DEC">十二月</Select.Option>
-                </Select>
-              </Form.Item>
+                <Form.Item 
+                  name="dobYear" 
+                  noStyle
+                  rules={[
+                    { required: true, message: '请输入年份' },
+                    { pattern: /^\d{4}$/, message: '请输入4位数年份' }
+                  ]}
+                >
+                  <Input placeholder="" style={{ width: '60px' }} maxLength={4} />
+                </Form.Item>
 
-              <Form.Item 
-                name="dobYear" 
-                noStyle
-                rules={[
-                  { required: true, message: '请输入年份' },
-                  { pattern: /^\d{4}$/, message: '请输入4位数年份' }
-                ]}
-              >
-                <Input placeholder="" style={{ width: '60px' }} maxLength={4} />
-              </Form.Item>
-
-              <div style={{ marginLeft: '8px', fontSize: '12px', color: '#666' }}>
-                (格式: DD-MMM-YYYY)
+                <div style={{ marginLeft: '8px', fontSize: '12px', color: '#666' }}>
+                  (格式: DD-MMM-YYYY)
+                </div>
               </div>
-            </div>
-          </QuestionItem>
+            </QuestionItem>
 
-          <QuestionItem
-            question="城市"
-            name="birthPlace"
-          >
-            <Input placeholder="例如：北京" />
-          </QuestionItem>
+            <QuestionItem
+              question="城市"
+              name="birthPlace"
+            >
+              <Input placeholder="例如：北京" />
+            </QuestionItem>
 
-          <QuestionItem
-            question="州/省"
-            name="birthState"
-            hasNaCheckbox={true}
-            naCheckboxName="birthState_na"
-          >
-            <Input placeholder="例如：北京市" />
-          </QuestionItem>
+            <QuestionItem
+              question="州/省"
+              name="birthState"
+              hasNaCheckbox={true}
+              naCheckboxName="birthState_na"
+            >
+              <Input placeholder="例如：北京市" />
+            </QuestionItem>
 
-          <QuestionItem
-            question="国家/地区"
-            name="birthCountry"
-            explanation="请选择您出生地的现用国家/地区名称。"
-          >
-            <Select placeholder="- 选择一个 -">
-              <Select.Option value="CHN">中国</Select.Option>
-              <Select.Option value="HKG">中国香港</Select.Option>
-              <Select.Option value="MAC">中国澳门</Select.Option>
-              <Select.Option value="TWN">中国台湾</Select.Option>
-              {/* Add more countries as needed */}
-            </Select>
-          </QuestionItem>
+            <QuestionItem
+              question="国家/地区"
+              name="birthCountry"
+              explanation="请选择您出生地的现用国家/地区名称。"
+            >
+              <Select placeholder="- 选择一个 -">
+                <Select.Option value="CHN">中国</Select.Option>
+                <Select.Option value="HKG">中国香港</Select.Option>
+                <Select.Option value="MAC">中国澳门</Select.Option>
+                <Select.Option value="TWN">中国台湾</Select.Option>
+                {/* Add more countries as needed */}
+              </Select>
+            </QuestionItem>
+
+          </div>
         </>
       ),
     },
