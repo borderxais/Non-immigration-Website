@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Steps, Form, Input, Select, DatePicker, Radio, Space, Button, Typography, Divider, message, Row, Col } from 'antd';
+import { Card, Steps, Form, Input, Select, DatePicker, Radio, Space, Button, Typography, Divider, message, Row, Col, Checkbox } from 'antd';
 import ds160Service from '../services/ds160Service';
 import { useNavigate } from 'react-router-dom';
 
@@ -10,7 +10,7 @@ const DS160Form: React.FC = () => {
   const [currentStep, setCurrentStep] = React.useState(0);
   const [form] = Form.useForm();
   const navigate = useNavigate();
-
+  
   const handleSubmit = async (values: any) => {
     try {
       console.log('Submitting form:', values);
@@ -30,6 +30,7 @@ const DS160Form: React.FC = () => {
     wrapperCol: { span: 24 },
   };
 
+  // Helper component for form items with explanations
   const QuestionItem: React.FC<{
     number?: string;
     question: string;
@@ -37,30 +38,113 @@ const DS160Form: React.FC = () => {
     required?: boolean;
     children: React.ReactNode;
     explanation?: string;
-  }> = ({ number, question, name, required = true, children, explanation }) => (
-    <Row gutter={24} style={{ marginBottom: 24 }}>
-      <Col span={18}>
-      <Space direction="vertical" style={{ width: '100%' }} size={8}>
-          <Text strong>{number ? `${number}. ` : ''}{question}{required && <span style={{ color: '#ff4d4f', marginLeft: '4px' }}>*</span>}</Text>
-          <Form.Item 
-            name={name} 
-            required={required} 
-            rules={required ? [{ required: true, message: '此字段为必填项' }] : []}
-            style={{ marginBottom: 0 }}
-          >
-            {children}
-          </Form.Item>
-        </Space>
-      </Col>
-      {explanation && (
-        <Col span={6}>
-          <div style={{ padding: '10px', backgroundColor: '#f9f9f9', borderRadius: '4px', height: '100%' }}>
-            <Paragraph style={{ fontSize: '13px', color: '#666' }}>{explanation}</Paragraph>
-          </div>
+    hasNaCheckbox?: boolean;
+    naCheckboxName?: string;
+  }> = ({ number, question, name, required = true, children, explanation, hasNaCheckbox = false, naCheckboxName }) => {
+    const [isNaChecked, setIsNaChecked] = React.useState(false);
+    
+    const onNaCheckboxChange = (e: any) => {
+      setIsNaChecked(e.target.checked);
+    };
+    
+    // Create a custom input with disabled state based on NA checkbox
+    const renderDisableableInput = () => {
+      // Rather than trying to clone the element, we'll wrap it with our own logic
+      if (!React.isValidElement(children)) {
+        return children;
+      }
+      
+      // For Input components
+      if (children.type === Input || children.type === TextArea) {
+        return (
+          <Input
+            {...(children.props as any)}
+            disabled={isNaChecked}
+            style={{ 
+              ...((children.props as any).style || {}),
+              backgroundColor: isNaChecked ? '#f5f5f5' : 'white'
+            }}
+          />
+        );
+      }
+      
+      // For Select components
+      if (children.type === Select) {
+        return (
+          <Select
+            {...(children.props as any)}
+            disabled={isNaChecked}
+            style={{ 
+              ...((children.props as any).style || {}),
+              backgroundColor: isNaChecked ? '#f5f5f5' : 'white'
+            }}
+          />
+        );
+      }
+      
+      // For DatePicker components
+      if (children.type === DatePicker) {
+        return (
+          <DatePicker
+            {...(children.props as any)}
+            disabled={isNaChecked}
+            style={{ 
+              ...((children.props as any).style || {}),
+              backgroundColor: isNaChecked ? '#f5f5f5' : 'white'
+            }}
+          />
+        );
+      }
+      
+      // For Radio.Group components
+      if (children.type === Radio.Group) {
+        return (
+          <Radio.Group
+            {...(children.props as any)}
+            disabled={isNaChecked}
+          />
+        );
+      }
+      
+      // Default case - return the original element
+      return children;
+    };
+    
+    return (
+      <Row gutter={24} style={{ marginBottom: 24 }}>
+        <Col span={18}>
+          <Space direction="vertical" style={{ width: '100%' }} size={8}>
+            <Text strong>{number ? `${number}. ` : ''}{question}{required && <span style={{ color: '#ff4d4f', marginLeft: '4px' }}>*</span>}</Text>
+            <Form.Item 
+              name={name} 
+              required={required && !isNaChecked} 
+              rules={required ? [{ required: !isNaChecked, message: '此字段为必填项' }] : []}
+              style={{ marginBottom: 0 }}
+            >
+              {renderDisableableInput()}
+            </Form.Item>
+            
+            {hasNaCheckbox && (
+              <Form.Item 
+                name={naCheckboxName || `${name}_na`} 
+                valuePropName="checked"
+                style={{ marginBottom: 0, marginTop: 8, textAlign: 'right' }}
+              >
+                <Checkbox onChange={onNaCheckboxChange}>不适用/技术无法提供</Checkbox>
+              </Form.Item>
+            )}
+          </Space>
         </Col>
-      )}
-    </Row>
-  );
+        {explanation && (
+          <Col span={6}>
+            <div style={{ padding: '10px', backgroundColor: '#f9f9f9', borderRadius: '4px', height: '100%' }}>
+              <Paragraph style={{ fontSize: '13px', color: '#666' }}>{explanation}</Paragraph>
+            </div>
+          </Col>
+        )}
+      </Row>
+    );
+  };
 
   const steps = [
     {
@@ -157,6 +241,7 @@ const DS160Form: React.FC = () => {
             number="3"
             question="全名（本地语言书写）"
             name="fullNameNative"
+            explanation="请用中文填写您的全名。如不适用/技术不可用，请勾选右侧的复选框。"
           >
             <Input placeholder="如不适用/技术不可用，请填写 '不适用'" />
           </QuestionItem>
@@ -165,6 +250,7 @@ const DS160Form: React.FC = () => {
             number="4"
             question="您是否曾使用其他姓名？（包括曾用名、英文名、别名等）"
             name="hasOtherNames"
+            explanation="其它姓名包括您的婚前用名, 宗教用名、职业用名; 或任何为人所知的其它名字；或在过去为别人所知的其它名字。"
           >
             <Radio.Group>
               <Radio value={true}>是</Radio>
