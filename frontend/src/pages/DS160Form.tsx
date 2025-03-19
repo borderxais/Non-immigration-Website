@@ -826,7 +826,7 @@ const DS160Form: React.FC = () => {
   };
 
   return (
-    <Card title="DS-160 非移民签证申请表" style={{ maxWidth: 800, margin: '0 auto' }}>
+    <Card title="DS-160 非移民签证申请表" style={{ maxWidth: 1000, margin: '0 auto' }}>
       <Form
         {...formItemLayout}
         form={form}
