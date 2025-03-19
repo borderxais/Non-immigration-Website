@@ -52,20 +52,64 @@ const DS160Form: React.FC = () => {
       description: '基本信息',
       content: (
         <>
-          <Title level={4}>A. 申请地点</Title>
+        <Title level={4}>安全问题</Title>
+      
           <QuestionItem
             number="1"
-            question="您计划在哪个使领馆申请签证？"
-            name="location"
+            question="请选择一个安全问题"
+            name="securityQuestion"
           >
-            <Select placeholder="选择申请地点">
-              <Select.Option value="beijing">美国驻北京大使馆</Select.Option>
-              <Select.Option value="shanghai">美国驻上海领事馆</Select.Option>
-              <Select.Option value="guangzhou">美国驻广州领事馆</Select.Option>
-              <Select.Option value="shenyang">美国驻沈阳领事馆</Select.Option>
-              <Select.Option value="wuhan">美国驻武汉领事馆</Select.Option>
+            <Select placeholder="选择安全问题" style={{ width: '100%' }}>
+              <Select.Option value="1">您母亲的母亲的名字是什么？</Select.Option>
+              <Select.Option value="2">您父亲的父亲的名字是什么？</Select.Option>
+              <Select.Option value="3">您外祖母的娘家姓是什么？</Select.Option>
+              <Select.Option value="4">您小时候家人怎么称呼您？</Select.Option>
+              <Select.Option value="5">您在哪个城市遇到您的配偶/伴侣？</Select.Option>
+              <Select.Option value="6">您最好的童年朋友叫什么名字？</Select.Option>
+              <Select.Option value="7">您8岁时住在哪条街？</Select.Option>
+              <Select.Option value="8">您最年长的兄弟姐妹的生日月份和年份？（例如：1900年1月）</Select.Option>
+              <Select.Option value="9">您最小的孩子的中间名是什么？</Select.Option>
+              <Select.Option value="10">您最年长的兄弟姐妹的中间名是什么？</Select.Option>
+              <Select.Option value="11">您11岁时就读的学校是什么？</Select.Option>
+              <Select.Option value="12">您小时候的家庭电话号码是什么？</Select.Option>
+              <Select.Option value="13">您最年长的表亲/堂亲的名字和姓氏是什么？</Select.Option>
+              <Select.Option value="14">您最喜欢的毛绒动物或玩具的名字是什么？</Select.Option>
+              <Select.Option value="15">您的父母在哪个城市或镇相遇？</Select.Option>
+              <Select.Option value="16">您最喜欢的老师的姓氏是什么？</Select.Option>
+              <Select.Option value="17">您最近的兄弟姐妹住在哪个城市？</Select.Option>
+              <Select.Option value="18">您最年幼的兄弟姐妹的生日月份和年份？（例如：1900年1月）</Select.Option>
+              <Select.Option value="19">您的第一份工作在哪个城市或镇？</Select.Option>
+              <Select.Option value="20">您的第一个男朋友或女朋友叫什么名字？</Select.Option>
             </Select>
           </QuestionItem>
+          
+          <QuestionItem
+            number="2"
+            question="您的回答(英文)"
+            name="securityAnswer"
+          >
+            <Input placeholder="请输入您的安全问题答案" />
+          </QuestionItem>
+          
+          <Divider />
+          
+          <Title level={5}>提示</Title>
+          <p>为了保护您的个人信息安全，请记住您的安全问题和答案。如果您需要恢复您的申请，将需要提供此信息。</p>
+
+          <Title level={4}>A. 申请地点</Title>
+            <QuestionItem
+              number="3"
+              question="您计划在哪个使领馆申请签证？"
+              name="location"
+            >
+              <Select placeholder="选择申请地点">
+                <Select.Option value="beijing">美国驻北京大使馆</Select.Option>
+                <Select.Option value="shanghai">美国驻上海领事馆</Select.Option>
+                <Select.Option value="guangzhou">美国驻广州领事馆</Select.Option>
+                <Select.Option value="shenyang">美国驻沈阳领事馆</Select.Option>
+                <Select.Option value="wuhan">美国驻武汉领事馆</Select.Option>
+              </Select>
+            </QuestionItem>
         </>
       ),
     },
