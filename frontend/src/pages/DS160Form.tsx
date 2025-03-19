@@ -358,9 +358,12 @@ const DS160Form: React.FC = () => {
 
           <QuestionItem
             number="10"
-            question="省/州"
+            question="州/省"
             name="birthState"
             required={false}
+            explanation="如果不适用，可勾选'不适用'。"
+            hasNaCheckbox={true}
+            naCheckboxName="birthState_na"
           >
             <Input placeholder="例如：北京市" />
           </QuestionItem>
