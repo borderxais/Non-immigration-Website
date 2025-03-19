@@ -227,7 +227,6 @@ const DS160Form: React.FC = () => {
             <Input placeholder="例如：ZHANG" />
           </QuestionItem>
 
-          
           <QuestionItem
             number="2"
             question="名（拼音，与护照一致）"
@@ -241,9 +240,11 @@ const DS160Form: React.FC = () => {
             number="3"
             question="全名（本地语言书写）"
             name="fullNameNative"
-            explanation="请用中文填写您的全名。如不适用/技术不可用，请勾选右侧的复选框。"
+            explanation="请用中文填写您的全名。如不适用/技术不可用，请勾选下方的复选框。"
+            hasNaCheckbox={true}
+            naCheckboxName="fullNameNative_na"
           >
-            <Input placeholder="如不适用/技术不可用，请填写 '不适用'" />
+            <Input placeholder="请用中文填写您的全名" />
           </QuestionItem>
           
           <QuestionItem
@@ -262,12 +263,14 @@ const DS160Form: React.FC = () => {
             number="5"
             question="您是否有代表您姓名的电码？"
             name="hasTelecode"
+            explanation="电码由4位数字组成，代表着一些非罗马字母拼写而成的名字的字体。"
           >
             <Radio.Group>
               <Radio value={true}>是</Radio>
               <Radio value={false}>否</Radio>
             </Radio.Group>
           </QuestionItem>
+          
           <Divider />
           
           <Title level={5}>基本信息</Title>
@@ -275,6 +278,7 @@ const DS160Form: React.FC = () => {
             number="6"
             question="性别"
             name="gender"
+            explanation="请选择您的性别，必须与护照上的信息一致。"
           >
             <Radio.Group>
               <Radio value="M">男</Radio>
@@ -286,6 +290,7 @@ const DS160Form: React.FC = () => {
             number="7"
             question="婚姻状况"
             name="maritalStatus"
+            explanation="请选择您目前的婚姻状况。"
           >
             <Select placeholder="选择婚姻状况">
               <Select.Option value="single">未婚</Select.Option>
@@ -299,6 +304,7 @@ const DS160Form: React.FC = () => {
             number="8"
             question="出生日期"
             name="dateOfBirth"
+            explanation="若不知道具体日期或月份，请按护照所示填写。"
           >
             <DatePicker style={{ width: '100%' }} />
           </QuestionItem>
@@ -307,6 +313,7 @@ const DS160Form: React.FC = () => {
             number="9"
             question="出生地（城市，国家）"
             name="birthPlace"
+            explanation="请填写您的出生城市。"
           >
             <Input placeholder="例如：北京，中国" />
           </QuestionItem>
@@ -316,6 +323,7 @@ const DS160Form: React.FC = () => {
             question="省/州"
             name="birthState"
             required={false}
+            explanation="如果不适用，可不填写。"
           >
             <Input placeholder="例如：北京市" />
           </QuestionItem>
@@ -324,6 +332,7 @@ const DS160Form: React.FC = () => {
             number="11"
             question="出生国家/地区"
             name="birthCountry"
+            explanation="请选择您出生地的现用国家/地区名称。"
           >
             <Select placeholder="- 选择一个 -">
               <Select.Option value="CHN">中国</Select.Option>
