@@ -1,15 +1,16 @@
 import React from 'react';
-import { Card, Steps, Form, Input, Select, DatePicker, Radio, Space, Button, Typography, Divider, message } from 'antd';
+import { Card, Steps, Form, Input, Select, DatePicker, Radio, Space, Button, Typography, Divider, message, Row, Col } from 'antd';
 import ds160Service from '../services/ds160Service';
 import { useNavigate } from 'react-router-dom';
 
 const { TextArea } = Input;
-const { Title, Text } = Typography;
+const { Title, Text, Paragraph } = Typography;
 
 const DS160Form: React.FC = () => {
   const [currentStep, setCurrentStep] = React.useState(0);
   const [form] = Form.useForm();
   const navigate = useNavigate();
+
   const handleSubmit = async (values: any) => {
     try {
       console.log('Submitting form:', values);
@@ -35,20 +36,30 @@ const DS160Form: React.FC = () => {
     name: string;
     required?: boolean;
     children: React.ReactNode;
-  }> = ({ number, question, name, required = true, children }) => (
-    <div style={{ marginBottom: 24 }}>
+    explanation?: string;
+  }> = ({ number, question, name, required = true, children, explanation }) => (
+    <Row gutter={24} style={{ marginBottom: 24 }}>
+      <Col span={18}>
       <Space direction="vertical" style={{ width: '100%' }} size={8}>
-        <Text strong>{number ? `${number}. ` : ''}{question}</Text>
-        <Form.Item 
-          name={name} 
-          required={required} 
-          rules={required ? [{ required: true, message: '此字段为必填项' }] : []}
-          style={{ marginBottom: 0 }}
-        >
-          {children}
-        </Form.Item>
-      </Space>
-    </div>
+          <Text strong>{number ? `${number}. ` : ''}{question}{required && <span style={{ color: '#ff4d4f', marginLeft: '4px' }}>*</span>}</Text>
+          <Form.Item 
+            name={name} 
+            required={required} 
+            rules={required ? [{ required: true, message: '此字段为必填项' }] : []}
+            style={{ marginBottom: 0 }}
+          >
+            {children}
+          </Form.Item>
+        </Space>
+      </Col>
+      {explanation && (
+        <Col span={6}>
+          <div style={{ padding: '10px', backgroundColor: '#f9f9f9', borderRadius: '4px', height: '100%' }}>
+            <Paragraph style={{ fontSize: '13px', color: '#666' }}>{explanation}</Paragraph>
+          </div>
+        </Col>
+      )}
+    </Row>
   );
 
   const steps = [
@@ -127,6 +138,7 @@ const DS160Form: React.FC = () => {
             number="1"
             question="姓（拼音，与护照一致）"
             name="surname"
+            explanation="输入您护照上列出的所有姓氏。如果只有一个，请输入这一个。"
           >
             <Input placeholder="例如：ZHANG" />
           </QuestionItem>
@@ -136,6 +148,7 @@ const DS160Form: React.FC = () => {
             number="2"
             question="名（拼音，与护照一致）"
             name="givenName"
+            explanation="如果您的护照上不包括名字信息，请在名字栏内输入'FNU'。"
           >
             <Input placeholder="例如：SAN" />
           </QuestionItem>
