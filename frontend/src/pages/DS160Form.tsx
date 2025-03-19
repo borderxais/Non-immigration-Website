@@ -327,18 +327,18 @@ const DS160Form: React.FC = () => {
               >
                 <Select style={{ width: '70px' }} placeholder="">
                   <Select.Option value="">  </Select.Option>
-                  <Select.Option value="JAN">JAN</Select.Option>
-                  <Select.Option value="FEB">FEB</Select.Option>
-                  <Select.Option value="MAR">MAR</Select.Option>
-                  <Select.Option value="APR">APR</Select.Option>
-                  <Select.Option value="MAY">MAY</Select.Option>
-                  <Select.Option value="JUN">JUN</Select.Option>
-                  <Select.Option value="JUL">JUL</Select.Option>
-                  <Select.Option value="AUG">AUG</Select.Option>
-                  <Select.Option value="SEP">SEP</Select.Option>
-                  <Select.Option value="OCT">OCT</Select.Option>
-                  <Select.Option value="NOV">NOV</Select.Option>
-                  <Select.Option value="DEC">DEC</Select.Option>
+                  <Select.Option value="JAN">一月</Select.Option>
+                  <Select.Option value="FEB">二月</Select.Option>
+                  <Select.Option value="MAR">三月</Select.Option>
+                  <Select.Option value="APR">四月</Select.Option>
+                  <Select.Option value="MAY">五月</Select.Option>
+                  <Select.Option value="JUN">六月</Select.Option>
+                  <Select.Option value="JUL">七月</Select.Option>
+                  <Select.Option value="AUG">八月</Select.Option>
+                  <Select.Option value="SEP">九月</Select.Option>
+                  <Select.Option value="OCT">十月</Select.Option>
+                  <Select.Option value="NOV">十一月</Select.Option>
+                  <Select.Option value="DEC">十二月</Select.Option>
                 </Select>
               </Form.Item>
 
