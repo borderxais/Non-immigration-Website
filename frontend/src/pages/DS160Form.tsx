@@ -297,43 +297,47 @@ const DS160Form: React.FC = () => {
 
           <QuestionItem
             number="8"
-            question="出生日期"
+            question="日期"
             name="dateOfBirth"
-            explanation="若不知道具体日期或月份，请按护照所示填写。格式：日-月-年"
+            explanation="若不知道具体日期或月份，请按护照所示填写。"
           >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
               <Form.Item 
                 name="dobDay" 
                 noStyle
                 rules={[{ required: true, message: '请选择日期' }]}
               >
-                <Select style={{ width: '70px' }} placeholder="日">
+                <Select style={{ width: '60px' }} placeholder="">
+                  <Select.Option value="">  </Select.Option>
                   {Array.from({ length: 31 }, (_, i) => {
                     const day = (i + 1).toString().padStart(2, '0');
                     return <Select.Option key={day} value={day}>{day}</Select.Option>;
                   })}
                 </Select>
               </Form.Item>
+
               <Form.Item 
                 name="dobMonth" 
                 noStyle
                 rules={[{ required: true, message: '请选择月份' }]}
               >
-                <Select style={{ width: '80px' }} placeholder="月">
-                  <Select.Option value="JAN">一月</Select.Option>
-                  <Select.Option value="FEB">二月</Select.Option>
-                  <Select.Option value="MAR">三月</Select.Option>
-                  <Select.Option value="APR">四月</Select.Option>
-                  <Select.Option value="MAY">五月</Select.Option>
-                  <Select.Option value="JUN">六月</Select.Option>
-                  <Select.Option value="JUL">七月</Select.Option>
-                  <Select.Option value="AUG">八月</Select.Option>
-                  <Select.Option value="SEP">九月</Select.Option>
-                  <Select.Option value="OCT">十月</Select.Option>
-                  <Select.Option value="NOV">十一月</Select.Option>
-                  <Select.Option value="DEC">十二月</Select.Option>
+                <Select style={{ width: '70px' }} placeholder="">
+                  <Select.Option value="">  </Select.Option>
+                  <Select.Option value="JAN">JAN</Select.Option>
+                  <Select.Option value="FEB">FEB</Select.Option>
+                  <Select.Option value="MAR">MAR</Select.Option>
+                  <Select.Option value="APR">APR</Select.Option>
+                  <Select.Option value="MAY">MAY</Select.Option>
+                  <Select.Option value="JUN">JUN</Select.Option>
+                  <Select.Option value="JUL">JUL</Select.Option>
+                  <Select.Option value="AUG">AUG</Select.Option>
+                  <Select.Option value="SEP">SEP</Select.Option>
+                  <Select.Option value="OCT">OCT</Select.Option>
+                  <Select.Option value="NOV">NOV</Select.Option>
+                  <Select.Option value="DEC">DEC</Select.Option>
                 </Select>
               </Form.Item>
+
               <Form.Item 
                 name="dobYear" 
                 noStyle
@@ -342,26 +346,25 @@ const DS160Form: React.FC = () => {
                   { pattern: /^\d{4}$/, message: '请输入4位数年份' }
                 ]}
               >
-                <Input placeholder="年" style={{ width: '80px' }} maxLength={4} />
+                <Input placeholder="" style={{ width: '60px' }} maxLength={4} />
               </Form.Item>
-              <Text type="secondary" style={{ fontSize: '12px' }}>(格式: 日-月-年)</Text>
+
+              <div style={{ marginLeft: '8px', fontSize: '12px', color: '#666' }}>
+                (格式: DD-MMM-YYYY)
+              </div>
             </div>
           </QuestionItem>
 
           <QuestionItem
-            number="9"
-            question="出生地（城市，国家）"
+            question="城市"
             name="birthPlace"
           >
-            <Input placeholder="例如：北京，中国" />
+            <Input placeholder="例如：北京" />
           </QuestionItem>
 
           <QuestionItem
-            number="10"
             question="州/省"
             name="birthState"
-            required={false}
-            explanation="如果不适用，可勾选'不适用'。"
             hasNaCheckbox={true}
             naCheckboxName="birthState_na"
           >
@@ -369,8 +372,7 @@ const DS160Form: React.FC = () => {
           </QuestionItem>
 
           <QuestionItem
-            number="11"
-            question="出生国家/地区"
+            question="国家/地区"
             name="birthCountry"
             explanation="请选择您出生地的现用国家/地区名称。"
           >
