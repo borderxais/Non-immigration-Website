@@ -30,7 +30,7 @@ const DS160Form: React.FC = () => {
   };
 
   const QuestionItem: React.FC<{
-    number: string;
+    number?: string;
     question: string;
     name: string;
     required?: boolean;
@@ -39,7 +39,12 @@ const DS160Form: React.FC = () => {
     <div style={{ marginBottom: 24 }}>
       <Space direction="vertical" style={{ width: '100%' }} size={8}>
         <Text strong>{number}. {question}</Text>
-        <Form.Item name={name} required={required} style={{ marginBottom: 0 }}>
+        <Form.Item 
+          name={name} 
+          required={required} 
+          rules={required ? [{ required: true, message: '此字段为必填项' }] : []}
+          style={{ marginBottom: 0 }}
+        >
           {children}
         </Form.Item>
       </Space>
@@ -55,7 +60,6 @@ const DS160Form: React.FC = () => {
         <Title level={4}>安全问题</Title>
       
           <QuestionItem
-            number=""
             question="请选择一个安全问题"
             name="securityQuestion"
           >
@@ -84,7 +88,6 @@ const DS160Form: React.FC = () => {
           </QuestionItem>
           
           <QuestionItem
-            number=""
             question="您的回答(英文)"
             name="securityAnswer"
           >
@@ -98,7 +101,6 @@ const DS160Form: React.FC = () => {
 
           <Title level={4}>申请地点</Title>
             <QuestionItem
-              number=""
               question="您计划在哪个使领馆申请签证？"
               name="location"
             >
