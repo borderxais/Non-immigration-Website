@@ -294,9 +294,13 @@ const DS160Form: React.FC = () => {
               <Select.Option value="O">其他</Select.Option>
             </Select>
           </QuestionItem>
+          <Divider />
+
+          <h4 style={{ marginBottom: '10px', marginTop: '20px' }}>
+            <span>出生日期与出生地</span>
+          </h4>
 
           <QuestionItem
-            number="8"
             question="日期"
             name="dateOfBirth"
             explanation="若不知道具体日期或月份，请按护照所示填写。"
