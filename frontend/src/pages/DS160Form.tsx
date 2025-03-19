@@ -352,7 +352,6 @@ const DS160Form: React.FC = () => {
             number="9"
             question="出生地（城市，国家）"
             name="birthPlace"
-            explanation="请填写您的出生城市。"
           >
             <Input placeholder="例如：北京，中国" />
           </QuestionItem>
@@ -362,7 +361,6 @@ const DS160Form: React.FC = () => {
             question="省/州"
             name="birthState"
             required={false}
-            explanation="如果不适用，可不填写。"
           >
             <Input placeholder="例如：北京市" />
           </QuestionItem>
