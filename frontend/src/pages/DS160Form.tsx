@@ -219,11 +219,10 @@ const DS160Form: React.FC = () => {
       ),
     },
     {
-      title: '个人信息',
-      description: '姓名和基本信息',
+      title: '个人信息 I',
       content: (
         <>
-          <Title level={4}>B. 个人信息</Title>
+          <Title level={4}>个人信息 I</Title>
           
           <QuestionItem
             question="姓（拼音，与护照一致）"
@@ -603,63 +602,133 @@ const DS160Form: React.FC = () => {
       ),
     },
     {
-      title: '联系方式',
-      description: '地址和电话',
+      title: '个人信息 II',
       content: (
         <>
-          <Title level={4}>C. 联系方式</Title>
+          <Title level={4}>个人信息 II</Title>
+        
+          <QuestionItem
+            question="所属国家/地区（国籍）"
+            name="nationality"
+            explanation="请选择您目前的国籍。"
+          >
+            <Select placeholder="- 选择一个 -" style={{ width: '100%' }}>
+              <Select.Option value="">- 选择一个 -</Select.Option>
+              <Select.Option value="AFGH">阿富汗</Select.Option>
+              <Select.Option value="ALB">阿尔巴尼亚</Select.Option>
+              <Select.Option value="ALGR">阿尔及利亚</Select.Option>
+              <Select.Option value="ANDO">安道尔</Select.Option>
+              <Select.Option value="ANGL">安哥拉</Select.Option>
+              <Select.Option value="ANGU">安圭拉</Select.Option>
+              <Select.Option value="ANTI">安提瓜和巴布达</Select.Option>
+              <Select.Option value="ARG">阿根廷</Select.Option>
+              <Select.Option value="ARM">亚美尼亚</Select.Option>
+              <Select.Option value="ASTL">澳大利亚</Select.Option>
+              <Select.Option value="AUST">奥地利</Select.Option>
+              <Select.Option value="AZR">阿塞拜疆</Select.Option>
+              <Select.Option value="BAMA">巴哈马</Select.Option>
+              <Select.Option value="BAHR">巴林</Select.Option>
+              <Select.Option value="BANG">孟加拉国</Select.Option>
+              <Select.Option value="BRDO">巴巴多斯</Select.Option>
+              <Select.Option value="BYS">白俄罗斯</Select.Option>
+              <Select.Option value="BELG">比利时</Select.Option>
+              <Select.Option value="BLZ">伯利兹</Select.Option>
+              <Select.Option value="BENN">贝宁</Select.Option>
+              <Select.Option value="BERM">百慕大</Select.Option>
+              <Select.Option value="BHU">不丹</Select.Option>
+              <Select.Option value="BOL">玻利维亚</Select.Option>
+              <Select.Option value="BIH">波斯尼亚和黑塞哥维那</Select.Option>
+              <Select.Option value="BOT">博茨瓦纳</Select.Option>
+              <Select.Option value="BRZL">巴西</Select.Option>
+              <Select.Option value="BRNI">文莱</Select.Option>
+              <Select.Option value="BULG">保加利亚</Select.Option>
+              <Select.Option value="BURK">布基纳法索</Select.Option>
+              <Select.Option value="BURM">缅甸</Select.Option>
+              <Select.Option value="BRND">布隆迪</Select.Option>
+              <Select.Option value="CBDA">柬埔寨</Select.Option>
+              <Select.Option value="CMRN">喀麦隆</Select.Option>
+              <Select.Option value="CAN">加拿大</Select.Option>
+              <Select.Option value="CHIN">中国</Select.Option>
+              <Select.Option value="HNK">中国香港特别行政区</Select.Option>
+              <Select.Option value="MAC">中国澳门特别行政区</Select.Option>
+              <Select.Option value="TWAN">中国台湾</Select.Option>
+              {/* Add more country options as needed */}
+            </Select>
+          </QuestionItem>
           
-          <Title level={5}>住址信息</Title>
           <QuestionItem
-            number="1"
-            question="街道地址"
-            name="streetAddress"
+            question="您是否持有或曾经持有上述国籍以外的其他国籍？"
+            name="hasOtherNationality"
+            explanation="如果您持有或曾经持有多重国籍，请选择'是'。"
           >
-            <Input placeholder="请输入详细的街道地址" />
+            <Radio.Group>
+              <Radio value="Y">是</Radio>
+              <Radio value="N">否</Radio>
+            </Radio.Group>
           </QuestionItem>
-
+          
           <QuestionItem
-            number="2"
-            question="所在城市"
-            name="city"
+            question="您是否是所示原籍国/地区（国籍）以外的其他国家/地区的永久居民？"
+            name="isPermResOtherCountry"
+            explanation="如果您在国籍所属国家/地区以外的地方拥有永久居留权，请选择'是'。"
           >
-            <Input />
+            <Radio.Group>
+              <Radio value="Y">是</Radio>
+              <Radio value="N">否</Radio>
+            </Radio.Group>
           </QuestionItem>
-
-          <QuestionItem
-            number="3"
-            question="所在省/自治区/直辖市"
-            name="state"
-          >
-            <Input />
-          </QuestionItem>
-
-          <QuestionItem
-            number="4"
-            question="邮政编码"
-            name="postalCode"
-          >
-            <Input />
-          </QuestionItem>
-
+          
+          <div style={{ padding: '10px', backgroundColor: '#f9f9f9', borderRadius: '4px', margin: '16px 0' }}>
+            <Title level={5} style={{ color: '#891300' }}>帮助：</Title>
+            <Text strong>永久居民</Text>
+            <Paragraph style={{ color: '#666' }}>
+              永久居民是指已被一个国家/地区合法授予在该国家/地区无限期生活和工作许可的任何个人。
+            </Paragraph>
+          </div>
+          
           <Divider />
           
-          <Title level={5}>联系方式</Title>
           <QuestionItem
-            number="5"
-            question="手机号码（包含国家代码）"
-            name="phone"
+            question="身份证件号码"
+            name="nationalIdNumber"
+            hasNaCheckbox={true}
+            naCheckboxName="nationalIdNumber_na"
           >
-            <Input placeholder="例如：+86-13800138000" />
+            <Input placeholder="请输入您的身份证号码" />
           </QuestionItem>
+          
+          <QuestionItem
+            question="美国社会安全号"
+            name="usSSN"
+            hasNaCheckbox={true}
+            naCheckboxName="usSSN_na"
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <Input style={{ width: '60px' }} maxLength={3} placeholder="XXX" />
+              <span>-</span>
+              <Input style={{ width: '50px' }} maxLength={2} placeholder="XX" />
+              <span>-</span>
+              <Input style={{ width: '70px' }} maxLength={4} placeholder="XXXX" />
+            </div>
+          </QuestionItem>
+          
+          <QuestionItem
+            question="美国纳税人身份号码"
+            name="usTaxId"
+            hasNaCheckbox={true}
+            naCheckboxName="usTaxId_na"
+          >
+            <Input placeholder="请输入您的美国纳税人身份号码" />
+          </QuestionItem>
+          
+          <div style={{ padding: '10px', backgroundColor: '#f9f9f9', borderRadius: '4px', margin: '16px 0' }}>
+            <Title level={5} style={{ color: '#891300' }}>帮助：</Title>
+            <Text strong>身份证件号码</Text>
+            <Paragraph style={{ color: '#666' }}>
+              您的身份证号码是您的政府给予的一个独一无二的号码。美国政府为其就业的或者付税的都提供一个号码，就业的为"社会安全号"，付税的为'税号'，这些号码都是独一无二的。
+            </Paragraph>
+          </div>
 
-          <QuestionItem
-            number="6"
-            question="电子邮箱"
-            name="email"
-          >
-            <Input type="email" placeholder="例如：example@email.com" />
-          </QuestionItem>
         </>
       ),
     },
