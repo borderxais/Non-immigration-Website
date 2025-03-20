@@ -40,7 +40,8 @@ const DS160Form: React.FC = () => {
     explanation?: string;
     hasNaCheckbox?: boolean;
     naCheckboxName?: string;
-  }> = ({ number, question, name, required = true, children, explanation, hasNaCheckbox = false, naCheckboxName }) => {
+    textStyle?: React.CSSProperties;
+  }> = ({ number, question, name, required = true, children, explanation, hasNaCheckbox = false, naCheckboxName, textStyle = {} }) => {
     const [isNaChecked, setIsNaChecked] = React.useState(false);
     
     const onNaCheckboxChange = (e: any) => {
@@ -114,7 +115,8 @@ const DS160Form: React.FC = () => {
       <Row gutter={24} style={{ marginBottom: 24 }}>
         <Col span={16}>
           <Space direction="vertical" style={{ width: '100%' }} size={8}>
-            <Text strong>{number ? `${number}. ` : ''}{question}{required && <span style={{ color: '#ff4d4f', marginLeft: '4px' }}>*</span>}</Text>
+            <Text strong style={textStyle}>
+              {number ? `${number}. ` : ''}{question}{required && <span style={{ color: '#ff4d4f', marginLeft: '4px' }}>*</span>}</Text>
             <Form.Item 
               name={name} 
               required={required && !isNaChecked} 
@@ -144,6 +146,12 @@ const DS160Form: React.FC = () => {
         )}
       </Row>
     );
+  };
+
+  const textStyle: React.CSSProperties = {
+    fontSize: '14px',
+    color: '#333',
+    marginBottom: '4px',
   };
 
   const steps = [
@@ -297,21 +305,16 @@ const DS160Form: React.FC = () => {
           <Divider />
 
           <h4 style={{ marginBottom: '10px', marginTop: '20px' }}>
-            <span style={{ 
-              backgroundColor: '#f0f7ff', 
-              padding: '8px 16px', 
-              borderRadius: '4px',
-              display: 'inline-block',
-              border: '1px solid #d0e3ff'
-            }}>出生日期与出生地</span>
+            <span>出生日期与出生地</span>
           </h4>
-
-          <div className="field-group callout" style={{ padding: '16px' }}>
+        
+          <div className="field-group callout" style={{ backgroundColor: '#f0f7ff', padding: '16px', borderRadius: '4px', border: '1px solid #d0e3ff' }}>
   
             <QuestionItem
               question="日期"
               name="dateOfBirth"
               explanation="若不知道具体日期或月份，请按护照所示填写。"
+              textStyle={textStyle}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                 <Form.Item 
@@ -370,6 +373,7 @@ const DS160Form: React.FC = () => {
             <QuestionItem
               question="城市"
               name="birthPlace"
+              textStyle={textStyle}
             >
               <Input placeholder="例如：北京" />
             </QuestionItem>
@@ -379,6 +383,7 @@ const DS160Form: React.FC = () => {
               name="birthState"
               hasNaCheckbox={true}
               naCheckboxName="birthState_na"
+              textStyle={textStyle}
             >
               <Input placeholder="例如：北京市" />
             </QuestionItem>
@@ -387,6 +392,7 @@ const DS160Form: React.FC = () => {
               question="国家/地区"
               name="birthCountry"
               explanation="请选择您出生地的现用国家/地区名称。"
+              textStyle={textStyle}
             >
               <Select placeholder="- 选择一个 -">
                 <Select.Option value="CHN">中国</Select.Option>
