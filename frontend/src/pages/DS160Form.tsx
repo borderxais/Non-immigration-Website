@@ -670,21 +670,13 @@ const DS160Form: React.FC = () => {
           <QuestionItem
             question="您是否是所示原籍国/地区（国籍）以外的其他国家/地区的永久居民？"
             name="isPermResOtherCountry"
-            explanation="如果您在国籍所属国家/地区以外的地方拥有永久居留权，请选择'是'。"
+            explanation="永久居民是指已被一个国家/地区合法授予在该国家/地区无限期生活和工作许可的任何个人。"
           >
             <Radio.Group>
               <Radio value="Y">是</Radio>
               <Radio value="N">否</Radio>
             </Radio.Group>
           </QuestionItem>
-          
-          <div style={{ padding: '10px', backgroundColor: '#f9f9f9', borderRadius: '4px', margin: '16px 0' }}>
-            <Title level={5} style={{ color: '#891300' }}>帮助：</Title>
-            <Text strong>永久居民</Text>
-            <Paragraph style={{ color: '#666' }}>
-              永久居民是指已被一个国家/地区合法授予在该国家/地区无限期生活和工作许可的任何个人。
-            </Paragraph>
-          </div>
           
           <Divider />
           
@@ -693,6 +685,7 @@ const DS160Form: React.FC = () => {
             name="nationalIdNumber"
             hasNaCheckbox={true}
             naCheckboxName="nationalIdNumber_na"
+            explanation="您的身份证号码是您的政府给予的一个独一无二的号码。美国政府为其就业的或者付税的都提供一个号码，就业的为'社会安全号'，付税的为'税号'，这些号码都是独一无二的。"
           >
             <Input placeholder="请输入您的身份证号码" />
           </QuestionItem>
@@ -721,14 +714,6 @@ const DS160Form: React.FC = () => {
             <Input placeholder="请输入您的美国纳税人身份号码" />
           </QuestionItem>
           
-          <div style={{ padding: '10px', backgroundColor: '#f9f9f9', borderRadius: '4px', margin: '16px 0' }}>
-            <Title level={5} style={{ color: '#891300' }}>帮助：</Title>
-            <Text strong>身份证件号码</Text>
-            <Paragraph style={{ color: '#666' }}>
-              您的身份证号码是您的政府给予的一个独一无二的号码。美国政府为其就业的或者付税的都提供一个号码，就业的为"社会安全号"，付税的为'税号'，这些号码都是独一无二的。
-            </Paragraph>
-          </div>
-
         </>
       ),
     },
