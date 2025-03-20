@@ -297,10 +297,16 @@ const DS160Form: React.FC = () => {
           <Divider />
 
           <h4 style={{ marginBottom: '10px', marginTop: '20px' }}>
-            <span>出生日期与出生地</span>
+            <span style={{ 
+              backgroundColor: '#f0f7ff', 
+              padding: '8px 16px', 
+              borderRadius: '4px',
+              display: 'inline-block',
+              border: '1px solid #d0e3ff'
+            }}>出生日期与出生地</span>
           </h4>
-        
-          <div className="field-group callout" style={{ backgroundColor: '#f0f7ff', padding: '16px', borderRadius: '4px', border: '1px solid #d0e3ff' }}>
+
+          <div className="field-group callout" style={{ padding: '16px' }}>
   
             <QuestionItem
               question="日期"
