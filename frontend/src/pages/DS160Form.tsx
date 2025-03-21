@@ -749,13 +749,18 @@ const DS160Form: React.FC = () => {
 
           <Divider />
           
-          <Title level={5}>行程信息</Title>
+          <Title level={5}>旅行计划</Title>
+
           <QuestionItem
             number="3"
-            question="计划入境日期"
-            name="intendedDateOfArrival"
+            question="您是否已经制定了具体的旅行计划？"
+            name="hasSpecificPlans"
+            explanation="如果您已确定行程，请选择'是'；如果尚未确定，请选择'否'并提供预计的信息。"
           >
-            <DatePicker style={{ width: '100%' }} />
+            <Radio.Group>
+              <Radio value="Y">是</Radio>
+              <Radio value="N">否</Radio>
+            </Radio.Group>
           </QuestionItem>
 
           <Form.Item
