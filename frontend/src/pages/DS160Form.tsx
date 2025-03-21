@@ -812,21 +812,21 @@ const DS160Form: React.FC = () => {
               };
 
               return (
-                <QuestionItem
-                  number="2"
-                  question="具体说明"
-                  name="specificPurpose"
-                  explanation="请选择您的具体访问目的。"
-                >
-                  <Select placeholder="请选择" style={{ width: '100%' }}>
-                    <Select.Option value="">请选择</Select.Option>
-                    {getSpecificOptions().map(option => (
-                      <Select.Option key={option.value} value={option.value}>
-                        {option.label}
-                      </Select.Option>
-                    ))}
-                  </Select>
-                </QuestionItem>
+                <div className="field full" style={{ paddingBottom: '0%' }}>
+                  <QuestionItem
+                    question="具体说明"
+                    name="specificPurpose"
+                  >
+                    <Select placeholder="请选择" style={{ width: '100%' }}>
+                      <Select.Option value="">请选择</Select.Option>
+                      {getSpecificOptions().map(option => (
+                        <Select.Option key={option.value} value={option.value}>
+                          {option.label}
+                        </Select.Option>
+                      ))}
+                    </Select>
+                  </QuestionItem>
+                </div>
               );
             }}
           </Form.Item>
