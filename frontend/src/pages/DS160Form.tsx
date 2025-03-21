@@ -758,13 +758,121 @@ const DS160Form: React.FC = () => {
             <DatePicker style={{ width: '100%' }} />
           </QuestionItem>
 
-          <QuestionItem
-            number="4"
-            question="计划停留时间"
-            name="intendedLengthOfStay"
+          <Form.Item
+            noStyle
+            shouldUpdate={(prevValues, currentValues) => prevValues.hasSpecificPlans !== currentValues.hasSpecificPlans}
           >
-            <Input placeholder="例如：2周、1个月" />
-          </QuestionItem>
+            {({ getFieldValue }) => {
+              const hasSpecificPlans = getFieldValue('hasSpecificPlans');
+              
+              if (hasSpecificPlans === 'Y') {
+                return (
+                  <QuestionItem
+                    number="4"
+                    question="请提供您的详细行程"
+                    name="specificTravelPlans"
+                    explanation="请详细说明您的旅行计划，包括到达日期、访问地点和停留时间。"
+                  >
+                    <TextArea rows={4} placeholder="详细说明您的旅行计划，包括到达日期、访问地点和停留时间" />
+                  </QuestionItem>
+                );
+              }
+
+              return (
+                <>
+                  <QuestionItem
+                    number="4"
+                    question="计划到达日期"
+                    name="intendedDateOfArrival"
+                    explanation="请提供您计划入境美国的日期。如果您还不确定，请提供一个预计日期。"
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                      <Form.Item 
+                        name="arrivalDay" 
+                        noStyle
+                        rules={[{ required: true, message: '请选择日期' }]}
+                      >
+                        <Select style={{ width: '60px' }} placeholder="">
+                          <Select.Option value="">  </Select.Option>
+                          {Array.from({ length: 31 }, (_, i) => {
+                            const day = (i + 1).toString().padStart(2, '0');
+                            return <Select.Option key={day} value={day}>{day}</Select.Option>;
+                          })}
+                        </Select>
+                      </Form.Item>
+
+                      <Form.Item 
+                        name="arrivalMonth" 
+                        noStyle
+                        rules={[{ required: true, message: '请选择月份' }]}
+                      >
+                        <Select style={{ width: '70px' }} placeholder="">
+                          <Select.Option value="">  </Select.Option>
+                          <Select.Option value="JAN">一月</Select.Option>
+                          <Select.Option value="FEB">二月</Select.Option>
+                          <Select.Option value="MAR">三月</Select.Option>
+                          <Select.Option value="APR">四月</Select.Option>
+                          <Select.Option value="MAY">五月</Select.Option>
+                          <Select.Option value="JUN">六月</Select.Option>
+                          <Select.Option value="JUL">七月</Select.Option>
+                          <Select.Option value="AUG">八月</Select.Option>
+                          <Select.Option value="SEP">九月</Select.Option>
+                          <Select.Option value="OCT">十月</Select.Option>
+                          <Select.Option value="NOV">十一月</Select.Option>
+                          <Select.Option value="DEC">十二月</Select.Option>
+                        </Select>
+                      </Form.Item>
+
+                      <Form.Item 
+                        name="arrivalYear" 
+                        noStyle
+                        rules={[
+                          { required: true, message: '请输入年份' },
+                          { pattern: /^\d{4}$/, message: '请输入4位数年份' }
+                        ]}
+                      >
+                        <Input placeholder="" style={{ width: '60px' }} maxLength={4} />
+                      </Form.Item>
+
+                      <div style={{ marginLeft: '8px', fontSize: '12px', color: '#666' }}>
+                        (格式: DD-MMM-YYYY)
+                      </div>
+                    </div>
+                  </QuestionItem>
+
+                  <QuestionItem
+                    number="5"
+                    question="计划在美停留时间"
+                    name="intendedLengthOfStay"
+                    explanation="请输入您计划在美国停留的时间长度和单位。"
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <Form.Item 
+                        name="stayDuration" 
+                        noStyle
+                        rules={[{ required: true, message: '请输入停留时间' }]}
+                      >
+                        <Input style={{ width: '80px' }} maxLength={3} placeholder="数量" />
+                      </Form.Item>
+                      
+                      <Form.Item 
+                        name="stayDurationType" 
+                        noStyle
+                        rules={[{ required: true, message: '请选择单位' }]}
+                      >
+                        <Select style={{ width: '120px' }} placeholder="单位">
+                          <Select.Option value="Y">年</Select.Option>
+                          <Select.Option value="M">月</Select.Option>
+                          <Select.Option value="W">周</Select.Option>
+                          <Select.Option value="D">天</Select.Option>
+                        </Select>
+                      </Form.Item>
+                    </div>
+                  </QuestionItem>
+                </>
+              );
+            }}
+          </Form.Item>
 
           <QuestionItem
             number="6"
