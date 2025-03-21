@@ -2,7 +2,6 @@ import React from 'react';
 import { Card, Steps, Form, Input, Select, DatePicker, Radio, Space, Button, Typography, Divider, message, Row, Col, Checkbox } from 'antd';
 import ds160Service from '../services/ds160Service';
 import { useNavigate } from 'react-router-dom';
-import { title } from 'node:process';
 
 const { TextArea } = Input;
 const { Title, Text, Paragraph } = Typography;
@@ -718,309 +717,77 @@ const DS160Form: React.FC = () => {
         </>
       ),
     },
+
     {
       title: '旅行信息',
       description: '行程安排',
       content: (
         <>
           <Title level={4}>E. 旅行信息</Title>
-        
-          <Title level={5}>旅行目的</Title>
           
+          <Title level={5}>旅行目的</Title>
           <QuestionItem
             number="1"
-            question="赴美访问目的"
-            name="visaClass"
-            explanation="请选择与您赴美目的最相符的签证类别。"
+            question="旅行目的"
+            name="purposeOfTrip"
           >
-            <Select 
-              placeholder="请选择签证类别" 
-              style={{ width: '100%' }}
-              onChange={(value) => {
-                form.setFieldsValue({ specificPurpose: undefined });
-                // 触发表单依赖字段的更新
-                setTimeout(() => form.validateFields(['specificPurpose']), 100);
-              }}
-            >
-              <Select.Option value="">请选择签证类别</Select.Option>
-              <Select.Option value="A">外国政府官员 (A)</Select.Option>
-              <Select.Option value="B">临时商务或旅游访客 (B)</Select.Option>
-              <Select.Option value="C">过境外国人 (C)</Select.Option>
-              <Select.Option value="F">学术或语言学生 (F)</Select.Option>
-              <Select.Option value="G">国际组织代表/雇员 (G)</Select.Option>
-              <Select.Option value="H">临时工作者 (H)</Select.Option>
-              <Select.Option value="J">交流访问学者 (J)</Select.Option>
-              <Select.Option value="L">公司内部调动人员 (L)</Select.Option>
-              <Select.Option value="M">职业/非学术学生 (M)</Select.Option>
-              <Select.Option value="O">具有特殊能力的外国人 (O)</Select.Option>
-              <Select.Option value="P">国际知名外国人 (P)</Select.Option>
+            <Select placeholder="选择旅行目的">
+              <Select.Option value="B1">商务(B1)</Select.Option>
+              <Select.Option value="B2">旅游/访友(B2)</Select.Option>
+              <Select.Option value="F1">学习(F1)</Select.Option>
+              <Select.Option value="J1">交流访问(J1)</Select.Option>
             </Select>
           </QuestionItem>
 
-          <Form.Item
-            noStyle
-            shouldUpdate={(prevValues, currentValues) => prevValues.visaClass !== currentValues.visaClass}
+          <QuestionItem
+            number="2"
+            question="具体说明"
+            name="specificPurpose"
           >
-            {({ getFieldValue }) => {
-              const visaClass = getFieldValue('visaClass');
-              
-              if (!visaClass) {
-                return null;
-              }
-
-              // 根据签证类别获取相应的具体说明选项
-              const getSpecificOptions = () => {
-                switch(visaClass) {
-                  case 'B':
-                    return [
-                      { value: 'BUSINESS', label: '商务' },
-                      { value: 'TOURISM', label: '旅游' },
-                      { value: 'VISIT_FAMILY', label: '访问家人/朋友' },
-                      { value: 'MEDICAL', label: '医疗' }
-                    ];
-                  case 'F':
-                    return [
-                      { value: 'STUDY', label: '学习课程' },
-                      { value: 'RESEARCH', label: '研究' }
-                    ];
-                  case 'J':
-                    return [
-                      { value: 'EXCHANGE', label: '交流项目' },
-                      { value: 'RESEARCH', label: '研究' },
-                      { value: 'TEACHING', label: '教学' },
-                      { value: 'INTERN', label: '实习' }
-                    ];
-                  default:
-                    return [{ value: 'OTHER', label: '其他' }];
-                }
-              };
-
-              return (
-                <QuestionItem
-                  number="2"
-                  question="具体说明"
-                  name="specificPurpose"
-                  explanation="请选择您的具体访问目的。"
-                >
-                  <Select placeholder="请选择" style={{ width: '100%' }}>
-                    <Select.Option value="">请选择</Select.Option>
-                    {getSpecificOptions().map(option => (
-                      <Select.Option key={option.value} value={option.value}>
-                        {option.label}
-                      </Select.Option>
-                    ))}
-                  </Select>
-                </QuestionItem>
-              );
-            }}
-          </Form.Item>
+            <TextArea rows={4} placeholder="详细说明您此行的具体目的" />
+          </QuestionItem>
 
           <Divider />
           
-          <Title level={5}>旅行计划</Title>
-          
+          <Title level={5}>行程信息</Title>
           <QuestionItem
             number="3"
-            question="您是否已经制定了具体的旅行计划？"
-            name="hasSpecificPlans"
-            explanation="如果您已确定行程，请选择'是'；如果尚未确定，请选择'否'并提供预计的信息。"
+            question="计划入境日期"
+            name="intendedDateOfArrival"
           >
-            <Radio.Group>
-              <Radio value="Y">是</Radio>
-              <Radio value="N">否</Radio>
-            </Radio.Group>
+            <DatePicker style={{ width: '100%' }} />
           </QuestionItem>
 
-          <Form.Item
-            noStyle
-            shouldUpdate={(prevValues, currentValues) => prevValues.hasSpecificPlans !== currentValues.hasSpecificPlans}
+          <QuestionItem
+            number="4"
+            question="计划停留时间"
+            name="intendedLengthOfStay"
           >
-            {({ getFieldValue }) => {
-              const hasSpecificPlans = getFieldValue('hasSpecificPlans');
-              
-              if (hasSpecificPlans === 'Y') {
-                return (
-                  <QuestionItem
-                    number="4"
-                    question="请提供您的详细行程"
-                    name="specificTravelPlans"
-                    explanation="请详细说明您的旅行计划，包括到达日期、访问地点和停留时间。"
-                  >
-                    <TextArea rows={4} placeholder="详细说明您的旅行计划，包括到达日期、访问地点和停留时间" />
-                  </QuestionItem>
-                );
-              }
-
-              return (
-                <>
-                  <QuestionItem
-                    number="4"
-                    question="计划到达日期"
-                    name="intendedDateOfArrival"
-                    explanation="请提供您计划入境美国的日期。如果您还不确定，请提供一个预计日期。"
-                  >
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                      <Form.Item 
-                        name="arrivalDay" 
-                        noStyle
-                        rules={[{ required: true, message: '请选择日期' }]}
-                      >
-                        <Select style={{ width: '60px' }} placeholder="">
-                          <Select.Option value="">  </Select.Option>
-                          {Array.from({ length: 31 }, (_, i) => {
-                            const day = (i + 1).toString().padStart(2, '0');
-                            return <Select.Option key={day} value={day}>{day}</Select.Option>;
-                          })}
-                        </Select>
-                      </Form.Item>
-
-                      <Form.Item 
-                        name="arrivalMonth" 
-                        noStyle
-                        rules={[{ required: true, message: '请选择月份' }]}
-                      >
-                        <Select style={{ width: '70px' }} placeholder="">
-                          <Select.Option value="">  </Select.Option>
-                          <Select.Option value="JAN">一月</Select.Option>
-                          <Select.Option value="FEB">二月</Select.Option>
-                          <Select.Option value="MAR">三月</Select.Option>
-                          <Select.Option value="APR">四月</Select.Option>
-                          <Select.Option value="MAY">五月</Select.Option>
-                          <Select.Option value="JUN">六月</Select.Option>
-                          <Select.Option value="JUL">七月</Select.Option>
-                          <Select.Option value="AUG">八月</Select.Option>
-                          <Select.Option value="SEP">九月</Select.Option>
-                          <Select.Option value="OCT">十月</Select.Option>
-                          <Select.Option value="NOV">十一月</Select.Option>
-                          <Select.Option value="DEC">十二月</Select.Option>
-                        </Select>
-                      </Form.Item>
-
-                      <Form.Item 
-                        name="arrivalYear" 
-                        noStyle
-                        rules={[
-                          { required: true, message: '请输入年份' },
-                          { pattern: /^\d{4}$/, message: '请输入4位数年份' }
-                        ]}
-                      >
-                        <Input placeholder="" style={{ width: '60px' }} maxLength={4} />
-                      </Form.Item>
-
-                      <div style={{ marginLeft: '8px', fontSize: '12px', color: '#666' }}>
-                        (格式: DD-MMM-YYYY)
-                      </div>
-                    </div>
-                  </QuestionItem>
-
-                  <QuestionItem
-                    number="5"
-                    question="计划在美停留时间"
-                    name="intendedLengthOfStay"
-                    explanation="请输入您计划在美国停留的时间长度和单位。"
-                  >
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <Form.Item 
-                        name="stayDuration" 
-                        noStyle
-                        rules={[{ required: true, message: '请输入停留时间' }]}
-                      >
-                        <Input style={{ width: '80px' }} maxLength={3} placeholder="数量" />
-                      </Form.Item>
-                      
-                      <Form.Item 
-                        name="stayDurationType" 
-                        noStyle
-                        rules={[{ required: true, message: '请选择单位' }]}
-                      >
-                        <Select style={{ width: '120px' }} placeholder="单位">
-                          <Select.Option value="Y">年</Select.Option>
-                          <Select.Option value="M">月</Select.Option>
-                          <Select.Option value="W">周</Select.Option>
-                          <Select.Option value="D">天</Select.Option>
-                        </Select>
-                      </Form.Item>
-                    </div>
-                  </QuestionItem>
-                </>
-              );
-            }}
-          </Form.Item>
+            <Input placeholder="例如：2周、1个月" />
+          </QuestionItem>
 
           <QuestionItem
-            number="6"
+            number="5"
             question="在美住址"
             name="addressWhereYouWillStay"
-            explanation="请提供您在美国期间的详细住址，如酒店名称和地址、朋友或亲戚的住址等。"
           >
             <TextArea rows={3} placeholder="在美期间的详细住址" />
           </QuestionItem>
 
-          <div style={{ 
-            background: '#f9f9f9', 
-            padding: '10px', 
-            marginBottom: '20px', 
-            borderRadius: '4px', 
-            border: '1px solid #eee' 
-          }}>
-            <Paragraph style={{ fontSize: '13px', color: '#666', marginBottom: 0 }}>
-              <Text strong style={{ color: '#891300' }}>帮助：</Text> 如果您还无法确定您的旅行计划，请提供一个预计的旅行计划。美国签证官员理解您的计划可能会有所变动。
-            </Paragraph>
-          </div>
-
           <Divider />
           
           <Title level={5}>费用信息</Title>
-          
           <QuestionItem
-            number="7"
-            question="支付您旅行费用的个人或组织名称"
+            number="6"
+            question="谁将支付您的旅行费用？"
             name="whoIsPaying"
-            explanation="请选择谁将负责支付您此次赴美旅行的费用。"
           >
-            <Select placeholder="请选择" style={{ width: '100%' }}>
-              <Select.Option value="S">自己</Select.Option>
-              <Select.Option value="O">其他人</Select.Option>
-              <Select.Option value="P">现雇主</Select.Option>
-              <Select.Option value="U">美国雇主</Select.Option>
-              <Select.Option value="C">其他公司/组织</Select.Option>
-            </Select>
+            <Radio.Group>
+              <Radio value="self">自己</Radio>
+              <Radio value="company">公司</Radio>
+              <Radio value="other">其他</Radio>
+            </Radio.Group>
           </QuestionItem>
-
-          <Form.Item
-            noStyle
-            shouldUpdate={(prevValues, currentValues) => prevValues.whoIsPaying !== currentValues.whoIsPaying}
-          >
-            {({ getFieldValue }) => {
-              const payerType = getFieldValue('whoIsPaying');
-              
-              if (payerType === 'O') {
-                return (
-                  <QuestionItem
-                    number="8"
-                    question="其他人姓名"
-                    name="otherPayerName"
-                    explanation="请提供支付您旅行费用的个人姓名。"
-                  >
-                    <Input placeholder="请输入付款人姓名" />
-                  </QuestionItem>
-                );
-              } else if (['P', 'U', 'C'].includes(payerType)) {
-                return (
-                  <QuestionItem
-                    number="8"
-                    question="组织/公司名称"
-                    name="organizationName"
-                    explanation="请提供支付您旅行费用的组织或公司的名称。"
-                  >
-                    <Input placeholder="请输入组织/公司名称" />
-                  </QuestionItem>
-                );
-              }
-              
-              return null;
-            }}
-          </Form.Item>
         </>
       ),
     },
