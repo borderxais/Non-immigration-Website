@@ -836,6 +836,14 @@ const DS160Form: React.FC = () => {
                   );
                 }}
               </Form.Item>
+              <Row>
+                <Col span={24}>
+                  <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '10px' }}>
+                    <Button type="link" style={{ marginRight: '8px' }}>增加另一个</Button>
+                    <Button type="link" danger>移除</Button>
+                  </div>
+                </Col>
+              </Row>
             </div>
           </div>
           
