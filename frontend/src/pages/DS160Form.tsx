@@ -724,129 +724,94 @@ const DS160Form: React.FC = () => {
         <>
           <Title level={4}>旅行信息</Title>
           
-          <div className="field-group full">
-            <h4>
-              <span>提供以下信息：</span>
-            </h4>
-            
-            <div className="field-group callout">
-              <div className="field full" style={{ paddingBottom: '0%' }}>
+          <Title level={5}>旅行目的</Title>
+
+          <QuestionItem
+            question="赴美访问目的"
+            name="visaClass"
+            explanation="请选择与您赴美目的最相符的签证类别。"
+          >
+            <Select 
+              placeholder="请选择签证类别" 
+              style={{ width: '100%' }}
+              onChange={(value) => {
+                form.setFieldsValue({ specificPurpose: undefined });
+                // 触发表单依赖字段的更新
+                setTimeout(() => form.validateFields(['specificPurpose']), 100);
+              }}
+            >
+              <Select.Option value="">请选择签证类别</Select.Option>
+              <Select.Option value="A">外国政府官员 (A)</Select.Option>
+              <Select.Option value="B">临时商务或旅游访客 (B)</Select.Option>
+              <Select.Option value="C">过境外国人 (C)</Select.Option>
+              <Select.Option value="F">学术或语言学生 (F)</Select.Option>
+              <Select.Option value="G">国际组织代表/雇员 (G)</Select.Option>
+              <Select.Option value="H">临时工作者 (H)</Select.Option>
+              <Select.Option value="J">交流访问学者 (J)</Select.Option>
+              <Select.Option value="L">公司内部调动人员 (L)</Select.Option>
+              <Select.Option value="M">职业/非学术学生 (M)</Select.Option>
+              <Select.Option value="O">具有特殊能力的外国人 (O)</Select.Option>
+              <Select.Option value="P">国际知名外国人 (P)</Select.Option>
+            </Select>
+          </QuestionItem>
+
+          <Form.Item
+            noStyle
+            shouldUpdate={(prevValues, currentValues) => prevValues.visaClass !== currentValues.visaClass}
+          >
+            {({ getFieldValue }) => {
+              const visaClass = getFieldValue('visaClass');
+              
+              if (!visaClass) {
+                return null;
+              }
+
+              // 根据签证类别获取相应的具体说明选项
+              const getSpecificOptions = () => {
+                switch(visaClass) {
+                  case 'B':
+                    return [
+                      { value: 'BUSINESS', label: '商务' },
+                      { value: 'TOURISM', label: '旅游' },
+                      { value: 'VISIT_FAMILY', label: '访问家人/朋友' },
+                      { value: 'MEDICAL', label: '医疗' }
+                    ];
+                  case 'F':
+                    return [
+                      { value: 'STUDY', label: '学习课程' },
+                      { value: 'RESEARCH', label: '研究' }
+                    ];
+                  case 'J':
+                    return [
+                      { value: 'EXCHANGE', label: '交流项目' },
+                      { value: 'RESEARCH', label: '研究' },
+                      { value: 'TEACHING', label: '教学' },
+                      { value: 'INTERN', label: '实习' }
+                    ];
+                  default:
+                    return [{ value: 'OTHER', label: '其他' }];
+                }
+              };
+
+              return (
                 <QuestionItem
-                  question="赴美访问目的"
-                  name="visaClass"
-                  explanation="请选择与您赴美目的最相符的签证类别。"
+                  number="2"
+                  question="具体说明"
+                  name="specificPurpose"
+                  explanation="请选择您的具体访问目的。"
                 >
-                  <Select 
-                    placeholder="请选择签证类别" 
-                    style={{ width: '100%' }}
-                    onChange={(value) => {
-                      form.setFieldsValue({ specificPurpose: undefined });
-                      // 触发表单依赖字段的更新
-                      setTimeout(() => form.validateFields(['specificPurpose']), 100);
-                    }}
-                  >
-                    <Select.Option value="">请选择签证类别</Select.Option>
-                    <Select.Option value="A">外国政府官员 (A)</Select.Option>
-                    <Select.Option value="B">临时商务或旅游访客 (B)</Select.Option>
-                    <Select.Option value="C">过境外国人 (C)</Select.Option>
-                    <Select.Option value="CNMI">CNMI 工作者或投资者 (CW/E2C)</Select.Option>
-                    <Select.Option value="D">机组人员 (D)</Select.Option>
-                    <Select.Option value="E">条约贸易商或投资者 (E)</Select.Option>
-                    <Select.Option value="F">学术或语言学生 (F)</Select.Option>
-                    <Select.Option value="G">国际组织代表/雇员 (G)</Select.Option>
-                    <Select.Option value="H">临时工作者 (H)</Select.Option>
-                    <Select.Option value="I">外国媒体代表 (I)</Select.Option>
-                    <Select.Option value="J">交流访问学者 (J)</Select.Option>
-                    <Select.Option value="K">美国公民的未婚夫(妻)或配偶 (K)</Select.Option>
-                    <Select.Option value="L">公司内部调动人员 (L)</Select.Option>
-                    <Select.Option value="M">职业/非学术学生 (M)</Select.Option>
-                    <Select.Option value="N">其他 (N)</Select.Option>
-                    <Select.Option value="NATO">北约工作人员 (NATO)</Select.Option>
-                    <Select.Option value="O">具有特殊能力的外国人 (O)</Select.Option>
-                    <Select.Option value="P">国际知名外国人 (P)</Select.Option>
-                    <Select.Option value="Q">文化交流访问者 (Q)</Select.Option>
-                    <Select.Option value="R">宗教工作者 (R)</Select.Option>
-                    <Select.Option value="S">信息提供者或证人 (S)</Select.Option>
-                    <Select.Option value="T">人口贩运受害者 (T)</Select.Option>
-                    <Select.Option value="TD/TN">北美自由贸易协定专业人士 (TD/TN)</Select.Option>
-                    <Select.Option value="U">犯罪活动受害者 (U)</Select.Option>
-                    <Select.Option value="PAROLE-BEN">假释受益人 (PARCIS)</Select.Option>
+                  <Select placeholder="请选择" style={{ width: '100%' }}>
+                    <Select.Option value="">请选择</Select.Option>
+                    {getSpecificOptions().map(option => (
+                      <Select.Option key={option.value} value={option.value}>
+                        {option.label}
+                      </Select.Option>
+                    ))}
                   </Select>
                 </QuestionItem>
-              </div>
-                  
-              <Form.Item
-                noStyle
-                shouldUpdate={(prevValues, currentValues) => prevValues.visaClass !== currentValues.visaClass}
-              >
-                {({ getFieldValue }) => {
-                  const visaClass = getFieldValue('visaClass');
-                  
-                  if (!visaClass) {
-                    return null;
-                  }
-
-                  // 根据签证类别获取相应的具体说明选项
-                  const getSpecificOptions = () => {
-                    switch(visaClass) {
-                      case 'I':
-                        return [
-                          { value: 'I-CH', label: '外国媒体代表的子女 (I)' },
-                          { value: 'I-FR', label: '外国媒体代表 (I)' },
-                          { value: 'I-SP', label: '外国媒体代表的配偶 (I)' }
-                        ];
-                      case 'B':
-                        return [
-                          { value: 'B1', label: '临时商务访客 (B1)' },
-                          { value: 'B2', label: '临时旅游访客 (B2)' },
-                          { value: 'B1/B2', label: '临时商务和旅游访客 (B1/B2)' }
-                        ];
-                      case 'F':
-                        return [
-                          { value: 'F1', label: '学术学生 (F1)' },
-                          { value: 'F2', label: 'F1持有者的配偶或子女 (F2)' },
-                          { value: 'F3', label: '边境通勤学生 (F3)' }
-                        ];
-                      case 'J':
-                        return [
-                          { value: 'J1', label: '交流访问者 (J1)' },
-                          { value: 'J2', label: 'J1持有者的配偶或子女 (J2)' }
-                        ];
-                      default:
-                        return [{ value: 'OTHER', label: '其他' }];
-                    }
-                  };
-
-                  return (
-                    <div className="field full" style={{ paddingBottom: '0%' }}>
-                      <QuestionItem
-                        question="具体说明"
-                        name="specificPurpose"
-                      >
-                        <Select placeholder="请选择" style={{ width: '100%' }}>
-                          <Select.Option value="">请选择</Select.Option>
-                          {getSpecificOptions().map(option => (
-                            <Select.Option key={option.value} value={option.value}>
-                              {option.label}
-                            </Select.Option>
-                          ))}
-                        </Select>
-                      </QuestionItem>
-                    </div>
-                  );
-                }}
-              </Form.Item>
-              
-              <div className="addremove">
-                <div className="addone">
-                  <a>增加另一个</a>
-                </div>
-                <div className="removeone">
-                  <a>移除</a>
-                </div>
-              </div>
-            </div>
-          </div>
+              );
+            }}
+          </Form.Item>
 
           <br/><br/>
           <div className="hr" />
