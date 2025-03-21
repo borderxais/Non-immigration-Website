@@ -831,6 +831,15 @@ const DS160Form: React.FC = () => {
             }}
           </Form.Item>
 
+          <div className="addremove">
+            <div className="addone">
+              <a>增加另一个</a>
+            </div>
+            <div className="removeone">
+              <a>移除</a>
+            </div>
+          </div>
+
           <br/><br/>
           <div className="hr" />
             
