@@ -717,7 +717,6 @@ const DS160Form: React.FC = () => {
         </>
       ),
     },
-
     {
       title: '旅行信息',
       description: '行程安排',
@@ -726,6 +725,7 @@ const DS160Form: React.FC = () => {
           <Title level={4}>E. 旅行信息</Title>
           
           <Title level={5}>旅行目的</Title>
+
           <QuestionItem
             number="1"
             question="旅行目的"
@@ -777,17 +777,57 @@ const DS160Form: React.FC = () => {
           <Divider />
           
           <Title level={5}>费用信息</Title>
+
           <QuestionItem
-            number="6"
-            question="谁将支付您的旅行费用？"
+            number="7"
+            question="支付您旅行费用的个人或组织名称"
             name="whoIsPaying"
+            explanation="请选择谁将负责支付您此次赴美旅行的费用。"
           >
-            <Radio.Group>
-              <Radio value="self">自己</Radio>
-              <Radio value="company">公司</Radio>
-              <Radio value="other">其他</Radio>
-            </Radio.Group>
+            <Select placeholder="请选择" style={{ width: '100%' }}>
+              <Select.Option value="S">自己</Select.Option>
+              <Select.Option value="O">其他人</Select.Option>
+              <Select.Option value="P">现雇主</Select.Option>
+              <Select.Option value="U">美国雇主</Select.Option>
+              <Select.Option value="C">其他公司/组织</Select.Option>
+            </Select>
           </QuestionItem>
+
+          <Form.Item
+            noStyle
+            shouldUpdate={(prevValues, currentValues) => prevValues.whoIsPaying !== currentValues.whoIsPaying}
+          >
+            {({ getFieldValue }) => {
+              const payerType = getFieldValue('whoIsPaying');
+              
+              if (payerType === 'O') {
+                return (
+                  <QuestionItem
+                    number="8"
+                    question="其他人姓名"
+                    name="otherPayerName"
+                    explanation="请提供支付您旅行费用的个人姓名。"
+                  >
+                    <Input placeholder="请输入付款人姓名" />
+                  </QuestionItem>
+                );
+              } else if (['P', 'U', 'C'].includes(payerType)) {
+                return (
+                  <QuestionItem
+                    number="8"
+                    question="组织/公司名称"
+                    name="organizationName"
+                    explanation="请提供支付您旅行费用的组织或公司的名称。"
+                  >
+                    <Input placeholder="请输入组织/公司名称" />
+                  </QuestionItem>
+                );
+              }
+              
+              return null;
+            }}
+          </Form.Item>
+
         </>
       ),
     },
