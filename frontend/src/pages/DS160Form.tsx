@@ -767,12 +767,25 @@ const DS160Form: React.FC = () => {
           </QuestionItem>
 
           <QuestionItem
-            number="5"
+            number="6"
             question="在美住址"
             name="addressWhereYouWillStay"
+            explanation="请提供您在美国期间的详细住址，如酒店名称和地址、朋友或亲戚的住址等。"
           >
             <TextArea rows={3} placeholder="在美期间的详细住址" />
           </QuestionItem>
+
+          <div style={{ 
+            background: '#f9f9f9', 
+            padding: '10px', 
+            marginBottom: '20px', 
+            borderRadius: '4px', 
+            border: '1px solid #eee' 
+          }}>
+            <Paragraph style={{ fontSize: '13px', color: '#666', marginBottom: 0 }}>
+              <Text strong style={{ color: '#891300' }}>帮助：</Text> 如果您还无法确定您的旅行计划，请提供一个预计的旅行计划。美国签证官员理解您的计划可能会有所变动。
+            </Paragraph>
+          </div>
 
           <Divider />
           
