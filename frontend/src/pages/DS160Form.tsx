@@ -728,14 +728,31 @@ const DS160Form: React.FC = () => {
 
           <QuestionItem
             number="1"
-            question="旅行目的"
-            name="purposeOfTrip"
+            question="赴美访问目的"
+            name="visaClass"
+            explanation="请选择与您赴美目的最相符的签证类别。"
           >
-            <Select placeholder="选择旅行目的">
-              <Select.Option value="B1">商务(B1)</Select.Option>
-              <Select.Option value="B2">旅游/访友(B2)</Select.Option>
-              <Select.Option value="F1">学习(F1)</Select.Option>
-              <Select.Option value="J1">交流访问(J1)</Select.Option>
+            <Select 
+              placeholder="请选择签证类别" 
+              style={{ width: '100%' }}
+              onChange={(value) => {
+                form.setFieldsValue({ specificPurpose: undefined });
+                // 触发表单依赖字段的更新
+                setTimeout(() => form.validateFields(['specificPurpose']), 100);
+              }}
+            >
+              <Select.Option value="">请选择签证类别</Select.Option>
+              <Select.Option value="A">外国政府官员 (A)</Select.Option>
+              <Select.Option value="B">临时商务或旅游访客 (B)</Select.Option>
+              <Select.Option value="C">过境外国人 (C)</Select.Option>
+              <Select.Option value="F">学术或语言学生 (F)</Select.Option>
+              <Select.Option value="G">国际组织代表/雇员 (G)</Select.Option>
+              <Select.Option value="H">临时工作者 (H)</Select.Option>
+              <Select.Option value="J">交流访问学者 (J)</Select.Option>
+              <Select.Option value="L">公司内部调动人员 (L)</Select.Option>
+              <Select.Option value="M">职业/非学术学生 (M)</Select.Option>
+              <Select.Option value="O">具有特殊能力的外国人 (O)</Select.Option>
+              <Select.Option value="P">国际知名外国人 (P)</Select.Option>
             </Select>
           </QuestionItem>
 
