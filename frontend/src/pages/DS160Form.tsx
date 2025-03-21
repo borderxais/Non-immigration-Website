@@ -739,13 +739,63 @@ const DS160Form: React.FC = () => {
             </Select>
           </QuestionItem>
 
-          <QuestionItem
-            number="2"
-            question="具体说明"
-            name="specificPurpose"
+          <Form.Item
+            noStyle
+            shouldUpdate={(prevValues, currentValues) => prevValues.visaClass !== currentValues.visaClass}
           >
-            <TextArea rows={4} placeholder="详细说明您此行的具体目的" />
-          </QuestionItem>
+            {({ getFieldValue }) => {
+              const visaClass = getFieldValue('visaClass');
+              
+              if (!visaClass) {
+                return null;
+              }
+
+              // 根据签证类别获取相应的具体说明选项
+              const getSpecificOptions = () => {
+                switch(visaClass) {
+                  case 'B':
+                    return [
+                      { value: 'BUSINESS', label: '商务' },
+                      { value: 'TOURISM', label: '旅游' },
+                      { value: 'VISIT_FAMILY', label: '访问家人/朋友' },
+                      { value: 'MEDICAL', label: '医疗' }
+                    ];
+                  case 'F':
+                    return [
+                      { value: 'STUDY', label: '学习课程' },
+                      { value: 'RESEARCH', label: '研究' }
+                    ];
+                  case 'J':
+                    return [
+                      { value: 'EXCHANGE', label: '交流项目' },
+                      { value: 'RESEARCH', label: '研究' },
+                      { value: 'TEACHING', label: '教学' },
+                      { value: 'INTERN', label: '实习' }
+                    ];
+                  default:
+                    return [{ value: 'OTHER', label: '其他' }];
+                }
+              };
+
+              return (
+                <QuestionItem
+                  number="2"
+                  question="具体说明"
+                  name="specificPurpose"
+                  explanation="请选择您的具体访问目的。"
+                >
+                  <Select placeholder="请选择" style={{ width: '100%' }}>
+                    <Select.Option value="">请选择</Select.Option>
+                    {getSpecificOptions().map(option => (
+                      <Select.Option key={option.value} value={option.value}>
+                        {option.label}
+                      </Select.Option>
+                    ))}
+                  </Select>
+                </QuestionItem>
+              );
+            }}
+          </Form.Item>
 
           <Divider />
           
