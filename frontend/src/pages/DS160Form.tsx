@@ -717,64 +717,7 @@ const DS160Form: React.FC = () => {
         </>
       ),
     },
-    {
-      title: '护照信息',
-      description: '护照详细信息',
-      content: (
-        <>
-          <Title level={4}>D. 护照信息</Title>
-          
-          <Title level={5}>护照信息</Title>
-          <QuestionItem
-            number="1"
-            question="护照号码"
-            name="passportNumber"
-          >
-            <Input placeholder="护照号码" />
-          </QuestionItem>
-
-          <QuestionItem
-            number="2"
-            question="护照本号码（如有）"
-            name="passportBookNumber"
-          >
-            <Input placeholder="如有" />
-          </QuestionItem>
-
-          <QuestionItem
-            number="3"
-            question="护照签发国家"
-            name="issuingCountry"
-          >
-            <Input />
-          </QuestionItem>
-
-          <QuestionItem
-            number="4"
-            question="护照签发地点"
-            name="issuingAuthority"
-          >
-            <Input placeholder="签发机关" />
-          </QuestionItem>
-
-          <QuestionItem
-            number="5"
-            question="护照签发日期"
-            name="issuanceDate"
-          >
-            <DatePicker style={{ width: '100%' }} />
-          </QuestionItem>
-
-          <QuestionItem
-            number="6"
-            question="护照过期日期"
-            name="expirationDate"
-          >
-            <DatePicker style={{ width: '100%' }} />
-          </QuestionItem>
-        </>
-      ),
-    },
+    
     {
       title: '旅行信息',
       description: '行程安排',
