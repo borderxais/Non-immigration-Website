@@ -722,12 +722,11 @@ const DS160Form: React.FC = () => {
       description: '行程安排',
       content: (
         <>
-          <Title level={4}>E. 旅行信息</Title>
+          <Title level={4}>旅行信息</Title>
           
           <Title level={5}>旅行目的</Title>
 
           <QuestionItem
-            number="1"
             question="赴美访问目的"
             name="visaClass"
             explanation="请选择与您赴美目的最相符的签证类别。"
@@ -819,7 +818,6 @@ const DS160Form: React.FC = () => {
           <Title level={5}>旅行计划</Title>
 
           <QuestionItem
-            number="3"
             question="您是否已经制定了具体的旅行计划？"
             name="hasSpecificPlans"
             explanation="如果您已确定行程，请选择'是'；如果尚未确定，请选择'否'并提供预计的信息。"
@@ -837,6 +835,11 @@ const DS160Form: React.FC = () => {
             {({ getFieldValue }) => {
               const hasSpecificPlans = getFieldValue('hasSpecificPlans');
               
+              // 如果没有选择是否有具体旅行计划，不显示任何后续问题
+              if (!hasSpecificPlans) {
+                return null;
+              }
+              
               if (hasSpecificPlans === 'Y') {
                 return (
                   <QuestionItem
@@ -850,110 +853,156 @@ const DS160Form: React.FC = () => {
                 );
               }
 
-              return (
-                <>
-                  <QuestionItem
-                    number="4"
-                    question="计划到达日期"
-                    name="intendedDateOfArrival"
-                    explanation="请提供您计划入境美国的日期。如果您还不确定，请提供一个预计日期。"
-                  >
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                      <Form.Item 
-                        name="arrivalDay" 
-                        noStyle
-                        rules={[{ required: true, message: '请选择日期' }]}
-                      >
-                        <Select style={{ width: '60px' }} placeholder="">
-                          <Select.Option value="">  </Select.Option>
-                          {Array.from({ length: 31 }, (_, i) => {
-                            const day = (i + 1).toString().padStart(2, '0');
-                            return <Select.Option key={day} value={day}>{day}</Select.Option>;
-                          })}
-                        </Select>
-                      </Form.Item>
+              if (hasSpecificPlans === 'N') {
+                return (
+                  <>
+                    <QuestionItem
+                      number="4"
+                      question="计划到达日期"
+                      name="intendedDateOfArrival"
+                      explanation="请提供您计划入境美国的日期。如果您还不确定，请提供一个预计日期。"
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                        <Form.Item 
+                          name="arrivalDay" 
+                          noStyle
+                          rules={[{ required: true, message: '请选择日期' }]}
+                        >
+                          <Select style={{ width: '60px' }} placeholder="">
+                            <Select.Option value="">  </Select.Option>
+                            {Array.from({ length: 31 }, (_, i) => {
+                              const day = (i + 1).toString().padStart(2, '0');
+                              return <Select.Option key={day} value={day}>{day}</Select.Option>;
+                            })}
+                          </Select>
+                        </Form.Item>
 
-                      <Form.Item 
-                        name="arrivalMonth" 
-                        noStyle
-                        rules={[{ required: true, message: '请选择月份' }]}
-                      >
-                        <Select style={{ width: '70px' }} placeholder="">
-                          <Select.Option value="">  </Select.Option>
-                          <Select.Option value="JAN">一月</Select.Option>
-                          <Select.Option value="FEB">二月</Select.Option>
-                          <Select.Option value="MAR">三月</Select.Option>
-                          <Select.Option value="APR">四月</Select.Option>
-                          <Select.Option value="MAY">五月</Select.Option>
-                          <Select.Option value="JUN">六月</Select.Option>
-                          <Select.Option value="JUL">七月</Select.Option>
-                          <Select.Option value="AUG">八月</Select.Option>
-                          <Select.Option value="SEP">九月</Select.Option>
-                          <Select.Option value="OCT">十月</Select.Option>
-                          <Select.Option value="NOV">十一月</Select.Option>
-                          <Select.Option value="DEC">十二月</Select.Option>
-                        </Select>
-                      </Form.Item>
+                        <Form.Item 
+                          name="arrivalMonth" 
+                          noStyle
+                          rules={[{ required: true, message: '请选择月份' }]}
+                        >
+                          <Select style={{ width: '70px' }} placeholder="">
+                            <Select.Option value="">  </Select.Option>
+                            <Select.Option value="JAN">一月</Select.Option>
+                            <Select.Option value="FEB">二月</Select.Option>
+                            <Select.Option value="MAR">三月</Select.Option>
+                            <Select.Option value="APR">四月</Select.Option>
+                            <Select.Option value="MAY">五月</Select.Option>
+                            <Select.Option value="JUN">六月</Select.Option>
+                            <Select.Option value="JUL">七月</Select.Option>
+                            <Select.Option value="AUG">八月</Select.Option>
+                            <Select.Option value="SEP">九月</Select.Option>
+                            <Select.Option value="OCT">十月</Select.Option>
+                            <Select.Option value="NOV">十一月</Select.Option>
+                            <Select.Option value="DEC">十二月</Select.Option>
+                          </Select>
+                        </Form.Item>
 
-                      <Form.Item 
-                        name="arrivalYear" 
-                        noStyle
-                        rules={[
-                          { required: true, message: '请输入年份' },
-                          { pattern: /^\d{4}$/, message: '请输入4位数年份' }
-                        ]}
-                      >
-                        <Input placeholder="" style={{ width: '60px' }} maxLength={4} />
-                      </Form.Item>
+                        <Form.Item 
+                          name="arrivalYear" 
+                          noStyle
+                          rules={[
+                            { required: true, message: '请输入年份' },
+                            { pattern: /^\d{4}$/, message: '请输入4位数年份' }
+                          ]}
+                        >
+                          <Input placeholder="" style={{ width: '60px' }} maxLength={4} />
+                        </Form.Item>
 
-                      <div style={{ marginLeft: '8px', fontSize: '12px', color: '#666' }}>
-                        (格式: DD-MMM-YYYY)
+                        <div style={{ marginLeft: '8px', fontSize: '12px', color: '#666' }}>
+                          (格式: DD-MMM-YYYY)
+                        </div>
                       </div>
-                    </div>
-                  </QuestionItem>
+                    </QuestionItem>
 
-                  <QuestionItem
-                    number="5"
-                    question="计划在美停留时间"
-                    name="intendedLengthOfStay"
-                    explanation="请输入您计划在美国停留的时间长度和单位。"
-                  >
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <Form.Item 
-                        name="stayDuration" 
-                        noStyle
-                        rules={[{ required: true, message: '请输入停留时间' }]}
-                      >
-                        <Input style={{ width: '80px' }} maxLength={3} placeholder="数量" />
-                      </Form.Item>
-                      
-                      <Form.Item 
-                        name="stayDurationType" 
-                        noStyle
-                        rules={[{ required: true, message: '请选择单位' }]}
-                      >
-                        <Select style={{ width: '120px' }} placeholder="单位">
-                          <Select.Option value="Y">年</Select.Option>
-                          <Select.Option value="M">月</Select.Option>
-                          <Select.Option value="W">周</Select.Option>
-                          <Select.Option value="D">天</Select.Option>
-                        </Select>
-                      </Form.Item>
-                    </div>
-                  </QuestionItem>
-                </>
-              );
+                    <Form.Item
+                      noStyle
+                      shouldUpdate={(prevValues, currentValues) => 
+                        prevValues.arrivalDay !== currentValues.arrivalDay ||
+                        prevValues.arrivalMonth !== currentValues.arrivalMonth ||
+                        prevValues.arrivalYear !== currentValues.arrivalYear
+                      }
+                    >
+                      {({ getFieldValue }) => {
+                        // 只有当所有日期字段都填写了才显示停留时间问题
+                        const day = getFieldValue('arrivalDay');
+                        const month = getFieldValue('arrivalMonth');
+                        const year = getFieldValue('arrivalYear');
+                        
+                        if (!day || !month || !year) {
+                          return null;
+                        }
+                        
+                        return (
+                          <QuestionItem
+                            number="5"
+                            question="计划在美停留时间"
+                            name="intendedLengthOfStay"
+                            explanation="请输入您计划在美国停留的时间长度和单位。"
+                          >
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                              <Form.Item 
+                                name="stayDuration" 
+                                noStyle
+                                rules={[{ required: true, message: '请输入停留时间' }]}
+                              >
+                                <Input style={{ width: '80px' }} maxLength={3} placeholder="数量" />
+                              </Form.Item>
+                              
+                              <Form.Item 
+                                name="stayDurationType" 
+                                noStyle
+                                rules={[{ required: true, message: '请选择单位' }]}
+                              >
+                                <Select style={{ width: '120px' }} placeholder="单位">
+                                  <Select.Option value="Y">年</Select.Option>
+                                  <Select.Option value="M">月</Select.Option>
+                                  <Select.Option value="W">周</Select.Option>
+                                  <Select.Option value="D">天</Select.Option>
+                                </Select>
+                              </Form.Item>
+                            </div>
+                          </QuestionItem>
+                        );
+                      }}
+                    </Form.Item>
+
+                    <Form.Item
+                      noStyle
+                      shouldUpdate={(prevValues, currentValues) => 
+                        prevValues.stayDuration !== currentValues.stayDuration ||
+                        prevValues.stayDurationType !== currentValues.stayDurationType
+                      }
+                    >
+                      {({ getFieldValue }) => {
+                        // 只有当停留时间的两个字段都填写了才显示住址问题
+                        const duration = getFieldValue('stayDuration');
+                        const durationType = getFieldValue('stayDurationType');
+                        
+                        if (!duration || !durationType) {
+                          return null;
+                        }
+                        
+                        return (
+                          <QuestionItem
+                            number="6"
+                            question="在美住址"
+                            name="addressWhereYouWillStay"
+                            explanation="请提供您在美国期间的详细住址，如酒店名称和地址、朋友或亲戚的住址等。"
+                          >
+                            <TextArea rows={3} placeholder="在美期间的详细住址" />
+                          </QuestionItem>
+                        );
+                      }}
+                    </Form.Item>
+                  </>
+                );
+              }
+              
+              return null;
             }}
           </Form.Item>
-
-          <QuestionItem
-            number="6"
-            question="在美住址"
-            name="addressWhereYouWillStay"
-            explanation="请提供您在美国期间的详细住址，如酒店名称和地址、朋友或亲戚的住址等。"
-          >
-            <TextArea rows={3} placeholder="在美期间的详细住址" />
-          </QuestionItem>
 
           <div style={{ 
             background: '#f9f9f9', 
