@@ -813,20 +813,26 @@ const DS160Form: React.FC = () => {
             }}
           </Form.Item>
 
-          <Divider />
-          
-          <Title level={5}>旅行计划</Title>
-
-          <QuestionItem
-            question="您是否已经制定了具体的旅行计划？"
-            name="hasSpecificPlans"
-            explanation="如果您已确定行程，请选择'是'；如果尚未确定，请选择'否'并提供预计的信息。"
-          >
-            <Radio.Group>
-              <Radio value="Y">是</Radio>
-              <Radio value="N">否</Radio>
-            </Radio.Group>
-          </QuestionItem>
+          <br/><br/>
+          <div className="hr" />
+            
+          <div className="field-groups">
+            <div className="q">
+              <QuestionItem
+                question="您是否已经制定了具体的旅行计划？"
+                name="hasSpecificPlans"
+                explanation="如果您已确定行程，请选择'是'；如果尚未确定，请选择'否'并提供预计的信息。"
+              >
+                <Radio.Group onChange={(e) => {
+                  // 当选项改变时，通过表单实例更新字段值
+                  form.setFieldsValue({ hasSpecificPlans: e.target.value });
+                }}>
+                  <Radio value="Y">是</Radio>
+                  <Radio value="N">否</Radio>
+                </Radio.Group>
+              </QuestionItem>
+            </div>
+          </div>
 
           <Form.Item
             noStyle
