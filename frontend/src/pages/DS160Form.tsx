@@ -3,6 +3,8 @@ import { Card, Steps, Form, Input, Select, DatePicker, Radio, Space, Button, Typ
 import ds160Service from '../services/ds160Service';
 import { useNavigate } from 'react-router-dom';
 
+//  Application ID AA00EGS9G1
+
 const { TextArea } = Input;
 const { Title, Text, Paragraph } = Typography;
 
@@ -789,29 +791,121 @@ const DS160Form: React.FC = () => {
                   // 根据签证类别获取相应的具体说明选项
                   const getSpecificOptions = () => {
                     switch(visaClass) {
-                      case 'I':
+                      case 'A':
                         return [
-                          { value: 'I-CH', label: '外国媒体代表的子女 (I)' },
-                          { value: 'I-FR', label: '外国媒体代表 (I)' },
-                          { value: 'I-SP', label: '外国媒体代表的配偶 (I)' }
+                          { value: 'A1-AM', label: '大使或公使 (A1)' },
+                          { value: 'A1-CH', label: 'A1持有者的子女 (A1)' },
+                          { value: 'A1-DP', label: '职业外交官/领事官员 (A1)' },
+                          { value: 'A1-SP', label: 'A1持有者的配偶 (A1)' },
+                          { value: 'A2-CH', label: 'A2持有者的子女 (A2)' },
+                          { value: 'A2-EM', label: '外国官员/雇员 (A2)' },
+                          { value: 'A2-SP', label: 'A2持有者的配偶 (A2)' },
+                          { value: 'A3-CH', label: 'A3持有者的子女 (A3)' },
+                          { value: 'A3-EM', label: 'A1或A2持有者的个人雇员 (A3)' },
+                          { value: 'A3-SP', label: 'A3持有者的配偶 (A3)' }
                         ];
                       case 'B':
                         return [
-                          { value: 'B1', label: '临时商务访客 (B1)' },
-                          { value: 'B2', label: '临时旅游访客 (B2)' },
-                          { value: 'B1/B2', label: '临时商务和旅游访客 (B1/B2)' }
+                          { value: 'B1-B2', label: '商务或旅游（临时访客）(B1/B2)' },
+                          { value: 'B1-CF', label: '商务/会议 (B1)' },
+                          { value: 'B2-TM', label: '旅游/医疗治疗 (B2)' }
+                        ];
+                      case 'C':
+                        return [
+                          { value: 'C1-D', label: '过境机组人员 (C1/D)' },
+                          { value: 'C1-TR', label: '过境 (C1)' },
+                          { value: 'C2-UN', label: '过境前往联合国总部 (C2)' },
+                          { value: 'C3-CH', label: 'C3持有者的子女 (C3)' },
+                          { value: 'C3-EM', label: 'C3持有者的个人雇员 (C3)' },
+                          { value: 'C3-FR', label: '过境外国官员 (C3)' },
+                          { value: 'C3-SP', label: 'C3持有者的配偶 (C3)' },
+                          { value: 'C4-NO', label: '非公民过境驳船操作 (C4)' },
+                          { value: 'C4-D3', label: '过境驳船机组人员 (C4/D3)' }
+                        ];
+                      case 'CNMI':
+                        return [
+                          { value: 'CW1-CW1', label: 'CNMI临时工作者 (CW1)' },
+                          { value: 'CW2-CH', label: 'CW1持有者的子女 (CW2)' },
+                          { value: 'CW2-SP', label: 'CW1持有者的配偶 (CW2)' },
+                          { value: 'E2C-E2C', label: 'CNMI长期投资者 (E2C)' }
+                        ];
+                      case 'D':
+                        return [
+                          { value: 'D-D', label: '机组人员 (D)' },
+                          { value: 'D3-LI', label: '驳船机组人员 (D3)' }
+                        ];
+                      case 'E':
+                        return [
+                          { value: 'E1-CH', label: 'E1持有者的子女 (E1)' },
+                          { value: 'E1-EX', label: '高管/经理/重要雇员 (E1)' },
+                          { value: 'E1-SP', label: 'E1持有者的配偶 (E1)' },
+                          { value: 'E1-TR', label: '条约贸易商 (E1)' },
+                          { value: 'E2-CH', label: 'E2持有者的子女 (E2)' },
+                          { value: 'E2-EX', label: '高管/经理/重要雇员 (E2)' },
+                          { value: 'E2-SP', label: 'E2持有者的配偶 (E2)' },
+                          { value: 'E2-TR', label: '条约投资者 (E2)' },
+                          { value: 'E3D-CH', label: 'E3持有者的子女 (E3D)' },
+                          { value: 'E3D-SP', label: 'E3持有者的配偶 (E3D)' }
                         ];
                       case 'F':
                         return [
-                          { value: 'F1', label: '学术学生 (F1)' },
-                          { value: 'F2', label: 'F1持有者的配偶或子女 (F2)' },
-                          { value: 'F3', label: '边境通勤学生 (F3)' }
+                          { value: 'F1-F1', label: '学生 (F1)' },
+                          { value: 'F2-CH', label: 'F1持有者的子女 (F2)' },
+                          { value: 'F2-SP', label: 'F1持有者的配偶 (F2)' }
                         ];
+                      case 'G':
+                        return [
+                          { value: 'G1-CH', label: 'G1持有者的子女 (G1)' },
+                          { value: 'G1-G1', label: '首席代表 (G1)' },
+                          { value: 'G1-SP', label: 'G1持有者的配偶 (G1)' },
+                          { value: 'G1-ST', label: '首席代表的工作人员 (G1)' },
+                          { value: 'G2-CH', label: 'G2持有者的子女 (G2)' },
+                          { value: 'G2-RP', label: '代表 (G2)' },
+                          { value: 'G2-SP', label: 'G2持有者的配偶 (G2)' },
+                          { value: 'G3-CH', label: 'G3持有者的子女 (G3)' },
+                          { value: 'G3-RP', label: '非认可/非成员国家代表 (G3)' },
+                          { value: 'G3-SP', label: 'G3持有者的配偶 (G3)' },
+                          { value: 'G4-CH', label: 'G4持有者的子女 (G4)' },
+                          { value: 'G4-G4', label: '国际组织雇员 (G4)' },
+                          { value: 'G4-SP', label: 'G4持有者的配偶 (G4)' },
+                          { value: 'G5-CH', label: 'G5持有者的子女 (G5)' },
+                          { value: 'G5-EM', label: 'G1、G2、G3或G4持有者的个人雇员 (G5)' },
+                          { value: 'G5-SP', label: 'G5持有者的配偶 (G5)' }
+                        ];
+                      case 'H':
+                        return [
+                          { value: 'H1B-H1B', label: '特殊职业 (H1B)' },
+                          { value: 'H1B1-CHL', label: '智利特殊职业 (H1B1)' },
+                          { value: 'H1B1-SGP', label: '新加坡特殊职业 (H1B1)' },
+                          { value: 'H1C-NR', label: '短缺地区护士 (H1C)' },
+                          { value: 'H2A-AG', label: '农业工人 (H2A)' },
+                          { value: 'H2B-NA', label: '非农业工人 (H2B)' },
+                          { value: 'H3-TR', label: '实习生 (H3)' },
+                          { value: 'H4-CH', label: 'H签证持有者的子女 (H4)' },
+                          { value: 'H4-SP', label: 'H签证持有者的配偶 (H4)' }
+                        ];
+                      case 'I':
+                        return [
+                          { value: 'I-CH', label: 'I签证持有者的子女 (I)' },
+                          { value: 'I-FR', label: '外国媒体代表 (I)' },
+                          { value: 'I-SP', label: 'I签证持有者的配偶 (I)' }
+                        ];
+
                       case 'J':
                         return [
-                          { value: 'J1', label: '交流访问者 (J1)' },
-                          { value: 'J2', label: 'J1持有者的配偶或子女 (J2)' }
+                          { value: 'J1-J1', label: '交流访问者 (J1)' },
+                          { value: 'J2-CH', label: 'J1持有者的子女 (J2)' },
+                          { value: 'J2-SP', label: 'J1持有者的配偶 (J2)' }
                         ];
+
+                      case 'K':
+                        return [
+                          { value: 'K1-K1', label: '美国公民的未婚夫(妻) (K1)' },
+                          { value: 'K2-K2', label: 'K1持有者的子女 (K2)' },
+                          { value: 'K3-K3', label: '美国公民的配偶 (K3)' },
+                          { value: 'K4-K4', label: 'K3持有者的子女 (K4)' }
+                        ];
+                      
                       default:
                         return [{ value: 'OTHER', label: '其他' }];
                     }
