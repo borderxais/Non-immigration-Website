@@ -909,7 +909,6 @@ const DS160Form: React.FC = () => {
                           { value: 'L2-CH', label: 'L1持有者的子女 (L2)' },
                           { value: 'L2-SP', label: 'L1持有者的配偶 (L2)' }
                         ];
-                        case 'M':
                       case 'M':
                         return [
                           { value: 'M1-M1', label: '学生 (M1)' },
