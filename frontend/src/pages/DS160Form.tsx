@@ -890,14 +890,12 @@ const DS160Form: React.FC = () => {
                           { value: 'I-FR', label: '外国媒体代表 (I)' },
                           { value: 'I-SP', label: 'I签证持有者的配偶 (I)' }
                         ];
-
                       case 'J':
                         return [
                           { value: 'J1-J1', label: '交流访问者 (J1)' },
                           { value: 'J2-CH', label: 'J1持有者的子女 (J2)' },
                           { value: 'J2-SP', label: 'J1持有者的配偶 (J2)' }
                         ];
-
                       case 'K':
                         return [
                           { value: 'K1-K1', label: '美国公民的未婚夫(妻) (K1)' },
@@ -905,7 +903,104 @@ const DS160Form: React.FC = () => {
                           { value: 'K3-K3', label: '美国公民的配偶 (K3)' },
                           { value: 'K4-K4', label: 'K3持有者的子女 (K4)' }
                         ];
-                      
+                      case 'L':
+                        return [
+                          { value: 'L1-L1', label: '公司内部调动人员 (L1)' },
+                          { value: 'L2-CH', label: 'L1持有者的子女 (L2)' },
+                          { value: 'L2-SP', label: 'L1持有者的配偶 (L2)' }
+                        ];
+                        case 'M':
+                      case 'M':
+                        return [
+                          { value: 'M1-M1', label: '学生 (M1)' },
+                          { value: 'M2-CH', label: 'M1持有者的子女 (M2)' },
+                          { value: 'M2-SP', label: 'M1持有者的配偶 (M2)' },
+                          { value: 'M3-M3', label: '通勤学生 (M3)' }
+                        ];
+                      case 'N':
+                        return [
+                          { value: 'N8-N8', label: '特殊移民的父母 (N8)' },
+                          { value: 'N8-CH', label: 'N8持有者的子女 (N9)' }
+                        ];
+                      case 'NATO':
+                        return [
+                          { value: 'NATO1-PR', label: '首席代表 (NATO1)' },
+                          { value: 'NATO1-SP', label: 'NATO1持有者的配偶 (NATO1)' },
+                          { value: 'NATO1-CH', label: 'NATO1持有者的子女 (NATO1)' },
+                          { value: 'NATO2-RP', label: '代表 (NATO2)' },
+                          { value: 'NATO2-SP', label: 'NATO2持有者的配偶 (NATO2)' },
+                          { value: 'NATO2-CH', label: 'NATO2持有者的子女 (NATO2)' },
+                          { value: 'NATO3-ST', label: '文职人员 (NATO3)' },
+                          { value: 'NATO3-SP', label: 'NATO3持有者的配偶 (NATO3)' },
+                          { value: 'NATO3-CH', label: 'NATO3持有者的子女 (NATO3)' },
+                          { value: 'NATO4-OF', label: '官员 (NATO4)' },
+                          { value: 'NATO4-SP', label: 'NATO4持有者的配偶 (NATO4)' },
+                          { value: 'NATO4-CH', label: 'NATO4持有者的子女 (NATO4)' },
+                          { value: 'NATO5-EX', label: '专家 (NATO5)' },
+                          { value: 'NATO5-SP', label: 'NATO5持有者的配偶 (NATO5)' },
+                          { value: 'NATO5-CH', label: 'NATO5持有者的子女 (NATO5)' },
+                          { value: 'NATO6-ST', label: '平民工作人员 (NATO6)' },
+                          { value: 'NATO6-SP', label: 'NATO6持有者的配偶 (NATO6)' },
+                          { value: 'NATO6-CH', label: 'NATO6持有者的子女 (NATO6)' },
+                          { value: 'NATO7-EM', label: 'NATO1-NATO6雇佣的个人员工 (NATO7)' },
+                          { value: 'NATO7-SP', label: 'NATO7持有者的配偶 (NATO7)' },
+                          { value: 'NATO7-CH', label: 'NATO7持有者的子女 (NATO7)' }
+                        ];
+                      case 'O': 
+                        return [
+                          { value: 'O1-EX', label: '杰出能力者 (O1)' },
+                          { value: 'O2-AL', label: '随行/协助人员 (O2)' },
+                          { value: 'O3-SP', label: 'O1或O2持有者的配偶 (O3)' },
+                          { value: 'O3-CH', label: 'O1或O2持有者的子女 (O3)' }
+                        ];
+                      case 'P':
+                        return [
+                          { value: 'P1-P1', label: '国际公认人员 (P1)' },
+                          { value: 'P2-P2', label: '艺术家/艺人交流项目 (P2)' },
+                          { value: 'P3-P3', label: '文化项目中的艺术家/艺人 (P3)' },
+                          { value: 'P4-SP', label: 'P1、P2或P3持有者的配偶 (P4)' },
+                          { value: 'P4-CH', label: 'P1、P2或P3持有者的子女 (P4)' }
+                        ];
+                      case 'Q':
+                        return [
+                          { value: 'Q1-Q1', label: '文化交流访问者 (Q1)' }
+                        ];
+                      case 'R':
+                        return [
+                          { value: 'R1-R1', label: '宗教工作者 (R1)' },
+                          { value: 'R2-R2', label: '宗教工作者的配偶 (R2)' },
+                          { value: 'R3-R3', label: '宗教工作者的子女 (R3)' }
+                        ];
+                      case 'S':
+                        return [
+                          { value: 'S7-S7', label: '线人的家庭成员 (S7)' }
+                        ];
+                      case 'T':
+                        return [
+                          { value: 'T1-T1', label: '人口贩卖受害者 (T1)' },
+                          { value: 'T2-SP', label: 'T1持有者的配偶 (T2)' },
+                          { value: 'T3-CH', label: 'T1持有者的子女 (T3)' },
+                          { value: 'T4-PR', label: 'T1持有者的父母 (T4)' },
+                          { value: 'T5-SB', label: 'T1持有者的兄弟姐妹 (T5)' },
+                          { value: 'T6-CB', label: 'T1派生受益人的成年/未成年子女 (T6)' }
+                        ];
+                      case 'TD/TN':
+                        return [
+                          { value: 'TD-SP', label: 'TN持有者的配偶 (TD)' },
+                          { value: 'TD-CH', label: 'TN持有者的子女 (TD)' }
+                        ];
+                      case 'U':
+                        return [
+                          { value: 'U1-U1', label: '犯罪受害者 (U1)' },
+                          { value: 'U2-SP', label: 'U1持有者的配偶 (U2)' },
+                          { value: 'U3-CH', label: 'U1持有者的子女 (U3)' },
+                          { value: 'U4-PR', label: 'U1持有者的父母 (U4)' },
+                          { value: 'U5-SB', label: 'U1持有者的兄弟姐妹 (U5)' }
+                        ];
+                      case 'PRL':
+                        return [
+                          { value: 'PRL-PARCIS', label: 'PARCIS (USCIS批准的临时入境许可)' }
+                        ];
                       default:
                         return [{ value: 'OTHER', label: '其他' }];
                     }
