@@ -1062,7 +1062,79 @@ const DS160Form: React.FC = () => {
                   );
                 }}
               </Form.Item>
-              
+
+              <Form.Item
+                noStyle
+                shouldUpdate={(prevValues, currentValues) => 
+                  prevValues.specificPurpose !== currentValues.specificPurpose
+                }
+              >
+                {({ getFieldValue }) => {
+                  const specificPurpose = getFieldValue('specificPurpose');
+                  
+                  // Only show the principal applicant fields if the selected option indicates a dependent relationship
+                  if (specificPurpose && isDependentSelection(specificPurpose)) {
+                    return (
+                      <div className="principal-applicant-section" style={{ padding: '10px', backgroundColor: '#f0f8ff', borderRadius: '4px', marginTop: '15px', marginBottom: '15px' }}>
+                        <div className="section-title" style={{ marginBottom: '15px', fontWeight: 'bold' }}>
+                          主申请人信息
+                        </div>
+                        <Row gutter={16}>
+                          <Col span={12}>
+                            <QuestionItem
+                              question="主申请人姓氏"
+                              name="principalApplicantSurname"
+                              explanation="请输入持有签证的主申请人的姓氏（与护照一致）"
+                              textStyle={textStyle}
+                            >
+                              <Input placeholder="请输入主申请人姓氏" />
+                            </QuestionItem>
+                          </Col>
+                          <Col span={12}>
+                            <QuestionItem
+                              question="主申请人名字"
+                              name="principalApplicantGivenName"
+                              explanation="请输入持有签证的主申请人的名字（与护照一致）"
+                              textStyle={textStyle}
+                            >
+                              <Input placeholder="请输入主申请人名字" />
+                            </QuestionItem>
+                          </Col>
+                        </Row>
+                        
+                        {/* You can add more dependent fields here as needed */}
+                        {specificPurpose && specificPurpose.includes('CH') && (
+                          <QuestionItem
+                            question="与主申请人的关系"
+                            name="relationshipToPrincipal"
+                            explanation="请说明您与主申请人的具体关系"
+                            textStyle={textStyle}
+                          >
+                            <Select style={{ width: '100%' }} placeholder="请选择关系">
+                              <Select.Option value="child">子女</Select.Option>
+                              <Select.Option value="adoptedChild">收养子女</Select.Option>
+                              <Select.Option value="stepChild">继子女</Select.Option>
+                            </Select>
+                          </QuestionItem>
+                        )}
+                        
+                        {specificPurpose && specificPurpose.includes('SP') && (
+                          <QuestionItem
+                            question="结婚日期"
+                            name="marriageDate"
+                            explanation="请输入您与主申请人的结婚日期"
+                            textStyle={textStyle}
+                          >
+                            <DatePicker style={{ width: '100%' }} placeholder="选择结婚日期" />
+                          </QuestionItem>
+                        )}
+                      </div>
+                    );
+                  }
+                  
+                  return null;
+                }}
+              </Form.Item>
               <Row>
                 <Col span={24}>
                   <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '10px' }}>
@@ -1613,10 +1685,13 @@ const DS160Form: React.FC = () => {
 
   const [formData, setFormData] = React.useState({});
   const next = async () => {
-    const values = await form.validateFields();
-    setFormData({ ...formData, ...values });
-    setCurrentStep(currentStep + 1);
-    form.resetFields(); // Optionally reset fields for the next step
+    try {
+      const values = await form.validateFields();
+      setFormData({ ...formData, ...values });
+      setCurrentStep(currentStep + 1);
+    } catch (error) {
+      console.error('Validation failed:', error);
+    }
   };
 
   const prev = () => {
