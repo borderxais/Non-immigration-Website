@@ -640,8 +640,6 @@ const DS160Form: React.FC = () => {
       title: '个人信息 II',
       content: (
         <>
-          <Title level={4}>个人信息 II</Title>
-        
           <QuestionItem
             question="所属国家/地区（国籍）"
             name="nationality"
@@ -756,10 +754,6 @@ const DS160Form: React.FC = () => {
       description: '行程安排',
       content: (
         <>
-          <div style={{ marginBottom: '24px' }}>
-            <Title level={4}>旅行信息</Title>
-          </div>
-
           <div className="field-group full">
             <h4>
               <span>提供以下信息：</span>
@@ -1585,8 +1579,6 @@ const DS160Form: React.FC = () => {
       description: '同行人信息',
       content: (
         <>
-          <Title level={4}>F. 同行人</Title>
-          
           <QuestionItem
             number="1"
             question="您是否有同行人？"
@@ -1605,8 +1597,6 @@ const DS160Form: React.FC = () => {
       description: '过往美国旅行',
       content: (
         <>
-          <Title level={4}>G. 美国信息</Title>
-          
           <Title level={5}>过往美国签证</Title>
           <QuestionItem
             number="1"
@@ -1661,8 +1651,6 @@ const DS160Form: React.FC = () => {
       description: '家庭成员信息',
       content: (
         <>
-          <Title level={4}>H. 家庭信息</Title>
-          
           <Title level={5}>父母信息</Title>
           <QuestionItem
             number="1"
@@ -1728,8 +1716,6 @@ const DS160Form: React.FC = () => {
       description: '工作和教育经历',
       content: (
         <>
-          <Title level={4}>I. 工作教育</Title>
-          
           <Title level={5}>当前职业信息</Title>
           <QuestionItem
             number="1"
@@ -1800,8 +1786,6 @@ const DS160Form: React.FC = () => {
       description: '安全和背景信息',
       content: (
         <>
-          <Title level={4}>J. 安全背景</Title>
-          
           <Title level={5}>安全问题</Title>
           <QuestionItem
             number="1"
@@ -1832,8 +1816,6 @@ const DS160Form: React.FC = () => {
       description: '审核并提交',
       content: (
         <>
-          <Title level={4}>K. 确认提交</Title>
-          
           <Title level={5}>声明</Title>
           <p>我确认以上信息真实准确。我理解提供虚假信息可能导致签证申请被拒绝或被禁止入境美国。</p>
           <QuestionItem
@@ -1902,7 +1884,7 @@ const DS160Form: React.FC = () => {
             </div>
           
             {/* Content card without the title */}
-            <Card>
+            <Card style={{ backgroundColor: '#f5f5f5' }}>
               {steps[currentStep].content}
             </Card>
 
