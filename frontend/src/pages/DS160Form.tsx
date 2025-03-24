@@ -202,8 +202,6 @@ const DS160Form: React.FC = () => {
       description: '基本信息',
       content: (
         <>
-        <Title level={4}>安全问题</Title>
-      
           <QuestionItem
             question="请选择一个安全问题"
             name="securityQuestion"
@@ -264,8 +262,6 @@ const DS160Form: React.FC = () => {
       title: '个人信息 I',
       content: (
         <>
-          <Title level={4}>个人信息 I</Title>
-          
           <QuestionItem
             question="姓（拼音，与护照一致）"
             name="surname"
@@ -1900,6 +1896,12 @@ const DS160Form: React.FC = () => {
           
           {/* Right content area */}
           <div style={{ flex: 1 }}>
+            {/* Page title outside the content card */}
+            <div style={{ marginBottom: '16px' }}>
+              <Title level={4}>{steps[currentStep].title}</Title>
+            </div>
+          
+            {/* Content card without the title */}
             <Card>
               {steps[currentStep].content}
             </Card>
