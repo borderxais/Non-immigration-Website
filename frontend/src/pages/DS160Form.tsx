@@ -996,7 +996,7 @@ const DS160Form: React.FC = () => {
                           { value: 'U4-PR', label: 'U1持有者的父母 (U4)' },
                           { value: 'U5-SB', label: 'U1持有者的兄弟姐妹 (U5)' }
                         ];
-                      case 'PRL':
+                      case 'PAROLE-BEN':
                         return [
                           { value: 'PRL-PARCIS', label: 'PARCIS (USCIS批准的临时入境许可)' }
                         ];
