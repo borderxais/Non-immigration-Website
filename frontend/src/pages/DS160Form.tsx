@@ -394,7 +394,6 @@ const DS160Form: React.FC = () => {
               textStyle={textStyle}
             >
               <Select placeholder="- 选择一个 -">
-                  <Select.Option value="">- 选择一个 -</Select.Option>
                   <Select.Option value="AFGH">阿富汗</Select.Option>
                   <Select.Option value="ALB">阿尔巴尼亚</Select.Option>
                   <Select.Option value="ALGR">阿尔及利亚</Select.Option>
@@ -613,7 +612,6 @@ const DS160Form: React.FC = () => {
             explanation="请选择您目前的国籍。"
           >
             <Select placeholder="- 选择一个 -" style={{ width: '100%' }}>
-              <Select.Option value="">- 选择一个 -</Select.Option>
               <Select.Option value="AFGH">阿富汗</Select.Option>
               <Select.Option value="ALB">阿尔巴尼亚</Select.Option>
               <Select.Option value="ALGR">阿尔及利亚</Select.Option>
