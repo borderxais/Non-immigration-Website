@@ -743,7 +743,6 @@ const DS160Form: React.FC = () => {
                       setTimeout(() => form.validateFields(['specificPurpose']), 100);
                     }}
                   >
-                    <Select.Option value="">请选择签证类别</Select.Option>
                     <Select.Option value="A">外国政府官员 (A)</Select.Option>
                     <Select.Option value="B">临时商务或旅游访客 (B)</Select.Option>
                     <Select.Option value="C">过境外国人 (C)</Select.Option>
@@ -1008,7 +1007,6 @@ const DS160Form: React.FC = () => {
                         name="specificPurpose"
                       >
                         <Select placeholder="请选择" style={{ width: '100%' }}>
-                          <Select.Option value="">请选择</Select.Option>
                           {getSpecificOptions().map(option => (
                             <Select.Option key={option.value} value={option.value}>
                               {option.label}
