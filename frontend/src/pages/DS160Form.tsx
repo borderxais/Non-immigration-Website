@@ -13,6 +13,37 @@ const DS160Form: React.FC = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
   
+  // Helper function to determine if a specific purpose code indicates a dependent relationship
+  const isDependentSelection = (value: string): boolean => {
+    // List of codes that indicate a dependent relationship (child, spouse, etc.)
+    const dependentCodes = [
+      'A1-CH', 'A1-SP', 'A2-CH', 'A2-SP', 'A3-CH', 'A3-SP',
+      'CW2-CH', 'CW2-SP', 
+      'E1-CH', 'E1-SP', 'E2-CH', 'E2-SP', 'E3D-CH', 'E3D-SP',
+      'F2-CH', 'F2-SP',
+      'G1-CH', 'G1-SP', 'G2-CH', 'G2-SP', 'G3-CH', 'G3-SP', 'G4-CH', 'G4-SP', 'G5-CH', 'G5-SP',
+      'H4-CH', 'H4-SP',
+      'I-CH', 'I-SP',
+      'J2-CH', 'J2-SP',
+      'K2-K2', 'K4-K4',
+      'L2-CH', 'L2-SP',
+      'M2-CH', 'M2-SP',
+      'N8-CH',
+      'NATO1-SP', 'NATO1-CH', 'NATO2-SP', 'NATO2-CH', 'NATO3-SP', 'NATO3-CH', 
+      'NATO4-SP', 'NATO4-CH', 'NATO5-SP', 'NATO5-CH', 'NATO6-SP', 'NATO6-CH',
+      'NATO7-SP', 'NATO7-CH',
+      'O3-SP', 'O3-CH',
+      'P4-SP', 'P4-CH',
+      'R2-R2', 'R3-R3',
+      'S7-S7',
+      'T2-SP', 'T3-CH', 'T4-PR', 'T5-SB', 'T6-CB',
+      'TD-SP', 'TD-CH',
+      'U2-SP', 'U3-CH', 'U4-PR', 'U5-SB'
+    ];
+    
+    return dependentCodes.includes(value);
+  };
+
   const handleSubmit = async (values: any) => {
     try {
       console.log('Submitting form:', values);
@@ -738,7 +769,7 @@ const DS160Form: React.FC = () => {
                     placeholder="请选择签证类别" 
                     style={{ width: '100%' }}
                     onChange={(value) => {
-                      form.setFieldsValue({ specificPurpose: undefined });
+                      form.setFieldsValue({ specificPurpose: undefined, principalApplicantSurname: undefined, principalApplicantGivenName: undefined });
                       // 触发表单依赖字段的更新
                       setTimeout(() => form.validateFields(['specificPurpose']), 100);
                     }}
@@ -1006,7 +1037,20 @@ const DS160Form: React.FC = () => {
                         question="具体说明"
                         name="specificPurpose"
                       >
-                        <Select placeholder="请选择" style={{ width: '100%' }}>
+                        <Select 
+                          placeholder="请选择" 
+                          style={{ width: '100%' }}
+                          onChange={(value) => {
+
+                            if (!isDependentSelection(value)) {
+                              form.setFieldsValue({
+                                principalApplicantSurname: undefined,
+                                principalApplicantGivenName: undefined
+                              });
+                            }
+                            form.validateFields(['principalApplicantSurname', 'principalApplicantGivenName']);
+                          }}
+                        >
                           {getSpecificOptions().map(option => (
                             <Select.Option key={option.value} value={option.value}>
                               {option.label}
@@ -1018,6 +1062,7 @@ const DS160Form: React.FC = () => {
                   );
                 }}
               </Form.Item>
+              
               <Row>
                 <Col span={24}>
                   <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '10px' }}>
