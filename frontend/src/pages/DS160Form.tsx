@@ -1110,12 +1110,15 @@ const DS160Form: React.FC = () => {
                 }
                 
                 // For all A visa types EXCEPT 'A1-AM', 'A1-DP', 'A2-EM', and 'A3-EM', show principal section
-                if (specificPurpose && 
-                  specificPurpose.startsWith('A') && 
-                  specificPurpose !== 'A1-AM' && 
-                  specificPurpose !== 'A1-DP' && 
-                  specificPurpose !== 'A2-EM' && 
-                  specificPurpose !== 'A3-EM') {
+                if (specificPurpose && (
+                  specificPurpose === 'A1-CH' || 
+                  specificPurpose === 'A1-SP' || 
+                  specificPurpose === 'A2-CH' || 
+                  specificPurpose === 'A2-SP' || 
+                  specificPurpose === 'A3-CH' || 
+                  specificPurpose === 'A3-SP' || 
+                  specificPurpose === 'C3-CH' || 
+                  specificPurpose === 'C3-SP')) {
                 return (
                   <div>
                     <h4>
