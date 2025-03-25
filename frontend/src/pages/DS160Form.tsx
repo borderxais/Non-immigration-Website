@@ -82,8 +82,8 @@ const DS160Form: React.FC = () => {
     explanation?: string;
     hasNaCheckbox?: boolean;
     naCheckboxName?: string;
-    textStyle?: React.CSSProperties;
-  }> = ({ number, question, name, required = true, children, explanation, hasNaCheckbox = false, naCheckboxName, textStyle = {} }) => {
+  }> = ({ number, question, name, required = true, children, explanation, hasNaCheckbox = false, naCheckboxName }) => {
+    // Use the form instance to get the current value of the NA checkbox
     const isNaChecked = Form.useWatch(naCheckboxName || `${name}_na`, form);
     
     // Modify the rules to respect the NA checkbox state
@@ -159,12 +159,11 @@ const DS160Form: React.FC = () => {
       <Row gutter={24} style={{ marginBottom: 24 }}>
         <Col span={16}>
           <Space direction="vertical" style={{ width: '100%' }} size={8}>
-            <Text strong style={textStyle}>
+            <Text strong>
               {number ? `${number}. ` : ''}{question}{required && <span style={{ color: '#ff4d4f', marginLeft: '4px' }}>*</span>}</Text>
             <Form.Item 
               name={name} 
-              required={required && !isNaChecked} 
-              rules={required ? [{ required: !isNaChecked, message: '此字段为必填项' }] : []}
+              rules={fieldRules}
               style={{ marginBottom: 0 }}
             >
               {renderDisableableInput()}
@@ -176,7 +175,7 @@ const DS160Form: React.FC = () => {
                 valuePropName="checked"
                 style={{ marginBottom: 0, marginTop: 8, textAlign: 'right' }}
               >
-                <Checkbox onChange={onNaCheckboxChange}>不适用/技术无法提供</Checkbox>
+                <Checkbox>不适用/技术无法提供</Checkbox>
               </Form.Item>
             )}
           </Space>
@@ -353,7 +352,6 @@ const DS160Form: React.FC = () => {
               question="日期"
               name="dateOfBirth"
               explanation="若不知道具体日期或月份，请按护照所示填写。"
-              textStyle={textStyle}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                 <Form.Item 
@@ -410,7 +408,6 @@ const DS160Form: React.FC = () => {
             <QuestionItem
               question="城市"
               name="birthPlace"
-              textStyle={textStyle}
             >
               <Input placeholder="例如：北京" />
             </QuestionItem>
@@ -420,7 +417,6 @@ const DS160Form: React.FC = () => {
               name="birthState"
               hasNaCheckbox={true}
               naCheckboxName="birthState_na"
-              textStyle={textStyle}
             >
               <Input placeholder="例如：北京市" />
             </QuestionItem>
@@ -429,7 +425,6 @@ const DS160Form: React.FC = () => {
               question="国家/地区"
               name="birthCountry"
               explanation="请选择您出生地的现用国家/地区名称。"
-              textStyle={textStyle}
             >
               <Select placeholder="- 选择一个 -">
                   <Select.Option value="AFGH">阿富汗</Select.Option>
@@ -1106,7 +1101,6 @@ const DS160Form: React.FC = () => {
                         question="主申请人姓氏"
                         name="principalApplicantSurname"
                         explanation="请输入持有签证的主申请人的姓氏（与护照一致）"
-                        textStyle={textStyle}
                       >
                         <Input placeholder="请输入主申请人姓氏" />
                       </QuestionItem>
@@ -1115,7 +1109,6 @@ const DS160Form: React.FC = () => {
                         question="主申请人名字"
                         name="principalApplicantGivenName"
                         explanation="请输入持有签证的主申请人的名字（与护照一致）"
-                        textStyle={textStyle}
                       >
                         <Input placeholder="请输入主申请人名字" />
                       </QuestionItem>
@@ -1367,7 +1360,6 @@ const DS160Form: React.FC = () => {
                     question="您所属的外交机构名称"
                     name="diplomaticOrganization"
                     explanation="请提供您所属的外交机构或政府部门的全称"
-                    textStyle={textStyle}
                   >
                     <Input placeholder="请输入外交机构名称" />
                   </QuestionItem>
@@ -1376,7 +1368,6 @@ const DS160Form: React.FC = () => {
                     question="您的职位/头衔"
                     name="diplomaticPosition"
                     explanation="请提供您在该机构的官方职位或头衔"
-                    textStyle={textStyle}
                   >
                     <Input placeholder="例如：参赞、一等秘书、二等秘书等" />
                   </QuestionItem>
@@ -1385,7 +1376,6 @@ const DS160Form: React.FC = () => {
                     question="您的任期"
                     name="assignmentDuration"
                     explanation="请提供您在美国的预计任期"
-                    textStyle={textStyle}
                   >
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                       <Form.Item 
@@ -1413,7 +1403,6 @@ const DS160Form: React.FC = () => {
                     question="使团/组织信息"
                     name="missionOrganizationInfo"
                     explanation="请提供关于您所在使团/组织的额外信息"
-                    textStyle={textStyle}
                   >
                     <TextArea rows={3} placeholder="例如：使团功能、规模、联系信息等" />
                   </QuestionItem>
