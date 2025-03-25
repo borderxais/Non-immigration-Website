@@ -191,12 +191,6 @@ const DS160Form: React.FC = () => {
     );
   };
 
-  const textStyle: React.CSSProperties = {
-    fontSize: '14px',
-    color: '#333',
-    marginBottom: '4px',
-  };
-
   const steps = [
     {
       title: '开始',
