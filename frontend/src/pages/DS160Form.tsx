@@ -1079,6 +1079,7 @@ const DS160Form: React.FC = () => {
                     specificPurpose !== 'A2-EM' && 
                     specificPurpose !== 'A3-EM') {
                   return (
+                    
                     <div className="principal-applicant-section" style={{
                       padding: '16px', 
                       backgroundColor: 'white', 
@@ -1088,7 +1089,7 @@ const DS160Form: React.FC = () => {
                       marginBottom: '15px' 
                     }}>
                       <div className="section-title" style={{ marginBottom: '15px' }}>
-                        <h4><span>主申请人信息</span></h4>
+                        
                       </div>
 
                       <QuestionItem
@@ -1407,6 +1408,8 @@ const DS160Form: React.FC = () => {
               return null;
             }}
           </Form.Item>
+
+          <Divider />
 
           <QuestionItem
             question="支付您旅行费用的个人或组织"
