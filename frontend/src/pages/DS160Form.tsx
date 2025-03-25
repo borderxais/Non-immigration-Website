@@ -1043,6 +1043,8 @@ const DS160Form: React.FC = () => {
                           style={{ width: '100%' }}
                           onChange={(value) => {
 
+                            form.setFieldsValue({ selectedPurpose: value });
+
                             if (!isDependentSelection(value)) {
                               form.setFieldsValue({
                                 principalApplicantSurname: undefined,
@@ -1072,7 +1074,6 @@ const DS160Form: React.FC = () => {
               >
                 {({ getFieldValue }) => {
                   const specificPurpose = getFieldValue('specificPurpose');
-                  
 
                   // If no specific purpose is selected, don't show any conditional sections
                   if (!specificPurpose) {
@@ -1308,7 +1309,9 @@ const DS160Form: React.FC = () => {
           </div>
           
 
-          <br/><br/>
+          <br/>
+          <Divider />
+
           <div className="hr" />
             
           <div className="field-groups">
@@ -1334,7 +1337,8 @@ const DS160Form: React.FC = () => {
             shouldUpdate={(prevValues, currentValues) => prevValues.hasSpecificPlans !== currentValues.hasSpecificPlans}
           >
             {({ getFieldValue }) => {
-              const hasSpecificPlans = getFieldValue('hasSpecificPlans');
+            const hasSpecificPlans = getFieldValue('hasSpecificPlans');
+            const specificPurpose = getFieldValue('specificPurpose');
               
               // 如果没有选择是否有具体旅行计划，不显示任何后续问题
               if (!hasSpecificPlans) {
@@ -1522,7 +1526,6 @@ const DS160Form: React.FC = () => {
           <Title level={5}>费用信息</Title>
 
           <QuestionItem
-            number="7"
             question="支付您旅行费用的个人或组织名称"
             name="whoIsPaying"
             explanation="请选择谁将负责支付您此次赴美旅行的费用。"
