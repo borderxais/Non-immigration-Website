@@ -22,6 +22,14 @@ const DS160Form: React.FC = () => {
     marginBottom: '24px'
   };
 
+  const blockInsideHighlightStyle = {
+    background: 'white', 
+    border: '1px solid #d6e8fa', 
+    borderRadius: '8px', 
+    padding: '16px',
+    marginBottom: '24px'
+  };
+
   // Helper function to determine if a specific purpose code indicates a dependent relationship
   const isDependentSelection = (value: string): boolean => {
     // List of codes that indicate a dependent relationship (child, spouse, etc.)
@@ -1113,7 +1121,7 @@ const DS160Form: React.FC = () => {
                     <h4>
                       <span>主申请人信息</span>
                     </h4>
-                    <div className="principal-applicant-section" style={{ backgroundColor: 'white' }}>
+                    <div className="principal-applicant-section" style={blockInsideHighlightStyle}>
                       <QuestionItem
                         question="主申请人姓氏"
                         name="principalApplicantSurname"
@@ -1707,7 +1715,7 @@ const DS160Form: React.FC = () => {
                             return (
                               <div id="payerAddress">
                                 <h4>付款人地址</h4>
-                                <div className="field-group callout" style={highlightedBlockStyle}>
+                                <div className="field-group callout" style={blockInsideHighlightStyle}>
                                   <QuestionItem
                                     question="街道地址 (第1行)"
                                     name="payerStreetAddress1"
@@ -1811,7 +1819,7 @@ const DS160Form: React.FC = () => {
 
                       <div id="payerCompanyAddress">
                         <h4>支付费用的公司/组织地址</h4>
-                        <div className="field-group callout" style={{ backgroundColor: 'white' }}>
+                        <div className="field-group callout" style={blockInsideHighlightStyle}>
                           <QuestionItem
                             question="街道地址 (第1行)"
                             name="payerStreetAddress1"
