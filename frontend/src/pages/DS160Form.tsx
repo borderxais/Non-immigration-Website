@@ -719,13 +719,44 @@ const DS160Form: React.FC = () => {
             hasNaCheckbox={true}
             naCheckboxName="usSSN_na"
           >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-              <Input style={{ width: '60px' }} maxLength={3} placeholder="XXX" />
-              <span>-</span>
-              <Input style={{ width: '50px' }} maxLength={2} placeholder="XX" />
-              <span>-</span>
-              <Input style={{ width: '70px' }} maxLength={4} placeholder="XXXX" />
-            </div>
+            <Form.Item noStyle shouldUpdate={(prevValues, currentValues) => 
+              prevValues.usSSN_na !== currentValues.usSSN_na
+            }>
+              {({ getFieldValue }) => {
+                const isDisabled = getFieldValue('usSSN_na') === true;
+                
+                return (
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                    <Form.Item name={['usSSN', 'part1']} noStyle>
+                      <Input 
+                        style={{ width: '60px' }} 
+                        maxLength={3} 
+                        placeholder="XXX" 
+                        disabled={isDisabled}
+                      />
+                    </Form.Item>
+                    <span>-</span>
+                    <Form.Item name={['usSSN', 'part2']} noStyle>
+                      <Input 
+                        style={{ width: '50px' }} 
+                        maxLength={2} 
+                        placeholder="XX" 
+                        disabled={isDisabled}
+                      />
+                    </Form.Item>
+                    <span>-</span>
+                    <Form.Item name={['usSSN', 'part3']} noStyle>
+                      <Input 
+                        style={{ width: '70px' }} 
+                        maxLength={4} 
+                        placeholder="XXXX" 
+                        disabled={isDisabled}
+                      />
+                    </Form.Item>
+                  </div>
+                );
+              }}
+            </Form.Item>
           </QuestionItem>
           
           <QuestionItem
@@ -1083,7 +1114,7 @@ const DS160Form: React.FC = () => {
                       <h4>
                         <span>主申请人信息</span>
                       </h4>
-                      <div className="principal-applicant-section">
+                      <div className="principal-applicant-section" style={{ backgroundColor: 'white' }}>
                         <QuestionItem
                           question="主申请人姓氏"
                           name="principalApplicantSurname"
