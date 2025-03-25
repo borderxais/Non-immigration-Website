@@ -1081,9 +1081,9 @@ const DS160Form: React.FC = () => {
                   return (
                     <div>
                       <h4>
-                        <span>提供以下信息：</span>
+                        <span>主申请人信息</span>
                       </h4>
-                      <div className="principal-applicant-section" style={highlightedBlockStyle}>
+                      <div className="principal-applicant-section">
                         <QuestionItem
                           question="主申请人姓氏"
                           name="principalApplicantSurname"
@@ -1334,18 +1334,10 @@ const DS160Form: React.FC = () => {
                 return (
                   <div className="field-group full" style={{ marginBottom: '15px' }}>
                     <h4>
-                      <span>外交任务信息</span>
+                      <span>使团/组织信息</span>
                     </h4>
 
                     <div className="field-group callout" style={highlightedBlockStyle}>     
-                    <QuestionItem
-                      question="使团/组织信息"
-                      name="missionOrganizationInfo"
-                        explanation="请提供关于您所在使团/组织的额外信息"
-                      >
-                        <TextArea rows={3} placeholder="例如：使团功能、规模、联系信息等" />
-                      </QuestionItem>
-
                       <QuestionItem
                         question="赞助使团/组织"
                         name="sponsoringMission"
