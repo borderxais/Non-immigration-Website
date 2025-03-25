@@ -84,11 +84,13 @@ const DS160Form: React.FC = () => {
     naCheckboxName?: string;
     textStyle?: React.CSSProperties;
   }> = ({ number, question, name, required = true, children, explanation, hasNaCheckbox = false, naCheckboxName, textStyle = {} }) => {
-    const [isNaChecked, setIsNaChecked] = React.useState(false);
+    const isNaChecked = Form.useWatch(naCheckboxName || `${name}_na`, form);
     
-    const onNaCheckboxChange = (e: any) => {
-      setIsNaChecked(e.target.checked);
-    };
+    // Modify the rules to respect the NA checkbox state
+    const fieldRules = required ? [{ 
+      required: !isNaChecked, 
+      message: '此字段为必填项' 
+    }] : [];
     
     // Create a custom input with disabled state based on NA checkbox
     const renderDisableableInput = () => {
