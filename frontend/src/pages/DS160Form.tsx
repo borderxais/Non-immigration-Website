@@ -1274,12 +1274,11 @@ const DS160Form: React.FC = () => {
                           
                           return (
                             <QuestionItem
-                              number="6"
                               question="在美住址"
                               name="addressWhereYouWillStay"
                               explanation="请提供您在美国期间的详细住址，如酒店名称和地址、朋友或亲戚的住址等。"
                             >
-                              <div className="field-group">
+                              <div className="field-group" style={highlightedBlockStyle}>
                                 <div className="field full">
                                   <label>街道地址 (第1行)</label>
                                   <Form.Item 
