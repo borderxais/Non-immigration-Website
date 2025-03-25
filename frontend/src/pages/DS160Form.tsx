@@ -1065,7 +1065,7 @@ const DS160Form: React.FC = () => {
               >
                 {({ getFieldValue }) => {
                   const specificPurpose = getFieldValue('specificPurpose');
-
+                  
                   // If no specific purpose is selected, don't show any conditional sections
                   if (!specificPurpose) {
                     return null;
@@ -1079,40 +1079,33 @@ const DS160Form: React.FC = () => {
                     specificPurpose !== 'A2-EM' && 
                     specificPurpose !== 'A3-EM') {
                   return (
-                    
-                    <div className="principal-applicant-section" style={{
-                      padding: '16px', 
-                      backgroundColor: 'white', 
-                      border: '1px solid #f0f0f0',
-                      borderRadius: '4px', 
-                      marginTop: '15px', 
-                      marginBottom: '15px' 
-                    }}>
-                      <div className="section-title" style={{ marginBottom: '15px' }}>
+                    <div>
+                      <h4>
+                        <span>提供以下信息：</span>
+                      </h4>
+                      <div className="principal-applicant-section" style={highlightedBlockStyle}>
+                        <QuestionItem
+                          question="主申请人姓氏"
+                          name="principalApplicantSurname"
+                          explanation="请输入持有签证的主申请人的姓氏（与护照一致）"
+                        >
+                          <Input placeholder="请输入主申请人姓氏" />
+                        </QuestionItem>
                         
+                        <QuestionItem
+                          question="主申请人名字"
+                          name="principalApplicantGivenName"
+                          explanation="请输入持有签证的主申请人的名字（与护照一致）"
+                        >
+                          <Input placeholder="请输入主申请人名字" />
+                        </QuestionItem>
                       </div>
-
-                      <QuestionItem
-                        question="主申请人姓氏"
-                        name="principalApplicantSurname"
-                        explanation="请输入持有签证的主申请人的姓氏（与护照一致）"
-                      >
-                        <Input placeholder="请输入主申请人姓氏" />
-                      </QuestionItem>
-                      
-                      <QuestionItem
-                        question="主申请人名字"
-                        name="principalApplicantGivenName"
-                        explanation="请输入持有签证的主申请人的名字（与护照一致）"
-                      >
-                        <Input placeholder="请输入主申请人名字" />
-                      </QuestionItem>
                     </div>
                   );
                   }
 
                   return null;
-              }}
+                }}
               </Form.Item>
 
               <Row>
@@ -1339,68 +1332,150 @@ const DS160Form: React.FC = () => {
                   specificPurpose === 'A3-EM')) {
                 
                 return (
-                  <div className="diplomatic-section" style={{ 
-                    padding: '16px', 
-                    backgroundColor: 'white', 
-                    border: '1px solid #f0f0f0',
-                    borderRadius: '4px', 
-                    marginTop: '15px', 
-                    marginBottom: '15px' 
-                  }}>
-                    <div className="section-title" style={{ marginBottom: '15px' }}>
-                      <h4><span>外交任务信息</span></h4>
-                    </div>
-                    
-                    <QuestionItem
-                      question="您所属的外交机构名称"
-                      name="diplomaticOrganization"
-                      explanation="请提供您所属的外交机构或政府部门的全称"
-                    >
-                      <Input placeholder="请输入外交机构名称" />
-                    </QuestionItem>
-                    
-                    <QuestionItem
-                      question="您的职位/头衔"
-                      name="diplomaticPosition"
-                      explanation="请提供您在该机构的官方职位或头衔"
-                    >
-                      <Input placeholder="例如：参赞、一等秘书、二等秘书等" />
-                    </QuestionItem>
-                    
-                    <QuestionItem
-                      question="您的任期"
-                      name="assignmentDuration"
-                      explanation="请提供您在美国的预计任期"
-                    >
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <Form.Item 
-                          name="assignmentLength" 
-                          noStyle
-                          rules={[{ required: true, message: '请输入任期' }]}
-                        >
-                          <Input style={{ width: '80px' }} maxLength={3} placeholder="数量" />
-                        </Form.Item>
-                        
-                        <Form.Item 
-                          name="assignmentLengthType" 
-                          noStyle
-                          rules={[{ required: true, message: '请选择单位' }]}
-                        >
-                          <Select style={{ width: '120px' }} placeholder="单位">
-                            <Select.Option value="Y">年</Select.Option>
-                            <Select.Option value="M">月</Select.Option>
-                          </Select>
-                        </Form.Item>
-                      </div>
-                    </QuestionItem>
-                    
+                  <div className="field-group full" style={{ marginBottom: '15px' }}>
+                    <h4>
+                      <span>外交任务信息</span>
+                    </h4>
+
+                    <div className="field-group callout" style={highlightedBlockStyle}>     
                     <QuestionItem
                       question="使团/组织信息"
                       name="missionOrganizationInfo"
-                      explanation="请提供关于您所在使团/组织的额外信息"
-                    >
-                      <TextArea rows={3} placeholder="例如：使团功能、规模、联系信息等" />
-                    </QuestionItem>
+                        explanation="请提供关于您所在使团/组织的额外信息"
+                      >
+                        <TextArea rows={3} placeholder="例如：使团功能、规模、联系信息等" />
+                      </QuestionItem>
+
+                      <QuestionItem
+                        question="赞助使团/组织"
+                        name="sponsoringMission"
+                        explanation="请提供赞助您的使团或组织的名称"
+                      >
+                        <Input placeholder="请输入赞助使团/组织名称" maxLength={40} />
+                      </QuestionItem>
+
+                      <QuestionItem
+                        question="联络人姓氏"
+                        name="contactSurname"
+                        explanation="请提供赞助使团/组织联络人的姓氏"
+                      >
+                        <Input placeholder="请输入联络人姓氏" maxLength={33} />
+                      </QuestionItem>
+
+                      <QuestionItem
+                        question="联络人名字"
+                        name="contactGivenName"
+                        explanation="请提供赞助使团/组织联络人的名字"
+                      >
+                        <Input placeholder="请输入联络人名字" maxLength={33} />
+                      </QuestionItem>
+
+                      <QuestionItem
+                        question="美国地址（第一行）"
+                        name="missionAddressLine1"
+                        explanation="请提供赞助使团/组织在美国的地址第一行"
+                      >
+                        <Input placeholder="请输入地址第一行" maxLength={40} />
+                      </QuestionItem>
+
+                      <QuestionItem
+                        question="美国地址（第二行）"
+                        name="missionAddressLine2"
+                        explanation="请提供赞助使团/组织在美国的地址第二行（可选）"
+                        required={false}
+                      >
+                        <Input placeholder="请输入地址第二行（可选）" maxLength={40} />
+                      </QuestionItem>
+
+                      <QuestionItem
+                        question="城市"
+                        name="missionCity"
+                        explanation="请提供赞助使团/组织所在的美国城市"
+                      >
+                        <Input placeholder="请输入城市名称" maxLength={20} />
+                      </QuestionItem>
+
+                      <QuestionItem
+                        question="州"
+                        name="missionState"
+                        explanation="请选择赞助使团/组织所在的美国州"
+                      >
+                        <Select placeholder="- 请选择一个 -">
+                          <Select.Option value="AL">阿拉巴马</Select.Option>
+                          <Select.Option value="AK">阿拉斯加</Select.Option>
+                          <Select.Option value="AS">美属萨摩亚</Select.Option>
+                          <Select.Option value="AZ">亚利桑那</Select.Option>
+                          <Select.Option value="AR">阿肯色</Select.Option>
+                          <Select.Option value="CA">加利福尼亚</Select.Option>
+                          <Select.Option value="CO">科罗拉多</Select.Option>
+                          <Select.Option value="CT">康涅狄格</Select.Option>
+                          <Select.Option value="DE">特拉华</Select.Option>
+                          <Select.Option value="DC">哥伦比亚特区</Select.Option>
+                          <Select.Option value="FL">佛罗里达</Select.Option>
+                          <Select.Option value="GA">乔治亚</Select.Option>
+                          <Select.Option value="GU">关岛</Select.Option>
+                          <Select.Option value="HI">夏威夷</Select.Option>
+                          <Select.Option value="ID">爱达荷</Select.Option>
+                          <Select.Option value="IL">伊利诺伊</Select.Option>
+                          <Select.Option value="IN">印第安纳</Select.Option>
+                          <Select.Option value="IA">爱荷华</Select.Option>
+                          <Select.Option value="KS">堪萨斯</Select.Option>
+                          <Select.Option value="KY">肯塔基</Select.Option>
+                          <Select.Option value="LA">路易斯安那</Select.Option>
+                          <Select.Option value="ME">缅因</Select.Option>
+                          <Select.Option value="MD">马里兰</Select.Option>
+                          <Select.Option value="MA">马萨诸塞</Select.Option>
+                          <Select.Option value="MI">密歇根</Select.Option>
+                          <Select.Option value="MN">明尼苏达</Select.Option>
+                          <Select.Option value="MS">密西西比</Select.Option>
+                          <Select.Option value="MO">密苏里</Select.Option>
+                          <Select.Option value="MT">蒙大拿</Select.Option>
+                          <Select.Option value="NE">内布拉斯加</Select.Option>
+                          <Select.Option value="NV">内华达</Select.Option>
+                          <Select.Option value="NH">新罕布什尔</Select.Option>
+                          <Select.Option value="NJ">新泽西</Select.Option>
+                          <Select.Option value="NM">新墨西哥</Select.Option>
+                          <Select.Option value="NY">纽约</Select.Option>
+                          <Select.Option value="NC">北卡罗来纳</Select.Option>
+                          <Select.Option value="ND">北达科他</Select.Option>
+                          <Select.Option value="MP">北马里亚纳群岛</Select.Option>
+                          <Select.Option value="OH">俄亥俄</Select.Option>
+                          <Select.Option value="OK">俄克拉荷马</Select.Option>
+                          <Select.Option value="OR">俄勒冈</Select.Option>
+                          <Select.Option value="PA">宾夕法尼亚</Select.Option>
+                          <Select.Option value="PR">波多黎各</Select.Option>
+                          <Select.Option value="RI">罗德岛</Select.Option>
+                          <Select.Option value="SC">南卡罗来纳</Select.Option>
+                          <Select.Option value="SD">南达科他</Select.Option>
+                          <Select.Option value="TN">田纳西</Select.Option>
+                          <Select.Option value="TX">德克萨斯</Select.Option>
+                          <Select.Option value="UT">犹他</Select.Option>
+                          <Select.Option value="VT">佛蒙特</Select.Option>
+                          <Select.Option value="VI">美属维尔京群岛</Select.Option>
+                          <Select.Option value="VA">弗吉尼亚</Select.Option>
+                          <Select.Option value="WA">华盛顿</Select.Option>
+                          <Select.Option value="WV">西弗吉尼亚</Select.Option>
+                          <Select.Option value="WI">威斯康星</Select.Option>
+                          <Select.Option value="WY">怀俄明</Select.Option>
+                        </Select>
+                      </QuestionItem>
+
+                      <QuestionItem
+                        question="邮政编码"
+                        name="missionZipCode"
+                        explanation="请提供赞助使团/组织所在地址的邮政编码"
+                      >
+                        <Input placeholder="例如：12345 或 12345-1234" maxLength={10} />
+                      </QuestionItem>
+
+                      <QuestionItem
+                        question="电话号码"
+                        name="missionPhoneNumber"
+                        explanation="请提供赞助使团/组织的电话号码"
+                      >
+                        <Input placeholder="例如：5555555555" maxLength={15} />
+                      </QuestionItem>
+                    </div>
                   </div>
                 );
               }
