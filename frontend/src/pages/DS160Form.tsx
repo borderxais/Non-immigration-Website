@@ -1412,7 +1412,7 @@ const DS160Form: React.FC = () => {
                                     name="zipCode" 
                                     noStyle
                                   >
-                                    <Input style={{ width: '65%' }} maxLength={10} />
+                                    <Input style={{ width: '70%' }} maxLength={10} />
                                   </Form.Item>
                                   <div className="hint">
                                     <span>(例如: 12345 或 12345-1234)</span>
