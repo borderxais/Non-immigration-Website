@@ -1188,135 +1188,129 @@ const DS160Form: React.FC = () => {
                 return null;
               }
               
-              if (hasSpecificPlans === 'Y') {
-                return (
+              const standardContent = hasSpecificPlans === 'Y' ? (
+                <QuestionItem
+                  number="4"
+                  question="请提供您的详细行程"
+                  name="specificTravelPlans"
+                  explanation="请详细说明您的旅行计划，包括到达日期、访问地点和停留时间。"
+                >
+                  <TextArea rows={4} placeholder="详细说明您的旅行计划，包括到达日期、访问地点和停留时间" />
+                </QuestionItem>
+              ) : (
+                <>
                   <QuestionItem
-                    number="4"
-                    question="请提供您的详细行程"
-                    name="specificTravelPlans"
-                    explanation="请详细说明您的旅行计划，包括到达日期、访问地点和停留时间。"
+                    question="计划到达日期"
+                    name="intendedDateOfArrival"
+                    explanation="请提供您计划入境美国的日期。如果您还不确定，请提供一个预计日期。"
                   >
-                    <TextArea rows={4} placeholder="详细说明您的旅行计划，包括到达日期、访问地点和停留时间" />
-                  </QuestionItem>
-                );
-              }
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                      <Form.Item 
+                        name="arrivalDay" 
+                        noStyle
+                        rules={[{ required: true, message: '请选择日期' }]}
+                      >
+                        <Select style={{ width: '60px' }} placeholder="">
+                          <Select.Option value="">  </Select.Option>
+                          {Array.from({ length: 31 }, (_, i) => {
+                            const day = (i + 1).toString().padStart(2, '0');
+                            return <Select.Option key={day} value={day}>{day}</Select.Option>;
+                          })}
+                        </Select>
+                      </Form.Item>
 
-              if (hasSpecificPlans === 'N') {
-                return (
-                  <>
-                    <QuestionItem
-                      number="4"
-                      question="计划到达日期"
-                      name="intendedDateOfArrival"
-                      explanation="请提供您计划入境美国的日期。如果您还不确定，请提供一个预计日期。"
-                    >
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                        <Form.Item 
-                          name="arrivalDay" 
-                          noStyle
-                          rules={[{ required: true, message: '请选择日期' }]}
-                        >
-                          <Select style={{ width: '60px' }} placeholder="">
-                            <Select.Option value="">  </Select.Option>
-                            {Array.from({ length: 31 }, (_, i) => {
-                              const day = (i + 1).toString().padStart(2, '0');
-                              return <Select.Option key={day} value={day}>{day}</Select.Option>;
-                            })}
-                          </Select>
-                        </Form.Item>
+                      <Form.Item 
+                        name="arrivalMonth" 
+                        noStyle
+                        rules={[{ required: true, message: '请选择月份' }]}
+                      >
+                        <Select style={{ width: '70px' }} placeholder="">
+                          <Select.Option value="">  </Select.Option>
+                          <Select.Option value="JAN">一月</Select.Option>
+                          <Select.Option value="FEB">二月</Select.Option>
+                          <Select.Option value="MAR">三月</Select.Option>
+                          <Select.Option value="APR">四月</Select.Option>
+                          <Select.Option value="MAY">五月</Select.Option>
+                          <Select.Option value="JUN">六月</Select.Option>
+                          <Select.Option value="JUL">七月</Select.Option>
+                          <Select.Option value="AUG">八月</Select.Option>
+                          <Select.Option value="SEP">九月</Select.Option>
+                          <Select.Option value="OCT">十月</Select.Option>
+                          <Select.Option value="NOV">十一月</Select.Option>
+                          <Select.Option value="DEC">十二月</Select.Option>
+                        </Select>
+                      </Form.Item>
 
-                        <Form.Item 
-                          name="arrivalMonth" 
-                          noStyle
-                          rules={[{ required: true, message: '请选择月份' }]}
-                        >
-                          <Select style={{ width: '70px' }} placeholder="">
-                            <Select.Option value="">  </Select.Option>
-                            <Select.Option value="JAN">一月</Select.Option>
-                            <Select.Option value="FEB">二月</Select.Option>
-                            <Select.Option value="MAR">三月</Select.Option>
-                            <Select.Option value="APR">四月</Select.Option>
-                            <Select.Option value="MAY">五月</Select.Option>
-                            <Select.Option value="JUN">六月</Select.Option>
-                            <Select.Option value="JUL">七月</Select.Option>
-                            <Select.Option value="AUG">八月</Select.Option>
-                            <Select.Option value="SEP">九月</Select.Option>
-                            <Select.Option value="OCT">十月</Select.Option>
-                            <Select.Option value="NOV">十一月</Select.Option>
-                            <Select.Option value="DEC">十二月</Select.Option>
-                          </Select>
-                        </Form.Item>
+                      <Form.Item 
+                        name="arrivalYear" 
+                        noStyle
+                        rules={[
+                          { required: true, message: '请输入年份' },
+                          { pattern: /^\d{4}$/, message: '请输入4位数年份' }
+                        ]}
+                      >
+                        <Input placeholder="" style={{ width: '60px' }} maxLength={4} />
+                      </Form.Item>
 
-                        <Form.Item 
-                          name="arrivalYear" 
-                          noStyle
-                          rules={[
-                            { required: true, message: '请输入年份' },
-                            { pattern: /^\d{4}$/, message: '请输入4位数年份' }
-                          ]}
-                        >
-                          <Input placeholder="" style={{ width: '60px' }} maxLength={4} />
-                        </Form.Item>
-
-                        <div style={{ marginLeft: '8px', fontSize: '12px', color: '#666' }}>
-                          (格式: DD-MMM-YYYY)
-                        </div>
+                      <div style={{ marginLeft: '8px', fontSize: '12px', color: '#666' }}>
+                        (格式: DD-MMM-YYYY)
                       </div>
-                    </QuestionItem>
+                    </div>
+                  </QuestionItem>
 
-                    <Form.Item
-                      noStyle
-                      shouldUpdate={(prevValues, currentValues) => 
-                        prevValues.arrivalDay !== currentValues.arrivalDay ||
-                        prevValues.arrivalMonth !== currentValues.arrivalMonth ||
-                        prevValues.arrivalYear !== currentValues.arrivalYear
+                  <Form.Item
+                    noStyle
+                    shouldUpdate={(prevValues, currentValues) => 
+                      prevValues.arrivalDay !== currentValues.arrivalDay ||
+                      prevValues.arrivalMonth !== currentValues.arrivalMonth ||
+                      prevValues.arrivalYear !== currentValues.arrivalYear
+                    }
+                  >
+                    {({ getFieldValue }) => {
+                      // 只有当所有日期字段都填写了才显示停留时间问题
+                      const day = getFieldValue('arrivalDay');
+                      const month = getFieldValue('arrivalMonth');
+                      const year = getFieldValue('arrivalYear');
+                      
+                      if (!day || !month || !year) {
+                        return null;
                       }
-                    >
-                      {({ getFieldValue }) => {
-                        // 只有当所有日期字段都填写了才显示停留时间问题
-                        const day = getFieldValue('arrivalDay');
-                        const month = getFieldValue('arrivalMonth');
-                        const year = getFieldValue('arrivalYear');
-                        
-                        if (!day || !month || !year) {
-                          return null;
-                        }
-                        
-                        return (
-                          <QuestionItem
-                            number="5"
-                            question="计划在美停留时间"
-                            name="intendedLengthOfStay"
-                            explanation="请输入您计划在美国停留的时间长度和单位。"
-                          >
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                              <Form.Item 
-                                name="stayDuration" 
-                                noStyle
-                                rules={[{ required: true, message: '请输入停留时间' }]}
-                              >
-                                <Input style={{ width: '80px' }} maxLength={3} placeholder="数量" />
-                              </Form.Item>
-                              
-                              <Form.Item 
-                                name="stayDurationType" 
-                                noStyle
-                                rules={[{ required: true, message: '请选择单位' }]}
-                              >
-                                <Select style={{ width: '120px' }} placeholder="单位">
-                                  <Select.Option value="Y">年</Select.Option>
-                                  <Select.Option value="M">月</Select.Option>
-                                  <Select.Option value="W">周</Select.Option>
-                                  <Select.Option value="D">天</Select.Option>
-                                </Select>
-                              </Form.Item>
-                            </div>
-                          </QuestionItem>
-                        );
-                      }}
-                    </Form.Item>
+                      
+                      return (
+                        <QuestionItem
+                          number="5"
+                          question="计划在美停留时间"
+                          name="intendedLengthOfStay"
+                          explanation="请输入您计划在美国停留的时间长度和单位。"
+                        >
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            <Form.Item 
+                              name="stayDuration" 
+                              noStyle
+                              rules={[{ required: true, message: '请输入停留时间' }]}
+                            >
+                              <Input style={{ width: '80px' }} maxLength={3} placeholder="数量" />
+                            </Form.Item>
+                            
+                            <Form.Item 
+                              name="stayDurationType" 
+                              noStyle
+                              rules={[{ required: true, message: '请选择单位' }]}
+                            >
+                              <Select style={{ width: '120px' }} placeholder="单位">
+                                <Select.Option value="Y">年</Select.Option>
+                                <Select.Option value="M">月</Select.Option>
+                                <Select.Option value="W">周</Select.Option>
+                                <Select.Option value="D">天</Select.Option>
+                              </Select>
+                            </Form.Item>
+                          </div>
+                        </QuestionItem>
+                      );
+                    }}
+                  </Form.Item>
 
-                    <Form.Item
+                  <Form.Item
                       noStyle
                       shouldUpdate={(prevValues, currentValues) => 
                         prevValues.stayDuration !== currentValues.stayDuration ||
@@ -1343,12 +1337,93 @@ const DS160Form: React.FC = () => {
                           </QuestionItem>
                         );
                       }}
-                    </Form.Item>
-                  </>
+                  </Form.Item>
+                </>
+              );
+              
+              let diplomaticSection = null;
+              if (specificPurpose && specificPurpose.startsWith('A') && 
+                  specificPurpose !== 'A1-AM' && specificPurpose !== 'A1-DP' && 
+                  specificPurpose !== 'A2-EM' && specificPurpose !== 'A3-EM' &&
+                  !isDependentSelection(specificPurpose)) {
+                
+                diplomaticSection = (
+                  <div className="diplomatic-section" style={{ 
+                    padding: '16px', 
+                    backgroundColor: 'white', 
+                    border: '1px solid #f0f0f0',
+                    borderRadius: '4px', 
+                    marginTop: '15px', 
+                    marginBottom: '15px' 
+                  }}>
+                    <div className="section-title" style={{ marginBottom: '15px' }}>
+                      <h4><span>外交任务信息</span></h4>
+                    </div>
+                    
+                    <QuestionItem
+                      question="您所属的外交机构名称"
+                      name="diplomaticOrganization"
+                      explanation="请提供您所属的外交机构或政府部门的全称"
+                      textStyle={textStyle}
+                    >
+                      <Input placeholder="请输入外交机构名称" />
+                    </QuestionItem>
+                    
+                    <QuestionItem
+                      question="您的职位/头衔"
+                      name="diplomaticPosition"
+                      explanation="请提供您在该机构的官方职位或头衔"
+                      textStyle={textStyle}
+                    >
+                      <Input placeholder="例如：参赞、一等秘书、二等秘书等" />
+                    </QuestionItem>
+                    
+                    <QuestionItem
+                      question="您的任期"
+                      name="assignmentDuration"
+                      explanation="请提供您在美国的预计任期"
+                      textStyle={textStyle}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <Form.Item 
+                          name="assignmentLength" 
+                          noStyle
+                          rules={[{ required: true, message: '请输入任期' }]}
+                        >
+                          <Input style={{ width: '80px' }} maxLength={3} placeholder="数量" />
+                        </Form.Item>
+                        
+                        <Form.Item 
+                          name="assignmentLengthType" 
+                          noStyle
+                          rules={[{ required: true, message: '请选择单位' }]}
+                        >
+                          <Select style={{ width: '120px' }} placeholder="单位">
+                            <Select.Option value="Y">年</Select.Option>
+                            <Select.Option value="M">月</Select.Option>
+                          </Select>
+                        </Form.Item>
+                      </div>
+                    </QuestionItem>
+                    
+                    <QuestionItem
+                      question="使团/组织信息"
+                      name="missionOrganizationInfo"
+                      explanation="请提供关于您所在使团/组织的额外信息"
+                      textStyle={textStyle}
+                    >
+                      <TextArea rows={3} placeholder="例如：使团功能、规模、联系信息等" />
+                    </QuestionItem>
+                  </div>
                 );
               }
               
-              return null;
+              return (
+                <>
+                  {standardContent}
+                  {diplomaticSection}
+                </>
+              );
             }}
           </Form.Item>
 
