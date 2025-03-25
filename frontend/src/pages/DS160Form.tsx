@@ -1080,9 +1080,13 @@ const DS160Form: React.FC = () => {
                     return null;
                   }
                   
-                  // For A1-AM, A1-DP, A2-EM, and A3-EM, show the principal applicant section
-                  if (specificPurpose === 'A1-AM' || specificPurpose === 'A1-DP' || 
-                    specificPurpose === 'A2-EM' || specificPurpose === 'A3-EM') {
+                  // For all A visa types EXCEPT 'A1-AM', 'A1-DP', 'A2-EM', and 'A3-EM', show principal section
+                  if (specificPurpose && 
+                    specificPurpose.startsWith('A') && 
+                    specificPurpose !== 'A1-AM' && 
+                    specificPurpose !== 'A1-DP' && 
+                    specificPurpose !== 'A2-EM' && 
+                    specificPurpose !== 'A3-EM') {
                   return (
                     <div className="principal-applicant-section" style={{
                       padding: '16px', 
@@ -1113,22 +1117,6 @@ const DS160Form: React.FC = () => {
                       >
                         <Input placeholder="请输入主申请人名字" />
                       </QuestionItem>
-                    </div>
-                  );
-                  }
-
-                  // For other dependent options, continue to use the existing logic
-                  else if (isDependentSelection(specificPurpose)) {
-                  return (
-                    <div className="principal-applicant-section" style={{
-                      padding: '16px', 
-                      backgroundColor: 'white', 
-                      border: '1px solid #f0f0f0',
-                      borderRadius: '4px', 
-                      marginTop: '15px', 
-                      marginBottom: '15px' 
-                    }}>
-                      {/* Existing principal applicant section code */}
                     </div>
                   );
                   }
@@ -1190,7 +1178,6 @@ const DS160Form: React.FC = () => {
               
               const standardContent = hasSpecificPlans === 'Y' ? (
                 <QuestionItem
-                  number="4"
                   question="请提供您的详细行程"
                   name="specificTravelPlans"
                   explanation="请详细说明您的旅行计划，包括到达日期、访问地点和停留时间。"
@@ -1342,10 +1329,11 @@ const DS160Form: React.FC = () => {
               );
               
               let diplomaticSection = null;
-              if (specificPurpose && specificPurpose.startsWith('A') && 
-                  specificPurpose !== 'A1-AM' && specificPurpose !== 'A1-DP' && 
-                  specificPurpose !== 'A2-EM' && specificPurpose !== 'A3-EM' &&
-                  !isDependentSelection(specificPurpose)) {
+              if (specificPurpose && 
+                (specificPurpose === 'A1-AM' || 
+                 specificPurpose === 'A1-DP' || 
+                 specificPurpose === 'A2-EM' || 
+                 specificPurpose === 'A3-EM')) {
                 
                 diplomaticSection = (
                   <div className="diplomatic-section" style={{ 
