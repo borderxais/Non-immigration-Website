@@ -1227,92 +1227,183 @@ const DS160Form: React.FC = () => {
                         (格式: DD-MMM-YYYY)
                       </div>
                     </div>
-                  </QuestionItem>
+                    </QuestionItem> 
 
-                  <Form.Item
-                    noStyle
-                    shouldUpdate={(prevValues, currentValues) => 
-                      prevValues.arrivalDay !== currentValues.arrivalDay ||
-                      prevValues.arrivalMonth !== currentValues.arrivalMonth ||
-                      prevValues.arrivalYear !== currentValues.arrivalYear
-                    }
-                  >
-                    {({ getFieldValue }) => {
-                      // 只有当所有日期字段都填写了才显示停留时间问题
-                      const day = getFieldValue('arrivalDay');
-                      const month = getFieldValue('arrivalMonth');
-                      const year = getFieldValue('arrivalYear');
-                      
-                      if (!day || !month || !year) {
-                        return null;
-                      }
-                      
-                      return (
-                        <QuestionItem
-                          number="5"
-                          question="计划在美停留时间"
-                          name="intendedLengthOfStay"
-                          explanation="请输入您计划在美国停留的时间长度和单位。"
-                        >
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                            <Form.Item 
-                              name="stayDuration" 
-                              noStyle
-                              rules={[{ required: true, message: '请输入停留时间' }]}
-                            >
-                              <Input style={{ width: '80px' }} maxLength={3} placeholder="数量" />
-                            </Form.Item>
-                            
-                            <Form.Item 
-                              name="stayDurationType" 
-                              noStyle
-                              rules={[{ required: true, message: '请选择单位' }]}
-                            >
-                              <Select style={{ width: '120px' }} placeholder="单位">
-                                <Select.Option value="Y">年</Select.Option>
-                                <Select.Option value="M">月</Select.Option>
-                                <Select.Option value="W">周</Select.Option>
-                                <Select.Option value="D">天</Select.Option>
-                              </Select>
-                            </Form.Item>
-                          </div>
-                        </QuestionItem>
-                      );
-                    }}
-                  </Form.Item>
-
-                  <Form.Item
-                      noStyle
-                      shouldUpdate={(prevValues, currentValues) => 
-                        prevValues.stayDuration !== currentValues.stayDuration ||
-                        prevValues.stayDurationType !== currentValues.stayDurationType
-                      }
+                    <QuestionItem
+                      question="计划在美停留时间"
+                      name="intendedLengthOfStay"
+                      explanation="请输入您计划在美国停留的时间长度和单位。"
                     >
-                      {({ getFieldValue }) => {
-                        // 只有当停留时间的两个字段都填写了才显示住址问题
-                        const duration = getFieldValue('stayDuration');
-                        const durationType = getFieldValue('stayDurationType');
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <Form.Item 
+                          name="stayDuration" 
+                          noStyle
+                          rules={[{ required: true, message: '请输入停留时间' }]}
+                        >
+                          <Input style={{ width: '80px' }} maxLength={3} placeholder="数量" />
+                        </Form.Item>
                         
-                        if (!duration || !durationType) {
-                          return null;
+                        <Form.Item 
+                          name="stayDurationType" 
+                          noStyle
+                          rules={[{ required: true, message: '请选择单位' }]}
+                        >
+                          <Select style={{ width: '120px' }} placeholder="单位">
+                            <Select.Option value="Y">年</Select.Option>
+                            <Select.Option value="M">月</Select.Option>
+                            <Select.Option value="W">周</Select.Option>
+                            <Select.Option value="D">天</Select.Option>
+                          </Select>
+                        </Form.Item>
+                      </div>
+                    </QuestionItem>
+
+                    <Form.Item
+                        noStyle
+                        shouldUpdate={(prevValues, currentValues) => 
+                          prevValues.stayDurationType !== currentValues.stayDurationType
                         }
-                        
-                        return (
-                          <QuestionItem
-                            number="6"
-                            question="在美住址"
-                            name="addressWhereYouWillStay"
-                            explanation="请提供您在美国期间的详细住址，如酒店名称和地址、朋友或亲戚的住址等。"
-                          >
-                            <TextArea rows={3} placeholder="在美期间的详细住址" />
-                          </QuestionItem>
-                        );
-                      }}
-                  </Form.Item>
-                </>
-              );
+                      >
+                        {({ getFieldValue }) => {
+                          // 只有当停留时间的两个字段都填写了才显示住址问题
+                          const durationType = getFieldValue('stayDurationType');
+                          
+                          if (!durationType) {
+                            return null;
+                          }
+                          
+                          return (
+                            <QuestionItem
+                              number="6"
+                              question="在美住址"
+                              name="addressWhereYouWillStay"
+                              explanation="请提供您在美国期间的详细住址，如酒店名称和地址、朋友或亲戚的住址等。"
+                            >
+                              <div className="field-group">
+                                <div className="field full">
+                                  <label>街道地址 (第1行)</label>
+                                  <Form.Item 
+                                    name="streetAddress1" 
+                                    noStyle
+                                    rules={[{ required: true, message: '请输入街道地址' }]}
+                                  >
+                                    <Input style={{ width: '98%' }} maxLength={40} />
+                                  </Form.Item>
+                                </div>
+                                
+                                <div className="field full">
+                                  <label>街道地址 (第2行)</label>
+                                  <span style={{ color: '#891300', fontStyle: 'italic', marginLeft: '8px' }}>*可选</span>
+                                  <Form.Item 
+                                    name="streetAddress2" 
+                                    noStyle
+                                  >
+                                    <Input style={{ width: '98%' }} maxLength={40} />
+                                  </Form.Item>
+                                </div>
+                                
+                                <div className="field full">
+                                  <label>城市</label>
+                                  <Form.Item 
+                                    name="city" 
+                                    noStyle
+                                    rules={[{ required: true, message: '请输入城市' }]}
+                                  >
+                                    <Input style={{ width: '98%' }} maxLength={20} />
+                                  </Form.Item>
+                                </div>
+                                
+                                <div className="field full">
+                                  <label>州</label>
+                                  <Form.Item 
+                                    name="state" 
+                                    noStyle
+                                    rules={[{ required: true, message: '请选择州' }]}
+                                  >
+                                    <Select style={{ width: '98%' }} placeholder="- 请选择 -">
+                                      <Select.Option value="AL">ALABAMA</Select.Option>
+                                      <Select.Option value="AK">ALASKA</Select.Option>
+                                      <Select.Option value="AS">AMERICAN SAMOA</Select.Option>
+                                      <Select.Option value="AZ">ARIZONA</Select.Option>
+                                      <Select.Option value="AR">ARKANSAS</Select.Option>
+                                      <Select.Option value="CA">CALIFORNIA</Select.Option>
+                                      <Select.Option value="CO">COLORADO</Select.Option>
+                                      <Select.Option value="CT">CONNECTICUT</Select.Option>
+                                      <Select.Option value="DE">DELAWARE</Select.Option>
+                                      <Select.Option value="DC">DISTRICT OF COLUMBIA</Select.Option>
+                                      <Select.Option value="FL">FLORIDA</Select.Option>
+                                      <Select.Option value="GA">GEORGIA</Select.Option>
+                                      <Select.Option value="GU">GUAM</Select.Option>
+                                      <Select.Option value="HI">HAWAII</Select.Option>
+                                      <Select.Option value="ID">IDAHO</Select.Option>
+                                      <Select.Option value="IL">ILLINOIS</Select.Option>
+                                      <Select.Option value="IN">INDIANA</Select.Option>
+                                      <Select.Option value="IA">IOWA</Select.Option>
+                                      <Select.Option value="KS">KANSAS</Select.Option>
+                                      <Select.Option value="KY">KENTUCKY</Select.Option>
+                                      <Select.Option value="LA">LOUISIANA</Select.Option>
+                                      <Select.Option value="ME">MAINE</Select.Option>
+                                      <Select.Option value="MD">MARYLAND</Select.Option>
+                                      <Select.Option value="MA">MASSACHUSETTS</Select.Option>
+                                      <Select.Option value="MI">MICHIGAN</Select.Option>
+                                      <Select.Option value="MN">MINNESOTA</Select.Option>
+                                      <Select.Option value="MS">MISSISSIPPI</Select.Option>
+                                      <Select.Option value="MO">MISSOURI</Select.Option>
+                                      <Select.Option value="MT">MONTANA</Select.Option>
+                                      <Select.Option value="NE">NEBRASKA</Select.Option>
+                                      <Select.Option value="NV">NEVADA</Select.Option>
+                                      <Select.Option value="NH">NEW HAMPSHIRE</Select.Option>
+                                      <Select.Option value="NJ">NEW JERSEY</Select.Option>
+                                      <Select.Option value="NM">NEW MEXICO</Select.Option>
+                                      <Select.Option value="NY">NEW YORK</Select.Option>
+                                      <Select.Option value="NC">NORTH CAROLINA</Select.Option>
+                                      <Select.Option value="ND">NORTH DAKOTA</Select.Option>
+                                      <Select.Option value="MP">NORTHERN MARIANA ISLANDS</Select.Option>
+                                      <Select.Option value="OH">OHIO</Select.Option>
+                                      <Select.Option value="OK">OKLAHOMA</Select.Option>
+                                      <Select.Option value="OR">OREGON</Select.Option>
+                                      <Select.Option value="PA">PENNSYLVANIA</Select.Option>
+                                      <Select.Option value="PR">PUERTO RICO</Select.Option>
+                                      <Select.Option value="RI">RHODE ISLAND</Select.Option>
+                                      <Select.Option value="SC">SOUTH CAROLINA</Select.Option>
+                                      <Select.Option value="SD">SOUTH DAKOTA</Select.Option>
+                                      <Select.Option value="TN">TENNESSEE</Select.Option>
+                                      <Select.Option value="TX">TEXAS</Select.Option>
+                                      <Select.Option value="UT">UTAH</Select.Option>
+                                      <Select.Option value="VT">VERMONT</Select.Option>
+                                      <Select.Option value="VI">VIRGIN ISLANDS</Select.Option>
+                                      <Select.Option value="VA">VIRGINIA</Select.Option>
+                                      <Select.Option value="WA">WASHINGTON</Select.Option>
+                                      <Select.Option value="WV">WEST VIRGINIA</Select.Option>
+                                      <Select.Option value="WI">WISCONSIN</Select.Option>
+                                      <Select.Option value="WY">WYOMING</Select.Option>
+                                    </Select>
+                                  </Form.Item>
+                                </div>
+                                
+                                <div className="field full">
+                                  <label>邮政编码</label>
+                                  <span style={{ marginLeft: '4px' }}>(如果知道)</span>
+                                  <Form.Item 
+                                    name="zipCode" 
+                                    noStyle
+                                  >
+                                    <Input style={{ width: '65%' }} maxLength={10} />
+                                  </Form.Item>
+                                  <div className="hint">
+                                    <span>(例如: 12345 或 12345-1234)</span>
+                                  </div>
+                                </div>
+                              </div>
+                            </QuestionItem>
+                          );
+                        }}
+                    </Form.Item>
+                  </>
+                );
+              }
             }
-          }}
+          }
           </Form.Item>
                 
           <Form.Item
