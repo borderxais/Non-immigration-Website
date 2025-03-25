@@ -1120,7 +1120,7 @@ const DS160Form: React.FC = () => {
                           name="principalApplicantSurname"
                           explanation="请输入持有签证的主申请人的姓氏（与护照一致）"
                         >
-                          <Input placeholder="请输入主申请人姓氏" />
+                          <Input style={{ width: '98%' }} placeholder="请输入主申请人姓氏" />
                         </QuestionItem>
                         
                         <QuestionItem
@@ -1128,7 +1128,7 @@ const DS160Form: React.FC = () => {
                           name="principalApplicantGivenName"
                           explanation="请输入持有签证的主申请人的名字（与护照一致）"
                         >
-                          <Input placeholder="请输入主申请人名字" />
+                          <Input style={{ width: '98%' }} placeholder="请输入主申请人名字" />
                         </QuestionItem>
                       </div>
                     </div>
@@ -1296,7 +1296,6 @@ const DS160Form: React.FC = () => {
                         }
                       >
                         {({ getFieldValue }) => {
-                          // 只有当停留时间的两个字段都填写了才显示住址问题
                           const durationType = getFieldValue('stayDurationType');
                           
                           if (!durationType) {
