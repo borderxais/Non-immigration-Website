@@ -1319,95 +1319,108 @@ const DS160Form: React.FC = () => {
               );
             }
           }}
-        </Form.Item>
-              
-        <Form.Item
-          noStyle
-          shouldUpdate={(prevValues, currentValues) => 
-            prevValues.specificPurpose !== currentValues.specificPurpose
-          }
-        >
-          {({ getFieldValue }) => {
-            const specificPurpose = getFieldValue('specificPurpose');
-            
-            // Only show diplomatic section for the specific four A-type visas
-            if (specificPurpose && 
-                (specificPurpose === 'A1-AM' || 
-                specificPurpose === 'A1-DP' || 
-                specificPurpose === 'A2-EM' || 
-                specificPurpose === 'A3-EM')) {
-              
-              return (
-                <div className="diplomatic-section" style={{ 
-                  padding: '16px', 
-                  backgroundColor: 'white', 
-                  border: '1px solid #f0f0f0',
-                  borderRadius: '4px', 
-                  marginTop: '15px', 
-                  marginBottom: '15px' 
-                }}>
-                  <div className="section-title" style={{ marginBottom: '15px' }}>
-                    <h4><span>外交任务信息</span></h4>
-                  </div>
-                  
-                  <QuestionItem
-                    question="您所属的外交机构名称"
-                    name="diplomaticOrganization"
-                    explanation="请提供您所属的外交机构或政府部门的全称"
-                  >
-                    <Input placeholder="请输入外交机构名称" />
-                  </QuestionItem>
-                  
-                  <QuestionItem
-                    question="您的职位/头衔"
-                    name="diplomaticPosition"
-                    explanation="请提供您在该机构的官方职位或头衔"
-                  >
-                    <Input placeholder="例如：参赞、一等秘书、二等秘书等" />
-                  </QuestionItem>
-                  
-                  <QuestionItem
-                    question="您的任期"
-                    name="assignmentDuration"
-                    explanation="请提供您在美国的预计任期"
-                  >
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <Form.Item 
-                        name="assignmentLength" 
-                        noStyle
-                        rules={[{ required: true, message: '请输入任期' }]}
-                      >
-                        <Input style={{ width: '80px' }} maxLength={3} placeholder="数量" />
-                      </Form.Item>
-                      
-                      <Form.Item 
-                        name="assignmentLengthType" 
-                        noStyle
-                        rules={[{ required: true, message: '请选择单位' }]}
-                      >
-                        <Select style={{ width: '120px' }} placeholder="单位">
-                          <Select.Option value="Y">年</Select.Option>
-                          <Select.Option value="M">月</Select.Option>
-                        </Select>
-                      </Form.Item>
-                    </div>
-                  </QuestionItem>
-                  
-                  <QuestionItem
-                    question="使团/组织信息"
-                    name="missionOrganizationInfo"
-                    explanation="请提供关于您所在使团/组织的额外信息"
-                  >
-                    <TextArea rows={3} placeholder="例如：使团功能、规模、联系信息等" />
-                  </QuestionItem>
-                </div>
-              );
+          </Form.Item>
+                
+          <Form.Item
+            noStyle
+            shouldUpdate={(prevValues, currentValues) => 
+              prevValues.specificPurpose !== currentValues.specificPurpose
             }
-            
-            return null;
-          }}
-        </Form.Item>
+          >
+            {({ getFieldValue }) => {
+              const specificPurpose = getFieldValue('specificPurpose');
+              
+              // Only show diplomatic section for the specific four A-type visas
+              if (specificPurpose && 
+                  (specificPurpose === 'A1-AM' || 
+                  specificPurpose === 'A1-DP' || 
+                  specificPurpose === 'A2-EM' || 
+                  specificPurpose === 'A3-EM')) {
+                
+                return (
+                  <div className="diplomatic-section" style={{ 
+                    padding: '16px', 
+                    backgroundColor: 'white', 
+                    border: '1px solid #f0f0f0',
+                    borderRadius: '4px', 
+                    marginTop: '15px', 
+                    marginBottom: '15px' 
+                  }}>
+                    <div className="section-title" style={{ marginBottom: '15px' }}>
+                      <h4><span>外交任务信息</span></h4>
+                    </div>
+                    
+                    <QuestionItem
+                      question="您所属的外交机构名称"
+                      name="diplomaticOrganization"
+                      explanation="请提供您所属的外交机构或政府部门的全称"
+                    >
+                      <Input placeholder="请输入外交机构名称" />
+                    </QuestionItem>
+                    
+                    <QuestionItem
+                      question="您的职位/头衔"
+                      name="diplomaticPosition"
+                      explanation="请提供您在该机构的官方职位或头衔"
+                    >
+                      <Input placeholder="例如：参赞、一等秘书、二等秘书等" />
+                    </QuestionItem>
+                    
+                    <QuestionItem
+                      question="您的任期"
+                      name="assignmentDuration"
+                      explanation="请提供您在美国的预计任期"
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <Form.Item 
+                          name="assignmentLength" 
+                          noStyle
+                          rules={[{ required: true, message: '请输入任期' }]}
+                        >
+                          <Input style={{ width: '80px' }} maxLength={3} placeholder="数量" />
+                        </Form.Item>
+                        
+                        <Form.Item 
+                          name="assignmentLengthType" 
+                          noStyle
+                          rules={[{ required: true, message: '请选择单位' }]}
+                        >
+                          <Select style={{ width: '120px' }} placeholder="单位">
+                            <Select.Option value="Y">年</Select.Option>
+                            <Select.Option value="M">月</Select.Option>
+                          </Select>
+                        </Form.Item>
+                      </div>
+                    </QuestionItem>
+                    
+                    <QuestionItem
+                      question="使团/组织信息"
+                      name="missionOrganizationInfo"
+                      explanation="请提供关于您所在使团/组织的额外信息"
+                    >
+                      <TextArea rows={3} placeholder="例如：使团功能、规模、联系信息等" />
+                    </QuestionItem>
+                  </div>
+                );
+              }
+              
+              return null;
+            }}
+          </Form.Item>
 
+          <QuestionItem
+            question="支付您旅行费用的个人或组织"
+            name="whoIsPaying"
+            explanation="请选择谁将支付您此次旅行的费用"
+          >
+            <Select placeholder="- 请选择一个 -">
+              <Select.Option value="S">本人</Select.Option>
+              <Select.Option value="O">其他个人</Select.Option>
+              <Select.Option value="P">当前雇主</Select.Option>
+              <Select.Option value="U">美国雇主</Select.Option>
+              <Select.Option value="C">其他公司/组织</Select.Option>
+            </Select>
+          </QuestionItem>
         </>
       ),
     },
