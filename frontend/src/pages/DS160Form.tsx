@@ -1392,25 +1392,17 @@ const DS160Form: React.FC = () => {
                                                 <Input placeholder="请输入访问地点" maxLength={40} style={{ width: '98%' }} />
                                               </Form.Item>
 
-                                              <Row>
-                                                <Col span={24}>
-                                                  <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '10px' }}>
-                                                    <Button type="link" onClick={() => add()} style={{ marginRight: '8px' }}>增加地点</Button>
-                                                    <Button 
-                                                      type="link" 
-                                                      danger 
-                                                      onClick={() => {
-                                                        // Only remove if there's more than one location
-                                                        if (fields.length > 1) {
-                                                          remove(name);
-                                                        }
-                                                      }}
-                                                    >
-                                                      移除地点
-                                                    </Button>
-                                                  </div>
-                                                </Col>
-                                              </Row>
+                                              <FormItemButtons 
+                                                onAdd={() => add()}
+                                                onRemove={() => {
+                                                  // Only remove if there's more than one location
+                                                  if (fields.length > 1) {
+                                                    remove(name);
+                                                  }
+                                                }}
+                                                addText="增加地点"
+                                                removeText="移除地点"
+                                              />
                                             </div>
                                           ))}
                                         </>
@@ -1418,26 +1410,18 @@ const DS160Form: React.FC = () => {
                                     </Form.List>
                                   </QuestionItem>
                                   
-                                  {/* Main "增加另一个" button with remove button always visible */}
-                                  <Row>
-                                    <Col span={24}>
-                                      <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '10px' }}>
-                                        <Button type="link" onClick={() => addQuestionGroup()} style={{ marginRight: '8px' }}>增加另一个</Button>
-                                        <Button 
-                                          type="link" 
-                                          danger 
-                                          onClick={() => {
-                                            // Only remove if there's more than one question group
-                                            if (questionGroups.length > 1) {
-                                              removeQuestionGroup(questionGroupIndex);
-                                            }
-                                          }}
-                                        >
-                                          移除
-                                        </Button>
-                                      </div>
-                                    </Col>
-                                  </Row>
+                                  {/* Main "增加另一个" button using FormItemButtons component */}
+                                  <FormItemButtons 
+                                    onAdd={() => addQuestionGroup()}
+                                    onRemove={() => {
+                                      // Only remove if there's more than one question group
+                                      if (questionGroups.length > 1) {
+                                        removeQuestionGroup(questionGroupIndex);
+                                      }
+                                    }}
+                                    addText="增加另一个"
+                                    removeText="移除"
+                                  />
                                 </div>
                               ))}
                             </>
