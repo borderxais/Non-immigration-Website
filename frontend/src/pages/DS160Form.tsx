@@ -1356,6 +1356,9 @@ const DS160Form: React.FC = () => {
                         >
                           <Input style={{ width: '98%' }} maxLength={20} />
                         </QuestionItem>
+
+                      </div>
+                      <div style={blockInsideHighlightStyle}>
                         <QuestionItem
                           question="您计划在美国访问的地点"
                           name="locationsToVisit"
