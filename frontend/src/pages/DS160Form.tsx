@@ -2399,34 +2399,6 @@ const DS160Form: React.FC = () => {
                                             </Select>
                                           </QuestionItem>
                                           
-                                          {/* 仅当选择了"其他"关系时，显示此字段 */}
-                                          <Form.Item
-                                            noStyle
-                                            shouldUpdate={(prevValues, currentValues) => {
-                                              const prevRel = prevValues.companions?.[index]?.relationship;
-                                              const currRel = currentValues.companions?.[index]?.relationship;
-                                              return prevRel !== currRel;
-                                            }}
-                                          >
-                                            {({ getFieldValue }) => {
-                                              const relationship = getFieldValue(['companions', index, 'relationship']);
-                                              
-                                              if (relationship === 'O') {
-                                                return (
-                                                  <QuestionItem
-                                                    question="请说明关系"
-                                                    name={`companions[${index}].otherRelationship`}
-                                                    explanation="请简要描述与该同行人的关系"
-                                                  >
-                                                    <Input style={{ width: '98%' }} maxLength={50} />
-                                                  </QuestionItem>
-                                                );
-                                              }
-                                              
-                                              return null;
-                                            }}
-                                          </Form.Item>
-                                          
                                           {/* FormItemButtons 组件，与旅行信息页面保持一致 */}
                                           <FormItemButtons 
                                             onAdd={() => add()}
