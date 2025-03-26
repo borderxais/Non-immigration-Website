@@ -1149,15 +1149,6 @@ const DS160Form: React.FC = () => {
                 return null;
               }}
             </Form.Item>
-
-            <Row>
-              <Col span={24}>
-                <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '10px' }}>
-                  <Button type="link" style={{ marginRight: '8px' }}>增加另一个</Button>
-                  <Button type="link" danger>移除</Button>
-                </div>
-              </Col>
-            </Row>
           </div>
 
           <br/>
@@ -1391,18 +1382,6 @@ const DS160Form: React.FC = () => {
                                               >
                                                 <Input placeholder="请输入访问地点" maxLength={40} style={{ width: '98%' }} />
                                               </Form.Item>
-
-                                              <FormItemButtons 
-                                                onAdd={() => add()}
-                                                onRemove={() => {
-                                                  // Only remove if there's more than one location
-                                                  if (fields.length > 1) {
-                                                    remove(name);
-                                                  }
-                                                }}
-                                                addText="增加地点"
-                                                removeText="移除地点"
-                                              />
                                             </div>
                                           ))}
                                         </>
@@ -1410,7 +1389,7 @@ const DS160Form: React.FC = () => {
                                     </Form.List>
                                   </QuestionItem>
                                   
-                                  {/* Main "增加另一个" button using FormItemButtons component */}
+                                  {/* Single "增加另一个" and "移除" button for each question block */}
                                   <FormItemButtons 
                                     onAdd={() => addQuestionGroup()}
                                     onRemove={() => {
