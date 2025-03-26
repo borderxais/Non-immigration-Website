@@ -1392,24 +1392,13 @@ const DS160Form: React.FC = () => {
                                                   <Input placeholder="请输入访问地点" maxLength={40} style={{ width: '98%' }} />
                                                 </Form.Item>
 
-                                                {/* If you created and imported the FormItemButtons component */}
-                                                {/* <FormItemButtons 
+                                                <FormItemButtons 
                                                   onAdd={() => add()}
                                                   onRemove={() => remove(name)}
                                                   addText="增加地点"
                                                   removeText="移除地点"
                                                   showRemove={fields.length > 1}
-                                                /> */}
-                                                
-                                                {/* Or use the inline version: */}
-                                                <Row>
-                                                  <Col span={24}>
-                                                    <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '10px' }}>
-                                                      <Button type="link" onClick={() => add()} style={{ marginRight: '8px' }}>增加地点</Button>
-                                                      <Button type="link" danger onClick={() => remove(name)}>移除地点</Button>
-                                                    </div>
-                                                  </Col>
-                                                </Row>
+                                                />
                                               </div>
                                             ))}
                                           </>
