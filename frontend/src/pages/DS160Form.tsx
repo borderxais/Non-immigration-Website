@@ -1196,13 +1196,201 @@ const DS160Form: React.FC = () => {
               
               if (hasSpecificPlans === 'Y') {
                 return (
-                  <QuestionItem
-                    question="请提供您的详细行程"
-                    name="specificTravelPlans"
-                    explanation="请详细说明您的旅行计划，包括到达日期、访问地点和停留时间。"
-                  >
-                    <TextArea rows={4} placeholder="详细说明您的旅行计划，包括到达日期、访问地点和停留时间" />
-                  </QuestionItem>
+                  <div className="field-groups" style={{ marginBottom: '15px' }}>
+                    <h4>
+                      <span>请提供您来美国的旅行的详细行程</span>
+                    </h4>
+
+                    <div className="field-group callout" style={highlightedBlockStyle}>
+                      <div style={blockInsideHighlightStyle}>
+                        <QuestionItem
+                          question="入境美国日期"
+                          name="arrivalUSDate"
+                          explanation="请输入您计划入境美国的日期"
+                        >
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                            <Form.Item 
+                              name="arrivalDay" 
+                              noStyle
+                              rules={[{ required: true, message: '请选择日期' }]}
+                            >
+                              <Select style={{ width: '60px' }} placeholder="">
+                                <Select.Option value="">  </Select.Option>
+                                {Array.from({ length: 31 }, (_, i) => {
+                                  const day = (i + 1).toString().padStart(2, '0');
+                                  return <Select.Option key={day} value={day}>{day}</Select.Option>;
+                                })}
+                              </Select>
+                            </Form.Item>
+
+                            <Form.Item 
+                              name="arrivalMonth" 
+                              noStyle
+                              rules={[{ required: true, message: '请选择月份' }]}
+                            >
+                              <Select style={{ width: '70px' }} placeholder="">
+                                <Select.Option value="">  </Select.Option>
+                                <Select.Option value="JAN">一月</Select.Option>
+                                <Select.Option value="FEB">二月</Select.Option>
+                                <Select.Option value="MAR">三月</Select.Option>
+                                <Select.Option value="APR">四月</Select.Option>
+                                <Select.Option value="MAY">五月</Select.Option>
+                                <Select.Option value="JUN">六月</Select.Option>
+                                <Select.Option value="JUL">七月</Select.Option>
+                                <Select.Option value="AUG">八月</Select.Option>
+                                <Select.Option value="SEP">九月</Select.Option>
+                                <Select.Option value="OCT">十月</Select.Option>
+                                <Select.Option value="NOV">十一月</Select.Option>
+                                <Select.Option value="DEC">十二月</Select.Option>
+                              </Select>
+                            </Form.Item>
+
+                            <Form.Item 
+                              name="arrivalYear" 
+                              noStyle
+                              rules={[
+                                { required: true, message: '请输入年份' },
+                                { pattern: /^\d{4}$/, message: '请输入4位数年份' }
+                              ]}
+                            >
+                              <Input placeholder="" style={{ width: '60px' }} maxLength={4} />
+                            </Form.Item>
+
+                            <div style={{ marginLeft: '8px', fontSize: '12px', color: '#666' }}>
+                              (格式: DD-MMM-YYYY)
+                            </div>
+                          </div>
+                        </QuestionItem>
+
+                        <QuestionItem
+                          question="抵达航班"
+                          name="arrivalFlight"
+                          explanation="请输入您的抵达航班号（如果知道）"
+                          required={false}
+                        >
+                          <Input style={{ width: '98%' }} maxLength={20} />
+                        </QuestionItem>
+
+                        <QuestionItem
+                          question="抵达城市"
+                          name="arrivalCity"
+                          explanation="请输入您入境的美国城市"
+                        >
+                          <Input style={{ width: '98%' }} maxLength={20} />
+                        </QuestionItem>
+
+                        <div style={{ margin: '15px 0', borderTop: '1px solid #e8e8e8' }}></div>
+
+                        <QuestionItem
+                          question="离开美国日期"
+                          name="departureUSDate"
+                          explanation="请输入您计划离开美国的日期"
+                        >
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                            <Form.Item 
+                              name="departureDay" 
+                              noStyle
+                              rules={[{ required: true, message: '请选择日期' }]}
+                            >
+                              <Select style={{ width: '60px' }} placeholder="">
+                                <Select.Option value="">  </Select.Option>
+                                {Array.from({ length: 31 }, (_, i) => {
+                                  const day = (i + 1).toString().padStart(2, '0');
+                                  return <Select.Option key={day} value={day}>{day}</Select.Option>;
+                                })}
+                              </Select>
+                            </Form.Item>
+
+                            <Form.Item 
+                              name="departureMonth" 
+                              noStyle
+                              rules={[{ required: true, message: '请选择月份' }]}
+                            >
+                              <Select style={{ width: '70px' }} placeholder="">
+                                <Select.Option value="">  </Select.Option>
+                                <Select.Option value="JAN">一月</Select.Option>
+                                <Select.Option value="FEB">二月</Select.Option>
+                                <Select.Option value="MAR">三月</Select.Option>
+                                <Select.Option value="APR">四月</Select.Option>
+                                <Select.Option value="MAY">五月</Select.Option>
+                                <Select.Option value="JUN">六月</Select.Option>
+                                <Select.Option value="JUL">七月</Select.Option>
+                                <Select.Option value="AUG">八月</Select.Option>
+                                <Select.Option value="SEP">九月</Select.Option>
+                                <Select.Option value="OCT">十月</Select.Option>
+                                <Select.Option value="NOV">十一月</Select.Option>
+                                <Select.Option value="DEC">十二月</Select.Option>
+                              </Select>
+                            </Form.Item>
+
+                            <Form.Item 
+                              name="departureYear" 
+                              noStyle
+                              rules={[
+                                { required: true, message: '请输入年份' },
+                                { pattern: /^\d{4}$/, message: '请输入4位数年份' }
+                              ]}
+                            >
+                              <Input placeholder="" style={{ width: '60px' }} maxLength={4} />
+                            </Form.Item>
+
+                            <div style={{ marginLeft: '8px', fontSize: '12px', color: '#666' }}>
+                              (格式: DD-MMM-YYYY)
+                            </div>
+                          </div>
+                        </QuestionItem>
+
+                        <QuestionItem
+                          question="离开航班"
+                          name="departureFlight"
+                          explanation="请输入您的离开航班号（如果知道）"
+                          required={false}
+                        >
+                          <Input style={{ width: '98%' }} maxLength={20} />
+                        </QuestionItem>
+
+                        <QuestionItem
+                          question="离开城市"
+                          name="departureCity"
+                          explanation="请输入您离开美国的城市"
+                        >
+                          <Input style={{ width: '98%' }} maxLength={20} />
+                        </QuestionItem>
+                        <QuestionItem
+                          question="您计划在美国访问的地点"
+                          name="locationsToVisit"
+                          explanation="请提供您计划在美国访问的地点"
+                        >
+                          <Form.List name="visitLocations" initialValue={[{}]}>
+                            {(fields, { add, remove }) => (
+                              <>
+                                {fields.map(({ key, name }) => (
+                                  <div key={key} style={{ marginBottom: 16 }}>
+                                    <Form.Item
+                                      name={[name, 'location']}
+                                      rules={[{ required: true, message: '请输入访问地点' }]}
+                                      style={{ marginBottom: 0 }}
+                                    >
+                                      <Input placeholder="请输入访问地点" maxLength={40} style={{ width: '98%' }} />
+                                    </Form.Item>
+
+                                    <Row>
+                                      <Col span={24}>
+                                        <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '10px' }}>
+                                          <Button type="link" onClick={() => add()} style={{ marginRight: '8px' }}>增加另一个</Button>
+                                          <Button type="link" danger onClick={() => remove(name)}>移除</Button>
+                                        </div>
+                                      </Col>
+                                    </Row>
+                                  </div>
+                                ))}
+                              </>
+                            )}
+                          </Form.List>
+                        </QuestionItem>
+                      </div>
+                    </div>
+                  </div>
                 );
               } else {
                 return (
