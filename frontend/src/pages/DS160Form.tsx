@@ -1365,70 +1365,83 @@ const DS160Form: React.FC = () => {
                           {(questionGroups, { add: addQuestionGroup, remove: removeQuestionGroup }) => (
                             <>
                               {questionGroups.map((questionGroup, questionGroupIndex) => (
-                                  <div 
-                                    key={questionGroup.key} 
-                                    style={{ 
-                                      marginBottom: 24, 
-                                      padding: questionGroupIndex > 0 ? 16 : 0, 
-                                      border: questionGroupIndex > 0 ? '1px dashed #d6e8fa' : 'none',
-                                      borderRadius: questionGroupIndex > 0 ? '8px' : 0
-                                    }}
-                                  >
-                                    <QuestionItem
-                                      question="您计划在美国访问的地点"
-                                      name={`locationsToVisit_${questionGroupIndex}`}
-                                      explanation="请提供您计划在美国访问的地点"
-                                    >
-                                      <Form.List name={['locationGroups', questionGroupIndex, 'visitLocations']} initialValue={[{}]}>
-                                        {(fields, { add, remove }) => (
-                                          <>
-                                            {fields.map(({ key, name }) => (
-                                              <div key={key} style={{ marginBottom: 16 }}>
-                                                <Form.Item
-                                                  name={[name, 'location']}
-                                                  rules={[{ required: true, message: '请输入访问地点' }]}
-                                                  style={{ marginBottom: 0 }}
-                                                >
-                                                  <Input placeholder="请输入访问地点" maxLength={40} style={{ width: '98%' }} />
-                                                </Form.Item>
-
-                                                <FormItemButtons 
-                                                  onAdd={() => add()}
-                                                  onRemove={() => remove(name)}
-                                                  addText="增加地点"
-                                                  removeText="移除地点"
-                                                  showRemove={fields.length > 1}
-                                                />
-                                              </div>
-                                            ))}
-                                          </>
-                                        )}
-                                      </Form.List>
-                                    </QuestionItem>
-                                    
-                                    {questionGroupIndex > 0 && (
-                                      <Button 
-                                        type="link" 
-                                        danger
-                                        onClick={() => removeQuestionGroup(questionGroupIndex)}
-                                        style={{ marginTop: 8 }}
-                                      >
-                                        移除此访问地点组
-                                      </Button>
-                                    )}
-                                  </div>
-                                ))}
-                                
-                                {/* Button to add a new location question group */}
-                                <Button 
-                                  type="primary" 
-                                  onClick={() => addQuestionGroup()}
-                                  style={{ marginTop: 16 }}
+                                <div 
+                                  key={questionGroup.key} 
+                                  style={{ 
+                                    marginBottom: 24, 
+                                    padding: questionGroupIndex > 0 ? 16 : 0, 
+                                    border: questionGroupIndex > 0 ? '1px dashed #d6e8fa' : 'none',
+                                    borderRadius: questionGroupIndex > 0 ? '8px' : 0
+                                  }}
                                 >
-                                  增加另一个访问地点组
-                                </Button>
-                              </>
-                            )}
+                                  <QuestionItem
+                                    question="您计划在美国访问的地点"
+                                    name={`locationsToVisit_${questionGroupIndex}`}
+                                    explanation="请提供您计划在美国访问的地点"
+                                  >
+                                    <Form.List name={['locationGroups', questionGroupIndex, 'visitLocations']} initialValue={[{}]}>
+                                      {(fields, { add, remove }) => (
+                                        <>
+                                          {fields.map(({ key, name }) => (
+                                            <div key={key} style={{ marginBottom: 16 }}>
+                                              <Form.Item
+                                                name={[name, 'location']}
+                                                rules={[{ required: true, message: '请输入访问地点' }]}
+                                                style={{ marginBottom: 0 }}
+                                              >
+                                                <Input placeholder="请输入访问地点" maxLength={40} style={{ width: '98%' }} />
+                                              </Form.Item>
+
+                                              <Row>
+                                                <Col span={24}>
+                                                  <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '10px' }}>
+                                                    <Button type="link" onClick={() => add()} style={{ marginRight: '8px' }}>增加地点</Button>
+                                                    <Button 
+                                                      type="link" 
+                                                      danger 
+                                                      onClick={() => {
+                                                        // Only remove if there's more than one location
+                                                        if (fields.length > 1) {
+                                                          remove(name);
+                                                        }
+                                                      }}
+                                                    >
+                                                      移除地点
+                                                    </Button>
+                                                  </div>
+                                                </Col>
+                                              </Row>
+                                            </div>
+                                          ))}
+                                        </>
+                                      )}
+                                    </Form.List>
+                                  </QuestionItem>
+                                  
+                                  {/* Main "增加另一个" button with remove button always visible */}
+                                  <Row>
+                                    <Col span={24}>
+                                      <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '10px' }}>
+                                        <Button type="link" onClick={() => addQuestionGroup()} style={{ marginRight: '8px' }}>增加另一个</Button>
+                                        <Button 
+                                          type="link" 
+                                          danger 
+                                          onClick={() => {
+                                            // Only remove if there's more than one question group
+                                            if (questionGroups.length > 1) {
+                                              removeQuestionGroup(questionGroupIndex);
+                                            }
+                                          }}
+                                        >
+                                          移除
+                                        </Button>
+                                      </div>
+                                    </Col>
+                                  </Row>
+                                </div>
+                              ))}
+                            </>
+                          )}
                         </Form.List>
                       </div>
                     </div>
@@ -1697,7 +1710,6 @@ const DS160Form: React.FC = () => {
                       <QuestionItem
                         question="赞助使团/组织"
                         name="sponsoringMission"
-                        explanation="请提供赞助您的使团或组织的名称"
                       >
                         <Input placeholder="请输入赞助使团/组织名称" maxLength={40} />
                       </QuestionItem>
@@ -1705,7 +1717,6 @@ const DS160Form: React.FC = () => {
                       <QuestionItem
                         question="联络人姓氏"
                         name="contactSurname"
-                        explanation="请提供赞助使团/组织联络人的姓氏"
                       >
                         <Input placeholder="请输入联络人姓氏" maxLength={33} />
                       </QuestionItem>
@@ -1713,7 +1724,6 @@ const DS160Form: React.FC = () => {
                       <QuestionItem
                         question="联络人名字"
                         name="contactGivenName"
-                        explanation="请提供赞助使团/组织联络人的名字"
                       >
                         <Input placeholder="请输入联络人名字" maxLength={33} />
                       </QuestionItem>
@@ -1721,7 +1731,6 @@ const DS160Form: React.FC = () => {
                       <QuestionItem
                         question="美国地址（第一行）"
                         name="missionAddressLine1"
-                        explanation="请提供赞助使团/组织在美国的地址第一行"
                       >
                         <Input placeholder="请输入地址第一行" maxLength={40} />
                       </QuestionItem>
@@ -1729,7 +1738,6 @@ const DS160Form: React.FC = () => {
                       <QuestionItem
                         question="美国地址（第二行）"
                         name="missionAddressLine2"
-                        explanation="请提供赞助使团/组织在美国的地址第二行（可选）"
                         required={false}
                       >
                         <Input placeholder="请输入地址第二行（可选）" maxLength={40} />
@@ -1738,7 +1746,6 @@ const DS160Form: React.FC = () => {
                       <QuestionItem
                         question="城市"
                         name="missionCity"
-                        explanation="请提供赞助使团/组织所在的美国城市"
                       >
                         <Input placeholder="请输入城市名称" maxLength={20} />
                       </QuestionItem>
@@ -1746,7 +1753,6 @@ const DS160Form: React.FC = () => {
                       <QuestionItem
                         question="州"
                         name="missionState"
-                        explanation="请选择赞助使团/组织所在的美国州"
                       >
                         <Select placeholder="- 请选择一个 -">
                           <Select.Option value="AL">阿拉巴马</Select.Option>
@@ -1811,7 +1817,6 @@ const DS160Form: React.FC = () => {
                       <QuestionItem
                         question="邮政编码"
                         name="missionZipCode"
-                        explanation="请提供赞助使团/组织所在地址的邮政编码"
                       >
                         <Input placeholder="例如：12345 或 12345-1234" maxLength={10} />
                       </QuestionItem>
@@ -1819,7 +1824,6 @@ const DS160Form: React.FC = () => {
                       <QuestionItem
                         question="电话号码"
                         name="missionPhoneNumber"
-                        explanation="请提供赞助使团/组织的电话号码"
                       >
                         <Input placeholder="例如：5555555555" maxLength={15} />
                       </QuestionItem>
@@ -1869,7 +1873,6 @@ const DS160Form: React.FC = () => {
                       <QuestionItem
                         question="付款人姓氏"
                         name="payerSurname"
-                        explanation="请输入支付您旅行费用的个人姓氏"
                       >
                         <Input placeholder="例如：FERNANDEZ GARCIA" maxLength={33} />
                       </QuestionItem>
@@ -1877,7 +1880,6 @@ const DS160Form: React.FC = () => {
                       <QuestionItem
                         question="付款人名字"
                         name="payerGivenName"
-                        explanation="请输入支付您旅行费用的个人名字"
                       >
                         <Input placeholder="例如：JUAN MIGUEL" maxLength={33} />
                       </QuestionItem>
@@ -1885,7 +1887,6 @@ const DS160Form: React.FC = () => {
                       <QuestionItem
                         question="电话号码"
                         name="payerPhone"
-                        explanation="请输入支付您旅行费用的个人电话号码"
                       >
                         <Input placeholder="例如：5555555555" maxLength={15} minLength={5} />
                       </QuestionItem>
@@ -1893,7 +1894,6 @@ const DS160Form: React.FC = () => {
                       <QuestionItem
                         question="电子邮件地址"
                         name="payerEmail"
-                        explanation="请输入支付您旅行费用的个人电子邮件地址"
                       >
                         <div style={{ display: 'flex', alignItems: 'center' }}>
                           <Form.Item name="payerEmail" noStyle>
@@ -1912,7 +1912,6 @@ const DS160Form: React.FC = () => {
                       <QuestionItem
                         question="与您的关系"
                         name="payerRelationship"
-                        explanation="请选择支付您旅行费用的个人与您的关系"
                       >
                         <Select placeholder="- 请选择一个 -">
                           <Select.Option value="C">子女</Select.Option>
