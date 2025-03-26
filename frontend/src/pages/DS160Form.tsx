@@ -2349,112 +2349,116 @@ const DS160Form: React.FC = () => {
                         return null;
                       }}
                     </Form.Item>
-                    
+                  </div>
+                );
+              } else {
+                return (
+                  <div className="field-groups" style={{ marginBottom: '15px' }}>
                     <h4>
                       <span>同行人信息</span>
                     </h4>
                     <div className="field-group callout" style={highlightedBlockStyle}>
                       <div style={blockInsideHighlightStyle}>
                         <Form.List name="companions" initialValue={[{}]}>
-                          {(fields, { add, remove }) => (
-                            <>
-                              {fields.map((field, index) => (
-                                <div 
-                                  key={field.key} 
-                                  style={{ 
-                                    marginBottom: 24, 
-                                    padding: index > 0 ? 16 : 0, 
-                                    border: index > 0 ? '1px dashed #d6e8fa' : 'none',
-                                    borderRadius: index > 0 ? '8px' : 0
+                        {(fields, { add, remove }) => (
+                          <>
+                            {fields.map((field, index) => (
+                              <div 
+                                key={field.key} 
+                                style={{ 
+                                  marginBottom: 24, 
+                                  padding: index > 0 ? 16 : 0, 
+                                  border: index > 0 ? '1px dashed #d6e8fa' : 'none',
+                                  borderRadius: index > 0 ? '8px' : 0
+                                }}
+                              >
+                                <h4>同行人 #{index + 1}</h4>
+                                
+                                <QuestionItem
+                                  question="姓氏"
+                                  name={`companions[${index}].surname`}
+                                  explanation="请输入同行人的姓氏（与护照一致）"
+                                >
+                                  <Input style={{ width: '98%' }} maxLength={33} />
+                                </QuestionItem>
+                                
+                                <QuestionItem
+                                  question="名字"
+                                  name={`companions[${index}].givenName`}
+                                  explanation="请输入同行人的名字（与护照一致）"
+                                >
+                                  <Input style={{ width: '98%' }} maxLength={33} />
+                                </QuestionItem>
+                                
+                                <QuestionItem
+                                  question="与您的关系"
+                                  name={`companions[${index}].relationship`}
+                                  explanation="请选择此同行人与您的关系"
+                                >
+                                  <Select placeholder="- 请选择一个 -" style={{ width: '100%' }}>
+                                    <Select.Option value="S">配偶</Select.Option>
+                                    <Select.Option value="C">子女</Select.Option>
+                                    <Select.Option value="P">父母</Select.Option>
+                                    <Select.Option value="SB">兄弟姐妹</Select.Option>
+                                    <Select.Option value="F">朋友</Select.Option>
+                                    <Select.Option value="B">商业伙伴</Select.Option>
+                                    <Select.Option value="O">其他</Select.Option>
+                                  </Select>
+                                </QuestionItem>
+                                
+                                {/* 仅当选择了"其他"关系时，显示此字段 */}
+                                <Form.Item
+                                  noStyle
+                                  shouldUpdate={(prevValues, currentValues) => {
+                                    const prevRel = prevValues.companions?.[index]?.relationship;
+                                    const currRel = currentValues.companions?.[index]?.relationship;
+                                    return prevRel !== currRel;
                                   }}
                                 >
-                                  <h4>同行人 #{index + 1}</h4>
-                                  
-                                  <QuestionItem
-                                    question="姓氏"
-                                    name={`companions[${index}].surname`}
-                                    explanation="请输入同行人的姓氏（与护照一致）"
-                                  >
-                                    <Input style={{ width: '98%' }} maxLength={33} />
-                                  </QuestionItem>
-                                  
-                                  <QuestionItem
-                                    question="名字"
-                                    name={`companions[${index}].givenName`}
-                                    explanation="请输入同行人的名字（与护照一致）"
-                                  >
-                                    <Input style={{ width: '98%' }} maxLength={33} />
-                                  </QuestionItem>
-                                  
-                                  <QuestionItem
-                                    question="与您的关系"
-                                    name={`companions[${index}].relationship`}
-                                    explanation="请选择此同行人与您的关系"
-                                  >
-                                    <Select placeholder="- 请选择一个 -" style={{ width: '100%' }}>
-                                      <Select.Option value="S">配偶</Select.Option>
-                                      <Select.Option value="C">子女</Select.Option>
-                                      <Select.Option value="P">父母</Select.Option>
-                                      <Select.Option value="SB">兄弟姐妹</Select.Option>
-                                      <Select.Option value="F">朋友</Select.Option>
-                                      <Select.Option value="B">商业伙伴</Select.Option>
-                                      <Select.Option value="O">其他</Select.Option>
-                                    </Select>
-                                  </QuestionItem>
-                                  
-                                  {/* 仅当选择了"其他"关系时，显示此字段 */}
-                                  <Form.Item
-                                    noStyle
-                                    shouldUpdate={(prevValues, currentValues) => {
-                                      const prevRel = prevValues.companions?.[index]?.relationship;
-                                      const currRel = currentValues.companions?.[index]?.relationship;
-                                      return prevRel !== currRel;
-                                    }}
-                                  >
-                                    {({ getFieldValue }) => {
-                                      const relationship = getFieldValue(['companions', index, 'relationship']);
-                                      
-                                      if (relationship === 'O') {
-                                        return (
-                                          <QuestionItem
-                                            question="请说明关系"
-                                            name={`companions[${index}].otherRelationship`}
-                                            explanation="请简要描述与该同行人的关系"
-                                          >
-                                            <Input style={{ width: '98%' }} maxLength={50} />
-                                          </QuestionItem>
-                                        );
-                                      }
-                                      
-                                      return null;
-                                    }}
-                                  </Form.Item>
-                                  
-                                  {/* FormItemButtons 组件，与旅行信息页面保持一致 */}
-                                  <FormItemButtons 
-                                    onAdd={() => add()}
-                                    onRemove={() => {
-                                      // 仅在有多于一个同行人时才允许删除
-                                      if (fields.length > 1) {
-                                        remove(field.name);
-                                      }
-                                    }}
-                                    addText="添加另一位同行人"
-                                    removeText="移除"
-                                  />
-                                </div>
-                              ))}
-                            </>
-                          )}
-                        </Form.List>
-                      </div>
+                                  {({ getFieldValue }) => {
+                                    const relationship = getFieldValue(['companions', index, 'relationship']);
+                                    
+                                    if (relationship === 'O') {
+                                      return (
+                                        <QuestionItem
+                                          question="请说明关系"
+                                          name={`companions[${index}].otherRelationship`}
+                                          explanation="请简要描述与该同行人的关系"
+                                        >
+                                          <Input style={{ width: '98%' }} maxLength={50} />
+                                        </QuestionItem>
+                                      );
+                                    }
+                                    
+                                    return null;
+                                  }}
+                                </Form.Item>
+                                
+                                {/* FormItemButtons 组件，与旅行信息页面保持一致 */}
+                                <FormItemButtons 
+                                  onAdd={() => add()}
+                                  onRemove={() => {
+                                    // 仅在有多于一个同行人时才允许删除
+                                    if (fields.length > 1) {
+                                      remove(field.name);
+                                    }
+                                  }}
+                                  addText="添加另一位同行人"
+                                  removeText="移除"
+                                />
+                              </div>
+                            ))}
+                          </>
+                        )}
+                      </Form.List>
+                    </div>
                     </div>
                   </div>
                 );
               }
               
-              return null;
-            }}
+            }
+            }
           </Form.Item>
 
         </>
