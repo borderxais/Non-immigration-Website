@@ -1154,22 +1154,20 @@ const DS160Form: React.FC = () => {
           <br/>
           <Divider />
             
-          <div className="field-groups">
-            <div className="q">
-              <QuestionItem
-                question="您是否已经制定了具体的旅行计划？"
-                name="hasSpecificPlans"
-                explanation="如果您已确定行程，请选择'是'；如果尚未确定，请选择'否'并提供预计的信息。"
-              >
-                <Radio.Group onChange={(e) => {
-                  // 当选项改变时，通过表单实例更新字段值
-                  form.setFieldsValue({ hasSpecificPlans: e.target.value });
-                }}>
-                  <Radio value="Y">是</Radio>
-                  <Radio value="N">否</Radio>
-                </Radio.Group>
-              </QuestionItem>
-            </div>
+`        <div>
+            <QuestionItem
+              question="您是否已经制定了具体的旅行计划？"
+              name="hasSpecificPlans"
+              explanation="如果您已确定行程，请选择'是'；如果尚未确定，请选择'否'并提供预计的信息。"
+            >
+              <Radio.Group onChange={(e) => {
+                // 当选项改变时，通过表单实例更新字段值
+                form.setFieldsValue({ hasSpecificPlans: e.target.value });
+              }}>
+                <Radio value="Y">是</Radio>
+                <Radio value="N">否</Radio>
+              </Radio.Group>
+            </QuestionItem>
           </div>
 
           <Form.Item
@@ -1351,51 +1349,34 @@ const DS160Form: React.FC = () => {
 
                       </div>
                       <div style={blockInsideHighlightStyle}>
-                        {/* Use Form.List to manage multiple location question groups */}
-                        <Form.List name="locationQuestionGroups" initialValue={[0]}>
-                          {(questionGroups, { add: addQuestionGroup, remove: removeQuestionGroup }) => (
+                        <Form.List name="visitLocations" initialValue={[{}]}>
+                          {(fields, { add, remove }) => (
                             <>
-                              {questionGroups.map((questionGroup, questionGroupIndex) => (
+                              {fields.map((field, index) => (
                                 <div 
-                                  key={questionGroup.key} 
+                                  key={field.key} 
                                   style={{ 
                                     marginBottom: 24, 
-                                    padding: questionGroupIndex > 0 ? 16 : 0, 
-                                    border: questionGroupIndex > 0 ? '1px dashed #d6e8fa' : 'none',
-                                    borderRadius: questionGroupIndex > 0 ? '8px' : 0
+                                    padding: index > 0 ? 16 : 0, 
+                                    border: index > 0 ? '1px dashed #d6e8fa' : 'none',
+                                    borderRadius: index > 0 ? '8px' : 0
                                   }}
                                 >
                                   <QuestionItem
                                     question="您计划在美国访问的地点"
-                                    name={`locationsToVisit_${questionGroupIndex}`}
+                                    name={`visitLocations[${index}].location`}
                                     explanation="请提供您计划在美国访问的地点"
                                   >
-                                    <Form.List name={['locationGroups', questionGroupIndex, 'visitLocations']} initialValue={[{}]}>
-                                      {(fields, { add, remove }) => (
-                                        <>
-                                          {fields.map(({ key, name }) => (
-                                            <div key={key} style={{ marginBottom: 16 }}>
-                                              <Form.Item
-                                                name={[name, 'location']}
-                                                rules={[{ required: true, message: '请输入访问地点' }]}
-                                                style={{ marginBottom: 0 }}
-                                              >
-                                                <Input placeholder="请输入访问地点" maxLength={40} style={{ width: '98%' }} />
-                                              </Form.Item>
-                                            </div>
-                                          ))}
-                                        </>
-                                      )}
-                                    </Form.List>
+                                    <Input placeholder="请输入访问地点" maxLength={40} style={{ width: '98%' }} />
                                   </QuestionItem>
                                   
-                                  {/* Single "增加另一个" and "移除" button for each question block */}
+                                  {/* 使用FormItemButtons组件 */}
                                   <FormItemButtons 
-                                    onAdd={() => addQuestionGroup()}
+                                    onAdd={() => add()}
                                     onRemove={() => {
-                                      // Only remove if there's more than one question group
-                                      if (questionGroups.length > 1) {
-                                        removeQuestionGroup(questionGroupIndex);
+                                      // 确保至少保留一个地点输入框
+                                      if (fields.length > 1) {
+                                        remove(field.name);
                                       }
                                     }}
                                     addText="增加另一个"
@@ -2292,16 +2273,190 @@ const DS160Form: React.FC = () => {
       description: '同行人信息',
       content: (
         <>
-          <QuestionItem
-            number="1"
-            question="您是否有同行人？"
-            name="hasCompanions"
+          <div className="field-groups">
+            <div className="q">
+              <QuestionItem
+                question="您是否有同行人？"
+                name="hasCompanions"
+                explanation="请选择是否有人与您一同旅行"
+              >
+                <Radio.Group onChange={(e) => {
+                  // 当选项改变时，通过表单实例更新字段值
+                  form.setFieldsValue({ hasCompanions: e.target.value });
+                }}>
+                  <Radio value="Y">是</Radio>
+                  <Radio value="N">否</Radio>
+                </Radio.Group>
+              </QuestionItem>
+            </div>
+          </div>
+
+          <Form.Item
+            noStyle
+            shouldUpdate={(prevValues, currentValues) => 
+              prevValues.hasCompanions !== currentValues.hasCompanions
+            }
           >
-            <Radio.Group>
-              <Radio value={true}>是</Radio>
-              <Radio value={false}>否</Radio>
-            </Radio.Group>
-          </QuestionItem>
+            {({ getFieldValue }) => {
+              const hasCompanions = getFieldValue('hasCompanions');
+              
+              // 如果没有选择是否有同行人，不显示任何后续问题
+              if (!hasCompanions) {
+                return null;
+              }
+              
+              if (hasCompanions === 'Y') {
+                return (
+                  <div className="field-groups" style={{ marginBottom: '15px' }}>
+                    <div className="q">
+                      <QuestionItem
+                        question="您是否作为一个团队或者组织的成员去旅行？"
+                        name="groupTravel"
+                        explanation="如果您是作为一个组织、团队或旅行团的成员旅行，请选择'是'"
+                      >
+                        <Radio.Group onChange={(e) => {
+                          form.setFieldsValue({ groupTravel: e.target.value });
+                        }}>
+                          <Radio value="Y">是</Radio>
+                          <Radio value="N">否</Radio>
+                        </Radio.Group>
+                      </QuestionItem>
+                    </div>
+                    
+                    <Form.Item
+                      noStyle
+                      shouldUpdate={(prevValues, currentValues) => 
+                        prevValues.groupTravel !== currentValues.groupTravel
+                      }
+                    >
+                      {({ getFieldValue }) => {
+                        const groupTravel = getFieldValue('groupTravel');
+                        
+                        if (groupTravel === 'Y') {
+                          return (
+                            <div className="field-group callout" style={highlightedBlockStyle}>
+                              <QuestionItem
+                                question="团队或组织名称"
+                                name="groupName"
+                                explanation="请输入您所属团队或组织的名称"
+                              >
+                                <Input style={{ width: '98%' }} maxLength={40} />
+                              </QuestionItem>
+                            </div>
+                          );
+                        }
+                        
+                        return null;
+                      }}
+                    </Form.Item>
+                    
+                    <h4>
+                      <span>同行人信息</span>
+                    </h4>
+                    <div className="field-group callout" style={highlightedBlockStyle}>
+                      <div style={blockInsideHighlightStyle}>
+                        <Form.List name="companions" initialValue={[{}]}>
+                          {(fields, { add, remove }) => (
+                            <>
+                              {fields.map((field, index) => (
+                                <div 
+                                  key={field.key} 
+                                  style={{ 
+                                    marginBottom: 24, 
+                                    padding: index > 0 ? 16 : 0, 
+                                    border: index > 0 ? '1px dashed #d6e8fa' : 'none',
+                                    borderRadius: index > 0 ? '8px' : 0
+                                  }}
+                                >
+                                  <h4>同行人 #{index + 1}</h4>
+                                  
+                                  <QuestionItem
+                                    question="姓氏"
+                                    name={`companions[${index}].surname`}
+                                    explanation="请输入同行人的姓氏（与护照一致）"
+                                  >
+                                    <Input style={{ width: '98%' }} maxLength={33} />
+                                  </QuestionItem>
+                                  
+                                  <QuestionItem
+                                    question="名字"
+                                    name={`companions[${index}].givenName`}
+                                    explanation="请输入同行人的名字（与护照一致）"
+                                  >
+                                    <Input style={{ width: '98%' }} maxLength={33} />
+                                  </QuestionItem>
+                                  
+                                  <QuestionItem
+                                    question="与您的关系"
+                                    name={`companions[${index}].relationship`}
+                                    explanation="请选择此同行人与您的关系"
+                                  >
+                                    <Select placeholder="- 请选择一个 -" style={{ width: '100%' }}>
+                                      <Select.Option value="S">配偶</Select.Option>
+                                      <Select.Option value="C">子女</Select.Option>
+                                      <Select.Option value="P">父母</Select.Option>
+                                      <Select.Option value="SB">兄弟姐妹</Select.Option>
+                                      <Select.Option value="F">朋友</Select.Option>
+                                      <Select.Option value="B">商业伙伴</Select.Option>
+                                      <Select.Option value="O">其他</Select.Option>
+                                    </Select>
+                                  </QuestionItem>
+                                  
+                                  {/* 仅当选择了"其他"关系时，显示此字段 */}
+                                  <Form.Item
+                                    noStyle
+                                    shouldUpdate={(prevValues, currentValues) => {
+                                      const prevRel = prevValues.companions?.[index]?.relationship;
+                                      const currRel = currentValues.companions?.[index]?.relationship;
+                                      return prevRel !== currRel;
+                                    }}
+                                  >
+                                    {({ getFieldValue }) => {
+                                      const relationship = getFieldValue(['companions', index, 'relationship']);
+                                      
+                                      if (relationship === 'O') {
+                                        return (
+                                          <QuestionItem
+                                            question="请说明关系"
+                                            name={`companions[${index}].otherRelationship`}
+                                            explanation="请简要描述与该同行人的关系"
+                                          >
+                                            <Input style={{ width: '98%' }} maxLength={50} />
+                                          </QuestionItem>
+                                        );
+                                      }
+                                      
+                                      return null;
+                                    }}
+                                  </Form.Item>
+                                  
+                                  {/* FormItemButtons 组件，与旅行信息页面保持一致 */}
+                                  <FormItemButtons 
+                                    onAdd={() => add()}
+                                    onRemove={() => {
+                                      // 仅在有多于一个同行人时才允许删除
+                                      if (fields.length > 1) {
+                                        remove(field.name);
+                                      }
+                                    }}
+                                    addText="添加另一位同行人"
+                                    removeText="移除"
+                                  />
+                                </div>
+                              ))}
+                            </>
+                          )}
+                        </Form.List>
+                      </div>
+                    </div>
+                  </div>
+                );
+              }
+              
+              return null;
+            }}
+          </Form.Item>
+
         </>
       ),
     },
