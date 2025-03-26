@@ -2305,7 +2305,7 @@ const DS160Form: React.FC = () => {
                 return null;
               }
               
-              if (hasCompanions === 'Y') {
+              if (hasCompanions === 'N') {
                 return (
                   <div className="field-groups" style={{ marginBottom: '15px' }}>
                     <div className="q">
