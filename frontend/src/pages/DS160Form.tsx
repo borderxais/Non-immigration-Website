@@ -31,6 +31,96 @@ const DS160Form: React.FC = () => {
     marginBottom: '24px'
   };
 
+  // Format for state dropdown options
+  const usStateOptions = [
+    { value: '', label: '- Select one -' },
+    { value: 'AL', label: 'ALABAMA' },
+    { value: 'AK', label: 'ALASKA' },
+    { value: 'AS', label: 'AMERICAN SAMOA' },
+    { value: 'AZ', label: 'ARIZONA' },
+    { value: 'AR', label: 'ARKANSAS' },
+    { value: 'CA', label: 'CALIFORNIA' },
+    { value: 'CO', label: 'COLORADO' },
+    { value: 'CT', label: 'CONNECTICUT' },
+    { value: 'DE', label: 'DELAWARE' },
+    { value: 'DC', label: 'DISTRICT OF COLUMBIA' },
+    { value: 'FL', label: 'FLORIDA' },
+    { value: 'GA', label: 'GEORGIA' },
+    { value: 'GU', label: 'GUAM' },
+    { value: 'HI', label: 'HAWAII' },
+    { value: 'ID', label: 'IDAHO' },
+    { value: 'IL', label: 'ILLINOIS' },
+    { value: 'IN', label: 'INDIANA' },
+    { value: 'IA', label: 'IOWA' },
+    { value: 'KS', label: 'KANSAS' },
+    { value: 'KY', label: 'KENTUCKY' },
+    // More states...
+  ];
+
+  // Format for month dropdown options
+  const monthOptions = [
+    { value: '', label: '' },
+    { value: '1', label: 'JAN' },
+    { value: '2', label: 'FEB' },
+    { value: '3', label: 'MAR' },
+    { value: '4', label: 'APR' },
+    { value: '5', label: 'MAY' },
+    { value: '6', label: 'JUN' },
+    { value: '7', label: 'JUL' },
+    { value: '8', label: 'AUG' },
+    { value: '9', label: 'SEP' },
+    { value: '10', label: 'OCT' },
+    { value: '11', label: 'NOV' },
+    { value: '12', label: 'DEC' },
+  ];
+
+  // Format for day dropdown options
+  const dayOptions = [
+    { value: '', label: '' },
+    { value: '1', label: '01' },
+    { value: '2', label: '02' },
+    { value: '3', label: '03' },
+    { value: '4', label: '04' },
+    { value: '5', label: '05' },
+    { value: '6', label: '06' },
+    { value: '7', label: '07' },
+    { value: '8', label: '08' },
+    { value: '9', label: '09' },
+    { value: '10', label: '10' },
+    { value: '11', label: '11' },
+    { value: '12', label: '12' },
+    { value: '13', label: '13' },
+    { value: '14', label: '14' },
+    { value: '15', label: '15' },
+    { value: '16', label: '16' },
+    { value: '17', label: '17' },
+    { value: '18', label: '18' },
+    { value: '19', label: '19' },
+    { value: '20', label: '20' },
+    { value: '21', label: '21' },
+    { value: '22', label: '22' },
+    { value: '23', label: '23' },
+    { value: '24', label: '24' },
+    { value: '25', label: '25' },
+    { value: '26', label: '26' },
+    { value: '27', label: '27' },
+    { value: '28', label: '28' },
+    { value: '29', label: '29' },
+    { value: '30', label: '30' },
+    { value: '31', label: '31' },
+  ];
+
+  // Length of stay unit options
+  const losUnitOptions = [
+    { value: '', label: '-Select One-' },
+    { value: 'Y', label: 'Year(s)' },
+    { value: 'M', label: 'Month(s)' },
+    { value: 'W', label: 'Week(s)' },
+    { value: 'D', label: 'Day(s)' },
+    { value: 'H', label: 'Less Than 24 Hours' },
+  ];
+
+
   // Helper function to determine if a specific purpose code indicates a dependent relationship
   const isDependentSelection = (value: string): boolean => {
     // List of codes that indicate a dependent relationship (child, spouse, etc.)
@@ -2270,8 +2360,8 @@ const DS160Form: React.FC = () => {
       ),
     },
     {
-      title: '同行人',
-      description: '同行人信息',
+      title: '旅游同行人',
+      description: '旅游同行人信息',
       content: (
         <>
           <div className="field-groups">
@@ -2439,56 +2529,464 @@ const DS160Form: React.FC = () => {
       ),
     },
     {
-      title: '美国信息',
-      description: '过往美国旅行',
+      title: '过往美国旅行',
+      description: '过往美国旅行信息',
       content: (
         <>
-          <Title level={5}>过往美国签证</Title>
-          <QuestionItem
-            number="1"
-            question="您是否曾获得美国签证？"
-            name="previousUsVisa"
+          <div className="field-groups">
+            <div className="q">
+              <QuestionItem
+                question="您是否曾经在美国停留过？"
+                name="everBeenInUS"
+                explanation="Have you ever been in the U.S.?"
+              >
+                <Radio.Group onChange={(e) => {
+                  form.setFieldsValue({ everBeenInUS: e.target.value });
+                }}>
+                  <Radio value="Y">是 (Yes)</Radio>
+                  <Radio value="N">否 (No)</Radio>
+                </Radio.Group>
+              </QuestionItem>
+            </div>
+          </div>
+          
+          <Form.Item
+            noStyle
+            shouldUpdate={(prevValues, currentValues) => 
+              prevValues.everBeenInUS !== currentValues.everBeenInUS
+            }
           >
-            <Radio.Group>
-              <Radio value={true}>是</Radio>
-              <Radio value={false}>否</Radio>
-            </Radio.Group>
-          </QuestionItem>
+            {({ getFieldValue }) => {
+              const hasBeenInUS = getFieldValue('everBeenInUS');
+              
+              if (hasBeenInUS === 'Y') {
+                return (
+                  <div className="field-group callout" style={highlightedBlockStyle}>
+                    <h4>
+                      <span>请提供最近五次赴美信息：</span>
+                      <span>Provide information on your last five U.S. visits:</span>
+                    </h4>
+                    
+                    <Form.List name="previousVisits" initialValue={[{}]}>
+                      {(fields, { add, remove }) => (
+                        <>
+                          {fields.map((field, index) => (
+                            <div 
+                              key={field.key} 
+                              style={{ 
+                                marginBottom: 24, 
+                                padding: 16, 
+                                border: index > 0 ? '1px dashed #d6e8fa' : '1px solid #d6e8fa',
+                                borderRadius: '8px',
+                                backgroundColor: '#f0f8ff'
+                              }}
+                            >
+                              <div className="field-group">
+                                <div className="field full">
+                                  <QuestionItem
+                                    question="抵达日期"
+                                    name={`previousVisits[${index}].day`}
+                                    explanation="Date Arrived (Format: DD-MMM-YYYY)"
+                                  >
+                                    <div style={{ display: 'flex', gap: '8px' }}>
+                                      <Select 
+                                        options={dayOptions}
+                                        style={{ width: 70 }}
+                                        placeholder="Day"
+                                      />
+                                    </div>
+                                  </QuestionItem>
+                                  <QuestionItem
+                                    question="月份"
+                                    name={`previousVisits[${index}].month`}
+                                  >
+                                    <Select 
+                                      options={monthOptions}
+                                      style={{ width: 80 }}
+                                      placeholder="Month"
+                                    />
+                                  </QuestionItem>
+                                  <QuestionItem
+                                    question="年份"
+                                    name={`previousVisits[${index}].year`}
+                                  >
+                                    <Input 
+                                      style={{ width: 70 }}
+                                      placeholder="Year" 
+                                      maxLength={4}
+                                    />
+                                  </QuestionItem>
+                                </div>
+                              </div>
+                              
+                              <div className="field-group">
+                                <div className="field full">
+                                  <QuestionItem
+                                    question="停留时间"
+                                    name={`previousVisits[${index}].duration`}
+                                    explanation="Length of Stay"
+                                  >
+                                    <Input 
+                                      style={{ width: 70 }}
+                                      maxLength={3}
+                                    />
+                                  </QuestionItem>
+                                  <QuestionItem
+                                    question="单位"
+                                    name={`previousVisits[${index}].durationUnit`}
+                                  >
+                                    <Select 
+                                      options={losUnitOptions}
+                                      style={{ width: 180 }}
+                                    />
+                                  </QuestionItem>
+                                </div>
+                              </div>
+                              
+                              <FormItemButtons 
+                                onAdd={() => add()}
+                                onRemove={() => {
+                                  if (fields.length > 1) {
+                                    remove(index);
+                                  }
+                                }}
+                                addText="Add Another"
+                                removeText="Remove"
+                              />
+                            </div>
+                          ))}
+                        </>
+                      )}
+                    </Form.List>
+                    
+                    <div className="field-group" style={{ marginTop: 30 }}>
+                      <QuestionItem
+                        question="您是否持有或者曾经持有美国驾照？"
+                        name="hasDriverLicense"
+                        explanation="Do you or did you ever hold a U.S. Driver's License?"
+                      >
+                        <Radio.Group onChange={(e) => {
+                          form.setFieldsValue({ hasDriverLicense: e.target.value });
+                        }}>
+                          <Radio value="Y">是 (Yes)</Radio>
+                          <Radio value="N">否 (No)</Radio>
+                        </Radio.Group>
+                      </QuestionItem>
+                    </div>
+                    
+                    <Form.Item
+                      noStyle
+                      shouldUpdate={(prevValues, currentValues) => 
+                        prevValues.hasDriverLicense !== currentValues.hasDriverLicense
+                      }
+                    >
+                      {({ getFieldValue }) => {
+                        const hasLicense = getFieldValue('hasDriverLicense');
+                        
+                        if (hasLicense === 'Y') {
+                          return (
+                            <div className="field-group callout" style={highlightedBlockStyle}>
+                              <h4>
+                                <span>请提供以下信息：</span>
+                                <span>Provide the following information:</span>
+                              </h4>
+                              
+                              <Form.List name="driverLicenses" initialValue={[{}]}>
+                                {(fields, { add, remove }) => (
+                                  <>
+                                    {fields.map((field, index) => (
+                                      <div 
+                                        key={field.key} 
+                                        style={{ 
+                                          marginBottom: 24,
+                                          padding: 16,
+                                          border: index > 0 ? '1px dashed #d6e8fa' : '1px solid #d6e8fa',
+                                          borderRadius: '8px',
+                                          backgroundColor: '#f0f8ff'
+                                        }}
+                                      >
+                                        <div className="field-group">
+                                          <div className="field full">
+                                            <QuestionItem
+                                              question="驾驶执照的号码"
+                                              name={`driverLicenses[${index}].licenseNumber`}
+                                              explanation="Driver's License Number"
+                                            >
+                                              <div>
+                                                <Input 
+                                                  style={{ width: '60%' }}
+                                                  maxLength={20}
+                                                />
+                                                <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '8px' }}>
+                                                  <Checkbox>Do Not Know</Checkbox>
+                                                </div>
+                                              </div>
+                                            </QuestionItem>
+                                          </div>
+                                        </div>
+                                        
+                                        <div className="field-group">
+                                          <div className="field full">
+                                            <QuestionItem
+                                              question="驾驶执照所属的州"
+                                              name={`driverLicenses[${index}].state`}
+                                              explanation="State of Driver's License"
+                                            >
+                                              <Select 
+                                                options={usStateOptions}
+                                                style={{ width: '100%' }}
+                                              />
+                                            </QuestionItem>
+                                          </div>
+                                        </div>
+                                        
+                                        <FormItemButtons 
+                                          onAdd={() => add()}
+                                          onRemove={() => {
+                                            if (fields.length > 1) {
+                                              remove(index);
+                                            }
+                                          }}
+                                          addText="Add Another"
+                                          removeText="Remove"
+                                        />
+                                      </div>
+                                    ))}
+                                  </>
+                                )}
+                              </Form.List>
+                            </div>
+                          );
+                        }
+                        
+                        return null;
+                      }}
+                    </Form.Item>
+                  </div>
+                );
+              }
+              
+              return null;
+            }}
+          </Form.Item>
 
           <Divider />
-          
+
+          <div className="field-groups">
+            <div className="q">
+              <QuestionItem
+                question="您是否曾经获得过美国签证?"
+                name="previousUsVisa"
+                explanation="Have you ever been issued a U.S. Visa?"
+              >
+                <Radio.Group onChange={(e) => {
+                  form.setFieldsValue({ previousUsVisa: e.target.value });
+                }}>
+                  <Radio value="Y">是 (Yes)</Radio>
+                  <Radio value="N">否 (No)</Radio>
+                </Radio.Group>
+              </QuestionItem>
+            </div>
+          </div>
+
+          <Form.Item
+            noStyle
+            shouldUpdate={(prevValues, currentValues) => 
+              prevValues.previousUsVisa !== currentValues.previousUsVisa
+            }
+          >
+            {({ getFieldValue }) => {
+              const hasPreviousVisa = getFieldValue('previousUsVisa');
+              
+              if (hasPreviousVisa === 'Y') {
+                return (
+                  <div className="field-group callout" style={highlightedBlockStyle}>
+                    <QuestionItem
+                      question="上一次美国签证签发日期"
+                      name="lastVisaIssueDate"
+                      explanation="Date of last U.S. visa issuance"
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                        <Form.Item 
+                          name="lastVisaDay" 
+                          noStyle
+                        >
+                          <Select
+                            style={{ width: '60px' }}
+                            placeholder=""
+                            options={dayOptions}
+                          />
+                        </Form.Item>
+
+                        <Form.Item 
+                          name="lastVisaMonth" 
+                          noStyle
+                        >
+                          <Select
+                            style={{ width: '70px' }}
+                            placeholder=""
+                            options={monthOptions}
+                          />
+                        </Form.Item>
+
+                        <Form.Item 
+                          name="lastVisaYear" 
+                          noStyle
+                        >
+                          <Input placeholder="" style={{ width: '60px' }} maxLength={4} />
+                        </Form.Item>
+
+                        <div style={{ marginLeft: '8px', fontSize: '12px', color: '#666' }}>
+                          (格式: DD-MMM-YYYY)
+                        </div>
+                      </div>
+                    </QuestionItem>
+                    
+                    <QuestionItem
+                      question="上一次签证的签证号码"
+                      name="lastVisaNumber"
+                      explanation="Previous visa number (if known)"
+                      hasNaCheckbox={true}
+                      naCheckboxName="lastVisaNumber_na"
+                    >
+                      <Input style={{ width: '98%' }} />
+                    </QuestionItem>
+                  </div>
+                );
+              }
+              
+              return null;
+            }}
+          </Form.Item>
+
+          <Divider />
+
+          <div className="field-groups">
+            <div className="q">
+              <QuestionItem
+                question="您是否曾经被拒绝美国签证，或在入境口岸被拒入境，或撤销入境申请？"
+                name="visaRefused"
+                explanation="Have you ever been refused a U.S. Visa, or been refused admission to the United States, or withdrawn your application for admission at the port of entry?"
+              >
+                <Radio.Group onChange={(e) => {
+                  form.setFieldsValue({ visaRefused: e.target.value });
+                }}>
+                  <Radio value="Y">是 (Yes)</Radio>
+                  <Radio value="N">否 (No)</Radio>
+                </Radio.Group>
+              </QuestionItem>
+            </div>
+          </div>
+
+          <Form.Item
+            noStyle
+            shouldUpdate={(prevValues, currentValues) => 
+              prevValues.visaRefused !== currentValues.visaRefused
+            }
+          >
+            {({ getFieldValue }) => {
+              const wasRefused = getFieldValue('visaRefused');
+              
+              if (wasRefused === 'Y') {
+                return (
+                  <div className="field-group callout" style={highlightedBlockStyle}>
+                    <QuestionItem
+                      question="请说明被拒绝签证或入境的原因及日期"
+                      name="refusalDetails"
+                      explanation="Please explain when and why you were refused"
+                    >
+                      <TextArea rows={4} style={{ width: '98%' }} />
+                    </QuestionItem>
+                  </div>
+                );
+              }
+              
+              return null;
+            }}
+          </Form.Item>
+
+          <Divider />
+
+          <div className="field-groups">
+            <div className="q">
+              <QuestionItem
+                question="曾有人在公民及移民服务局为您申请过移民吗？"
+                name="immigrantPetition"
+                explanation="Has anyone ever filed an immigrant petition on your behalf with the United States Citizenship and Immigration Services?"
+              >
+                <Radio.Group onChange={(e) => {
+                  form.setFieldsValue({ immigrantPetition: e.target.value });
+                }}>
+                  <Radio value="Y">是 (Yes)</Radio>
+                  <Radio value="N">否 (No)</Radio>
+                </Radio.Group>
+              </QuestionItem>
+            </div>
+          </div>
+
+          <Form.Item
+            noStyle
+            shouldUpdate={(prevValues, currentValues) => 
+              prevValues.immigrantPetition !== currentValues.immigrantPetition
+            }
+          >
+            {({ getFieldValue }) => {
+              const hasPetition = getFieldValue('immigrantPetition');
+              
+              if (hasPetition === 'Y') {
+                return (
+                  <div className="field-group callout" style={highlightedBlockStyle}>
+                    <QuestionItem
+                      question="请提供申请人信息"
+                      name="petitionerInfo"
+                      explanation="Please provide information about the petitioner"
+                    >
+                      <TextArea rows={4} style={{ width: '98%' }} />
+                    </QuestionItem>
+                  </div>
+                );
+              }
+              
+              return null;
+            }}
+          </Form.Item>
+
+          <Divider />
+
           <Title level={5}>美国联系人</Title>
-          <QuestionItem
-            number="2"
-            question="在美联系人/组织名称"
-            name="pointOfContact"
-          >
-            <Input />
-          </QuestionItem>
+          <div className="field-groups">
+            <QuestionItem
+              question="在美联系人/组织名称"
+              name="pointOfContact"
+              explanation="Point of contact in the U.S."
+            >
+              <Input style={{ width: '98%' }} />
+            </QuestionItem>
 
-          <QuestionItem
-            number="3"
-            question="与联系人关系"
-            name="relationshipToContact"
-          >
-            <Input placeholder="例如：朋友、亲戚、学校" />
-          </QuestionItem>
+            <QuestionItem
+              question="与联系人关系"
+              name="relationshipToContact"
+              explanation="Relationship to contact"
+            >
+              <Input style={{ width: '98%' }} placeholder="例如：朋友、亲戚、学校" />
+            </QuestionItem>
 
-          <QuestionItem
-            number="4"
-            question="联系人地址"
-            name="contactAddress"
-          >
-            <TextArea rows={3} />
-          </QuestionItem>
+            <QuestionItem
+              question="联系人地址"
+              name="contactAddress"
+              explanation="Contact's address in the U.S."
+            >
+              <TextArea rows={3} style={{ width: '98%' }} />
+            </QuestionItem>
 
-          <QuestionItem
-            number="5"
-            question="联系人电话"
-            name="contactPhone"
-          >
-            <Input />
-          </QuestionItem>
+            <QuestionItem
+              question="联系人电话"
+              name="contactPhone"
+              explanation="Contact's phone number"
+            >
+              <Input style={{ width: '98%' }} />
+            </QuestionItem>
+          </div>
         </>
       ),
     },
