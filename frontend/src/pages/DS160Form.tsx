@@ -2,6 +2,7 @@ import React from 'react';
 import { Card, Steps, Form, Input, Select, DatePicker, Radio, Space, Button, Typography, Divider, message, Row, Col, Checkbox } from 'antd';
 import ds160Service from '../services/ds160Service';
 import { useNavigate } from 'react-router-dom';
+import FormItemButtons from '../components/FormItemButtons';
 
 //  Application ID AA00EGS9G1
 
@@ -1359,38 +1360,87 @@ const DS160Form: React.FC = () => {
 
                       </div>
                       <div style={blockInsideHighlightStyle}>
-                        <QuestionItem
-                          question="您计划在美国访问的地点"
-                          name="locationsToVisit"
-                          explanation="请提供您计划在美国访问的地点"
-                        >
-                          <Form.List name="visitLocations" initialValue={[{}]}>
-                            {(fields, { add, remove }) => (
-                              <>
-                                {fields.map(({ key, name }) => (
-                                  <div key={key} style={{ marginBottom: 16 }}>
-                                    <Form.Item
-                                      name={[name, 'location']}
-                                      rules={[{ required: true, message: '请输入访问地点' }]}
-                                      style={{ marginBottom: 0 }}
+                        {/* Use Form.List to manage multiple location question groups */}
+                        <Form.List name="locationQuestionGroups" initialValue={[0]}>
+                          {(questionGroups, { add: addQuestionGroup, remove: removeQuestionGroup }) => (
+                            <>
+                              {questionGroups.map((questionGroup, questionGroupIndex) => (
+                                  <div 
+                                    key={questionGroup.key} 
+                                    style={{ 
+                                      marginBottom: 24, 
+                                      padding: questionGroupIndex > 0 ? 16 : 0, 
+                                      border: questionGroupIndex > 0 ? '1px dashed #d6e8fa' : 'none',
+                                      borderRadius: questionGroupIndex > 0 ? '8px' : 0
+                                    }}
+                                  >
+                                    <QuestionItem
+                                      question="您计划在美国访问的地点"
+                                      name={`locationsToVisit_${questionGroupIndex}`}
+                                      explanation="请提供您计划在美国访问的地点"
                                     >
-                                      <Input placeholder="请输入访问地点" maxLength={40} style={{ width: '98%' }} />
-                                    </Form.Item>
+                                      <Form.List name={['locationGroups', questionGroupIndex, 'visitLocations']} initialValue={[{}]}>
+                                        {(fields, { add, remove }) => (
+                                          <>
+                                            {fields.map(({ key, name }) => (
+                                              <div key={key} style={{ marginBottom: 16 }}>
+                                                <Form.Item
+                                                  name={[name, 'location']}
+                                                  rules={[{ required: true, message: '请输入访问地点' }]}
+                                                  style={{ marginBottom: 0 }}
+                                                >
+                                                  <Input placeholder="请输入访问地点" maxLength={40} style={{ width: '98%' }} />
+                                                </Form.Item>
 
-                                    <Row>
-                                      <Col span={24}>
-                                        <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '10px' }}>
-                                          <Button type="link" onClick={() => add()} style={{ marginRight: '8px' }}>增加另一个</Button>
-                                          <Button type="link" danger onClick={() => remove(name)}>移除</Button>
-                                        </div>
-                                      </Col>
-                                    </Row>
+                                                {/* If you created and imported the FormItemButtons component */}
+                                                {/* <FormItemButtons 
+                                                  onAdd={() => add()}
+                                                  onRemove={() => remove(name)}
+                                                  addText="增加地点"
+                                                  removeText="移除地点"
+                                                  showRemove={fields.length > 1}
+                                                /> */}
+                                                
+                                                {/* Or use the inline version: */}
+                                                <Row>
+                                                  <Col span={24}>
+                                                    <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '10px' }}>
+                                                      <Button type="link" onClick={() => add()} style={{ marginRight: '8px' }}>增加地点</Button>
+                                                      <Button type="link" danger onClick={() => remove(name)}>移除地点</Button>
+                                                    </div>
+                                                  </Col>
+                                                </Row>
+                                              </div>
+                                            ))}
+                                          </>
+                                        )}
+                                      </Form.List>
+                                    </QuestionItem>
+                                    
+                                    {questionGroupIndex > 0 && (
+                                      <Button 
+                                        type="link" 
+                                        danger
+                                        onClick={() => removeQuestionGroup(questionGroupIndex)}
+                                        style={{ marginTop: 8 }}
+                                      >
+                                        移除此访问地点组
+                                      </Button>
+                                    )}
                                   </div>
                                 ))}
+                                
+                                {/* Button to add a new location question group */}
+                                <Button 
+                                  type="primary" 
+                                  onClick={() => addQuestionGroup()}
+                                  style={{ marginTop: 16 }}
+                                >
+                                  增加另一个访问地点组
+                                </Button>
                               </>
                             )}
-                          </Form.List>
-                        </QuestionItem>
+                        </Form.List>
                       </div>
                     </div>
                   </div>
