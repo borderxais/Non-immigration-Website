@@ -3402,117 +3402,117 @@ const DS160Form: React.FC = () => {
             </h4>
 
             <div className="field-group callout" style={highlightedBlockStyle}>
-  <Form.List name="socialMedia" initialValue={[{ platform: 'NONE' }]}>
-    {(fields, { add, remove }) => (
-      <>
-        {fields.map((field, index) => (
-          <div 
-            key={field.key} 
-            style={{ 
-              marginBottom: 24, 
-              padding: 16, 
-              border: index > 0 ? '1px dashed #d6e8fa' : '1px solid #d6e8fa',
-              borderRadius: '8px',
-              backgroundColor: '#f0f8ff'
-            }}
-          >
-            {/* 社交媒体平台选择 */}
-            <Form.Item
-              name={[field.name, 'platform']}
-              label={
-                <div>
-                  <span>社交媒体的提供商/平台</span>
-                  <span style={{ color: '#ff4d4f', marginLeft: 4 }}>*</span>
-                  <div style={{ fontSize: '12px', color: '#666' }}>
-                    输入与您在线状态相关的信息，包括您用于协作、共享信息和与他人在线互动的提供商/平台、应用程序和网站类型信息。列举出与您的社交媒体相关联的用户名、昵称、网名或其他标识符。（您无需列举那些在一个商业或其他组织中为多个用户设计的帐户名称。）
-                  </div>
-                </div>
-              }
-              rules={[{ required: true, message: '请选择社交媒体平台' }]}
-            >
-              <Select 
-                style={{ width: '100%' }} 
-                placeholder="- 请选择一个 -"
-              >
-                <Select.Option value="ASKF">ASK.FM</Select.Option>
-                <Select.Option value="DUBN">DOUBAN</Select.Option>
-                <Select.Option value="FCBK">FACEBOOK</Select.Option>
-                <Select.Option value="FLKR">FLICKR</Select.Option>
-                <Select.Option value="GOGL">GOOGLE+</Select.Option>
-                <Select.Option value="INST">INSTAGRAM</Select.Option>
-                <Select.Option value="LINK">LINKEDIN</Select.Option>
-                <Select.Option value="MYSP">MYSPACE</Select.Option>
-                <Select.Option value="PTST">PINTEREST</Select.Option>
-                <Select.Option value="QZNE">QZONE (QQ)</Select.Option>
-                <Select.Option value="RDDT">REDDIT</Select.Option>
-                <Select.Option value="SWBO">SINA WEIBO</Select.Option>
-                <Select.Option value="TWBO">TENCENT WEIBO</Select.Option>
-                <Select.Option value="TUMB">TUMBLR</Select.Option>
-                <Select.Option value="TWIT">TWITTER</Select.Option>
-                <Select.Option value="TWOO">TWOO</Select.Option>
-                <Select.Option value="VINE">VINE</Select.Option>
-                <Select.Option value="VKON">VKONTAKTE (VK)</Select.Option>
-                <Select.Option value="YUKU">YOUKU</Select.Option>
-                <Select.Option value="YTUB">YOUTUBE</Select.Option>
-                <Select.Option value="NONE">NONE</Select.Option>
-              </Select>
-            </Form.Item>
-            
-            {/* 社交媒体标识符 - 使用Form.Item组件的dependencies属性 */}
-            <Form.Item
-              shouldUpdate={(prevValues, currentValues) => {
-                return prevValues?.socialMedia?.[index]?.platform !== 
-                       currentValues?.socialMedia?.[index]?.platform;
-              }}
-              noStyle
-            >
-              {({ getFieldValue }) => {
-                const platformValue = getFieldValue(['socialMedia', index, 'platform']);
-                const isDisabled = platformValue === 'NONE';
-                
-                return (
-                  <Form.Item
-                    name={[field.name, 'identifier']}
-                    label={
-                      <div>
-                        <span>社交媒体标识符</span>
-                        {!isDisabled && <span style={{ color: '#ff4d4f', marginLeft: 4 }}>*</span>}
+              <Form.List name="socialMedia" initialValue={[{ platform: 'NONE' }]}>
+                {(fields, { add, remove }) => (
+                  <>
+                    {fields.map((field, index) => (
+                      <div 
+                        key={field.key} 
+                        style={{ 
+                          marginBottom: 24, 
+                          padding: 16, 
+                          border: index > 0 ? '1px dashed #d6e8fa' : '1px solid #d6e8fa',
+                          borderRadius: '8px',
+                          backgroundColor: '#f0f8ff'
+                        }}
+                      >
+                        {/* 社交媒体平台选择 */}
+                        <Form.Item
+                          name={[field.name, 'platform']}
+                          label={
+                            <div>
+                              <span>社交媒体的提供商/平台</span>
+                              <span style={{ color: '#ff4d4f', marginLeft: 4 }}>*</span>
+                              <div style={{ fontSize: '12px', color: '#666' }}>
+                                输入与您在线状态相关的信息，包括您用于协作、共享信息和与他人在线互动的提供商/平台、应用程序和网站类型信息。列举出与您的社交媒体相关联的用户名、昵称、网名或其他标识符。（您无需列举那些在一个商业或其他组织中为多个用户设计的帐户名称。）
+                              </div>
+                            </div>
+                          }
+                          rules={[{ required: true, message: '请选择社交媒体平台' }]}
+                        >
+                          <Select 
+                            style={{ width: '100%' }} 
+                            placeholder="- 请选择一个 -"
+                          >
+                            <Select.Option value="ASKF">ASK.FM</Select.Option>
+                            <Select.Option value="DUBN">DOUBAN</Select.Option>
+                            <Select.Option value="FCBK">FACEBOOK</Select.Option>
+                            <Select.Option value="FLKR">FLICKR</Select.Option>
+                            <Select.Option value="GOGL">GOOGLE+</Select.Option>
+                            <Select.Option value="INST">INSTAGRAM</Select.Option>
+                            <Select.Option value="LINK">LINKEDIN</Select.Option>
+                            <Select.Option value="MYSP">MYSPACE</Select.Option>
+                            <Select.Option value="PTST">PINTEREST</Select.Option>
+                            <Select.Option value="QZNE">QZONE (QQ)</Select.Option>
+                            <Select.Option value="RDDT">REDDIT</Select.Option>
+                            <Select.Option value="SWBO">SINA WEIBO</Select.Option>
+                            <Select.Option value="TWBO">TENCENT WEIBO</Select.Option>
+                            <Select.Option value="TUMB">TUMBLR</Select.Option>
+                            <Select.Option value="TWIT">TWITTER</Select.Option>
+                            <Select.Option value="TWOO">TWOO</Select.Option>
+                            <Select.Option value="VINE">VINE</Select.Option>
+                            <Select.Option value="VKON">VKONTAKTE (VK)</Select.Option>
+                            <Select.Option value="YUKU">YOUKU</Select.Option>
+                            <Select.Option value="YTUB">YOUTUBE</Select.Option>
+                            <Select.Option value="NONE">NONE</Select.Option>
+                          </Select>
+                        </Form.Item>
+                        
+                        {/* 社交媒体标识符 - 使用Form.Item组件的dependencies属性 */}
+                        <Form.Item
+                          shouldUpdate={(prevValues, currentValues) => {
+                            return prevValues?.socialMedia?.[index]?.platform !== 
+                                  currentValues?.socialMedia?.[index]?.platform;
+                          }}
+                          noStyle
+                        >
+                          {({ getFieldValue }) => {
+                            const platformValue = getFieldValue(['socialMedia', index, 'platform']);
+                            const isDisabled = platformValue === 'NONE';
+                            
+                            return (
+                              <Form.Item
+                                name={[field.name, 'identifier']}
+                                label={
+                                  <div>
+                                    <span>社交媒体标识符</span>
+                                    {!isDisabled && <span style={{ color: '#ff4d4f', marginLeft: 4 }}>*</span>}
+                                  </div>
+                                }
+                                rules={[
+                                  { required: !isDisabled, message: '请输入社交媒体标识符' }
+                                ]}
+                              >
+                                <Input 
+                                  style={{ 
+                                    width: '95%',
+                                    backgroundColor: isDisabled ? 'LightGrey' : 'white'
+                                  }} 
+                                  maxLength={50}
+                                  disabled={isDisabled}
+                                />
+                              </Form.Item>
+                            );
+                          }}
+                        </Form.Item>
+                        
+                        {/* 添加/删除按钮 */}
+                        <FormItemButtons 
+                          onAdd={() => add()}
+                          onRemove={() => {
+                            if (fields.length > 1) {
+                              remove(index);
+                            }
+                          }}
+                          addText="增加另一个"
+                          removeText="移除"
+                        />
                       </div>
-                    }
-                    rules={[
-                      { required: !isDisabled, message: '请输入社交媒体标识符' }
-                    ]}
-                  >
-                    <Input 
-                      style={{ 
-                        width: '95%',
-                        backgroundColor: isDisabled ? 'LightGrey' : 'white'
-                      }} 
-                      maxLength={50}
-                      disabled={isDisabled}
-                    />
-                  </Form.Item>
-                );
-              }}
-            </Form.Item>
-            
-            {/* 添加/删除按钮 */}
-            <FormItemButtons 
-              onAdd={() => add()}
-              onRemove={() => {
-                if (fields.length > 1) {
-                  remove(index);
-                }
-              }}
-              addText="增加另一个"
-              removeText="移除"
-            />
-          </div>
-        ))}
-      </>
-    )}
-  </Form.List>
-</div>
+                    ))}
+                  </>
+                )}
+              </Form.List>
+            </div>
 
           </div>
 
