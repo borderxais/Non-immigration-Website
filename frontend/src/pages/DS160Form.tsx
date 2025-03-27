@@ -3944,6 +3944,236 @@ const DS160Form: React.FC = () => {
       ),
     },
     {
+      title: '美国联系人',
+  description: '美国联系人信息',
+  content: (
+    <>
+      <div className="field-groups">
+        <h3>
+          <span>美国联系人信息</span>
+          <span> (U.S. Point of Contact Information)</span>
+        </h3>
+        
+        <div className="help">
+          <h4 style={{ color: '#891300' }}>
+            <span>帮助：</span>
+            <span>联络人</span>
+          </h4>
+          <p>
+            您的美国联络人可以是任何在美国的个人。他/她认识您，如有需要，并可以证明您的身份。如果您在美国没有认识的人，您可以输入您此行将要访问的商店、公司或者组织的名称。
+          </p>
+        </div>
+        
+        <div className="infoDiv">
+          <span>在美国的联系人或组织</span>
+          <span> (Contact Person or Organization in the United States)</span>
+        </div>
+        
+        <div className="field-group callout" style={highlightedBlockStyle}>
+          <h4>
+            <span>联系人</span>
+            <span> (Contact Person)</span>
+          </h4>
+          
+          <div className="field-group callout" style={blockInsideHighlightStyle}>
+            <QuestionItem
+              question="姓氏"
+              name="usPocSurname"
+              explanation="Surnames"
+            >
+              <Input style={{ width: '99%' }} maxLength={33} />
+            </QuestionItem>
+            
+            <QuestionItem
+              question="名字"
+              name="usPocGivenName"
+              explanation="Given Names"
+            >
+              <Input style={{ width: '99%' }} maxLength={33} />
+            </QuestionItem>
+            
+            <Form.Item 
+              name="usPocNameNotKnown" 
+              valuePropName="checked"
+              style={{ marginTop: '8px', textAlign: 'right', paddingRight: '10px' }}
+            >
+              <Checkbox>不知道 (Do Not Know)</Checkbox>
+            </Form.Item>
+          </div>
+          
+          <QuestionItem
+            question="组织名称"
+            name="usPocOrganization"
+            explanation="Organization Name"
+            hasNaCheckbox={true}
+            naCheckboxName="usPocOrganizationNotKnown"
+          >
+            <Input style={{ width: '99%' }} maxLength={33} />
+          </QuestionItem>
+          
+          <QuestionItem
+            question="与您的关系"
+            name="usPocRelationship"
+            explanation="Relationship to You"
+          >
+            <Select placeholder="- 选择一个 -" style={{ width: '100%' }}>
+              <Select.Option value="R">亲属 (RELATIVE)</Select.Option>
+              <Select.Option value="S">配偶 (SPOUSE)</Select.Option>
+              <Select.Option value="C">朋友 (FRIEND)</Select.Option>
+              <Select.Option value="B">商业伙伴 (BUSINESS ASSOCIATE)</Select.Option>
+              <Select.Option value="P">雇主 (EMPLOYER)</Select.Option>
+              <Select.Option value="H">学校官员 (SCHOOL OFFICIAL)</Select.Option>
+              <Select.Option value="O">其他 (OTHER)</Select.Option>
+            </Select>
+          </QuestionItem>
+        </div>
+        
+        <div className="field-groups">
+          <h4>
+            <span>联系人地址和电话号码</span>
+            <span> (Address and Phone Number of Point of Contact)</span>
+          </h4>
+          
+          <div className="field-group callout" style={highlightedBlockStyle}>
+            <QuestionItem
+              question="美国街道地址（第一行）"
+              name="usPocAddressLine1"
+              explanation="U.S. Street Address (Line 1)"
+            >
+              <Input style={{ width: '99%' }} maxLength={40} />
+            </QuestionItem>
+            
+            <QuestionItem
+              question="美国街道地址（第二行）"
+              name="usPocAddressLine2"
+              explanation="U.S. Street Address (Line 2)"
+              required={false}
+            >
+              <Input style={{ width: '99%' }} maxLength={40} />
+              <span style={{ color: '#891300', fontStyle: 'italic', marginLeft: '8px' }}>*Optional</span>
+            </QuestionItem>
+            
+            <QuestionItem
+              question="城市"
+              name="usPocCity"
+              explanation="City"
+            >
+              <Input style={{ width: '99%' }} maxLength={20} />
+            </QuestionItem>
+            
+            <QuestionItem
+              question="州"
+              name="usPocState"
+              explanation="State"
+            >
+              <Select 
+                placeholder="- 选择一个 -" 
+                style={{ width: '99%' }}
+              >
+                <Select.Option value="AL">阿拉巴马 (ALABAMA)</Select.Option>
+                <Select.Option value="AK">阿拉斯加 (ALASKA)</Select.Option>
+                <Select.Option value="AS">美属萨摩亚 (AMERICAN SAMOA)</Select.Option>
+                <Select.Option value="AZ">亚利桑那 (ARIZONA)</Select.Option>
+                <Select.Option value="AR">阿肯色 (ARKANSAS)</Select.Option>
+                <Select.Option value="CA">加利福尼亚 (CALIFORNIA)</Select.Option>
+                <Select.Option value="CO">科罗拉多 (COLORADO)</Select.Option>
+                <Select.Option value="CT">康涅狄格 (CONNECTICUT)</Select.Option>
+                <Select.Option value="DE">特拉华 (DELAWARE)</Select.Option>
+                <Select.Option value="DC">哥伦比亚特区 (DISTRICT OF COLUMBIA)</Select.Option>
+                <Select.Option value="FL">佛罗里达 (FLORIDA)</Select.Option>
+                <Select.Option value="GA">乔治亚 (GEORGIA)</Select.Option>
+                <Select.Option value="GU">关岛 (GUAM)</Select.Option>
+                <Select.Option value="HI">夏威夷 (HAWAII)</Select.Option>
+                <Select.Option value="ID">爱达荷 (IDAHO)</Select.Option>
+                <Select.Option value="IL">伊利诺伊 (ILLINOIS)</Select.Option>
+                <Select.Option value="IN">印第安纳 (INDIANA)</Select.Option>
+                <Select.Option value="IA">爱荷华 (IOWA)</Select.Option>
+                <Select.Option value="KS">堪萨斯 (KANSAS)</Select.Option>
+                <Select.Option value="KY">肯塔基 (KENTUCKY)</Select.Option>
+                <Select.Option value="LA">路易斯安那 (LOUISIANA)</Select.Option>
+                <Select.Option value="ME">缅因 (MAINE)</Select.Option>
+                <Select.Option value="MD">马里兰 (MARYLAND)</Select.Option>
+                <Select.Option value="MA">马萨诸塞 (MASSACHUSETTS)</Select.Option>
+                <Select.Option value="MI">密歇根 (MICHIGAN)</Select.Option>
+                <Select.Option value="MN">明尼苏达 (MINNESOTA)</Select.Option>
+                <Select.Option value="MS">密西西比 (MISSISSIPPI)</Select.Option>
+                <Select.Option value="MO">密苏里 (MISSOURI)</Select.Option>
+                <Select.Option value="MT">蒙大拿 (MONTANA)</Select.Option>
+                <Select.Option value="NE">内布拉斯加 (NEBRASKA)</Select.Option>
+                <Select.Option value="NV">内华达 (NEVADA)</Select.Option>
+                <Select.Option value="NH">新罕布什尔 (NEW HAMPSHIRE)</Select.Option>
+                <Select.Option value="NJ">新泽西 (NEW JERSEY)</Select.Option>
+                <Select.Option value="NM">新墨西哥 (NEW MEXICO)</Select.Option>
+                <Select.Option value="NY">纽约 (NEW YORK)</Select.Option>
+                <Select.Option value="NC">北卡罗来纳 (NORTH CAROLINA)</Select.Option>
+                <Select.Option value="ND">北达科他 (NORTH DAKOTA)</Select.Option>
+                <Select.Option value="MP">北马里亚纳群岛 (NORTHERN MARIANA ISLANDS)</Select.Option>
+                <Select.Option value="OH">俄亥俄 (OHIO)</Select.Option>
+                <Select.Option value="OK">俄克拉荷马 (OKLAHOMA)</Select.Option>
+                <Select.Option value="OR">俄勒冈 (OREGON)</Select.Option>
+                <Select.Option value="PA">宾夕法尼亚 (PENNSYLVANIA)</Select.Option>
+                <Select.Option value="PR">波多黎各 (PUERTO RICO)</Select.Option>
+                <Select.Option value="RI">罗德岛 (RHODE ISLAND)</Select.Option>
+                <Select.Option value="SC">南卡罗来纳 (SOUTH CAROLINA)</Select.Option>
+                <Select.Option value="SD">南达科他 (SOUTH DAKOTA)</Select.Option>
+                <Select.Option value="TN">田纳西 (TENNESSEE)</Select.Option>
+                <Select.Option value="TX">德克萨斯 (TEXAS)</Select.Option>
+                <Select.Option value="UT">犹他 (UTAH)</Select.Option>
+                <Select.Option value="VT">佛蒙特 (VERMONT)</Select.Option>
+                <Select.Option value="VI">美属维尔京群岛 (VIRGIN ISLANDS)</Select.Option>
+                <Select.Option value="VA">弗吉尼亚 (VIRGINIA)</Select.Option>
+                <Select.Option value="WA">华盛顿 (WASHINGTON)</Select.Option>
+                <Select.Option value="WV">西弗吉尼亚 (WEST VIRGINIA)</Select.Option>
+                <Select.Option value="WI">威斯康星 (WISCONSIN)</Select.Option>
+                <Select.Option value="WY">怀俄明 (WYOMING)</Select.Option>
+              </Select>
+            </QuestionItem>
+            
+            <QuestionItem
+              question="邮政编码"
+              name="usPocZipCode"
+              explanation="ZIP Code (if known)"
+            >
+              <Input style={{ width: '65%' }} maxLength={10} />
+              <div className="hint">
+                <span>(例如：55555 或 55555-5555)</span>
+              </div>
+            </QuestionItem>
+            
+            <QuestionItem
+              question="电话号码"
+              name="usPocPhone"
+              explanation="Phone Number"
+            >
+              <Input style={{ width: '65%' }} maxLength={15} minLength={5} />
+              <div className="hint">
+                <span>(例如：5555555555)</span>
+              </div>
+            </QuestionItem>
+            
+            <QuestionItem
+              question="电子邮件地址"
+              name="usPocEmail"
+              explanation="Email Address"
+              hasNaCheckbox={true}
+              naCheckboxName="usPocEmailNotApply"
+            >
+              <Input 
+                className="emailaddress" 
+                style={{ width: '95%' }} 
+                maxLength={50} 
+              />
+              <div className="hint">
+                <span>(例如：emailaddress@example.com)</span>
+              </div>
+            </QuestionItem>
+          </div>
+        </div>
+      </div>
+    </>
+  ),
+    },
+    {
       title: '工作教育',
       description: '工作和教育经历',
       content: (
