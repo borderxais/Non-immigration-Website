@@ -3602,6 +3602,348 @@ const DS160Form: React.FC = () => {
       ),
     },
     {
+      title: '护照',
+      description: '护照信息',
+      content: (
+        <>
+          <div className="field-groups">
+            <h3>
+              <span>护照信息</span>
+              <span> (Passport Information)</span>
+            </h3>
+            
+            <div className="help">
+              <h4 style={{ color: '#891300' }}>
+                <span>帮助：</span>
+                <span>护照/旅行证件号码</span>
+              </h4>
+              <p>
+                请输入您去美国时将使用的旅行证件信息。您的旅行证件必须是有效的、未过期的护照或者其它有效文件，其足以证明您的身份和国籍。
+              </p>
+            </div>
+            
+            <div className="field-group callout" style={highlightedBlockStyle}>
+              <QuestionItem
+                question="护照/旅行证件种类"
+                name="passportType"
+                explanation="Passport/Travel Document Type"
+              >
+                <Select placeholder="- 请选择一个 -" style={{ width: '100%' }}>
+                  <Select.Option value="R">普通护照 (REGULAR)</Select.Option>
+                  <Select.Option value="O">公务护照 (OFFICIAL)</Select.Option>
+                  <Select.Option value="D">外交护照 (DIPLOMATIC)</Select.Option>
+                  <Select.Option value="L">通行证 (LAISSEZ-PASSER)</Select.Option>
+                  <Select.Option value="T">其他 (OTHER)</Select.Option>
+                </Select>
+              </QuestionItem>
+    
+              <QuestionItem
+                question="护照/旅行证件号码"
+                name="passportNumber"
+                explanation="Passport/Travel Document Number"
+              >
+                <Input style={{ width: '95%' }} maxLength={20} />
+              </QuestionItem>
+              
+              <QuestionItem
+                question="护照本编号"
+                name="passportBookNumber"
+                explanation="The Passport Book Number is commonly called the inventory control number. You may or may not have a Passport Book Number on your passport."
+                hasNaCheckbox={true}
+                naCheckboxName="passportBookNumber_na"
+              >
+                <Input style={{ width: '55%' }} maxLength={20} />
+              </QuestionItem>
+    
+              <QuestionItem
+                question="颁发护照/旅行证件的国家/机构"
+                name="passportIssuedCountry"
+                explanation="Country/Authority that Issued Passport/Travel Document"
+              >
+                <Select 
+                  options={countryOptions}
+                  style={{ width: '100%' }}
+                  placeholder="- 选择一个 -"
+                />
+              </QuestionItem>
+              
+              <div className="field-groups">
+                <h4>
+                  <span>护照签发地</span>
+                  <span> (Where was the Passport/Travel Document Issued?)</span>
+                </h4>
+                <div className="field-group callout" style={blockInsideHighlightStyle}>
+                  <QuestionItem
+                    question="城市"
+                    name="passportIssuedCity"
+                    explanation="City"
+                  >
+                    <Input style={{ width: '95%' }} maxLength={25} />
+                  </QuestionItem>
+    
+                  <QuestionItem
+                    question="州/省份"
+                    name="passportIssuedState"
+                    explanation="State/Province *If shown on passport"
+                  >
+                    <Input style={{ width: '95%' }} maxLength={25} />
+                  </QuestionItem>
+    
+                  <QuestionItem
+                    question="国家/地区"
+                    name="passportIssuedInCountry"
+                    explanation="Country/Region"
+                  >
+                    <Select 
+                      options={countryOptions}
+                      style={{ width: '100%' }}
+                      placeholder="- 选择一个 -"
+                    />
+                  </QuestionItem>
+                </div>
+              </div>
+              
+              <div className="field-group">
+                <QuestionItem
+                  question="签发日期"
+                  name="passportIssuedDate"
+                  explanation="Issuance Date"
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                    <Form.Item 
+                      name="passportIssuedDay" 
+                      noStyle
+                      rules={[{ required: true, message: '请选择日期' }]}
+                    >
+                      <Select style={{ width: '60px' }} placeholder="">
+                        <Select.Option value="">  </Select.Option>
+                        {Array.from({ length: 31 }, (_, i) => {
+                          const day = (i + 1).toString().padStart(2, '0');
+                          return <Select.Option key={day} value={day}>{day}</Select.Option>;
+                        })}
+                      </Select>
+                    </Form.Item>
+    
+                    <Form.Item 
+                      name="passportIssuedMonth" 
+                      noStyle
+                      rules={[{ required: true, message: '请选择月份' }]}
+                    >
+                      <Select style={{ width: '70px' }} placeholder="">
+                        <Select.Option value="">  </Select.Option>
+                        <Select.Option value="JAN">一月</Select.Option>
+                        <Select.Option value="FEB">二月</Select.Option>
+                        <Select.Option value="MAR">三月</Select.Option>
+                        <Select.Option value="APR">四月</Select.Option>
+                        <Select.Option value="MAY">五月</Select.Option>
+                        <Select.Option value="JUN">六月</Select.Option>
+                        <Select.Option value="JUL">七月</Select.Option>
+                        <Select.Option value="AUG">八月</Select.Option>
+                        <Select.Option value="SEP">九月</Select.Option>
+                        <Select.Option value="OCT">十月</Select.Option>
+                        <Select.Option value="NOV">十一月</Select.Option>
+                        <Select.Option value="DEC">十二月</Select.Option>
+                      </Select>
+                    </Form.Item>
+    
+                    <Form.Item 
+                      name="passportIssuedYear" 
+                      noStyle
+                      rules={[
+                        { required: true, message: '请输入年份' },
+                        { pattern: /^\d{4}$/, message: '请输入4位数年份' }
+                      ]}
+                    >
+                      <Input placeholder="" style={{ width: '60px' }} maxLength={4} />
+                    </Form.Item>
+    
+                    <div style={{ marginLeft: '8px', fontSize: '12px', color: '#666' }}>
+                      (格式: DD-MMM-YYYY)
+                    </div>
+                  </div>
+                </QuestionItem>
+              </div>
+              
+              <div className="help">
+                <h4 style={{ color: '#891300' }}>
+                  <span>帮助：</span>
+                  <span>失效日期</span>
+                </h4>
+                <p>
+                  通常情况下，您的护照/旅行证件有效期必须距您签证申请和/或抵达美国的日期至少要长出六个月。
+                </p>
+              </div>
+              
+              <div className="field-group">
+                <QuestionItem
+                  question="失效日期"
+                  name="passportExpirationDate"
+                  explanation="Expiration Date"
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                    <Form.Item 
+                      name="passportExpirationDay" 
+                      noStyle
+                      rules={[{ required: true, message: '请选择日期' }]}
+                    >
+                      <Select style={{ width: '60px' }} placeholder="">
+                        <Select.Option value="">  </Select.Option>
+                        {Array.from({ length: 31 }, (_, i) => {
+                          const day = (i + 1).toString().padStart(2, '0');
+                          return <Select.Option key={day} value={day}>{day}</Select.Option>;
+                        })}
+                      </Select>
+                    </Form.Item>
+    
+                    <Form.Item 
+                      name="passportExpirationMonth" 
+                      noStyle
+                      rules={[{ required: true, message: '请选择月份' }]}
+                    >
+                      <Select style={{ width: '70px' }} placeholder="">
+                        <Select.Option value="">  </Select.Option>
+                        <Select.Option value="JAN">一月</Select.Option>
+                        <Select.Option value="FEB">二月</Select.Option>
+                        <Select.Option value="MAR">三月</Select.Option>
+                        <Select.Option value="APR">四月</Select.Option>
+                        <Select.Option value="MAY">五月</Select.Option>
+                        <Select.Option value="JUN">六月</Select.Option>
+                        <Select.Option value="JUL">七月</Select.Option>
+                        <Select.Option value="AUG">八月</Select.Option>
+                        <Select.Option value="SEP">九月</Select.Option>
+                        <Select.Option value="OCT">十月</Select.Option>
+                        <Select.Option value="NOV">十一月</Select.Option>
+                        <Select.Option value="DEC">十二月</Select.Option>
+                      </Select>
+                    </Form.Item>
+    
+                    <Form.Item 
+                      name="passportExpirationYear" 
+                      noStyle
+                      rules={[
+                        { required: true, message: '请输入年份' },
+                        { pattern: /^\d{4}$/, message: '请输入4位数年份' }
+                      ]}
+                    >
+                      <Input placeholder="" style={{ width: '60px' }} maxLength={4} />
+                    </Form.Item>
+    
+                    <div style={{ marginLeft: '8px', fontSize: '12px', color: '#666' }}>
+                      (格式: DD-MMM-YYYY)
+                    </div>
+                  </div>
+                </QuestionItem>
+                
+                <Form.Item 
+                  name="passportNoExpiration" 
+                  valuePropName="checked"
+                  style={{ marginTop: '8px', textAlign: 'right' }}
+                >
+                  <Checkbox>无失效日期 (No Expiration)</Checkbox>
+                </Form.Item>
+              </div>
+            </div>
+          </div>
+    
+          <Divider />
+    
+          <div className="field-groups">
+            <div className="q">
+              <QuestionItem
+                question="您的护照是否曾遗失或者被盗？"
+                name="hasLostPassport"
+                explanation="Have you ever lost a passport or had one stolen?"
+              >
+                <Radio.Group>
+                  <Radio value="Y">是 (Yes)</Radio>
+                  <Radio value="N">否 (No)</Radio>
+                </Radio.Group>
+              </QuestionItem>
+            </div>
+          </div>
+    
+          <Form.Item
+            noStyle
+            shouldUpdate={(prevValues, currentValues) => 
+              prevValues.hasLostPassport !== currentValues.hasLostPassport
+            }
+          >
+            {({ getFieldValue }) => {
+              const hasLostPassport = getFieldValue('hasLostPassport');
+              
+              if (hasLostPassport === 'Y') {
+                return (
+                  <div className="field-group callout" style={highlightedBlockStyle}>
+                    <Form.List name="lostPassports" initialValue={[{}]}>
+                      {(fields, { add, remove }) => (
+                        <>
+                          {fields.map((field, index) => (
+                            <div 
+                              key={field.key} 
+                              style={{ 
+                                marginBottom: 24, 
+                                padding: 16, 
+                                border: index > 0 ? '1px dashed #d6e8fa' : '1px solid #d6e8fa',
+                                borderRadius: '8px',
+                                backgroundColor: '#f0f8ff'
+                              }}
+                            >
+                              <h4>遗失/被盗护照 #{index + 1}</h4>
+                              
+                              <QuestionItem
+                                question="护照号码"
+                                name={`lostPassports[${index}].passportNumber`}
+                                explanation="Lost/Stolen Passport Number"
+                              >
+                                <Input style={{ width: '95%' }} maxLength={20} />
+                              </QuestionItem>
+                              
+                              <QuestionItem
+                                question="颁发国家/机构"
+                                name={`lostPassports[${index}].issuingCountry`}
+                                explanation="Country/Authority that Issued Lost/Stolen Passport"
+                              >
+                                <Select 
+                                  options={countryOptions}
+                                  style={{ width: '100%' }}
+                                  placeholder="- 选择一个 -"
+                                />
+                              </QuestionItem>
+                              
+                              <QuestionItem
+                                question="护照遗失/被盗说明"
+                                name={`lostPassports[${index}].explanation`}
+                                explanation="Please explain how the passport was lost or stolen"
+                              >
+                                <TextArea rows={4} style={{ width: '95%' }} />
+                              </QuestionItem>
+                              
+                              <FormItemButtons 
+                                onAdd={() => add()}
+                                onRemove={() => {
+                                  if (fields.length > 1) {
+                                    remove(field.name);
+                                  }
+                                }}
+                                addText="添加另一个"
+                                removeText="移除"
+                              />
+                            </div>
+                          ))}
+                        </>
+                      )}
+                    </Form.List>
+                  </div>
+                );
+              }
+              
+              return null;
+            }}
+          </Form.Item>
+        </>
+      ),
+    },
+    {
       title: '工作教育',
       description: '工作和教育经历',
       content: (
