@@ -3417,24 +3417,22 @@ const DS160Form: React.FC = () => {
             }}
           >
             {/* 社交媒体平台选择 */}
-            <QuestionItem
-              question="社交媒体的提供商/平台"
-              name={`socialMedia[${index}].platform`}
-              explanation="输入与您在线状态相关的信息，包括您用于协作、共享信息和与他人在线互动的提供商/平台、应用程序和网站类型信息。列举出与您的社交媒体相关联的用户名、昵称、网名或其他标识符。（您无需列举那些在一个商业或其他组织中为多个用户设计的帐户名称。）"
-              required={true}
+            <Form.Item
+              name={[field.name, 'platform']}
+              label={
+                <div>
+                  <span>社交媒体的提供商/平台</span>
+                  <span style={{ color: '#ff4d4f', marginLeft: 4 }}>*</span>
+                  <div style={{ fontSize: '12px', color: '#666' }}>
+                    输入与您在线状态相关的信息，包括您用于协作、共享信息和与他人在线互动的提供商/平台、应用程序和网站类型信息。列举出与您的社交媒体相关联的用户名、昵称、网名或其他标识符。（您无需列举那些在一个商业或其他组织中为多个用户设计的帐户名称。）
+                  </div>
+                </div>
+              }
+              rules={[{ required: true, message: '请选择社交媒体平台' }]}
             >
               <Select 
                 style={{ width: '100%' }} 
                 placeholder="- 请选择一个 -"
-                onChange={(value) => {
-                  // 只更新当前平台值，不影响其他字段
-                  form.setFieldValue(`socialMedia[${index}].platform`, value);
-                  
-                  // 如果选择了"NONE"，清空标识符
-                  if (value === 'NONE') {
-                    form.setFieldValue(`socialMedia[${index}].identifier`, undefined);
-                  }
-                }}
               >
                 <Select.Option value="ASKF">ASK.FM</Select.Option>
                 <Select.Option value="DUBN">DOUBAN</Select.Option>
@@ -3458,28 +3456,32 @@ const DS160Form: React.FC = () => {
                 <Select.Option value="YTUB">YOUTUBE</Select.Option>
                 <Select.Option value="NONE">NONE</Select.Option>
               </Select>
-            </QuestionItem>
+            </Form.Item>
             
-            {/* 社交媒体标识符 */}
+            {/* 社交媒体标识符 - 使用Form.Item组件的dependencies属性 */}
             <Form.Item
-              noStyle
               shouldUpdate={(prevValues, currentValues) => {
-                // 只在平台值变化时更新此部分
-                const prevPlatform = prevValues?.socialMedia?.[index]?.platform;
-                const currentPlatform = currentValues?.socialMedia?.[index]?.platform;
-                return prevPlatform !== currentPlatform;
+                return prevValues?.socialMedia?.[index]?.platform !== 
+                       currentValues?.socialMedia?.[index]?.platform;
               }}
+              noStyle
             >
               {({ getFieldValue }) => {
-                // 获取当前平台值
                 const platformValue = getFieldValue(['socialMedia', index, 'platform']);
                 const isDisabled = platformValue === 'NONE';
                 
                 return (
-                  <QuestionItem
-                    question="社交媒体标识符"
-                    name={`socialMedia[${index}].identifier`}
-                    required={!isDisabled}
+                  <Form.Item
+                    name={[field.name, 'identifier']}
+                    label={
+                      <div>
+                        <span>社交媒体标识符</span>
+                        {!isDisabled && <span style={{ color: '#ff4d4f', marginLeft: 4 }}>*</span>}
+                      </div>
+                    }
+                    rules={[
+                      { required: !isDisabled, message: '请输入社交媒体标识符' }
+                    ]}
                   >
                     <Input 
                       style={{ 
@@ -3489,7 +3491,7 @@ const DS160Form: React.FC = () => {
                       maxLength={50}
                       disabled={isDisabled}
                     />
-                  </QuestionItem>
+                  </Form.Item>
                 );
               }}
             </Form.Item>
