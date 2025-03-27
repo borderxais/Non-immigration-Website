@@ -3402,109 +3402,112 @@ const DS160Form: React.FC = () => {
             </h4>
 
             <div className="field-group callout" style={highlightedBlockStyle}>
-  <Form.List name="socialMedia" initialValue={[{ platform: 'NONE' }]}>
-    {(fields, { add, remove }) => (
-      <>
-        {fields.map((field, index) => (
-          <div 
-            key={field.key} 
-            style={{ 
-              marginBottom: 24, 
-              padding: 16, 
-              border: index > 0 ? '1px dashed #d6e8fa' : '1px solid #d6e8fa',
-              borderRadius: '8px',
-              backgroundColor: '#f0f8ff'
-            }}
-          >
-<QuestionItem
-  question="社交媒体的提供商/平台"
-  name={`socialMedia[${index}].platform`}
-  explanation="输入与您在线状态相关的信息，包括您用于协作、共享信息和与他人在线互动的提供商/平台、应用程序和网站类型信息。列举出与您的社交媒体相关联的用户名、昵称、网名或其他标识符。（您无需列举那些在一个商业或其他组织中为多个用户设计的帐户名称。）"
-  required={true}
->
-  <Select 
-    style={{ width: '100%' }} 
-    placeholder="- 请选择一个 -"
-    onChange={(value) => {
-      // 简化处理方式，使用字段路径直接设置
-      form.setFieldValue(`socialMedia[${index}].platform`, value);
-      
-      // 如果选择了"NONE"，清空标识符
-      if (value === 'NONE') {
-        form.setFieldValue(`socialMedia[${index}].identifier`, undefined);
-      }
-    }}
-  >
-    <Select.Option value="ASKF">ASK.FM</Select.Option>
-    <Select.Option value="DUBN">DOUBAN</Select.Option>
-    <Select.Option value="FCBK">FACEBOOK</Select.Option>
-    <Select.Option value="FLKR">FLICKR</Select.Option>
-    <Select.Option value="GOGL">GOOGLE+</Select.Option>
-    <Select.Option value="INST">INSTAGRAM</Select.Option>
-    <Select.Option value="LINK">LINKEDIN</Select.Option>
-    <Select.Option value="MYSP">MYSPACE</Select.Option>
-    <Select.Option value="PTST">PINTEREST</Select.Option>
-    <Select.Option value="QZNE">QZONE (QQ)</Select.Option>
-    <Select.Option value="RDDT">REDDIT</Select.Option>
-    <Select.Option value="SWBO">SINA WEIBO</Select.Option>
-    <Select.Option value="TWBO">TENCENT WEIBO</Select.Option>
-    <Select.Option value="TUMB">TUMBLR</Select.Option>
-    <Select.Option value="TWIT">TWITTER</Select.Option>
-    <Select.Option value="TWOO">TWOO</Select.Option>
-    <Select.Option value="VINE">VINE</Select.Option>
-    <Select.Option value="VKON">VKONTAKTE (VK)</Select.Option>
-    <Select.Option value="YUKU">YOUKU</Select.Option>
-    <Select.Option value="YTUB">YOUTUBE</Select.Option>
-    <Select.Option value="NONE">NONE</Select.Option>
-  </Select>
-</QuestionItem>
-            
-            <Form.Item
-              noStyle
-              shouldUpdate={(prevValues, currentValues) => {
-                const prevPlatform = prevValues?.socialMedia?.[index]?.platform;
-                const currentPlatform = currentValues?.socialMedia?.[index]?.platform;
-                return prevPlatform !== currentPlatform;
-              }}
-            >
-              {({ getFieldValue }) => {
-                const platformValue = getFieldValue(['socialMedia', index, 'platform']);
-                const isDisabled = platformValue === 'NONE';
-                
-                return (
-                  <QuestionItem
-                    question="社交媒体标识符"
-                    name={`socialMedia[${index}].identifier`}
-                  >
-                    <Input 
-                      style={{ 
-                        width: '95%',
-                        backgroundColor: isDisabled ? 'LightGrey' : 'white'
-                      }} 
-                      maxLength={50}
-                      disabled={isDisabled}
-                    />
-                  </QuestionItem>
-                );
-              }}
-            </Form.Item>
-            
-            <FormItemButtons 
-              onAdd={() => add()}
-              onRemove={() => {
-                if (fields.length > 1) {
-                  remove(index);
-                }
-              }}
-              addText="增加另一个"
-              removeText="移除"
-            />
-          </div>
-        ))}
-      </>
-    )}
-  </Form.List>
-</div>
+              <Form.List name="socialMedia" initialValue={[{ platform: 'NONE' }]}>
+                {(fields, { add, remove }) => (
+                  <>
+                    {fields.map((field, index) => (
+                      <div 
+                        key={field.key} 
+                        style={{ 
+                          marginBottom: 24, 
+                          padding: 16, 
+                          border: index > 0 ? '1px dashed #d6e8fa' : '1px solid #d6e8fa',
+                          borderRadius: '8px',
+                          backgroundColor: '#f0f8ff'
+                        }}
+                      >
+                        <QuestionItem
+                          question="社交媒体的提供商/平台"
+                          name={`socialMedia[${index}].platform`}
+                          explanation="输入与您在线状态相关的信息，包括您用于协作、共享信息和与他人在线互动的提供商/平台、应用程序和网站类型信息。列举出与您的社交媒体相关联的用户名、昵称、网名或其他标识符。（您无需列举那些在一个商业或其他组织中为多个用户设计的帐户名称。）"
+                          required={true}
+                        >
+                          <Select 
+                            style={{ width: '100%' }} 
+                            placeholder="- 请选择一个 -"
+                            onChange={(value) => {
+                              // 使用setFieldValue直接设置字段值
+                              form.setFieldValue(`socialMedia[${index}].platform`, value);
+                              
+                              // 如果选择了"NONE"，清空标识符
+                              if (value === 'NONE') {
+                                form.setFieldValue(`socialMedia[${index}].identifier`, undefined);
+                              }
+                            }}
+                          >
+                            <Select.Option value="ASKF">ASK.FM</Select.Option>
+                            <Select.Option value="DUBN">DOUBAN</Select.Option>
+                            <Select.Option value="FCBK">FACEBOOK</Select.Option>
+                            <Select.Option value="FLKR">FLICKR</Select.Option>
+                            <Select.Option value="GOGL">GOOGLE+</Select.Option>
+                            <Select.Option value="INST">INSTAGRAM</Select.Option>
+                            <Select.Option value="LINK">LINKEDIN</Select.Option>
+                            <Select.Option value="MYSP">MYSPACE</Select.Option>
+                            <Select.Option value="PTST">PINTEREST</Select.Option>
+                            <Select.Option value="QZNE">QZONE (QQ)</Select.Option>
+                            <Select.Option value="RDDT">REDDIT</Select.Option>
+                            <Select.Option value="SWBO">SINA WEIBO</Select.Option>
+                            <Select.Option value="TWBO">TENCENT WEIBO</Select.Option>
+                            <Select.Option value="TUMB">TUMBLR</Select.Option>
+                            <Select.Option value="TWIT">TWITTER</Select.Option>
+                            <Select.Option value="TWOO">TWOO</Select.Option>
+                            <Select.Option value="VINE">VINE</Select.Option>
+                            <Select.Option value="VKON">VKONTAKTE (VK)</Select.Option>
+                            <Select.Option value="YUKU">YOUKU</Select.Option>
+                            <Select.Option value="YTUB">YOUTUBE</Select.Option>
+                            <Select.Option value="NONE">NONE</Select.Option>
+                          </Select>
+                        </QuestionItem>
+                        
+                        <Form.Item
+                          noStyle
+                          shouldUpdate={(prevValues, currentValues) => {
+                            // 只在平台值变化时更新
+                            const prevPlatform = prevValues?.socialMedia?.[index]?.platform;
+                            const currentPlatform = currentValues?.socialMedia?.[index]?.platform;
+                            return prevPlatform !== currentPlatform;
+                          }}
+                        >
+                          {({ getFieldValue }) => {
+                            // 获取当前平台值
+                            const platformValue = getFieldValue(['socialMedia', index, 'platform']);
+                            const isDisabled = platformValue === 'NONE';
+                            
+                            return (
+                              <QuestionItem
+                                question="社交媒体标识符"
+                                name={`socialMedia[${index}].identifier`}
+                                required={!isDisabled}
+                              >
+                                <Input 
+                                  style={{ 
+                                    width: '95%',
+                                    backgroundColor: isDisabled ? 'LightGrey' : 'white'
+                                  }} 
+                                  maxLength={50}
+                                  disabled={isDisabled}
+                                />
+                              </QuestionItem>
+                            );
+                          }}
+                        </Form.Item>
+                        
+                        <FormItemButtons 
+                          onAdd={() => add()}
+                          onRemove={() => {
+                            if (fields.length > 1) {
+                              remove(index);
+                            }
+                          }}
+                          addText="增加另一个"
+                          removeText="移除"
+                        />
+                      </div>
+                    ))}
+                  </>
+                )}
+              </Form.List>
+            </div>
 
           </div>
 
