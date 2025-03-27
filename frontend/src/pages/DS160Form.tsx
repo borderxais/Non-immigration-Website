@@ -3949,21 +3949,7 @@ const DS160Form: React.FC = () => {
   content: (
     <>
       <div className="field-groups">
-        <h3>
-          <span>美国联系人信息</span>
-          <span> (U.S. Point of Contact Information)</span>
-        </h3>
-        
-        <div className="help">
-          <h4 style={{ color: '#891300' }}>
-            <span>帮助：</span>
-            <span>联络人</span>
-          </h4>
-          <p>
-            您的美国联络人可以是任何在美国的个人。他/她认识您，如有需要，并可以证明您的身份。如果您在美国没有认识的人，您可以输入您此行将要访问的商店、公司或者组织的名称。
-          </p>
-        </div>
-        
+          
         <div className="infoDiv">
           <span>在美国的联系人或组织</span>
           <span> (Contact Person or Organization in the United States)</span>
@@ -3979,7 +3965,7 @@ const DS160Form: React.FC = () => {
             <QuestionItem
               question="姓氏"
               name="usPocSurname"
-              explanation="Surnames"
+              explanation="您的美国联络人可以是任何在美国的个人。他/她认识您，如有需要，并可以证明您的身份。如果您在美国没有认识的人，您可以输入您此行将要访问的商店、公司或者组织的名"
             >
               <Input style={{ width: '99%' }} maxLength={33} />
             </QuestionItem>
@@ -3987,7 +3973,6 @@ const DS160Form: React.FC = () => {
             <QuestionItem
               question="名字"
               name="usPocGivenName"
-              explanation="Given Names"
             >
               <Input style={{ width: '99%' }} maxLength={33} />
             </QuestionItem>
@@ -4004,7 +3989,6 @@ const DS160Form: React.FC = () => {
           <QuestionItem
             question="组织名称"
             name="usPocOrganization"
-            explanation="Organization Name"
             hasNaCheckbox={true}
             naCheckboxName="usPocOrganizationNotKnown"
           >
@@ -4014,7 +3998,6 @@ const DS160Form: React.FC = () => {
           <QuestionItem
             question="与您的关系"
             name="usPocRelationship"
-            explanation="Relationship to You"
           >
             <Select placeholder="- 选择一个 -" style={{ width: '100%' }}>
               <Select.Option value="R">亲属 (RELATIVE)</Select.Option>
@@ -4038,7 +4021,6 @@ const DS160Form: React.FC = () => {
             <QuestionItem
               question="美国街道地址（第一行）"
               name="usPocAddressLine1"
-              explanation="U.S. Street Address (Line 1)"
             >
               <Input style={{ width: '99%' }} maxLength={40} />
             </QuestionItem>
@@ -4046,7 +4028,6 @@ const DS160Form: React.FC = () => {
             <QuestionItem
               question="美国街道地址（第二行）"
               name="usPocAddressLine2"
-              explanation="U.S. Street Address (Line 2)"
               required={false}
             >
               <Input style={{ width: '99%' }} maxLength={40} />
@@ -4056,7 +4037,6 @@ const DS160Form: React.FC = () => {
             <QuestionItem
               question="城市"
               name="usPocCity"
-              explanation="City"
             >
               <Input style={{ width: '99%' }} maxLength={20} />
             </QuestionItem>
@@ -4064,7 +4044,6 @@ const DS160Form: React.FC = () => {
             <QuestionItem
               question="州"
               name="usPocState"
-              explanation="State"
             >
               <Select 
                 placeholder="- 选择一个 -" 
@@ -4132,7 +4111,6 @@ const DS160Form: React.FC = () => {
             <QuestionItem
               question="邮政编码"
               name="usPocZipCode"
-              explanation="ZIP Code (if known)"
             >
               <Input style={{ width: '65%' }} maxLength={10} />
               <div className="hint">
@@ -4143,7 +4121,6 @@ const DS160Form: React.FC = () => {
             <QuestionItem
               question="电话号码"
               name="usPocPhone"
-              explanation="Phone Number"
             >
               <Input style={{ width: '65%' }} maxLength={15} minLength={5} />
               <div className="hint">
@@ -4154,7 +4131,6 @@ const DS160Form: React.FC = () => {
             <QuestionItem
               question="电子邮件地址"
               name="usPocEmail"
-              explanation="Email Address"
               hasNaCheckbox={true}
               naCheckboxName="usPocEmailNotApply"
             >
