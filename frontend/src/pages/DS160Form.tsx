@@ -4122,6 +4122,7 @@ const DS160Form: React.FC = () => {
             <QuestionItem
               question="电话号码"
               name="usPocPhone"
+              required={false}
             >
               <Input style={{ width: '65%' }} maxLength={15} minLength={5} />
               <div className="hint">
@@ -4134,6 +4135,7 @@ const DS160Form: React.FC = () => {
               name="usPocEmail"
               hasNaCheckbox={true}
               naCheckboxName="usPocEmailNotApply"
+              required={false}
             >
               <Input 
                 className="emailaddress" 
