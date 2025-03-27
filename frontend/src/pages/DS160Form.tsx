@@ -4153,6 +4153,405 @@ const DS160Form: React.FC = () => {
   ),
     },
     {
+      title: '家庭信息',
+      description: '亲属信息',
+      content: (
+        <>
+          <div className="field-groups">
+            <h2>
+              <span>家庭信息：亲属</span>
+              <span> (Family Information: Relatives)</span>
+            </h2>
+            
+            <div className="note">
+              <span>注意：请提供以下有关您生身父母的信息。如果您是领养的，请提供下面有关您养父母的信息。</span>
+              <span> (NOTE: Please provide the following information concerning your biological parents. If you are adopted, please provide the following information on your adoptive parents.)</span>
+            </div>
+            
+            <div className="fieldset-group">
+              <fieldset>
+                <div className="field-groups">
+                  <h3>
+                    <span>父亲的全名与出生日期</span>
+                    <span> (Father's Full Name and Date of Birth)</span>
+                  </h3>
+                  
+                  <div className="field-group callout" style={highlightedBlockStyle}>
+                    <div className="field full" style={{ paddingBottom: 0, paddingTop: 0 }}>
+                      <QuestionItem
+                        question="姓氏"
+                        name="fatherSurname"
+                        explanation="Surnames"
+                      >
+                        <Input style={{ width: '99%' }} maxLength={33} />
+                        <div className="hint">
+                          <span>(例如：Hernandez Garcia)</span>
+                        </div>
+                      </QuestionItem>
+                      <Form.Item 
+                        name="fatherSurnameUnknown" 
+                        valuePropName="checked"
+                        style={{ textAlign: 'right', paddingBottom: 0, paddingTop: 0 }}
+                      >
+                        <Checkbox>不知道 (Do Not Know)</Checkbox>
+                      </Form.Item>
+                    </div>
+                    
+                    <div className="field full" style={{ paddingBottom: 0, paddingTop: 0 }}>
+                      <QuestionItem
+                        question="名字"
+                        name="fatherGivenName"
+                        explanation="Given Names"
+                      >
+                        <Input style={{ width: '99%' }} maxLength={33} />
+                        <div className="hint">
+                          <span>(例如：Juan Miguel)</span>
+                        </div>
+                      </QuestionItem>
+                      <Form.Item 
+                        name="fatherGivenNameUnknown" 
+                        valuePropName="checked"
+                        style={{ textAlign: 'right', paddingBottom: 0, paddingTop: 0 }}
+                      >
+                        <Checkbox>不知道 (Do Not Know)</Checkbox>
+                      </Form.Item>
+                    </div>
+                    
+                    <div className="field full" style={{ paddingBottom: 0, paddingTop: 0 }}>
+                      <QuestionItem
+                        question="出生日期"
+                        name="fatherDateOfBirth"
+                        explanation="Date of Birth"
+                      >
+                        <div style={{ display: 'flex', gap: '4px' }}>
+                          <Form.Item 
+                            name="fatherDobDay" 
+                            noStyle
+                          >
+                            <Select style={{ width: '45px' }} placeholder="">
+                              <Select.Option value="">  </Select.Option>
+                              {Array.from({ length: 31 }, (_, i) => {
+                                const day = (i + 1).toString().padStart(2, '0');
+                                return <Select.Option key={day} value={day}>{day}</Select.Option>;
+                              })}
+                            </Select>
+                          </Form.Item>
+    
+                          <Form.Item 
+                            name="fatherDobMonth" 
+                            noStyle
+                          >
+                            <Select style={{ width: '55px' }} placeholder="">
+                              <Select.Option value="">  </Select.Option>
+                              <Select.Option value="JAN">JAN</Select.Option>
+                              <Select.Option value="FEB">FEB</Select.Option>
+                              <Select.Option value="MAR">MAR</Select.Option>
+                              <Select.Option value="APR">APR</Select.Option>
+                              <Select.Option value="MAY">MAY</Select.Option>
+                              <Select.Option value="JUN">JUN</Select.Option>
+                              <Select.Option value="JUL">JUL</Select.Option>
+                              <Select.Option value="AUG">AUG</Select.Option>
+                              <Select.Option value="SEP">SEP</Select.Option>
+                              <Select.Option value="OCT">OCT</Select.Option>
+                              <Select.Option value="NOV">NOV</Select.Option>
+                              <Select.Option value="DEC">DEC</Select.Option>
+                            </Select>
+                          </Form.Item>
+    
+                          <Form.Item 
+                            name="fatherDobYear" 
+                            noStyle
+                          >
+                            <Input style={{ width: '35px' }} maxLength={4} />
+                          </Form.Item>
+                        </div>
+                        <div className="hint">
+                          <span>(格式: DD-MMM-YYYY)</span>
+                        </div>
+                      </QuestionItem>
+                      <Form.Item 
+                        name="fatherDobUnknown" 
+                        valuePropName="checked"
+                        style={{ paddingTop: '4px' }}
+                      >
+                        <Checkbox>不知道 (Do Not Know)</Checkbox>
+                      </Form.Item>
+                    </div>
+                    
+                    <div className="field full" style={{ paddingBottom: 0, paddingTop: 0 }}>
+                      <div className="q">
+                        <QuestionItem
+                          question="您父亲是否在美国？"
+                          name="fatherInUs"
+                          explanation="Is your father in the U.S.?"
+                        >
+                          <Radio.Group>
+                            <Radio value="Y">是 (Yes)</Radio>
+                            <Radio value="N">否 (No)</Radio>
+                          </Radio.Group>
+                        </QuestionItem>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </fieldset>
+              
+              <div className="hr"></div>
+              
+              <fieldset>
+                <div className="field-groups">
+                  <h3>
+                    <span>母亲的全名与出生日期</span>
+                    <span> (Mother's Full Name and Date of Birth)</span>
+                  </h3>
+                  
+                  <div className="field-group callout" style={highlightedBlockStyle}>
+                    <div className="field full" style={{ paddingBottom: 0, paddingTop: 0 }}>
+                      <QuestionItem
+                        question="姓氏"
+                        name="motherSurname"
+                        explanation="Surnames"
+                      >
+                        <Input style={{ width: '99%' }} maxLength={33} />
+                        <div className="hint">
+                          <span>(例如：Hernandez Garcia)</span>
+                        </div>
+                      </QuestionItem>
+                      <Form.Item 
+                        name="motherSurnameUnknown" 
+                        valuePropName="checked"
+                        style={{ textAlign: 'right' }}
+                      >
+                        <Checkbox>不知道 (Do Not Know)</Checkbox>
+                      </Form.Item>
+                    </div>
+                    
+                    <div className="field full" style={{ paddingBottom: 0, paddingTop: 0 }}>
+                      <QuestionItem
+                        question="名字"
+                        name="motherGivenName"
+                        explanation="Given Names"
+                      >
+                        <Input style={{ width: '99%' }} maxLength={33} />
+                        <div className="hint">
+                          <span>(例如：Juanita Miguel)</span>
+                        </div>
+                      </QuestionItem>
+                      <Form.Item 
+                        name="motherGivenNameUnknown" 
+                        valuePropName="checked"
+                        style={{ textAlign: 'right' }}
+                      >
+                        <Checkbox>不知道 (Do Not Know)</Checkbox>
+                      </Form.Item>
+                    </div>
+                    
+                    <div className="field full" style={{ paddingBottom: 0, paddingTop: 0 }}>
+                      <QuestionItem
+                        question="出生日期"
+                        name="motherDateOfBirth"
+                        explanation="Date of Birth"
+                      >
+                        <div style={{ display: 'flex', gap: '4px' }}>
+                          <Form.Item 
+                            name="motherDobDay" 
+                            noStyle
+                          >
+                            <Select style={{ width: '45px' }} placeholder="">
+                              <Select.Option value="">  </Select.Option>
+                              {Array.from({ length: 31 }, (_, i) => {
+                                const day = (i + 1).toString().padStart(2, '0');
+                                return <Select.Option key={day} value={day}>{day}</Select.Option>;
+                              })}
+                            </Select>
+                          </Form.Item>
+    
+                          <Form.Item 
+                            name="motherDobMonth" 
+                            noStyle
+                          >
+                            <Select style={{ width: '55px' }} placeholder="">
+                              <Select.Option value="">  </Select.Option>
+                              <Select.Option value="JAN">JAN</Select.Option>
+                              <Select.Option value="FEB">FEB</Select.Option>
+                              <Select.Option value="MAR">MAR</Select.Option>
+                              <Select.Option value="APR">APR</Select.Option>
+                              <Select.Option value="MAY">MAY</Select.Option>
+                              <Select.Option value="JUN">JUN</Select.Option>
+                              <Select.Option value="JUL">JUL</Select.Option>
+                              <Select.Option value="AUG">AUG</Select.Option>
+                              <Select.Option value="SEP">SEP</Select.Option>
+                              <Select.Option value="OCT">OCT</Select.Option>
+                              <Select.Option value="NOV">NOV</Select.Option>
+                              <Select.Option value="DEC">DEC</Select.Option>
+                            </Select>
+                          </Form.Item>
+    
+                          <Form.Item 
+                            name="motherDobYear" 
+                            noStyle
+                          >
+                            <Input style={{ width: '35px' }} maxLength={4} />
+                          </Form.Item>
+                        </div>
+                        <div className="hint">
+                          <span>(格式: DD-MMM-YYYY)</span>
+                        </div>
+                      </QuestionItem>
+                      <Form.Item 
+                        name="motherDobUnknown" 
+                        valuePropName="checked"
+                      >
+                        <Checkbox>不知道 (Do Not Know)</Checkbox>
+                      </Form.Item>
+                    </div>
+                    
+                    <div className="field full" style={{ paddingBottom: 0, paddingTop: 0 }}>
+                      <div className="q">
+                        <QuestionItem
+                          question="您母亲是否在美国？"
+                          name="motherInUs"
+                          explanation="Is your mother in the U.S.?"
+                        >
+                          <Radio.Group>
+                            <Radio value="Y">是 (Yes)</Radio>
+                            <Radio value="N">否 (No)</Radio>
+                          </Radio.Group>
+                        </QuestionItem>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </fieldset>
+              
+              <div className="hr"></div>
+              
+              <fieldset>
+                <div className="field-groups">
+                  <div className="q">
+                    <QuestionItem
+                      question="除父母以外，您在美国是否还有其他直系亲属?"
+                      name="hasOtherRelativesInUs"
+                      explanation="Do you have any immediate relatives, not including parents, in the United States?"
+                    >
+                      <Radio.Group>
+                        <Radio value="Y">是 (Yes)</Radio>
+                        <Radio value="N">否 (No)</Radio>
+                      </Radio.Group>
+                    </QuestionItem>
+                  </div>
+                </div>
+                
+                <div className="help">
+                  <h4 style={{ color: '#891300' }}>
+                    <span>帮助：</span>
+                    <span>直系亲属</span>
+                  </h4>
+                  <p>
+                    <span>指未婚夫/妻、配偶（丈夫/妻子）、子女（儿子/女儿）或者兄弟/姐妹。</span>
+                    <span> (Means fiancé/fiancée, spouse (husband/wife), child (son/daughter), or sibling (brother/sister).)</span>
+                  </p>
+                </div>
+                
+                <Form.Item
+                  noStyle
+                  shouldUpdate={(prevValues, currentValues) => 
+                    prevValues.hasOtherRelativesInUs !== currentValues.hasOtherRelativesInUs
+                  }
+                >
+                  {({ getFieldValue }) => {
+                    const hasOtherRelatives = getFieldValue('hasOtherRelativesInUs');
+                    
+                    if (hasOtherRelatives === 'Y') {
+                      return (
+                        <div className="field-group callout" style={highlightedBlockStyle}>
+                          <Form.List name="otherRelatives" initialValue={[{}]}>
+                            {(fields, { add, remove }) => (
+                              <>
+                                {fields.map((field, index) => (
+                                  <div 
+                                    key={field.key} 
+                                    style={{ 
+                                      marginBottom: 24, 
+                                      padding: 16, 
+                                      border: index > 0 ? '1px dashed #d6e8fa' : '1px solid #d6e8fa',
+                                      borderRadius: '8px',
+                                      backgroundColor: '#f0f8ff'
+                                    }}
+                                  >
+                                    <h4>亲属 #{index + 1}</h4>
+                                    
+                                    <QuestionItem
+                                      question="姓氏"
+                                      name={`otherRelatives[${index}].surname`}
+                                      explanation="Surnames"
+                                    >
+                                      <Input style={{ width: '99%' }} maxLength={33} />
+                                    </QuestionItem>
+                                    
+                                    <QuestionItem
+                                      question="名字"
+                                      name={`otherRelatives[${index}].givenName`}
+                                      explanation="Given Names"
+                                    >
+                                      <Input style={{ width: '99%' }} maxLength={33} />
+                                    </QuestionItem>
+                                    
+                                    <QuestionItem
+                                      question="与您的关系"
+                                      name={`otherRelatives[${index}].relationship`}
+                                      explanation="Relationship to You"
+                                    >
+                                      <Select placeholder="- 请选择一个 -" style={{ width: '100%' }}>
+                                        <Select.Option value="F">未婚夫/妻 (FIANCE/FIANCEE)</Select.Option>
+                                        <Select.Option value="S">配偶 (SPOUSE)</Select.Option>
+                                        <Select.Option value="C">子女 (CHILD)</Select.Option>
+                                        <Select.Option value="B">兄弟/姐妹 (SIBLING)</Select.Option>
+                                      </Select>
+                                    </QuestionItem>
+                                    
+                                    <QuestionItem
+                                      question="移民身份"
+                                      name={`otherRelatives[${index}].status`}
+                                      explanation="Immigration Status"
+                                    >
+                                      <Select placeholder="- 请选择一个 -" style={{ width: '100%' }}>
+                                        <Select.Option value="U">美国公民 (U.S. CITIZEN)</Select.Option>
+                                        <Select.Option value="L">合法永久居民 (LPR)</Select.Option>
+                                        <Select.Option value="N">非移民 (NON-IMMIGRANT)</Select.Option>
+                                        <Select.Option value="O">其他/我不知道 (OTHER/I DON'T KNOW)</Select.Option>
+                                      </Select>
+                                    </QuestionItem>
+                                    
+                                    <FormItemButtons 
+                                      onAdd={() => add()}
+                                      onRemove={() => {
+                                        if (fields.length > 1) {
+                                          remove(field.name);
+                                        }
+                                      }}
+                                      addText="添加另一位亲属"
+                                      removeText="移除"
+                                    />
+                                  </div>
+                                ))}
+                              </>
+                            )}
+                          </Form.List>
+                        </div>
+                      );
+                    }
+                    
+                    return null;
+                  }}
+                </Form.Item>
+              </fieldset>
+            </div>
+          </div>
+        </>
+      ),
+    },
+    {
       title: '工作教育',
       description: '工作和教育经历',
       content: (
