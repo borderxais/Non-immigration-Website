@@ -3021,7 +3021,6 @@ const DS160Form: React.FC = () => {
               <QuestionItem
                 question="街道地址（第二行）"
                 name="homeAddressLine2"
-                explanation="Street Address (Line 2)"
                 required={false}
               >
                 <Input style={{ width: '95%' }} maxLength={40} />
@@ -3031,7 +3030,6 @@ const DS160Form: React.FC = () => {
               <QuestionItem
                 question="城市"
                 name="homeCity"
-                explanation="City"
               >
                 <Input style={{ width: '95%' }} maxLength={20} />
               </QuestionItem>
@@ -3039,7 +3037,6 @@ const DS160Form: React.FC = () => {
               <QuestionItem
                 question="州/省份"
                 name="homeState"
-                explanation="State/Province"
                 hasNaCheckbox={true}
                 naCheckboxName="homeState_na"
               >
@@ -3049,7 +3046,6 @@ const DS160Form: React.FC = () => {
               <QuestionItem
                 question="邮政区域/邮政编码"
                 name="homePostalCode"
-                explanation="Postal Zone/ZIP Code"
                 hasNaCheckbox={true}
                 naCheckboxName="homePostalCode_na"
               >
@@ -3059,7 +3055,6 @@ const DS160Form: React.FC = () => {
               <QuestionItem
                 question="国家/地区"
                 name="homeCountry"
-                explanation="Country/Region"
               >
                 <Select 
                   options={countryOptions}
@@ -3407,7 +3402,7 @@ const DS160Form: React.FC = () => {
             </h4>
 
             <div className="field-group callout" style={highlightedBlockStyle}>
-              <Form.List name="socialMedia" initialValue={[{}]}>
+              <Form.List name="socialMedia" initialValue={[{ platform: 'NONE' }]}>
                 {(fields, { add, remove }) => (
                   <>
                     {fields.map((field, index) => (
@@ -3426,7 +3421,22 @@ const DS160Form: React.FC = () => {
                           name={`socialMedia[${index}].platform`}
                           explanation="输入与您在线状态相关的信息，包括您用于协作、共享信息和与他人在线互动的提供商/平台、应用程序和网站类型信息。列举出与您的社交媒体相关联的用户名、昵称、网名或其他标识符。（您无需列举那些在一个商业或其他组织中为多个用户设计的帐户名称。）"
                         >
-                          <Select style={{ width: '100%' }} placeholder="- Select One -">
+                          <Select 
+                            style={{ width: '100%' }} 
+                            placeholder="- Select One -"
+                            onChange={(value) => {
+                              // 直接设置当前值，使用表单setFieldsValue方法
+                              const updatedValues = {
+                                socialMedia: [...(form.getFieldValue('socialMedia') || [])]
+                              };
+                              // 确保socialMedia数组存在并有足够的长度
+                              if (!updatedValues.socialMedia[index]) {
+                                updatedValues.socialMedia[index] = {};
+                              }
+                              updatedValues.socialMedia[index].platform = value;
+                              form.setFieldsValue(updatedValues);
+                            }}
+                          >
                             <Select.Option value="SONE">- Select One -</Select.Option>
                             <Select.Option value="ASKF">ASK.FM</Select.Option>
                             <Select.Option value="DUBN">DOUBAN</Select.Option>
@@ -3452,12 +3462,35 @@ const DS160Form: React.FC = () => {
                           </Select>
                         </QuestionItem>
                         
-                        <QuestionItem
-                          question="社交媒体标识符"
-                          name={`socialMedia[${index}].identifier`}
+                        <Form.Item
+                          noStyle
+                          shouldUpdate={(prevValues, currentValues) => {
+                            const prevPlatform = prevValues?.socialMedia?.[index]?.platform;
+                            const currentPlatform = currentValues?.socialMedia?.[index]?.platform;
+                            return prevPlatform !== currentPlatform;
+                          }}
                         >
-                          <Input style={{ width: '95%' }} maxLength={50} />
-                        </QuestionItem>
+                          {({ getFieldValue }) => {
+                            const platformValue = getFieldValue(['socialMedia', index, 'platform']);
+                            const isDisabled = platformValue === 'NONE';
+                            
+                            return (
+                              <QuestionItem
+                                question="社交媒体标识符"
+                                name={`socialMedia[${index}].identifier`}
+                              >
+                                <Input 
+                                  style={{ 
+                                    width: '95%',
+                                    backgroundColor: isDisabled ? '#f2f2f2' : 'white'
+                                  }} 
+                                  maxLength={50}
+                                  disabled={isDisabled}
+                                />
+                              </QuestionItem>
+                            );
+                          }}
+                        </Form.Item>
                         
                         <FormItemButtons 
                           onAdd={() => add()}
@@ -3475,6 +3508,7 @@ const DS160Form: React.FC = () => {
                 )}
               </Form.List>
             </div>
+
           </div>
 
           <Divider />
