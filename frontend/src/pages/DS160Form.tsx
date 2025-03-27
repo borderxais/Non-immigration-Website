@@ -3014,7 +3014,6 @@ const DS160Form: React.FC = () => {
               <QuestionItem
                 question="街道地址（第一行）"
                 name="homeAddressLine1"
-                explanation="Street Address (Line 1)"
               >
                 <Input style={{ width: '95%' }} maxLength={40} />
               </QuestionItem>
@@ -3083,7 +3082,6 @@ const DS160Form: React.FC = () => {
               <QuestionItem
                 question="您的邮寄地址同于您的家庭地址吗？"
                 name="isMailingAddressSame"
-                explanation="Is your Mailing Address the same as your Home Address?"
               >
                 <Radio.Group onChange={(e) => {
                   form.setFieldsValue({ isMailingAddressSame: e.target.value });
@@ -3184,7 +3182,7 @@ const DS160Form: React.FC = () => {
               <QuestionItem
                 question="主要电话号码"
                 name="primaryPhone"
-                explanation="Primary Phone Number"
+                explanation="您需要提供您的主要电话号码。此电话应该是最容易接通您的电话。这个电话可以是座机，也可以是手机/移动电话。如果您还有另外一个座机或手机/移动电话，您可以将它列为备用电话号码。"
               >
                 <Input style={{ width: '60%' }} maxLength={15} minLength={5} />
               </QuestionItem>
@@ -3192,7 +3190,6 @@ const DS160Form: React.FC = () => {
               <QuestionItem
                 question="备用电话号码"
                 name="secondaryPhone"
-                explanation="Secondary Phone Number"
                 hasNaCheckbox={true}
                 naCheckboxName="secondaryPhone_na"
               >
@@ -3202,22 +3199,11 @@ const DS160Form: React.FC = () => {
               <QuestionItem
                 question="工作电话号码"
                 name="workPhone"
-                explanation="Work Phone Number"
                 hasNaCheckbox={true}
                 naCheckboxName="workPhone_na"
               >
                 <Input style={{ width: '60%' }} maxLength={15} minLength={5} />
               </QuestionItem>
-            </div>
-
-            <div className="help" style={{ marginTop: '-7px' }}>
-              <h4 style={{ color: '#891300' }}>
-                <span>帮助：</span>
-                <span>电话</span>
-              </h4>
-              <p>
-                您需要提供您的主要电话号码。此电话应该是最容易接通您的电话。这个电话可以是座机，也可以是手机/移动电话。如果您还有另外一个座机或手机/移动电话，您可以将它列为备用电话号码。
-              </p>
             </div>
           </div>
 
@@ -3228,7 +3214,6 @@ const DS160Form: React.FC = () => {
               <QuestionItem
                 question="您是否在过去5年中使用过其他的电话号码？"
                 name="hasOtherPhones"
-                explanation="Have you used any other phone numbers in the last five years?"
               >
                 <Radio.Group onChange={(e) => {
                   form.setFieldsValue({ hasOtherPhones: e.target.value });
@@ -3268,7 +3253,6 @@ const DS160Form: React.FC = () => {
                                 <QuestionItem
                                   question="电话号码"
                                   name={`otherPhones[${index}].phoneNumber`}
-                                  explanation="Phone Number"
                                 >
                                   <Input style={{ width: '60%' }} maxLength={15} minLength={5} />
                                 </QuestionItem>
@@ -3309,7 +3293,6 @@ const DS160Form: React.FC = () => {
               <QuestionItem
                 question="电子邮件地址"
                 name="emailAddress"
-                explanation="Email Address"
               >
                 <Input style={{ width: '95%' }} maxLength={50} />
               </QuestionItem>
@@ -3336,7 +3319,6 @@ const DS160Form: React.FC = () => {
               <QuestionItem
                 question="您是否在过去5年中使用过其他的电子邮件地址？"
                 name="hasOtherEmails"
-                explanation="Have you used any other email addresses in the last five years?"
               >
                 <Radio.Group onChange={(e) => {
                   form.setFieldsValue({ hasOtherEmails: e.target.value });
@@ -3442,7 +3424,7 @@ const DS160Form: React.FC = () => {
                         <QuestionItem
                           question="社交媒体的提供商/平台"
                           name={`socialMedia[${index}].platform`}
-                          explanation="Social Media Provider/Platform"
+                          explanation="输入与您在线状态相关的信息，包括您用于协作、共享信息和与他人在线互动的提供商/平台、应用程序和网站类型信息。列举出与您的社交媒体相关联的用户名、昵称、网名或其他标识符。（您无需列举那些在一个商业或其他组织中为多个用户设计的帐户名称。）"
                         >
                           <Select style={{ width: '100%' }} placeholder="- Select One -">
                             <Select.Option value="SONE">- Select One -</Select.Option>
@@ -3473,7 +3455,6 @@ const DS160Form: React.FC = () => {
                         <QuestionItem
                           question="社交媒体标识符"
                           name={`socialMedia[${index}].identifier`}
-                          explanation="Social Media Identifier"
                         >
                           <Input style={{ width: '95%' }} maxLength={50} />
                         </QuestionItem>
@@ -3494,16 +3475,6 @@ const DS160Form: React.FC = () => {
                 )}
               </Form.List>
             </div>
-
-            <div className="help" style={{ marginTop: '-7px' }}>
-              <h4 style={{ color: '#891300' }}>
-                <span>帮助：</span>
-                <span>社交媒体</span>
-              </h4>
-              <p>
-                输入与您在线状态相关的信息，包括您用于协作、共享信息和与他人在线互动的提供商/平台、应用程序和网站类型信息。列举出与您的社交媒体相关联的用户名、昵称、网名或其他标识符。（您无需列举那些在一个商业或其他组织中为多个用户设计的帐户名称。）
-              </p>
-            </div>
           </div>
 
           <Divider />
@@ -3513,7 +3484,6 @@ const DS160Form: React.FC = () => {
               <QuestionItem
                 question="您是否希望提供有关您在过去五年内用于创建或共享内容（照片、视频、状态更新等）的任何其他网站或应用程序上的状态的信息？"
                 name="hasOtherSocialMedia"
-                explanation="Do you wish to provide information about your presence on any other websites or applications you have used within the last five years to create or share content (photos, videos, status updates, etc.)?"
               >
                 <Radio.Group onChange={(e) => {
                   form.setFieldsValue({ hasOtherSocialMedia: e.target.value });
