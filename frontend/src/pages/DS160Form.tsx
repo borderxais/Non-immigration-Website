@@ -426,8 +426,40 @@ const DS160Form: React.FC = () => {
     hasNaCheckbox?: boolean;
     naCheckboxName?: string;
   }> = ({ number, question, name, required = true, children, explanation, hasNaCheckbox = false, naCheckboxName }) => {
+    // Use the form instance from the parent component
+    const form = Form.useFormInstance();
+    
     // Use the form instance to get the current value of the NA checkbox
     const isNaChecked = Form.useWatch(naCheckboxName || `${name}_na`, form);
+    
+    // Handle NA checkbox change
+    const handleNaCheckboxChange = (e: any) => {
+      const checked = e.target.checked;
+      
+      // If the checkbox is checked, clear the related field value
+      if (checked) {
+        // Determine the field name to clear based on the component structure
+        const fieldToClear: { [key: string]: undefined } = {};
+        
+        // If it's a simple field, just clear that field
+        fieldToClear[name] = undefined;
+        
+        // Special handling for complex fields like date fields that might have day/month/year components
+        if (name.includes('.')) {
+          const baseName = name.split('.')[0];
+          
+          // Look for possible date components (common patterns in your form)
+          if (name.endsWith('Date')) {
+            fieldToClear[`${baseName}.expirationDay`] = undefined;
+            fieldToClear[`${baseName}.expirationMonth`] = undefined;
+            fieldToClear[`${baseName}.expirationYear`] = undefined;
+          }
+        }
+        
+        // Set the field values to undefined
+        form.setFieldsValue(fieldToClear);
+      }
+    };
     
     // Modify the rules to respect the NA checkbox state
     const fieldRules = required ? [{ 
@@ -503,7 +535,8 @@ const DS160Form: React.FC = () => {
         <Col span={16}>
           <Space direction="vertical" style={{ width: '100%' }} size={8}>
             <Text strong>
-              {number ? `${number}. ` : ''}{question}{required && <span style={{ color: '#ff4d4f', marginLeft: '4px' }}>*</span>}</Text>
+              {number ? `${number}. ` : ''}{question}{required && <span style={{ color: '#ff4d4f', marginLeft: '4px' }}>*</span>}
+            </Text>
             <Form.Item 
               name={name} 
               rules={fieldRules}
@@ -518,7 +551,7 @@ const DS160Form: React.FC = () => {
                 valuePropName="checked"
                 style={{ marginBottom: 0, marginTop: 8, textAlign: 'right' }}
               >
-                <Checkbox>不适用/技术无法提供</Checkbox>
+                <Checkbox onChange={handleNaCheckboxChange}>不适用/技术无法提供</Checkbox>
               </Form.Item>
             )}
           </Space>
@@ -3159,92 +3192,70 @@ const DS160Form: React.FC = () => {
             </div>
             
             <div className="field-group">
-  <QuestionItem
-    question="失效日期"
-    name="driverLicense.expirationDate"
-    explanation="请输入失效日期 (格式: DD-MMM-YYYY)"
-    hasNaCheckbox={true}
-    naCheckboxName="driverLicense.noExpirationDate"
-  >
-    <div style={dateBlockStyle}>
-      <Form.Item 
-        name="driverLicense.expirationDay"
-        noStyle
-        rules={[{ 
-          required: !form.getFieldValue('driverLicense.noExpirationDate'), 
-          message: '请选择日期' 
-        }]}
-        dependencies={['driverLicense.noExpirationDate']}
+              <QuestionItem
+                  question="失效日期"
+                  name="driverLicense.expirationDate"
+                  explanation="请输入失效日期 (格式: DD-MMM-YYYY)"
+                  hasNaCheckbox={true}
+                  naCheckboxName="driverLicense.noExpirationDate"
       >
-        <Select 
-          options={dayOptions} 
-          style={{ width: 70 }} 
-          placeholder="Day" 
-        />
-      </Form.Item>
+        <div style={dateBlockStyle}>
+          <Form.Item 
+            name="driverLicense.expirationDay"
+            noStyle
+            rules={[{ 
+              required: !form.getFieldValue('driverLicense.noExpirationDate'), 
+              message: '请选择日期' 
+            }]}
+            dependencies={['driverLicense.noExpirationDate']}
+          >
+            <Select 
+              options={dayOptions} 
+              style={{ width: 70 }} 
+              placeholder="Day" 
+            />
+          </Form.Item>
 
-      <Form.Item 
-        name="driverLicense.expirationMonth"
-        noStyle
-        rules={[{ 
-          required: !form.getFieldValue('driverLicense.noExpirationDate'), 
-          message: '请选择月份' 
-        }]}
-        dependencies={['driverLicense.noExpirationDate']}
-      >
-        <Select 
-          options={monthOptions} 
-          style={{ width: 80 }} 
-          placeholder="Month" 
-        />
-      </Form.Item>
-      
-      <Form.Item 
-        name="driverLicense.expirationYear"
-        noStyle
-        rules={[
-          { 
-            required: !form.getFieldValue('driverLicense.noExpirationDate'), 
-            message: '请输入年份' 
-          },
-          { pattern: /^\d{4}$/, message: '请输入4位数年份' }
-        ]}
-        dependencies={['driverLicense.noExpirationDate']}
-      >
-        <Input 
-          placeholder="Year" 
-          style={{ width: 60 }} 
-          maxLength={4}
-        />
-      </Form.Item>
-      <div style={{ marginLeft: 8, fontSize: 12, color: '#666' }}>
-        (格式: DD-MMM-YYYY)
-      </div>
-    </div>
-  </QuestionItem>
-</div>
-
-{/* Add a form effect to handle clearing the fields when checkbox changes */}
-<Form.Item noStyle shouldUpdate={(prevValues, currentValues) => 
-  prevValues.driverLicense?.noExpirationDate !== currentValues.driverLicense?.noExpirationDate
-}>
-  {({ getFieldValue, setFieldsValue }) => {
-    // This effect runs whenever the checkbox value changes
-    React.useEffect(() => {
-      const noExpDate = getFieldValue('driverLicense.noExpirationDate');
-      if (noExpDate) {
-        // Clear the fields when checkbox is checked
-        setFieldsValue({
-          'driverLicense.expirationDay': undefined,
-          'driverLicense.expirationMonth': undefined,
-          'driverLicense.expirationYear': undefined
-        });
-      }
-    }, [getFieldValue('driverLicense.noExpirationDate')]);
-    
-    return null; // This Form.Item doesn't render anything
-  }}
-</Form.Item>
+          <Form.Item 
+            name="driverLicense.expirationMonth"
+            noStyle
+            rules={[{ 
+              required: !form.getFieldValue('driverLicense.noExpirationDate'), 
+              message: '请选择月份' 
+            }]}
+            dependencies={['driverLicense.noExpirationDate']}
+          >
+            <Select 
+              options={monthOptions} 
+              style={{ width: 80 }} 
+              placeholder="Month" 
+            />
+          </Form.Item>
+          
+          <Form.Item 
+            name="driverLicense.expirationYear"
+            noStyle
+            rules={[
+              { 
+                required: !form.getFieldValue('driverLicense.noExpirationDate'), 
+                message: '请输入年份' 
+              },
+              { pattern: /^\d{4}$/, message: '请输入4位数年份' }
+            ]}
+            dependencies={['driverLicense.noExpirationDate']}
+          >
+            <Input 
+              placeholder="Year" 
+              style={{ width: 60 }} 
+              maxLength={4}
+            />
+          </Form.Item>
+          <div style={{ marginLeft: 8, fontSize: 12, color: '#666' }}>
+            (格式: DD-MMM-YYYY)
+          </div>
+        </div>
+              </QuestionItem>
+            </div>
           </div>
     
           <Divider />
