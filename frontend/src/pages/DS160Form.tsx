@@ -3242,7 +3242,7 @@ const DS160Form: React.FC = () => {
                 </div>
               </div>
               
-              <div className="field-group" style={dateBlockStyle}>
+              <div className="field-group">
                 <QuestionItem
                   question="签发日期"
                   name="passportIssuedDate"
@@ -3285,50 +3285,78 @@ const DS160Form: React.FC = () => {
               <div className="field-group">
                 <QuestionItem
                   question="失效日期"
-                  name="passportExpirationDate"
-                  explanation="通常情况下，您的护照/旅行证件有效期必须距您签证申请和/或抵达美国的日期至少要长出六个月。"
+                  name="driverLicense.expirationDate"
+                  explanation="请输入失效日期 (格式: DD-MMM-YYYY)"
                 >
                   <div style={dateBlockStyle}>
                     <Form.Item 
-                      name="passportExpirationDay" 
+                      name="driverLicense.expirationDay"
                       noStyle
-                      rules={[{ required: true, message: '请选择日期' }]}
+                      rules={[{ required: !form.getFieldValue('driverLicense.noExpirationDate'), message: '请选择日期' }]}
                     >
-                      <Select options={dayOptions} style={{ width: 70 }} placeholder="Day" />
+                      <Select 
+                        options={dayOptions} 
+                        style={{ width: 70 }} 
+                        placeholder="Day" 
+                        disabled={form.getFieldValue('driverLicense.noExpirationDate')}
+                      />
                     </Form.Item>
-    
+
                     <Form.Item 
-                      name="passportExpirationMonth" 
+                      name="driverLicense.expirationMonth"
                       noStyle
-                      rules={[{ required: true, message: '请选择月份' }]}
+                      rules={[{ required: !form.getFieldValue('driverLicense.noExpirationDate'), message: '请选择月份' }]}
                     >
-                      <Select options={monthOptions} style={{ width: 80 }} placeholder="Month" />
+                      <Select 
+                        options={monthOptions} 
+                        style={{ width: 80 }} 
+                        placeholder="Month" 
+                        disabled={form.getFieldValue('driverLicense.noExpirationDate')}
+                      />
                     </Form.Item>
-    
+                    
                     <Form.Item 
-                      name="passportExpirationYear" 
+                      name="driverLicense.expirationYear"
                       noStyle
                       rules={[
-                        { required: true, message: '请输入年份' },
+                        { required: !form.getFieldValue('driverLicense.noExpirationDate'), message: '请输入年份' },
                         { pattern: /^\d{4}$/, message: '请输入4位数年份' }
                       ]}
                     >
-                      <Input placeholder="Year" style={{ width: '60px' }} maxLength={4} />
+                      <Input 
+                        placeholder="Year" 
+                        style={{ width: '60px' }} 
+                        maxLength={4} 
+                        disabled={form.getFieldValue('driverLicense.noExpirationDate')}
+                      />
                     </Form.Item>
-    
                     <div style={{ marginLeft: '8px', fontSize: '12px', color: '#666' }}>
                       (格式: DD-MMM-YYYY)
                     </div>
                   </div>
+                  <div style={{ display: 'flex', marginTop: '8px' }}>
+                    <Form.Item 
+                      name="driverLicense.noExpirationDate"
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox 
+                        onChange={() => {
+                          const noExpDate = form.getFieldValue('driverLicense.noExpirationDate');
+                          if (noExpDate) {
+                            form.setFieldsValue({
+                              'driverLicense.expirationDay': undefined,
+                              'driverLicense.expirationMonth': undefined,
+                              'driverLicense.expirationYear': undefined
+                            });
+                          }
+                        }}
+                      >
+                        无失效日期
+                      </Checkbox>
+                    </Form.Item>
+                  </div>
                 </QuestionItem>
-                
-                <Form.Item 
-                  name="passportNoExpiration" 
-                  valuePropName="checked"
-                  style={{ marginTop: '8px', textAlign: 'right' }}
-                >
-                  <Checkbox>无失效日期 (No Expiration)</Checkbox>
-                </Form.Item>
               </div>
             </div>
           </div>
