@@ -2185,7 +2185,7 @@ const DS160Form: React.FC = () => {
                       <span>Provide information on your last five U.S. visits:</span>
                     </h4>
                     
-                    <Form.List name="previousVisits" initialValue={[{}]}>
+                    <Form.List name="previousVisits">
                       {(fields, { add, remove }) => (
                         <>
                           {fields.map((field, index) => (
