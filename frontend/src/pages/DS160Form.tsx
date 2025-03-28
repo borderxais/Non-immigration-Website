@@ -1223,19 +1223,19 @@ const DS160Form: React.FC = () => {
           <br/>
           <Divider />
             
-         <div>
+          <div>
             <QuestionItem
               question="您是否已经制定了具体的旅行计划？"
               name="hasSpecificPlans"
               explanation="如果您已确定行程，请选择'是'；如果尚未确定，请选择'否'并提供预计的信息。"
             >
-              <Radio.Group onChange={(e) => {
-                // 当选项改变时，通过表单实例更新字段值
-                form.setFieldsValue({ hasSpecificPlans: e.target.value });
-              }}>
-                <Radio value="Y">是</Radio>
-                <Radio value="N">否</Radio>
-              </Radio.Group>
+            <Radio.Group onChange={(e) => {
+              // 当选项改变时，通过表单实例更新字段值
+              form.setFieldsValue({ hasSpecificPlans: e.target.value });
+            }}>
+              <Radio value="Y">是</Radio>
+              <Radio value="N">否</Radio>
+            </Radio.Group>
             </QuestionItem>
           </div>
 
@@ -1273,12 +1273,7 @@ const DS160Form: React.FC = () => {
                               noStyle
                               rules={[{ required: true, message: '请选择日期' }]}
                             >
-                              <Select style={{ width: '60px' }} placeholder="" allowClear>
-                                {Array.from({ length: 31 }, (_, i) => {
-                                  const day = (i + 1).toString().padStart(2, '0');
-                                  return <Select.Option key={day} value={day}>{day}</Select.Option>;
-                                })}
-                              </Select>
+                              <Select options={dayOptions} style={{ width: 70 }} placeholder="Day" />
                             </Form.Item>
 
                             <Form.Item 
@@ -1286,8 +1281,7 @@ const DS160Form: React.FC = () => {
                               noStyle
                               rules={[{ required: true, message: '请选择月份' }]}
                             >
-                              <Select options={monthOptions}style={{ width: 80 }}placeholder="Month"
-                              />
+                              <Select options={monthOptions} style={{ width: 80 }} placeholder="Month" />
                             </Form.Item>
 
                             <Form.Item 
@@ -1337,13 +1331,7 @@ const DS160Form: React.FC = () => {
                               noStyle
                               rules={[{ required: true, message: '请选择日期' }]}
                             >
-                              <Select style={{ width: '60px' }} placeholder="">
-                                <Select.Option value="">  </Select.Option>
-                                {Array.from({ length: 31 }, (_, i) => {
-                                  const day = (i + 1).toString().padStart(2, '0');
-                                  return <Select.Option key={day} value={day}>{day}</Select.Option>;
-                                })}
-                              </Select>
+                              <Select options={dayOptions} style={{ width: 70 }} placeholder="Day" />
                             </Form.Item>
 
                             <Form.Item 
@@ -1351,11 +1339,7 @@ const DS160Form: React.FC = () => {
                               noStyle
                               rules={[{ required: true, message: '请选择月份' }]}
                             >
-                              <Select 
-                                options={monthOptions}
-                                style={{ width: 80 }}
-                                placeholder="Month"
-                              />
+                              <Select options={monthOptions} style={{ width: 80 }} placeholder="Month" />
                             </Form.Item>
 
                             <Form.Item 
@@ -1450,13 +1434,7 @@ const DS160Form: React.FC = () => {
                         noStyle
                         rules={[{ required: true, message: '请选择日期' }]}
                       >
-                        <Select style={{ width: '60px' }} placeholder="">
-                          <Select.Option value="">  </Select.Option>
-                          {Array.from({ length: 31 }, (_, i) => {
-                            const day = (i + 1).toString().padStart(2, '0');
-                            return <Select.Option key={day} value={day}>{day}</Select.Option>;
-                          })}
-                        </Select>
+                        <Select options={dayOptions} style={{ width: 70 }} placeholder="Day" />
                       </Form.Item>
 
                       <Form.Item 
@@ -1464,8 +1442,7 @@ const DS160Form: React.FC = () => {
                         noStyle
                         rules={[{ required: true, message: '请选择月份' }]}
                       >
-                        <Select options={monthOptions}style={{ width: 80 }}placeholder="Month"
-                        />
+                        <Select options={monthOptions} style={{ width: 80 }} placeholder="Month" />
                       </Form.Item>
 
                       <Form.Item 
@@ -1622,7 +1599,6 @@ const DS160Form: React.FC = () => {
                   specificPurpose === 'A1-DP' || 
                   specificPurpose === 'A2-EM' || 
                   specificPurpose === 'A3-EM')) {
-                
                 return (
                   <div className="field-groups" style={{ marginBottom: '15px' }}>
                     <h4>
@@ -2212,37 +2188,58 @@ const DS160Form: React.FC = () => {
                               style={blockInsideHighlightStyle}
                             >
                               <div className="field-group">
+                                  <QuestionItem
+                                  question="抵达日期"
+                                  name={`previousVisits[${index}].arrivalDate`}
+                                  explanation="请输入抵达日期 (格式: DD-MMM-YYYY)"
+                                >
+                                  <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                    <Form.Item 
+                                      name={`previousVisits[${index}].day`}
+                                      noStyle
+                                      rules={[{ required: true, message: '请选择日期' }]}
+                                    >
+                                      <Select 
+                                        options={dayOptions} 
+                                        style={{ width: '60px' }} 
+                                        placeholder="" 
+                                      />
+                                    </Form.Item>
+
+                                    <Form.Item 
+                                      name={`previousVisits[${index}].month`}
+                                      noStyle
+                                      rules={[{ required: true, message: '请选择月份' }]}
+                                    >
+                                      <Select 
+                                        options={monthOptions} 
+                                        style={{ width: '70px' }} 
+                                        placeholder="" 
+                                      />
+                                    </Form.Item>
+
+                                    <Form.Item 
+                                      name={`previousVisits[${index}].year`}
+                                      noStyle
+                                      rules={[
+                                        { required: true, message: '请输入年份' },
+                                        { pattern: /^\d{4}$/, message: '请输入4位数年份' }
+                                      ]}
+                                    >
+                                      <Input placeholder="" style={{ width: '60px' }} maxLength={4} />
+                                    </Form.Item>
+                                  </div>
+                                </QuestionItem>
+                              </div>
+                              
+                              <div className="field-group">
                                 <div className="field full">
                                   <QuestionItem
-                                    question="抵达日期"
-                                    name={`previousVisits[${index}].day`}
-                                    explanation="Date Arrived (Format: DD-MMM-YYYY)"
+                                    question="停留时间"
+                                    name={`previousVisits[${index}].duration`}
+                                    explanation="Stay Duration"
                                   >
-                                    <Select 
-                                      options={dayOptions}
-                                      style={{ width: 70 }}
-                                      placeholder="Day"
-                                    />
-                                  </QuestionItem>
-                                  <QuestionItem
-                                    question="月份"
-                                    name={`previousVisits[${index}].month`}
-                                  >
-                                    <Select 
-                                      options={monthOptions}
-                                      style={{ width: 80 }}
-                                      placeholder="Month"
-                                    />
-                                  </QuestionItem>
-                                  <QuestionItem
-                                    question="年份"
-                                    name={`previousVisits[${index}].year`}
-                                  >
-                                    <Input 
-                                      style={{ width: 70 }}
-                                      placeholder="Year" 
-                                      maxLength={4}
-                                    />
+                                    <Input placeholder="" style={{ width: '60px' }} maxLength={4} />
                                   </QuestionItem>
                                 </div>
                               </div>
