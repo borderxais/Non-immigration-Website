@@ -3396,13 +3396,7 @@ const DS160Form: React.FC = () => {
                           {fields.map((field, index) => (
                             <div 
                               key={field.key} 
-                              style={{ 
-                                marginBottom: 24, 
-                                padding: 16, 
-                                border: index > 0 ? '1px dashed #d6e8fa' : '1px solid #d6e8fa',
-                                borderRadius: '8px',
-                                backgroundColor: '#f0f8ff'
-                              }}
+                              style={blockInsideHighlightStyle}
                             >
                               <h4>遗失/被盗护照 #{index + 1}</h4>
                               
@@ -3461,20 +3455,17 @@ const DS160Form: React.FC = () => {
     },
     {
       title: '美国联系人',
-  description: '美国联系人信息',
-  content: (
-    <>
-      <div className="field-groups">
-          
-        <div className="infoDiv">
-          <span>在美国的联系人或组织</span>
-          <span> (Contact Person or Organization in the United States)</span>
-        </div>
+      description: '美国联系人信息',
+      content: (
+        <>
+          <div className="field-groups">
+            <div className="infoDiv">
+              <span>在美国的联系人或组织</span>
+            </div>
         
-        <div className="field-group callout" style={highlightedBlockStyle}>
-          <h4>
-            <span>联系人</span>
-            <span> (Contact Person)</span>
+            <div className="field-group callout" style={highlightedBlockStyle}>
+              <h4>
+                <span>联系人</span>
           </h4>
           
           <div className="field-group callout" style={blockInsideHighlightStyle}>
@@ -3593,8 +3584,7 @@ const DS160Form: React.FC = () => {
               question="电子邮件地址"
               name="usPocEmail"
               hasNaCheckbox={true}
-              naCheckboxName="usPocEmailNotApply"
-              required={false}
+              naCheckboxName="usPocEmail_na"
             >
               <Input 
                 className="emailaddress" 
