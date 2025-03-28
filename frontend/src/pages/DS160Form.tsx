@@ -3602,6 +3602,9 @@ const DS160Form: React.FC = () => {
             <QuestionItem
               question="电子邮件地址"
               name="usPocEmail"
+              required={false}
+              hasNaCheckbox={true}
+              naCheckboxName="usPocEmail_na"
             >
               <Input 
                 style={{ width: '95%' }} 
