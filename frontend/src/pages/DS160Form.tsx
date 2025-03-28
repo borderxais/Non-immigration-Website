@@ -33,45 +33,284 @@ const DS160Form: React.FC = () => {
 
   // Format for state dropdown options
   const usStateOptions = [
-    { value: '', label: '- Select one -' },
-    { value: 'AL', label: 'ALABAMA' },
-    { value: 'AK', label: 'ALASKA' },
-    { value: 'AS', label: 'AMERICAN SAMOA' },
-    { value: 'AZ', label: 'ARIZONA' },
-    { value: 'AR', label: 'ARKANSAS' },
-    { value: 'CA', label: 'CALIFORNIA' },
-    { value: 'CO', label: 'COLORADO' },
-    { value: 'CT', label: 'CONNECTICUT' },
-    { value: 'DE', label: 'DELAWARE' },
-    { value: 'DC', label: 'DISTRICT OF COLUMBIA' },
-    { value: 'FL', label: 'FLORIDA' },
-    { value: 'GA', label: 'GEORGIA' },
-    { value: 'GU', label: 'GUAM' },
-    { value: 'HI', label: 'HAWAII' },
-    { value: 'ID', label: 'IDAHO' },
-    { value: 'IL', label: 'ILLINOIS' },
-    { value: 'IN', label: 'INDIANA' },
-    { value: 'IA', label: 'IOWA' },
-    { value: 'KS', label: 'KANSAS' },
-    { value: 'KY', label: 'KENTUCKY' },
-    // More states...
+    { value: '', label: '- 请选择一个 -' },
+    { value: 'AL', label: '阿拉巴马' },
+    { value: 'AK', label: '阿拉斯加' },
+    { value: 'AS', label: '美属萨摩亚' },
+    { value: 'AZ', label: '亚利桑那' },
+    { value: 'AR', label: '阿肯色' },
+    { value: 'CA', label: '加利福尼亚' },
+    { value: 'CO', label: '科罗拉多' },
+    { value: 'CT', label: '康涅狄格' },
+    { value: 'DE', label: '特拉华' },
+    { value: 'DC', label: '哥伦比亚特区' },
+    { value: 'FL', label: '佛罗里达' },
+    { value: 'GA', label: '乔治亚' },
+    { value: 'GU', label: '关岛' },
+    { value: 'HI', label: '夏威夷' },
+    { value: 'ID', label: '爱达荷' },
+    { value: 'IL', label: '伊利诺伊' },
+    { value: 'IN', label: '印第安纳' },
+    { value: 'IA', label: '爱荷华' },
+    { value: 'KS', label: '堪萨斯' },
+    { value: 'KY', label: '肯塔基' },
+    { value: 'LA', label: '路易斯安那' },
+    { value: 'ME', label: '缅因' },
+    { value: 'MD', label: '马里兰' },
+    { value: 'MA', label: '马萨诸塞' },
+    { value: 'MI', label: '密歇根' },
+    { value: 'MN', label: '明尼苏达' },
+    { value: 'MS', label: '密西西比' },
+    { value: 'MO', label: '密苏里' },
+    { value: 'MT', label: '蒙大拿' },
+    { value: 'NE', label: '内布拉斯加' },
+    { value: 'NV', label: '内华达' },
+    { value: 'NH', label: '新罕布什尔' },
+    { value: 'NJ', label: '新泽西' },
+    { value: 'NM', label: '新墨西哥' },
+    { value: 'NY', label: '纽约' },
+    { value: 'NC', label: '北卡罗来纳' },
+    { value: 'ND', label: '北达科他' },
+    { value: 'MP', label: '北马里亚纳群岛' },
+    { value: 'OH', label: '俄亥俄' },
+    { value: 'OK', label: '俄克拉荷马' },
+    { value: 'OR', label: '俄勒冈' },
+    { value: 'PA', label: '宾夕法尼亚' },
+    { value: 'PR', label: '波多黎各' },
+    { value: 'RI', label: '罗德岛' },
+    { value: 'SC', label: '南卡罗来纳' },
+    { value: 'SD', label: '南达科他' },
+    { value: 'TN', label: '田纳西' },
+    { value: 'TX', label: '德克萨斯' },
+    { value: 'UT', label: '犹他' },
+    { value: 'VT', label: '佛蒙特' },
+    { value: 'VI', label: '美属维尔京群岛' },
+    { value: 'VA', label: '弗吉尼亚' },
+    { value: 'WA', label: '华盛顿' },
+    { value: 'WV', label: '西弗吉尼亚' },
+    { value: 'WI', label: '威斯康星' },
+    { value: 'WY', label: '怀俄明' },
+  ];
+
+  // Format for country dropdown options
+  const countryOptions = [
+    { value: '', label: '- 选择一个 -' },
+    { value: 'AFGH', label: '阿富汗' },
+    { value: 'ALB', label: '阿尔巴尼亚' },
+    { value: 'ALGR', label: '阿尔及利亚' },
+    { value: 'ASMO', label: '美属萨摩亚' },
+    { value: 'ANDO', label: '安道尔' },
+    { value: 'ANGL', label: '安哥拉' },
+    { value: 'ANGU', label: '安圭拉' },
+    { value: 'ANTI', label: '安提瓜和巴布达' },
+    { value: 'ARG', label: '阿根廷' },
+    { value: 'ARM', label: '亚美尼亚' },
+    { value: 'ARB', label: '阿鲁巴' },
+    { value: 'XAS', label: '海上' },
+    { value: 'ASTL', label: '澳大利亚' },
+    { value: 'AUST', label: '奥地利' },
+    { value: 'AZR', label: '阿塞拜疆' },
+    { value: 'BAMA', label: '巴哈马' },
+    { value: 'BAHR', label: '巴林' },
+    { value: 'BANG', label: '孟加拉国' },
+    { value: 'BRDO', label: '巴巴多斯' },
+    { value: 'BYS', label: '白俄罗斯' },
+    { value: 'BELG', label: '比利时' },
+    { value: 'BLZ', label: '伯利兹' },
+    { value: 'BENN', label: '贝宁' },
+    { value: 'BERM', label: '百慕大' },
+    { value: 'BHU', label: '不丹' },
+    { value: 'BOL', label: '玻利维亚' },
+    { value: 'BIH', label: '波斯尼亚和黑塞哥维那' },
+    { value: 'BOT', label: '博茨瓦纳' },
+    { value: 'BRZL', label: '巴西' },
+    { value: 'BRNI', label: '文莱' },
+    { value: 'BULG', label: '保加利亚' },
+    { value: 'BURK', label: '布基纳法索' },
+    { value: 'BURM', label: '缅甸' },
+    { value: 'BRND', label: '布隆迪' },
+    { value: 'CBDA', label: '柬埔寨' },
+    { value: 'CMRN', label: '喀麦隆' },
+    { value: 'CAN', label: '加拿大' },
+    { value: 'CAVI', label: '佛得角' },
+    { value: 'CAYI', label: '开曼群岛' },
+    { value: 'CAFR', label: '中非共和国' },
+    { value: 'CHAD', label: '乍得' },
+    { value: 'CHIL', label: '智利' },
+    { value: 'CHIN', label: '中国' },
+    { value: 'HNK', label: '中国香港特别行政区' },
+    { value: 'MAC', label: '中国澳门特别行政区' },
+    { value: 'TWAN', label: '中国台湾' },
+    { value: 'COL', label: '哥伦比亚' },
+    { value: 'COMO', label: '科摩罗' },
+    { value: 'COD', label: '刚果民主共和国' },
+    { value: 'CONB', label: '刚果共和国' },
+    { value: 'CSTR', label: '哥斯达黎加' },
+    { value: 'IVCO', label: '科特迪瓦' },
+    { value: 'HRV', label: '克罗地亚' },
+    { value: 'CUBA', label: '古巴' },
+    { value: 'CUR', label: '库拉索' },
+    { value: 'CYPR', label: '塞浦路斯' },
+    { value: 'CZEC', label: '捷克共和国' },
+    { value: 'DEN', label: '丹麦' },
+    { value: 'DJI', label: '吉布提' },
+    { value: 'DOMN', label: '多米尼克' },
+    { value: 'DOMR', label: '多米尼加共和国' },
+    { value: 'ECUA', label: '厄瓜多尔' },
+    { value: 'EGYP', label: '埃及' },
+    { value: 'ELSL', label: '萨尔瓦多' },
+    { value: 'EGN', label: '赤道几内亚' },
+    { value: 'ERI', label: '厄立特里亚' },
+    { value: 'EST', label: '爱沙尼亚' },
+    { value: 'SZLD', label: '斯威士兰' },
+    { value: 'ETH', label: '埃塞俄比亚' },
+    { value: 'FIJI', label: '斐济' },
+    { value: 'FIN', label: '芬兰' },
+    { value: 'FRAN', label: '法国' },
+    { value: 'GABN', label: '加蓬' },
+    { value: 'GAM', label: '冈比亚' },
+    { value: 'GEO', label: '格鲁吉亚' },
+    { value: 'GER', label: '德国' },
+    { value: 'GHAN', label: '加纳' },
+    { value: 'GRC', label: '希腊' },
+    { value: 'GREN', label: '格林纳达' },
+    { value: 'GUAT', label: '危地马拉' },
+    { value: 'GNEA', label: '几内亚' },
+    { value: 'GUIB', label: '几内亚比绍' },
+    { value: 'GUY', label: '圭亚那' },
+    { value: 'HAT', label: '海地' },
+    { value: 'VAT', label: '梵蒂冈' },
+    { value: 'HOND', label: '洪都拉斯' },
+    { value: 'HUNG', label: '匈牙利' },
+    { value: 'ICLD', label: '冰岛' },
+    { value: 'IND', label: '印度' },
+    { value: 'IDSA', label: '印度尼西亚' },
+    { value: 'IRAN', label: '伊朗' },
+    { value: 'IRAQ', label: '伊拉克' },
+    { value: 'IRE', label: '爱尔兰' },
+    { value: 'ISRL', label: '以色列' },
+    { value: 'ITLY', label: '意大利' },
+    { value: 'JAM', label: '牙买加' },
+    { value: 'JPN', label: '日本' },
+    { value: 'JORD', label: '约旦' },
+    { value: 'KAZ', label: '哈萨克斯坦' },
+    { value: 'KENY', label: '肯尼亚' },
+    { value: 'KIRI', label: '基里巴斯' },
+    { value: 'PRK', label: '朝鲜' },
+    { value: 'KOR', label: '韩国' },
+    { value: 'KSV', label: '科索沃' },
+    { value: 'KUWT', label: '科威特' },
+    { value: 'KGZ', label: '吉尔吉斯斯坦' },
+    { value: 'LAOS', label: '老挝' },
+    { value: 'LATV', label: '拉脱维亚' },
+    { value: 'LEBN', label: '黎巴嫩' },
+    { value: 'LES', label: '莱索托' },
+    { value: 'LIBR', label: '利比里亚' },
+    { value: 'LBYA', label: '利比亚' },
+    { value: 'LCHT', label: '列支敦士登' },
+    { value: 'LITH', label: '立陶宛' },
+    { value: 'LXM', label: '卢森堡' },
+    { value: 'MKD', label: '北马其顿' },
+    { value: 'MADG', label: '马达加斯加' },
+    { value: 'MALW', label: '马拉维' },
+    { value: 'MLAS', label: '马来西亚' },
+    { value: 'MLDV', label: '马尔代夫' },
+    { value: 'MALI', label: '马里' },
+    { value: 'MLTA', label: '马耳他' },
+    { value: 'RMI', label: '马绍尔群岛' },
+    { value: 'MAUR', label: '毛里塔尼亚' },
+    { value: 'MRTS', label: '毛里求斯' },
+    { value: 'MLD', label: '摩尔多瓦' },
+    { value: 'MON', label: '摩纳哥' },
+    { value: 'MONG', label: '蒙古' },
+    { value: 'MTG', label: '黑山' },
+    { value: 'MORO', label: '摩洛哥' },
+    { value: 'MOZ', label: '莫桑比克' },
+    { value: 'NAMB', label: '纳米比亚' },
+    { value: 'NAU', label: '瑙鲁' },
+    { value: 'NEP', label: '尼泊尔' },
+    { value: 'NETH', label: '荷兰' },
+    { value: 'NZLD', label: '新西兰' },
+    { value: 'NIC', label: '尼加拉瓜' },
+    { value: 'NIR', label: '尼日尔' },
+    { value: 'NRA', label: '尼日利亚' },
+    { value: 'NORW', label: '挪威' },
+    { value: 'OMAN', label: '阿曼' },
+    { value: 'PKST', label: '巴基斯坦' },
+    { value: 'PALA', label: '帕劳' },
+    { value: 'PAN', label: '巴拿马' },
+    { value: 'PNG', label: '巴布亚新几内亚' },
+    { value: 'PARA', label: '巴拉圭' },
+    { value: 'PERU', label: '秘鲁' },
+    { value: 'PHIL', label: '菲律宾' },
+    { value: 'POL', label: '波兰' },
+    { value: 'PORT', label: '葡萄牙' },
+    { value: 'QTAR', label: '卡塔尔' },
+    { value: 'ROM', label: '罗马尼亚' },
+    { value: 'RUS', label: '俄罗斯' },
+    { value: 'RWND', label: '卢旺达' },
+    { value: 'SMAR', label: '圣马力诺' },
+    { value: 'SARB', label: '沙特阿拉伯' },
+    { value: 'SENG', label: '塞内加尔' },
+    { value: 'SBA', label: '塞尔维亚' },
+    { value: 'SEYC', label: '塞舌尔' },
+    { value: 'SLEO', label: '塞拉利昂' },
+    { value: 'SING', label: '新加坡' },
+    { value: 'SVK', label: '斯洛伐克' },
+    { value: 'SVN', label: '斯洛文尼亚' },
+    { value: 'SLMN', label: '所罗门群岛' },
+    { value: 'SOMA', label: '索马里' },
+    { value: 'SAFR', label: '南非' },
+    { value: 'SSDN', label: '南苏丹' },
+    { value: 'SPN', label: '西班牙' },
+    { value: 'SRL', label: '斯里兰卡' },
+    { value: 'SLCA', label: '圣卢西亚' },
+    { value: 'STVN', label: '圣文森特和格林纳丁斯' },
+    { value: 'SUDA', label: '苏丹' },
+    { value: 'SURM', label: '苏里南' },
+    { value: 'SWDN', label: '瑞典' },
+    { value: 'SWTZ', label: '瑞士' },
+    { value: 'SYR', label: '叙利亚' },
+    { value: 'TJK', label: '塔吉克斯坦' },
+    { value: 'TAZN', label: '坦桑尼亚' },
+    { value: 'THAI', label: '泰国' },
+    { value: 'TMOR', label: '东帝汶' },
+    { value: 'TOGO', label: '多哥' },
+    { value: 'TONG', label: '汤加' },
+    { value: 'TRIN', label: '特立尼达和多巴哥' },
+    { value: 'TNSA', label: '突尼斯' },
+    { value: 'TRKY', label: '土耳其' },
+    { value: 'TKM', label: '土库曼斯坦' },
+    { value: 'UGAN', label: '乌干达' },
+    { value: 'UKR', label: '乌克兰' },
+    { value: 'UAE', label: '阿拉伯联合酋长国' },
+    { value: 'GRBR', label: '英国' },
+    { value: 'USA', label: '美国' },
+    { value: 'URU', label: '乌拉圭' },
+    { value: 'UZB', label: '乌兹别克斯坦' },
+    { value: 'VANU', label: '瓦努阿图' },
+    { value: 'VENZ', label: '委内瑞拉' },
+    { value: 'VTNM', label: '越南' },
+    { value: 'YEM', label: '也门' },
+    { value: 'ZAMB', label: '赞比亚' },
+    { value: 'ZIMB', label: '津巴布韦' }
   ];
 
   // Format for month dropdown options
   const monthOptions = [
     { value: '', label: '' },
-    { value: '1', label: 'JAN' },
-    { value: '2', label: 'FEB' },
-    { value: '3', label: 'MAR' },
-    { value: '4', label: 'APR' },
-    { value: '5', label: 'MAY' },
-    { value: '6', label: 'JUN' },
-    { value: '7', label: 'JUL' },
-    { value: '8', label: 'AUG' },
-    { value: '9', label: 'SEP' },
-    { value: '10', label: 'OCT' },
-    { value: '11', label: 'NOV' },
-    { value: '12', label: 'DEC' },
+    { value: 'JAN', label: '一月' },
+    { value: 'FEB', label: '二月' },
+    { value: 'MAR', label: '三月' },
+    { value: 'APR', label: '四月' },
+    { value: 'MAY', label: '五月' },
+    { value: 'JUN', label: '六月' },
+    { value: 'JUL', label: '七月' },
+    { value: 'AUG', label: '八月' },
+    { value: 'SEP', label: '九月' },
+    { value: 'OCT', label: '十月' },
+    { value: 'NOV', label: '十一月' },
+    { value: 'DEC', label: '十二月' },
   ];
 
   // Format for day dropdown options
@@ -119,51 +358,7 @@ const DS160Form: React.FC = () => {
     { value: 'D', label: 'Day(s)' },
     { value: 'H', label: 'Less Than 24 Hours' },
   ];
-  const countryOptions = [
-    { value: '', label: '- Select One -' },
-    { value: 'AFGH', label: 'AFGHANISTAN' },
-    { value: 'ALB', label: 'ALBANIA' },
-    { value: 'ALGR', label: 'ALGERIA' },
-    { value: 'ASMO', label: 'AMERICAN SAMOA' },
-    { value: 'ANDO', label: 'ANDORRA' },
-    { value: 'ANGL', label: 'ANGOLA' },
-    { value: 'ANGU', label: 'ANGUILLA' },
-    { value: 'ANTI', label: 'ANTIGUA AND BARBUDA' },
-    { value: 'ARG', label: 'ARGENTINA' },
-    { value: 'ARM', label: 'ARMENIA' },
-    { value: 'ARB', label: 'ARUBA' },
-    { value: 'ASTL', label: 'AUSTRALIA' },
-    { value: 'AUST', label: 'AUSTRIA' },
-    { value: 'AZR', label: 'AZERBAIJAN' },
-    { value: 'BAMA', label: 'BAHAMAS' },
-    { value: 'BAHR', label: 'BAHRAIN' },
-    { value: 'BANG', label: 'BANGLADESH' },
-    { value: 'BRDO', label: 'BARBADOS' },
-    { value: 'BYS', label: 'BELARUS' },
-    { value: 'BELG', label: 'BELGIUM' },
-    { value: 'BLZ', label: 'BELIZE' },
-    { value: 'BENN', label: 'BENIN' },
-    { value: 'BERM', label: 'BERMUDA' },
-    { value: 'BHU', label: 'BHUTAN' },
-    { value: 'BOL', label: 'BOLIVIA' },
-    { value: 'BIH', label: 'BOSNIA-HERZEGOVINA' },
-    { value: 'BOT', label: 'BOTSWANA' },
-    { value: 'BRZL', label: 'BRAZIL' },
-    { value: 'BRNI', label: 'BRUNEI' },
-    { value: 'BULG', label: 'BULGARIA' },
-    { value: 'BURK', label: 'BURKINA FASO' },
-    { value: 'BURM', label: 'BURMA' },
-    { value: 'BRND', label: 'BURUNDI' },
-    { value: 'CBDA', label: 'CAMBODIA' },
-    { value: 'CMRN', label: 'CAMEROON' },
-    { value: 'CAN', label: 'CANADA' },
-    { value: 'CHIN', label: 'CHINA' },
-    { value: 'HNK', label: 'HONG KONG' },
-    { value: 'MAC', label: 'MACAU' },
-    { value: 'TWAN', label: 'TAIWAN' },
-    { value: 'USA', label: 'UNITED STATES OF AMERICA' },
-    // More countries would be included here
-  ];
+  
 
 
   // Helper function to determine if a specific purpose code indicates a dependent relationship
@@ -1677,64 +1872,11 @@ const DS160Form: React.FC = () => {
                                     noStyle
                                     rules={[{ required: true, message: '请选择州' }]}
                                   >
-                                    <Select style={{ width: '98%' }} placeholder="- 请选择 -">
-                                      <Select.Option value="AL">ALABAMA</Select.Option>
-                                      <Select.Option value="AK">ALASKA</Select.Option>
-                                      <Select.Option value="AS">AMERICAN SAMOA</Select.Option>
-                                      <Select.Option value="AZ">ARIZONA</Select.Option>
-                                      <Select.Option value="AR">ARKANSAS</Select.Option>
-                                      <Select.Option value="CA">CALIFORNIA</Select.Option>
-                                      <Select.Option value="CO">COLORADO</Select.Option>
-                                      <Select.Option value="CT">CONNECTICUT</Select.Option>
-                                      <Select.Option value="DE">DELAWARE</Select.Option>
-                                      <Select.Option value="DC">DISTRICT OF COLUMBIA</Select.Option>
-                                      <Select.Option value="FL">FLORIDA</Select.Option>
-                                      <Select.Option value="GA">GEORGIA</Select.Option>
-                                      <Select.Option value="GU">GUAM</Select.Option>
-                                      <Select.Option value="HI">HAWAII</Select.Option>
-                                      <Select.Option value="ID">IDAHO</Select.Option>
-                                      <Select.Option value="IL">ILLINOIS</Select.Option>
-                                      <Select.Option value="IN">INDIANA</Select.Option>
-                                      <Select.Option value="IA">IOWA</Select.Option>
-                                      <Select.Option value="KS">KANSAS</Select.Option>
-                                      <Select.Option value="KY">KENTUCKY</Select.Option>
-                                      <Select.Option value="LA">LOUISIANA</Select.Option>
-                                      <Select.Option value="ME">MAINE</Select.Option>
-                                      <Select.Option value="MD">MARYLAND</Select.Option>
-                                      <Select.Option value="MA">MASSACHUSETTS</Select.Option>
-                                      <Select.Option value="MI">MICHIGAN</Select.Option>
-                                      <Select.Option value="MN">MINNESOTA</Select.Option>
-                                      <Select.Option value="MS">MISSISSIPPI</Select.Option>
-                                      <Select.Option value="MO">MISSOURI</Select.Option>
-                                      <Select.Option value="MT">MONTANA</Select.Option>
-                                      <Select.Option value="NE">NEBRASKA</Select.Option>
-                                      <Select.Option value="NV">NEVADA</Select.Option>
-                                      <Select.Option value="NH">NEW HAMPSHIRE</Select.Option>
-                                      <Select.Option value="NJ">NEW JERSEY</Select.Option>
-                                      <Select.Option value="NM">NEW MEXICO</Select.Option>
-                                      <Select.Option value="NY">NEW YORK</Select.Option>
-                                      <Select.Option value="NC">NORTH CAROLINA</Select.Option>
-                                      <Select.Option value="ND">NORTH DAKOTA</Select.Option>
-                                      <Select.Option value="MP">NORTHERN MARIANA ISLANDS</Select.Option>
-                                      <Select.Option value="OH">OHIO</Select.Option>
-                                      <Select.Option value="OK">OKLAHOMA</Select.Option>
-                                      <Select.Option value="OR">OREGON</Select.Option>
-                                      <Select.Option value="PA">PENNSYLVANIA</Select.Option>
-                                      <Select.Option value="PR">PUERTO RICO</Select.Option>
-                                      <Select.Option value="RI">RHODE ISLAND</Select.Option>
-                                      <Select.Option value="SC">SOUTH CAROLINA</Select.Option>
-                                      <Select.Option value="SD">SOUTH DAKOTA</Select.Option>
-                                      <Select.Option value="TN">TENNESSEE</Select.Option>
-                                      <Select.Option value="TX">TEXAS</Select.Option>
-                                      <Select.Option value="UT">UTAH</Select.Option>
-                                      <Select.Option value="VT">VERMONT</Select.Option>
-                                      <Select.Option value="VI">VIRGIN ISLANDS</Select.Option>
-                                      <Select.Option value="VA">VIRGINIA</Select.Option>
-                                      <Select.Option value="WA">WASHINGTON</Select.Option>
-                                      <Select.Option value="WV">WEST VIRGINIA</Select.Option>
-                                      <Select.Option value="WI">WISCONSIN</Select.Option>
-                                      <Select.Option value="WY">WYOMING</Select.Option>
-                                    </Select>
+                                    <Select 
+                                      options={usStateOptions}
+                                      style={{ width: '98%' }}
+                                      placeholder="- 请选择 -"
+                                    />
                                   </Form.Item>
                                 </div>
                                 
@@ -4046,66 +4188,10 @@ const DS160Form: React.FC = () => {
               name="usPocState"
             >
               <Select 
-                placeholder="- 选择一个 -" 
-                style={{ width: '99%' }}
-              >
-                <Select.Option value="AL">阿拉巴马 (ALABAMA)</Select.Option>
-                <Select.Option value="AK">阿拉斯加 (ALASKA)</Select.Option>
-                <Select.Option value="AS">美属萨摩亚 (AMERICAN SAMOA)</Select.Option>
-                <Select.Option value="AZ">亚利桑那 (ARIZONA)</Select.Option>
-                <Select.Option value="AR">阿肯色 (ARKANSAS)</Select.Option>
-                <Select.Option value="CA">加利福尼亚 (CALIFORNIA)</Select.Option>
-                <Select.Option value="CO">科罗拉多 (COLORADO)</Select.Option>
-                <Select.Option value="CT">康涅狄格 (CONNECTICUT)</Select.Option>
-                <Select.Option value="DE">特拉华 (DELAWARE)</Select.Option>
-                <Select.Option value="DC">哥伦比亚特区 (DISTRICT OF COLUMBIA)</Select.Option>
-                <Select.Option value="FL">佛罗里达 (FLORIDA)</Select.Option>
-                <Select.Option value="GA">乔治亚 (GEORGIA)</Select.Option>
-                <Select.Option value="GU">关岛 (GUAM)</Select.Option>
-                <Select.Option value="HI">夏威夷 (HAWAII)</Select.Option>
-                <Select.Option value="ID">爱达荷 (IDAHO)</Select.Option>
-                <Select.Option value="IL">伊利诺伊 (ILLINOIS)</Select.Option>
-                <Select.Option value="IN">印第安纳 (INDIANA)</Select.Option>
-                <Select.Option value="IA">爱荷华 (IOWA)</Select.Option>
-                <Select.Option value="KS">堪萨斯 (KANSAS)</Select.Option>
-                <Select.Option value="KY">肯塔基 (KENTUCKY)</Select.Option>
-                <Select.Option value="LA">路易斯安那 (LOUISIANA)</Select.Option>
-                <Select.Option value="ME">缅因 (MAINE)</Select.Option>
-                <Select.Option value="MD">马里兰 (MARYLAND)</Select.Option>
-                <Select.Option value="MA">马萨诸塞 (MASSACHUSETTS)</Select.Option>
-                <Select.Option value="MI">密歇根 (MICHIGAN)</Select.Option>
-                <Select.Option value="MN">明尼苏达 (MINNESOTA)</Select.Option>
-                <Select.Option value="MS">密西西比 (MISSISSIPPI)</Select.Option>
-                <Select.Option value="MO">密苏里 (MISSOURI)</Select.Option>
-                <Select.Option value="MT">蒙大拿 (MONTANA)</Select.Option>
-                <Select.Option value="NE">内布拉斯加 (NEBRASKA)</Select.Option>
-                <Select.Option value="NV">内华达 (NEVADA)</Select.Option>
-                <Select.Option value="NH">新罕布什尔 (NEW HAMPSHIRE)</Select.Option>
-                <Select.Option value="NJ">新泽西 (NEW JERSEY)</Select.Option>
-                <Select.Option value="NM">新墨西哥 (NEW MEXICO)</Select.Option>
-                <Select.Option value="NY">纽约 (NEW YORK)</Select.Option>
-                <Select.Option value="NC">北卡罗来纳 (NORTH CAROLINA)</Select.Option>
-                <Select.Option value="ND">北达科他 (NORTH DAKOTA)</Select.Option>
-                <Select.Option value="MP">北马里亚纳群岛 (NORTHERN MARIANA ISLANDS)</Select.Option>
-                <Select.Option value="OH">俄亥俄 (OHIO)</Select.Option>
-                <Select.Option value="OK">俄克拉荷马 (OKLAHOMA)</Select.Option>
-                <Select.Option value="OR">俄勒冈 (OREGON)</Select.Option>
-                <Select.Option value="PA">宾夕法尼亚 (PENNSYLVANIA)</Select.Option>
-                <Select.Option value="PR">波多黎各 (PUERTO RICO)</Select.Option>
-                <Select.Option value="RI">罗德岛 (RHODE ISLAND)</Select.Option>
-                <Select.Option value="SC">南卡罗来纳 (SOUTH CAROLINA)</Select.Option>
-                <Select.Option value="SD">南达科他 (SOUTH DAKOTA)</Select.Option>
-                <Select.Option value="TN">田纳西 (TENNESSEE)</Select.Option>
-                <Select.Option value="TX">德克萨斯 (TEXAS)</Select.Option>
-                <Select.Option value="UT">犹他 (UTAH)</Select.Option>
-                <Select.Option value="VT">佛蒙特 (VERMONT)</Select.Option>
-                <Select.Option value="VI">美属维尔京群岛 (VIRGIN ISLANDS)</Select.Option>
-                <Select.Option value="VA">弗吉尼亚 (VIRGINIA)</Select.Option>
-                <Select.Option value="WA">华盛顿 (WASHINGTON)</Select.Option>
-                <Select.Option value="WV">西弗吉尼亚 (WEST VIRGINIA)</Select.Option>
-                <Select.Option value="WI">威斯康星 (WISCONSIN)</Select.Option>
-                <Select.Option value="WY">怀俄明 (WYOMING)</Select.Option>
-              </Select>
+                options={usStateOptions}
+                style={{ width: '98%' }}
+                placeholder="- 请选择 -"
+              />
             </QuestionItem>
             
             <QuestionItem
@@ -4228,7 +4314,7 @@ const DS160Form: React.FC = () => {
                             name="fatherDobDay" 
                             noStyle
                           >
-                            <Select style={{ width: '45px' }} placeholder="">
+                            <Select style={{ width: '60px' }} placeholder="">
                               <Select.Option value="">  </Select.Option>
                               {Array.from({ length: 31 }, (_, i) => {
                                 const day = (i + 1).toString().padStart(2, '0');
@@ -4241,7 +4327,7 @@ const DS160Form: React.FC = () => {
                             name="fatherDobMonth" 
                             noStyle
                           >
-                            <Select style={{ width: '55px' }} placeholder="">
+                            <Select style={{ width: '60px' }} placeholder="">
                               <Select.Option value="">  </Select.Option>
                               <Select.Option value="JAN">JAN</Select.Option>
                               <Select.Option value="FEB">FEB</Select.Option>
@@ -4262,7 +4348,7 @@ const DS160Form: React.FC = () => {
                             name="fatherDobYear" 
                             noStyle
                           >
-                            <Input style={{ width: '35px' }} maxLength={4} />
+                            <Input style={{ width: '60px' }} maxLength={4} />
                           </Form.Item>
                         </div>
                         <div className="hint">
@@ -4370,20 +4456,19 @@ const DS160Form: React.FC = () => {
                             name="motherDobMonth" 
                             noStyle
                           >
-                            <Select style={{ width: '55px' }} placeholder="">
-                              <Select.Option value="">  </Select.Option>
-                              <Select.Option value="JAN">JAN</Select.Option>
-                              <Select.Option value="FEB">FEB</Select.Option>
-                              <Select.Option value="MAR">MAR</Select.Option>
-                              <Select.Option value="APR">APR</Select.Option>
-                              <Select.Option value="MAY">MAY</Select.Option>
-                              <Select.Option value="JUN">JUN</Select.Option>
-                              <Select.Option value="JUL">JUL</Select.Option>
-                              <Select.Option value="AUG">AUG</Select.Option>
-                              <Select.Option value="SEP">SEP</Select.Option>
-                              <Select.Option value="OCT">OCT</Select.Option>
-                              <Select.Option value="NOV">NOV</Select.Option>
-                              <Select.Option value="DEC">DEC</Select.Option>
+                            <Select style={{ width: '70px' }} placeholder="">
+                              <Select.Option value="JAN">一月</Select.Option>
+                              <Select.Option value="FEB">二月</Select.Option>
+                              <Select.Option value="MAR">三月</Select.Option>
+                              <Select.Option value="APR">四月</Select.Option>
+                              <Select.Option value="MAY">五月</Select.Option>
+                              <Select.Option value="JUN">六月</Select.Option>
+                              <Select.Option value="JUL">七月</Select.Option>
+                              <Select.Option value="AUG">八月</Select.Option>
+                              <Select.Option value="SEP">九月</Select.Option>
+                              <Select.Option value="OCT">十月</Select.Option>
+                              <Select.Option value="NOV">十一月</Select.Option>
+                              <Select.Option value="DEC">十二月</Select.Option>
                             </Select>
                           </Form.Item>
     
