@@ -690,12 +690,7 @@ const DS160Form: React.FC = () => {
                   noStyle
                   rules={[{ required: true, message: '请选择日期' }]}
                 >
-                  <Select style={{ width: '60px' }} placeholder="" allowClear>
-                    {Array.from({ length: 31 }, (_, i) => {
-                      const day = (i + 1).toString().padStart(2, '0');
-                      return <Select.Option key={day} value={day}>{day}</Select.Option>;
-                    })}
-                  </Select>
+                  <Select options={dayOptions} style={{ width: 70 }} placeholder="Day" />
                 </Form.Item>
 
                 <Form.Item 
@@ -703,11 +698,7 @@ const DS160Form: React.FC = () => {
                   noStyle
                   rules={[{ required: true, message: '请选择月份' }]}
                 >
-                  <Select 
-                    options={monthOptions}
-                    style={{ width: 80 }}
-                    placeholder=""
-                  />
+                  <Select options={monthOptions} style={{ width: 80 }} placeholder="Month" />
                 </Form.Item>
 
                 <Form.Item 
