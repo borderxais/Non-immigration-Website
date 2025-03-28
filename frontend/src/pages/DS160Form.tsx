@@ -4188,10 +4188,9 @@ const DS160Form: React.FC = () => {
               name="usPocState"
             >
               <Select 
-                options={usStateOptions}
-                style={{ width: '98%' }}
-                placeholder="- 请选择 -"
-              />
+                options={usStateOptions} 
+                style={{ width: '98%' }} 
+                placeholder="- 请选择 -" />
             </QuestionItem>
             
             <QuestionItem
