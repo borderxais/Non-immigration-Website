@@ -3,6 +3,7 @@ import { Card, Steps, Form, Input, Select, DatePicker, Radio, Space, Button, Typ
 import ds160Service from '../services/ds160Service';
 import { useNavigate } from 'react-router-dom';
 import FormItemButtons from '../components/FormItemButtons';
+import { dateArrayFormatter } from '@ant-design/pro-components';
 
 //  Application ID AA00EGS9G1
 
@@ -29,6 +30,12 @@ const DS160Form: React.FC = () => {
     borderRadius: '8px', 
     padding: '16px',
     marginBottom: '24px'
+  };
+
+  const dataBlockStyle = {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '4px'
   };
 
   // Format for state dropdown options
@@ -684,7 +691,7 @@ const DS160Form: React.FC = () => {
               name="dateOfBirth"
               explanation="若不知道具体日期或月份，请按护照所示填写。"
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <div style={dataBlockStyle}>
                 <Form.Item 
                   name="dobDay" 
                   noStyle
@@ -1267,7 +1274,7 @@ const DS160Form: React.FC = () => {
                           name="arrivalUSDate"
                           explanation="请输入您计划入境美国的日期"
                         >
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                          <div style={dataBlockStyle}>
                             <Form.Item 
                               name="arrivalDay" 
                               noStyle
@@ -1325,7 +1332,7 @@ const DS160Form: React.FC = () => {
                           name="departureUSDate"
                           explanation="请输入您计划离开美国的日期"
                         >
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                          <div style={dataBlockStyle}>
                             <Form.Item 
                               name="departureDay" 
                               noStyle
@@ -1428,7 +1435,7 @@ const DS160Form: React.FC = () => {
                       name="intendedDateOfArrival"
                       explanation="请提供您计划入境美国的日期。如果您还不确定，请提供一个预计日期。"
                   >
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                    <div style={dataBlockStyle}>
                       <Form.Item 
                         name="arrivalDay" 
                         noStyle
@@ -2193,17 +2200,13 @@ const DS160Form: React.FC = () => {
                                   name={`previousVisits[${index}].arrivalDate`}
                                   explanation="请输入抵达日期 (格式: DD-MMM-YYYY)"
                                 >
-                                  <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                  <div style={dataBlockStyle}>
                                     <Form.Item 
                                       name={`previousVisits[${index}].day`}
                                       noStyle
                                       rules={[{ required: true, message: '请选择日期' }]}
                                     >
-                                      <Select 
-                                        options={dayOptions} 
-                                        style={{ width: '60px' }} 
-                                        placeholder="" 
-                                      />
+                                      <Select options={dayOptions} style={{ width: 70 }} placeholder="Day" />
                                     </Form.Item>
 
                                     <Form.Item 
@@ -2211,13 +2214,9 @@ const DS160Form: React.FC = () => {
                                       noStyle
                                       rules={[{ required: true, message: '请选择月份' }]}
                                     >
-                                      <Select 
-                                        options={monthOptions} 
-                                        style={{ width: '70px' }} 
-                                        placeholder="" 
-                                      />
+                                      <Select options={monthOptions} style={{ width: 80 }} placeholder="Month" />
                                     </Form.Item>
-
+                                    
                                     <Form.Item 
                                       name={`previousVisits[${index}].year`}
                                       noStyle
@@ -2228,44 +2227,33 @@ const DS160Form: React.FC = () => {
                                     >
                                       <Input placeholder="" style={{ width: '60px' }} maxLength={4} />
                                     </Form.Item>
+                                    <div style={{ marginLeft: '8px', fontSize: '12px', color: '#666' }}>
+                                      (格式: DD-MMM-YYYY)
+                                    </div>
                                   </div>
                                 </QuestionItem>
                               </div>
                               
                               <div className="field-group">
-                                <div className="field full">
-                                  <QuestionItem
-                                    question="停留时间"
-                                    name={`previousVisits[${index}].duration`}
-                                    explanation="Stay Duration"
-                                  >
-                                    <Input placeholder="" style={{ width: '60px' }} maxLength={4} />
-                                  </QuestionItem>
-                                </div>
-                              </div>
-                              
-                              <div className="field-group">
-                                <div className="field full">
-                                  <QuestionItem
-                                    question="停留时间"
-                                    name={`previousVisits[${index}].duration`}
-                                    explanation="Length of Stay"
-                                  >
-                                    <Input 
-                                      style={{ width: 70 }}
-                                      maxLength={3}
-                                    />
-                                  </QuestionItem>
-                                  <QuestionItem
-                                    question="单位"
-                                    name={`previousVisits[${index}].durationUnit`}
-                                  >
-                                    <Select 
-                                      options={losUnitOptions}
-                                      style={{ width: 180 }}
-                                    />
-                                  </QuestionItem>
-                                </div>
+                                <QuestionItem
+                                  question="停留时间"
+                                  name={`previousVisits[${index}].duration`}
+                                  explanation="Length of Stay"
+                                >
+                                  <Input 
+                                    style={{ width: 70 }}
+                                    maxLength={3}
+                                  />
+                                </QuestionItem>
+                                <QuestionItem
+                                  question="单位"
+                                  name={`previousVisits[${index}].durationUnit`}
+                                >
+                                  <Select 
+                                    options={losUnitOptions}
+                                    style={{ width: 180 }}
+                                  />
+                                </QuestionItem>
                               </div>
                               
                               <FormItemButtons 
@@ -2431,7 +2419,7 @@ const DS160Form: React.FC = () => {
                       name="lastVisaIssueDate"
                       explanation="Date of last U.S. visa issuance"
                     >
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                      <div style={dataBlockStyle}>
                         <Form.Item 
                           name="lastVisaDay" 
                           noStyle
@@ -3289,7 +3277,7 @@ const DS160Form: React.FC = () => {
                   name="passportIssuedDate"
                   explanation="Issuance Date"
                 >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                  <div style={dataBlockStyle}>
                     <Form.Item 
                       name="passportIssuedDay" 
                       noStyle
@@ -3350,7 +3338,7 @@ const DS160Form: React.FC = () => {
                   name="passportExpirationDate"
                   explanation="Expiration Date"
                 >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                  <div style={dataBlockStyle}>
                     <Form.Item 
                       name="passportExpirationDay" 
                       noStyle
