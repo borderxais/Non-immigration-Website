@@ -1975,64 +1975,11 @@ const DS160Form: React.FC = () => {
                         question="州"
                         name="missionState"
                       >
-                        <Select placeholder="- 请选择一个 -">
-                          <Select.Option value="AL">阿拉巴马</Select.Option>
-                          <Select.Option value="AK">阿拉斯加</Select.Option>
-                          <Select.Option value="AS">美属萨摩亚</Select.Option>
-                          <Select.Option value="AZ">亚利桑那</Select.Option>
-                          <Select.Option value="AR">阿肯色</Select.Option>
-                          <Select.Option value="CA">加利福尼亚</Select.Option>
-                          <Select.Option value="CO">科罗拉多</Select.Option>
-                          <Select.Option value="CT">康涅狄格</Select.Option>
-                          <Select.Option value="DE">特拉华</Select.Option>
-                          <Select.Option value="DC">哥伦比亚特区</Select.Option>
-                          <Select.Option value="FL">佛罗里达</Select.Option>
-                          <Select.Option value="GA">乔治亚</Select.Option>
-                          <Select.Option value="GU">关岛</Select.Option>
-                          <Select.Option value="HI">夏威夷</Select.Option>
-                          <Select.Option value="ID">爱达荷</Select.Option>
-                          <Select.Option value="IL">伊利诺伊</Select.Option>
-                          <Select.Option value="IN">印第安纳</Select.Option>
-                          <Select.Option value="IA">爱荷华</Select.Option>
-                          <Select.Option value="KS">堪萨斯</Select.Option>
-                          <Select.Option value="KY">肯塔基</Select.Option>
-                          <Select.Option value="LA">路易斯安那</Select.Option>
-                          <Select.Option value="ME">缅因</Select.Option>
-                          <Select.Option value="MD">马里兰</Select.Option>
-                          <Select.Option value="MA">马萨诸塞</Select.Option>
-                          <Select.Option value="MI">密歇根</Select.Option>
-                          <Select.Option value="MN">明尼苏达</Select.Option>
-                          <Select.Option value="MS">密西西比</Select.Option>
-                          <Select.Option value="MO">密苏里</Select.Option>
-                          <Select.Option value="MT">蒙大拿</Select.Option>
-                          <Select.Option value="NE">内布拉斯加</Select.Option>
-                          <Select.Option value="NV">内华达</Select.Option>
-                          <Select.Option value="NH">新罕布什尔</Select.Option>
-                          <Select.Option value="NJ">新泽西</Select.Option>
-                          <Select.Option value="NM">新墨西哥</Select.Option>
-                          <Select.Option value="NY">纽约</Select.Option>
-                          <Select.Option value="NC">北卡罗来纳</Select.Option>
-                          <Select.Option value="ND">北达科他</Select.Option>
-                          <Select.Option value="MP">北马里亚纳群岛</Select.Option>
-                          <Select.Option value="OH">俄亥俄</Select.Option>
-                          <Select.Option value="OK">俄克拉荷马</Select.Option>
-                          <Select.Option value="OR">俄勒冈</Select.Option>
-                          <Select.Option value="PA">宾夕法尼亚</Select.Option>
-                          <Select.Option value="PR">波多黎各</Select.Option>
-                          <Select.Option value="RI">罗德岛</Select.Option>
-                          <Select.Option value="SC">南卡罗来纳</Select.Option>
-                          <Select.Option value="SD">南达科他</Select.Option>
-                          <Select.Option value="TN">田纳西</Select.Option>
-                          <Select.Option value="TX">德克萨斯</Select.Option>
-                          <Select.Option value="UT">犹他</Select.Option>
-                          <Select.Option value="VT">佛蒙特</Select.Option>
-                          <Select.Option value="VI">美属维尔京群岛</Select.Option>
-                          <Select.Option value="VA">弗吉尼亚</Select.Option>
-                          <Select.Option value="WA">华盛顿</Select.Option>
-                          <Select.Option value="WV">西弗吉尼亚</Select.Option>
-                          <Select.Option value="WI">威斯康星</Select.Option>
-                          <Select.Option value="WY">怀俄明</Select.Option>
-                        </Select>
+                        <Select 
+                          options={usStateOptions} 
+                          placeholder="- 请选择一个 -" 
+                          style={{ width: '98%' }}
+                        />
                       </QuestionItem>
 
                       <QuestionItem
