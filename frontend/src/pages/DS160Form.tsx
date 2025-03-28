@@ -2332,7 +2332,7 @@ const DS160Form: React.FC = () => {
                                 <span>请提供以下信息：</span>
                               </h4>
                               
-                              <Form.List name="driverLicenses">
+                              <Form.List name="driverLicenses" initialValue={[{}]}>
                                 {(fields, { add, remove }) => (
                                   <>
                                     {fields.map((field, index) => (
