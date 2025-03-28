@@ -2156,7 +2156,6 @@ const DS160Form: React.FC = () => {
               <QuestionItem
                 question="您是否曾经在美国停留过？"
                 name="everBeenInUS"
-                explanation="Have you ever been in the U.S.?"
               >
                 <Radio.Group onChange={(e) => {
                   form.setFieldsValue({ everBeenInUS: e.target.value });
@@ -2182,10 +2181,9 @@ const DS160Form: React.FC = () => {
                   <div className="field-group callout" style={highlightedBlockStyle}>
                     <h4>
                       <span>请提供最近五次赴美信息：</span>
-                      <span>Provide information on your last five U.S. visits:</span>
                     </h4>
                     
-                    <Form.List name="previousVisits">
+                    <Form.List name="previousVisits" initialValue={[{}]}>
                       {(fields, { add, remove }) => (
                         <>
                           {fields.map((field, index) => (
@@ -2275,7 +2273,6 @@ const DS160Form: React.FC = () => {
                       <QuestionItem
                         question="您是否持有或者曾经持有美国驾照？"
                         name="hasDriverLicense"
-                        explanation="Do you or did you ever hold a U.S. Driver's License?"
                       >
                         <Radio.Group onChange={(e) => {
                           form.setFieldsValue({ hasDriverLicense: e.target.value });
