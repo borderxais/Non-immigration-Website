@@ -94,7 +94,7 @@ const DS160Form: React.FC = () => {
 
   // Format for country dropdown options
   const countryOptions = [
-    { value: '', label: '- 选择一个 -' },
+    { value: '', label: '- 请选择一个 -' },
     { value: 'AFGH', label: '阿富汗' },
     { value: 'ALB', label: '阿尔巴尼亚' },
     { value: 'ALGR', label: '阿尔及利亚' },
@@ -298,7 +298,7 @@ const DS160Form: React.FC = () => {
 
   // Format for month dropdown options
   const monthOptions = [
-    { value: '', label: '-请选择一个-' },
+    { value: '', label: '' },
     { value: 'JAN', label: '一月' },
     { value: 'FEB', label: '二月' },
     { value: 'MAR', label: '三月' },
@@ -575,18 +575,18 @@ const DS160Form: React.FC = () => {
           <Divider />
 
           <Title level={4}>申请地点</Title>
-            <QuestionItem
-              question="您计划在哪个使领馆申请签证？"
-              name="location"
-            >
-              <Select placeholder="选择申请地点">
-                <Select.Option value="beijing">美国驻北京大使馆</Select.Option>
-                <Select.Option value="shanghai">美国驻上海领事馆</Select.Option>
-                <Select.Option value="guangzhou">美国驻广州领事馆</Select.Option>
-                <Select.Option value="shenyang">美国驻沈阳领事馆</Select.Option>
-                <Select.Option value="wuhan">美国驻武汉领事馆</Select.Option>
-              </Select>
-            </QuestionItem>
+          <QuestionItem
+            question="您计划在哪个使领馆申请签证？"
+            name="location"
+          >
+            <Select placeholder="选择申请地点">
+              <Select.Option value="beijing">美国驻北京大使馆</Select.Option>
+              <Select.Option value="shanghai">美国驻上海领事馆</Select.Option>
+              <Select.Option value="guangzhou">美国驻广州领事馆</Select.Option>
+              <Select.Option value="shenyang">美国驻沈阳领事馆</Select.Option>
+              <Select.Option value="wuhan">美国驻武汉领事馆</Select.Option>
+            </Select>
+          </QuestionItem>
         </>
       ),
     },
@@ -690,7 +690,7 @@ const DS160Form: React.FC = () => {
                   noStyle
                   rules={[{ required: true, message: '请选择日期' }]}
                 >
-                  <Select style={{ width: '60px' }} placeholder="">
+                  <Select style={{ width: '60px' }} placeholder="" allowClear>
                     {Array.from({ length: 31 }, (_, i) => {
                       const day = (i + 1).toString().padStart(2, '0');
                       return <Select.Option key={day} value={day}>{day}</Select.Option>;
@@ -706,7 +706,7 @@ const DS160Form: React.FC = () => {
                   <Select 
                     options={monthOptions}
                     style={{ width: 80 }}
-                    placeholder="Month"
+                    placeholder=""
                   />
                 </Form.Item>
 
@@ -1147,7 +1147,7 @@ const DS160Form: React.FC = () => {
                       name="specificPurpose"
                     >
                       <Select 
-                        placeholder="请选择" 
+                        placeholder="请选择一个"
                         style={{ width: '100%' }}
                         onChange={(value) => {
 
@@ -1282,8 +1282,7 @@ const DS160Form: React.FC = () => {
                               noStyle
                               rules={[{ required: true, message: '请选择日期' }]}
                             >
-                              <Select style={{ width: '60px' }} placeholder="">
-                                <Select.Option value="">  </Select.Option>
+                              <Select style={{ width: '60px' }} placeholder="" allowClear>
                                 {Array.from({ length: 31 }, (_, i) => {
                                   const day = (i + 1).toString().padStart(2, '0');
                                   return <Select.Option key={day} value={day}>{day}</Select.Option>;
@@ -1296,10 +1295,7 @@ const DS160Form: React.FC = () => {
                               noStyle
                               rules={[{ required: true, message: '请选择月份' }]}
                             >
-                              <Select 
-                                options={monthOptions}
-                                style={{ width: 80 }}
-                                placeholder="Month"
+                              <Select options={monthOptions}style={{ width: 80 }}placeholder="Month"
                               />
                             </Form.Item>
 
@@ -1477,10 +1473,7 @@ const DS160Form: React.FC = () => {
                         noStyle
                         rules={[{ required: true, message: '请选择月份' }]}
                       >
-                        <Select 
-                          options={monthOptions}
-                          style={{ width: 80 }}
-                          placeholder="Month"
+                        <Select options={monthOptions}style={{ width: 80 }}placeholder="Month"
                         />
                       </Form.Item>
 
@@ -1593,7 +1586,7 @@ const DS160Form: React.FC = () => {
                                     <Select 
                                       options={usStateOptions}
                                       style={{ width: '98%' }}
-                                      placeholder="- 请选择 -"
+                                      placeholder="- 请选择一个 -"
                                     />
                                   </Form.Item>
                                 </div>
@@ -2225,13 +2218,7 @@ const DS160Form: React.FC = () => {
                           {fields.map((field, index) => (
                             <div 
                               key={field.key} 
-                              style={{ 
-                                marginBottom: 24, 
-                                padding: 16, 
-                                border: index > 0 ? '1px dashed #d6e8fa' : '1px solid #d6e8fa',
-                                borderRadius: '8px',
-                                backgroundColor: '#f0f8ff'
-                              }}
+                              style={blockInsideHighlightStyle}
                             >
                               <div className="field-group">
                                 <div className="field full">
@@ -2240,13 +2227,11 @@ const DS160Form: React.FC = () => {
                                     name={`previousVisits[${index}].day`}
                                     explanation="Date Arrived (Format: DD-MMM-YYYY)"
                                   >
-                                    <div style={{ display: 'flex', gap: '8px' }}>
-                                      <Select 
-                                        options={dayOptions}
-                                        style={{ width: 70 }}
-                                        placeholder="Day"
-                                      />
-                                    </div>
+                                    <Select 
+                                      options={dayOptions}
+                                      style={{ width: 70 }}
+                                      placeholder="Day"
+                                    />
                                   </QuestionItem>
                                   <QuestionItem
                                     question="月份"
