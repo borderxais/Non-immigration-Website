@@ -32,7 +32,7 @@ const DS160Form: React.FC = () => {
     marginBottom: '24px'
   };
 
-  const dataBlockStyle = {
+  const dateBlockStyle = {
     display: 'flex',
     alignItems: 'center',
     gap: '4px'
@@ -691,7 +691,7 @@ const DS160Form: React.FC = () => {
               name="dateOfBirth"
               explanation="若不知道具体日期或月份，请按护照所示填写。"
             >
-              <div style={dataBlockStyle}>
+              <div style={dateBlockStyle}>
                 <Form.Item 
                   name="dobDay" 
                   noStyle
@@ -716,7 +716,7 @@ const DS160Form: React.FC = () => {
                     { pattern: /^\d{4}$/, message: '请输入4位数年份' }
                   ]}
                 >
-                  <Input placeholder="" style={{ width: '60px' }} maxLength={4} />
+                  <Input placeholder="Year" style={{ width: '60px' }} maxLength={4} />
                 </Form.Item>
 
                 <div style={{ marginLeft: '8px', fontSize: '12px', color: '#666' }}>
@@ -1274,7 +1274,7 @@ const DS160Form: React.FC = () => {
                           name="arrivalUSDate"
                           explanation="请输入您计划入境美国的日期"
                         >
-                          <div style={dataBlockStyle}>
+                          <div style={dateBlockStyle}>
                             <Form.Item 
                               name="arrivalDay" 
                               noStyle
@@ -1299,7 +1299,7 @@ const DS160Form: React.FC = () => {
                                 { pattern: /^\d{4}$/, message: '请输入4位数年份' }
                               ]}
                             >
-                              <Input placeholder="" style={{ width: '60px' }} maxLength={4} />
+                              <Input placeholder="Year" style={{ width: '60px' }} maxLength={4} />
                             </Form.Item>
 
                             <div style={{ marginLeft: '8px', fontSize: '12px', color: '#666' }}>
@@ -1332,7 +1332,7 @@ const DS160Form: React.FC = () => {
                           name="departureUSDate"
                           explanation="请输入您计划离开美国的日期"
                         >
-                          <div style={dataBlockStyle}>
+                          <div style={dateBlockStyle}>
                             <Form.Item 
                               name="departureDay" 
                               noStyle
@@ -1357,7 +1357,7 @@ const DS160Form: React.FC = () => {
                                 { pattern: /^\d{4}$/, message: '请输入4位数年份' }
                               ]}
                             >
-                              <Input placeholder="" style={{ width: '60px' }} maxLength={4} />
+                              <Input placeholder="Year" style={{ width: '60px' }} maxLength={4} />
                             </Form.Item>
 
                             <div style={{ marginLeft: '8px', fontSize: '12px', color: '#666' }}>
@@ -1435,7 +1435,7 @@ const DS160Form: React.FC = () => {
                       name="intendedDateOfArrival"
                       explanation="请提供您计划入境美国的日期。如果您还不确定，请提供一个预计日期。"
                   >
-                    <div style={dataBlockStyle}>
+                    <div style={dateBlockStyle}>
                       <Form.Item 
                         name="arrivalDay" 
                         noStyle
@@ -1460,7 +1460,7 @@ const DS160Form: React.FC = () => {
                           { pattern: /^\d{4}$/, message: '请输入4位数年份' }
                         ]}
                       >
-                        <Input placeholder="" style={{ width: '60px' }} maxLength={4} />
+                        <Input placeholder="Year" style={{ width: '60px' }} maxLength={4} />
                       </Form.Item>
 
                       <div style={{ marginLeft: '8px', fontSize: '12px', color: '#666' }}>
@@ -2200,7 +2200,7 @@ const DS160Form: React.FC = () => {
                                   name={`previousVisits[${index}].arrivalDate`}
                                   explanation="请输入抵达日期 (格式: DD-MMM-YYYY)"
                                 >
-                                  <div style={dataBlockStyle}>
+                                  <div style={dateBlockStyle}>
                                     <Form.Item 
                                       name={`previousVisits[${index}].day`}
                                       noStyle
@@ -2225,7 +2225,7 @@ const DS160Form: React.FC = () => {
                                         { pattern: /^\d{4}$/, message: '请输入4位数年份' }
                                       ]}
                                     >
-                                      <Input placeholder="" style={{ width: '60px' }} maxLength={4} />
+                                      <Input placeholder="Year" style={{ width: '60px' }} maxLength={4} />
                                     </Form.Item>
                                     <div style={{ marginLeft: '8px', fontSize: '12px', color: '#666' }}>
                                       (格式: DD-MMM-YYYY)
@@ -2419,36 +2419,27 @@ const DS160Form: React.FC = () => {
                       name="lastVisaIssueDate"
                       explanation="Date of last U.S. visa issuance"
                     >
-                      <div style={dataBlockStyle}>
+                      <div style={dateBlockStyle}>
                         <Form.Item 
                           name="lastVisaDay" 
                           noStyle
                         >
-                          <Select
-                            style={{ width: '60px' }}
-                            placeholder=""
-                            options={dayOptions}
-                          />
+                          <Select options={dayOptions} style={{ width: 70 }} placeholder="Day" />
                         </Form.Item>
 
                         <Form.Item 
                           name="lastVisaMonth" 
                           noStyle
                         >
-                          <Select
-                            style={{ width: '70px' }}
-                            placeholder=""
-                            options={monthOptions}
-                          />
+                          <Select options={monthOptions} style={{ width: 80 }} placeholder="Month" />
                         </Form.Item>
 
                         <Form.Item 
                           name="lastVisaYear" 
                           noStyle
                         >
-                          <Input placeholder="" style={{ width: '60px' }} maxLength={4} />
+                          <Input placeholder="Year" style={{ width: '60px' }} maxLength={4} />
                         </Form.Item>
-
                         <div style={{ marginLeft: '8px', fontSize: '12px', color: '#666' }}>
                           (格式: DD-MMM-YYYY)
                         </div>
@@ -3271,25 +3262,18 @@ const DS160Form: React.FC = () => {
                 </div>
               </div>
               
-              <div className="field-group">
+              <div className="field-group" style={dateBlockStyle}>
                 <QuestionItem
                   question="签发日期"
                   name="passportIssuedDate"
-                  explanation="Issuance Date"
                 >
-                  <div style={dataBlockStyle}>
+                  <div style={dateBlockStyle}>
                     <Form.Item 
                       name="passportIssuedDay" 
                       noStyle
                       rules={[{ required: true, message: '请选择日期' }]}
                     >
-                      <Select style={{ width: '60px' }} placeholder="">
-                        <Select.Option value="">  </Select.Option>
-                        {Array.from({ length: 31 }, (_, i) => {
-                          const day = (i + 1).toString().padStart(2, '0');
-                          return <Select.Option key={day} value={day}>{day}</Select.Option>;
-                        })}
-                      </Select>
+                      <Select options={dayOptions} style={{ width: 70 }} placeholder="Day" />
                     </Form.Item>
     
                     <Form.Item 
@@ -3297,11 +3281,7 @@ const DS160Form: React.FC = () => {
                       noStyle
                       rules={[{ required: true, message: '请选择月份' }]}
                     >
-                      <Select 
-                        options={monthOptions}
-                        style={{ width: 80 }}
-                        placeholder="Month"
-                      />
+                      <Select options={monthOptions} style={{ width: 80 }} placeholder="Month" />
                     </Form.Item>
     
                     <Form.Item 
@@ -3312,7 +3292,7 @@ const DS160Form: React.FC = () => {
                         { pattern: /^\d{4}$/, message: '请输入4位数年份' }
                       ]}
                     >
-                      <Input placeholder="" style={{ width: '60px' }} maxLength={4} />
+                      <Input placeholder="Year" style={{ width: '60px' }} maxLength={4} />
                     </Form.Item>
     
                     <div style={{ marginLeft: '8px', fontSize: '12px', color: '#666' }}>
@@ -3322,35 +3302,19 @@ const DS160Form: React.FC = () => {
                 </QuestionItem>
               </div>
               
-              <div className="help">
-                <h4 style={{ color: '#891300' }}>
-                  <span>帮助：</span>
-                  <span>失效日期</span>
-                </h4>
-                <p>
-                  通常情况下，您的护照/旅行证件有效期必须距您签证申请和/或抵达美国的日期至少要长出六个月。
-                </p>
-              </div>
-              
               <div className="field-group">
                 <QuestionItem
                   question="失效日期"
                   name="passportExpirationDate"
-                  explanation="Expiration Date"
+                  explanation="通常情况下，您的护照/旅行证件有效期必须距您签证申请和/或抵达美国的日期至少要长出六个月。"
                 >
-                  <div style={dataBlockStyle}>
+                  <div style={dateBlockStyle}>
                     <Form.Item 
                       name="passportExpirationDay" 
                       noStyle
                       rules={[{ required: true, message: '请选择日期' }]}
                     >
-                      <Select style={{ width: '60px' }} placeholder="">
-                        <Select.Option value="">  </Select.Option>
-                        {Array.from({ length: 31 }, (_, i) => {
-                          const day = (i + 1).toString().padStart(2, '0');
-                          return <Select.Option key={day} value={day}>{day}</Select.Option>;
-                        })}
-                      </Select>
+                      <Select options={dayOptions} style={{ width: 70 }} placeholder="Day" />
                     </Form.Item>
     
                     <Form.Item 
@@ -3358,11 +3322,7 @@ const DS160Form: React.FC = () => {
                       noStyle
                       rules={[{ required: true, message: '请选择月份' }]}
                     >
-                      <Select 
-                        options={monthOptions}
-                        style={{ width: 80 }}
-                        placeholder="Month"
-                      />
+                      <Select options={monthOptions} style={{ width: 80 }} placeholder="Month" />
                     </Form.Item>
     
                     <Form.Item 
@@ -3373,7 +3333,7 @@ const DS160Form: React.FC = () => {
                         { pattern: /^\d{4}$/, message: '请输入4位数年份' }
                       ]}
                     >
-                      <Input placeholder="" style={{ width: '60px' }} maxLength={4} />
+                      <Input placeholder="Year" style={{ width: '60px' }} maxLength={4} />
                     </Form.Item>
     
                     <div style={{ marginLeft: '8px', fontSize: '12px', color: '#666' }}>
@@ -3668,25 +3628,22 @@ const DS160Form: React.FC = () => {
                   </h3>
                   
                   <div className="field-group callout" style={highlightedBlockStyle}>
-                    <div className="field full" style={{ paddingBottom: 0, paddingTop: 0 }}>
-                      <QuestionItem
-                        question="姓氏"
-                        name="fatherSurname"
-                        explanation="Surnames"
-                      >
-                        <Input style={{ width: '99%' }} maxLength={33} />
-                        <div className="hint">
-                          <span>(例如：Hernandez Garcia)</span>
-                        </div>
-                      </QuestionItem>
-                      <Form.Item 
-                        name="fatherSurnameUnknown" 
-                        valuePropName="checked"
-                        style={{ textAlign: 'right', paddingBottom: 0, paddingTop: 0 }}
-                      >
-                        <Checkbox>不知道 (Do Not Know)</Checkbox>
-                      </Form.Item>
-                    </div>
+                    <QuestionItem
+                      question="姓氏"
+                      name="fatherSurname"
+                    >
+                      <Input style={{ width: '99%' }} maxLength={33} />
+                      <div className="hint">
+                        <span>(例如：Hernandez Garcia)</span>
+                      </div>
+                    </QuestionItem>
+                    <Form.Item 
+                      name="fatherSurnameUnknown" 
+                      valuePropName="checked"
+                      style={{ textAlign: 'right', paddingBottom: 0, paddingTop: 0 }}
+                    >
+                      <Checkbox>不知道</Checkbox>
+                    </Form.Item>
                     
                     <div className="field full" style={{ paddingBottom: 0, paddingTop: 0 }}>
                       <QuestionItem
@@ -3714,42 +3671,33 @@ const DS160Form: React.FC = () => {
                         name="fatherDateOfBirth"
                         explanation="Date of Birth"
                       >
-                        <div style={{ display: 'flex', gap: '4px' }}>
+                        <div style={dateBlockStyle}>
                           <Form.Item 
                             name="fatherDobDay" 
                             noStyle
                           >
-                            <Select style={{ width: '60px' }} placeholder="">
-                              <Select.Option value="">  </Select.Option>
-                              {Array.from({ length: 31 }, (_, i) => {
-                                const day = (i + 1).toString().padStart(2, '0');
-                                return <Select.Option key={day} value={day}>{day}</Select.Option>;
-                              })}
-                            </Select>
+                            <Select options={dayOptions} style={{ width: 70 }} placeholder="Day" />
                           </Form.Item>
     
                           <Form.Item 
                             name="fatherDobMonth" 
                             noStyle
                           >
-                            <Select 
-                              options={monthOptions}
-                              style={{ width: 80 }}
-                              placeholder="Month"
-                            />
+                            <Select options={monthOptions} style={{ width: 80 }} placeholder="Month" />
                           </Form.Item>
     
                           <Form.Item 
                             name="fatherDobYear" 
                             noStyle
                           >
-                            <Input style={{ width: '60px' }} maxLength={4} />
+                            <Input placeholder="Year" style={{ width: '60px' }} maxLength={4} />
                           </Form.Item>
-                        </div>
-                        <div className="hint">
-                          <span>(格式: DD-MMM-YYYY)</span>
+                          <div style={{ marginLeft: '8px', fontSize: '12px', color: '#666' }}>
+                            (格式: DD-MMM-YYYY)
+                          </div>
                         </div>
                       </QuestionItem>
+
                       <Form.Item 
                         name="fatherDobUnknown" 
                         valuePropName="checked"
@@ -3833,41 +3781,33 @@ const DS160Form: React.FC = () => {
                         name="motherDateOfBirth"
                         explanation="Date of Birth"
                       >
-                        <div style={{ display: 'flex', gap: '4px' }}>
+                        <div style={dateBlockStyle}>
                           <Form.Item 
                             name="motherDobDay" 
                             noStyle
                           >
-                            <Select style={{ width: '45px' }} placeholder="">
-                              <Select.Option value="">  </Select.Option>
-                              {Array.from({ length: 31 }, (_, i) => {
-                                const day = (i + 1).toString().padStart(2, '0');
-                                return <Select.Option key={day} value={day}>{day}</Select.Option>;
-                              })}
-                            </Select>
+                            <Select options={dayOptions} style={{ width: 70 }} placeholder="Day" />
                           </Form.Item>
     
                           <Form.Item 
                             name="motherDobMonth" 
                             noStyle
                           >
-                            <Select 
-                              options={monthOptions}
-                              style={{ width: 80 }}
-                              placeholder="Month"
-                            />
+                            <Select options={monthOptions} style={{ width: 80 }} placeholder="Month" />
                           </Form.Item>
     
                           <Form.Item 
                             name="motherDobYear" 
                             noStyle
                           >
-                            <Input style={{ width: '35px' }} maxLength={4} />
+                            <Input placeholder="Year" style={{ width: '60px' }} maxLength={4} />
                           </Form.Item>
+
+                          <div style={{ marginLeft: '8px', fontSize: '12px', color: '#666' }}>
+                            (格式: DD-MMM-YYYY)
+                          </div>
                         </div>
-                        <div className="hint">
-                          <span>(格式: DD-MMM-YYYY)</span>
-                        </div>
+
                       </QuestionItem>
                       <Form.Item 
                         name="motherDobUnknown" 
