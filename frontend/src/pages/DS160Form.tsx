@@ -3,7 +3,6 @@ import { Card, Steps, Form, Input, Select, DatePicker, Radio, Space, Button, Typ
 import ds160Service from '../services/ds160Service';
 import { useNavigate } from 'react-router-dom';
 import FormItemButtons from '../components/FormItemButtons';
-import { dateArrayFormatter } from '@ant-design/pro-components';
 
 //  Application ID AA00EGS9G1
 
