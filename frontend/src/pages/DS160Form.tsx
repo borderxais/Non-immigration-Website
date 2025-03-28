@@ -2280,8 +2280,8 @@ const DS160Form: React.FC = () => {
                         <Radio.Group onChange={(e) => {
                           form.setFieldsValue({ hasDriverLicense: e.target.value });
                         }}>
-                          <Radio value="Y">是 (Yes)</Radio>
-                          <Radio value="N">否 (No)</Radio>
+                          <Radio value="Y">是</Radio>
+                          <Radio value="N">否</Radio>
                         </Radio.Group>
                       </QuestionItem>
                     </div>
@@ -2300,56 +2300,38 @@ const DS160Form: React.FC = () => {
                             <div className="field-group callout" style={highlightedBlockStyle}>
                               <h4>
                                 <span>请提供以下信息：</span>
-                                <span>Provide the following information:</span>
                               </h4>
                               
-                              <Form.List name="driverLicenses" initialValue={[{}]}>
+                              <Form.List name="driverLicenses">
                                 {(fields, { add, remove }) => (
                                   <>
                                     {fields.map((field, index) => (
                                       <div 
                                         key={field.key} 
-                                        style={{ 
-                                          marginBottom: 24,
-                                          padding: 16,
-                                          border: index > 0 ? '1px dashed #d6e8fa' : '1px solid #d6e8fa',
-                                          borderRadius: '8px',
-                                          backgroundColor: '#f0f8ff'
-                                        }}
+                                        style={blockInsideHighlightStyle}
                                       >
                                         <div className="field-group">
-                                          <div className="field full">
-                                            <QuestionItem
-                                              question="驾驶执照的号码"
-                                              name={`driverLicenses[${index}].licenseNumber`}
-                                              explanation="Driver's License Number"
+                                          <QuestionItem
+                                            question="驾驶执照的号码"
+                                            name={`driverLicenses[${index}].licenseNumber`}
+                                            hasNaCheckbox={true}
+                                            naCheckboxName={`driverLicenses[${index}].licenseNumber_na`}
+                                          >
+                                            <Input 
+                                              style={{ width: '60%' }}
+                                              maxLength={20}
+                                            />
+                                          </QuestionItem>
+
+                                          <QuestionItem
+                                            question="驾驶执照所属的州"
+                                            name={`driverLicenses[${index}].state`}
                                             >
-                                              <div>
-                                                <Input 
-                                                  style={{ width: '60%' }}
-                                                  maxLength={20}
-                                                />
-                                                <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '8px' }}>
-                                                  <Checkbox>Do Not Know</Checkbox>
-                                                </div>
-                                              </div>
-                                            </QuestionItem>
-                                          </div>
-                                        </div>
-                                        
-                                        <div className="field-group">
-                                          <div className="field full">
-                                            <QuestionItem
-                                              question="驾驶执照所属的州"
-                                              name={`driverLicenses[${index}].state`}
-                                              explanation="State of Driver's License"
-                                            >
-                                              <Select 
-                                                options={usStateOptions}
-                                                style={{ width: '100%' }}
-                                              />
-                                            </QuestionItem>
-                                          </div>
+                                            <Select 
+                                              options={usStateOptions}
+                                              style={{ width: '100%' }}
+                                            />
+                                          </QuestionItem>
                                         </div>
                                         
                                         <FormItemButtons 
@@ -2448,7 +2430,6 @@ const DS160Form: React.FC = () => {
                     <QuestionItem
                       question="上一次签证的签证号码"
                       name="lastVisaNumber"
-                      explanation="Previous visa number (if known)"
                       hasNaCheckbox={true}
                       naCheckboxName="lastVisaNumber_na"
                     >
