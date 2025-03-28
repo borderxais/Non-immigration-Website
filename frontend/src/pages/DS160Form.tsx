@@ -3158,204 +3158,93 @@ const DS160Form: React.FC = () => {
               </p>
             </div>
             
-            <div className="field-group callout" style={highlightedBlockStyle}>
-              <QuestionItem
-                question="护照/旅行证件种类"
-                name="passportType"
-                explanation="Passport/Travel Document Type"
-              >
-                <Select placeholder="- 请选择一个 -" style={{ width: '100%' }}>
-                  <Select.Option value="R">普通护照 (REGULAR)</Select.Option>
-                  <Select.Option value="O">公务护照 (OFFICIAL)</Select.Option>
-                  <Select.Option value="D">外交护照 (DIPLOMATIC)</Select.Option>
-                  <Select.Option value="L">通行证 (LAISSEZ-PASSER)</Select.Option>
-                  <Select.Option value="T">其他 (OTHER)</Select.Option>
-                </Select>
-              </QuestionItem>
-    
-              <QuestionItem
-                question="护照/旅行证件号码"
-                name="passportNumber"
-                explanation="Passport/Travel Document Number"
-              >
-                <Input style={{ width: '95%' }} maxLength={20} />
-              </QuestionItem>
-              
-              <QuestionItem
-                question="护照本编号"
-                name="passportBookNumber"
-                explanation="The Passport Book Number is commonly called the inventory control number. You may or may not have a Passport Book Number on your passport."
-                hasNaCheckbox={true}
-                naCheckboxName="passportBookNumber_na"
-              >
-                <Input style={{ width: '55%' }} maxLength={20} />
-              </QuestionItem>
-    
-              <QuestionItem
-                question="颁发护照/旅行证件的国家/机构"
-                name="passportIssuedCountry"
-                explanation="Country/Authority that Issued Passport/Travel Document"
-              >
-                <Select 
-                  options={countryOptions}
-                  style={{ width: '100%' }}
-                  placeholder="- 选择一个 -"
-                />
-              </QuestionItem>
-              
-              <div className="field-groups">
-                <h4>
-                  <span>护照签发地</span>
-                  <span> (Where was the Passport/Travel Document Issued?)</span>
-                </h4>
-                <div className="field-group callout" style={blockInsideHighlightStyle}>
-                  <QuestionItem
-                    question="城市"
-                    name="passportIssuedCity"
-                    explanation="City"
-                  >
-                    <Input style={{ width: '95%' }} maxLength={25} />
-                  </QuestionItem>
-    
-                  <QuestionItem
-                    question="州/省份"
-                    name="passportIssuedState"
-                    explanation="State/Province *If shown on passport"
-                  >
-                    <Input style={{ width: '95%' }} maxLength={25} />
-                  </QuestionItem>
-    
-                  <QuestionItem
-                    question="国家/地区"
-                    name="passportIssuedInCountry"
-                    explanation="Country/Region"
-                  >
-                    <Select 
-                      options={countryOptions}
-                      style={{ width: '100%' }}
-                      placeholder="- 选择一个 -"
-                    />
-                  </QuestionItem>
-                </div>
-              </div>
-              
-              <div className="field-group">
-                <QuestionItem
-                  question="签发日期"
-                  name="passportIssuedDate"
-                >
-                  <div style={dateBlockStyle}>
-                    <Form.Item 
-                      name="passportIssuedDay" 
-                      noStyle
-                      rules={[{ required: true, message: '请选择日期' }]}
-                    >
-                      <Select options={dayOptions} style={{ width: 70 }} placeholder="Day" />
-                    </Form.Item>
-    
-                    <Form.Item 
-                      name="passportIssuedMonth" 
-                      noStyle
-                      rules={[{ required: true, message: '请选择月份' }]}
-                    >
-                      <Select options={monthOptions} style={{ width: 80 }} placeholder="Month" />
-                    </Form.Item>
-    
-                    <Form.Item 
-                      name="passportIssuedYear" 
-                      noStyle
-                      rules={[
-                        { required: true, message: '请输入年份' },
-                        { pattern: /^\d{4}$/, message: '请输入4位数年份' }
-                      ]}
-                    >
-                      <Input placeholder="Year" style={{ width: '60px' }} maxLength={4} />
-                    </Form.Item>
-    
-                    <div style={{ marginLeft: '8px', fontSize: '12px', color: '#666' }}>
-                      (格式: DD-MMM-YYYY)
-                    </div>
-                  </div>
-                </QuestionItem>
-              </div>
-              
-              <div className="field-group">
-                <QuestionItem
-                  question="失效日期"
-                  name="driverLicense.expirationDate"
-                  explanation="请输入失效日期 (格式: DD-MMM-YYYY)"
-                >
-                  <div style={dateBlockStyle}>
-                    <Form.Item 
-                      name="driverLicense.expirationDay"
-                      noStyle
-                      rules={[{ required: !form.getFieldValue('driverLicense.noExpirationDate'), message: '请选择日期' }]}
-                    >
-                      <Select 
-                        options={dayOptions} 
-                        style={{ width: 70 }} 
-                        placeholder="Day" 
-                        disabled={form.getFieldValue('driverLicense.noExpirationDate')}
-                      />
-                    </Form.Item>
+            <div className="field-group">
+  <QuestionItem
+    question="失效日期"
+    name="driverLicense.expirationDate"
+    explanation="请输入失效日期 (格式: DD-MMM-YYYY)"
+    hasNaCheckbox={true}
+    naCheckboxName="driverLicense.noExpirationDate"
+  >
+    <div style={dateBlockStyle}>
+      <Form.Item 
+        name="driverLicense.expirationDay"
+        noStyle
+        rules={[{ 
+          required: !form.getFieldValue('driverLicense.noExpirationDate'), 
+          message: '请选择日期' 
+        }]}
+        dependencies={['driverLicense.noExpirationDate']}
+      >
+        <Select 
+          options={dayOptions} 
+          style={{ width: 70 }} 
+          placeholder="Day" 
+        />
+      </Form.Item>
 
-                    <Form.Item 
-                      name="driverLicense.expirationMonth"
-                      noStyle
-                      rules={[{ required: !form.getFieldValue('driverLicense.noExpirationDate'), message: '请选择月份' }]}
-                    >
-                      <Select 
-                        options={monthOptions} 
-                        style={{ width: 80 }} 
-                        placeholder="Month" 
-                        disabled={form.getFieldValue('driverLicense.noExpirationDate')}
-                      />
-                    </Form.Item>
-                    
-                    <Form.Item 
-                      name="driverLicense.expirationYear"
-                      noStyle
-                      rules={[
-                        { required: !form.getFieldValue('driverLicense.noExpirationDate'), message: '请输入年份' },
-                        { pattern: /^\d{4}$/, message: '请输入4位数年份' }
-                      ]}
-                    >
-                      <Input 
-                        placeholder="Year" 
-                        style={{ width: '60px' }} 
-                        maxLength={4} 
-                        disabled={form.getFieldValue('driverLicense.noExpirationDate')}
-                      />
-                    </Form.Item>
-                    <div style={{ marginLeft: '8px', fontSize: '12px', color: '#666' }}>
-                      (格式: DD-MMM-YYYY)
-                    </div>
-                  </div>
-                  <div style={{ display: 'flex', marginTop: '8px' }}>
-                    <Form.Item 
-                      name="driverLicense.noExpirationDate"
-                      valuePropName="checked"
-                      noStyle
-                    >
-                      <Checkbox 
-                        onChange={() => {
-                          const noExpDate = form.getFieldValue('driverLicense.noExpirationDate');
-                          if (noExpDate) {
-                            form.setFieldsValue({
-                              'driverLicense.expirationDay': undefined,
-                              'driverLicense.expirationMonth': undefined,
-                              'driverLicense.expirationYear': undefined
-                            });
-                          }
-                        }}
-                      >
-                        无失效日期
-                      </Checkbox>
-                    </Form.Item>
-                  </div>
-                </QuestionItem>
-              </div>
-            </div>
+      <Form.Item 
+        name="driverLicense.expirationMonth"
+        noStyle
+        rules={[{ 
+          required: !form.getFieldValue('driverLicense.noExpirationDate'), 
+          message: '请选择月份' 
+        }]}
+        dependencies={['driverLicense.noExpirationDate']}
+      >
+        <Select 
+          options={monthOptions} 
+          style={{ width: 80 }} 
+          placeholder="Month" 
+        />
+      </Form.Item>
+      
+      <Form.Item 
+        name="driverLicense.expirationYear"
+        noStyle
+        rules={[
+          { 
+            required: !form.getFieldValue('driverLicense.noExpirationDate'), 
+            message: '请输入年份' 
+          },
+          { pattern: /^\d{4}$/, message: '请输入4位数年份' }
+        ]}
+        dependencies={['driverLicense.noExpirationDate']}
+      >
+        <Input 
+          placeholder="Year" 
+          style={{ width: 60 }} 
+          maxLength={4}
+        />
+      </Form.Item>
+      <div style={{ marginLeft: 8, fontSize: 12, color: '#666' }}>
+        (格式: DD-MMM-YYYY)
+      </div>
+    </div>
+  </QuestionItem>
+</div>
+
+{/* Add a form effect to handle clearing the fields when checkbox changes */}
+<Form.Item noStyle shouldUpdate={(prevValues, currentValues) => 
+  prevValues.driverLicense?.noExpirationDate !== currentValues.driverLicense?.noExpirationDate
+}>
+  {({ getFieldValue, setFieldsValue }) => {
+    // This effect runs whenever the checkbox value changes
+    React.useEffect(() => {
+      const noExpDate = getFieldValue('driverLicense.noExpirationDate');
+      if (noExpDate) {
+        // Clear the fields when checkbox is checked
+        setFieldsValue({
+          'driverLicense.expirationDay': undefined,
+          'driverLicense.expirationMonth': undefined,
+          'driverLicense.expirationYear': undefined
+        });
+      }
+    }, [getFieldValue('driverLicense.noExpirationDate')]);
+    
+    return null; // This Form.Item doesn't render anything
+  }}
+</Form.Item>
           </div>
     
           <Divider />
