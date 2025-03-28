@@ -3284,13 +3284,7 @@ const DS160Form: React.FC = () => {
                       noStyle
                       rules={[{ required: true, message: '请选择日期' }]}
                     >
-                      <Select style={{ width: '60px' }} placeholder="">
-                        <Select.Option value="">  </Select.Option>
-                        {Array.from({ length: 31 }, (_, i) => {
-                          const day = (i + 1).toString().padStart(2, '0');
-                          return <Select.Option key={day} value={day}>{day}</Select.Option>;
-                        })}
-                      </Select>
+                      <Select options={dayOptions} style={{ width: '60px' }} placeholder="" />
                     </Form.Item>
     
                     <Form.Item 
@@ -3298,21 +3292,7 @@ const DS160Form: React.FC = () => {
                       noStyle
                       rules={[{ required: true, message: '请选择月份' }]}
                     >
-                      <Select style={{ width: '70px' }} placeholder="">
-                        <Select.Option value="">  </Select.Option>
-                        <Select.Option value="JAN">一月</Select.Option>
-                        <Select.Option value="FEB">二月</Select.Option>
-                        <Select.Option value="MAR">三月</Select.Option>
-                        <Select.Option value="APR">四月</Select.Option>
-                        <Select.Option value="MAY">五月</Select.Option>
-                        <Select.Option value="JUN">六月</Select.Option>
-                        <Select.Option value="JUL">七月</Select.Option>
-                        <Select.Option value="AUG">八月</Select.Option>
-                        <Select.Option value="SEP">九月</Select.Option>
-                        <Select.Option value="OCT">十月</Select.Option>
-                        <Select.Option value="NOV">十一月</Select.Option>
-                        <Select.Option value="DEC">十二月</Select.Option>
-                      </Select>
+                      <Select options={monthOptions} style={{ width: '70px' }} placeholder="" />
                     </Form.Item>
     
                     <Form.Item 
@@ -3355,13 +3335,7 @@ const DS160Form: React.FC = () => {
                       noStyle
                       rules={[{ required: true, message: '请选择日期' }]}
                     >
-                      <Select style={{ width: '60px' }} placeholder="">
-                        <Select.Option value="">  </Select.Option>
-                        {Array.from({ length: 31 }, (_, i) => {
-                          const day = (i + 1).toString().padStart(2, '0');
-                          return <Select.Option key={day} value={day}>{day}</Select.Option>;
-                        })}
-                      </Select>
+                      <Select options={dayOptions} style={{ width: '60px' }} placeholder="" />
                     </Form.Item>
     
                     <Form.Item 
@@ -3369,21 +3343,7 @@ const DS160Form: React.FC = () => {
                       noStyle
                       rules={[{ required: true, message: '请选择月份' }]}
                     >
-                      <Select style={{ width: '70px' }} placeholder="">
-                        <Select.Option value="">  </Select.Option>
-                        <Select.Option value="JAN">一月</Select.Option>
-                        <Select.Option value="FEB">二月</Select.Option>
-                        <Select.Option value="MAR">三月</Select.Option>
-                        <Select.Option value="APR">四月</Select.Option>
-                        <Select.Option value="MAY">五月</Select.Option>
-                        <Select.Option value="JUN">六月</Select.Option>
-                        <Select.Option value="JUL">七月</Select.Option>
-                        <Select.Option value="AUG">八月</Select.Option>
-                        <Select.Option value="SEP">九月</Select.Option>
-                        <Select.Option value="OCT">十月</Select.Option>
-                        <Select.Option value="NOV">十一月</Select.Option>
-                        <Select.Option value="DEC">十二月</Select.Option>
-                      </Select>
+                      <Select options={monthOptions} style={{ width: '70px' }} placeholder="" />
                     </Form.Item>
     
                     <Form.Item 
