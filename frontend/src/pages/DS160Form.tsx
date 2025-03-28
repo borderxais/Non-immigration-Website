@@ -3606,7 +3606,6 @@ const DS160Form: React.FC = () => {
               naCheckboxName="usPocEmail_na"
             >
               <Input 
-                className="emailaddress" 
                 style={{ width: '95%' }} 
                 maxLength={50} 
               />
