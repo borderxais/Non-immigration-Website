@@ -3646,7 +3646,7 @@ const DS160Form: React.FC = () => {
                       question="姓氏"
                       name="fatherSurname"
                       hasNaCheckbox={true}
-                      naCheckboxName="fatherSurnameUnknown"
+                      naCheckboxName="fatherSurname_na"
                     >
                       <Input style={{ width: '99%' }} maxLength={33} placeholder="请输入姓氏" />
                       <div className="hint">
@@ -3657,9 +3657,8 @@ const DS160Form: React.FC = () => {
                     <QuestionItem
                       question="名字"
                       name="fatherGivenName"
-                      explanation="Given Names"
                       hasNaCheckbox={true}
-                      naCheckboxName="fatherGivenNameUnknown"
+                      naCheckboxName="fatherGivenName_na"
                     >
                       <Input style={{ width: '99%' }} maxLength={33} placeholder="请输入名字" />
                       <div className="hint">
@@ -3671,7 +3670,7 @@ const DS160Form: React.FC = () => {
                       question="出生日期"
                       name="fatherDateOfBirth"
                       hasNaCheckbox={true}
-                      naCheckboxName="fatherDobUnknown"
+                      naCheckboxName="fatherDob_na"
                     >
                       <div style={dateBlockStyle}>
                         <Form.Item 
@@ -3726,7 +3725,8 @@ const DS160Form: React.FC = () => {
                         <QuestionItem
                           question="您父亲是否在美国？"
                           name="fatherInUs"
-                          explanation="Is your father in the U.S.?"
+                          hasNaCheckbox={true}
+                          naCheckboxName="fatherInUs_na"
                         >
                           <Radio.Group>
                             <Radio value="Y">是 (Yes)</Radio>
@@ -3752,9 +3752,8 @@ const DS160Form: React.FC = () => {
                     <QuestionItem
                       question="姓氏"
                       name="motherSurname"
-                      explanation="Surnames"
                       hasNaCheckbox={true}
-                      naCheckboxName="motherSurnameUnknown"
+                      naCheckboxName="motherSurname_na"
                     >
                       <Input style={{ width: '99%' }} maxLength={33} placeholder="请输入姓氏" />
                       <div className="hint">
@@ -3765,9 +3764,8 @@ const DS160Form: React.FC = () => {
                     <QuestionItem
                       question="名字"
                       name="motherGivenName"
-                      explanation="Given Names"
                       hasNaCheckbox={true}
-                      naCheckboxName="motherGivenNameUnknown"
+                      naCheckboxName="motherGivenName_na"
                     >
                       <Input style={{ width: '99%' }} maxLength={33} placeholder="请输入名字" />
                       <div className="hint">
@@ -3778,9 +3776,8 @@ const DS160Form: React.FC = () => {
                     <QuestionItem
                       question="出生日期"
                       name="motherDateOfBirth"
-                      explanation="Date of Birth"
                       hasNaCheckbox={true}
-                      naCheckboxName="motherDobUnknown"
+                      naCheckboxName="motherDateOfBirth_na"
                     >
                       <div style={dateBlockStyle}>
                         <Form.Item 
@@ -3836,7 +3833,6 @@ const DS160Form: React.FC = () => {
                         <QuestionItem
                           question="您母亲是否在美国？"
                           name="motherInUs"
-                          explanation="Is your mother in the U.S.?"
                         >
                           <Radio.Group>
                             <Radio value="Y">是 (Yes)</Radio>
@@ -3857,7 +3853,6 @@ const DS160Form: React.FC = () => {
                     <QuestionItem
                       question="除父母以外，您在美国是否还有其他直系亲属?"
                       name="hasOtherRelativesInUs"
-                      explanation="Do you have any immediate relatives, not including parents, in the United States?"
                     >
                       <Radio.Group>
                         <Radio value="Y">是 (Yes)</Radio>
@@ -3909,7 +3904,6 @@ const DS160Form: React.FC = () => {
                                     <QuestionItem
                                       question="姓氏"
                                       name={`otherRelatives[${index}].surname`}
-                                      explanation="Surnames"
                                     >
                                       <Input style={{ width: '99%' }} maxLength={33} placeholder="请输入姓氏" />
                                     </QuestionItem>
@@ -3917,7 +3911,6 @@ const DS160Form: React.FC = () => {
                                     <QuestionItem
                                       question="名字"
                                       name={`otherRelatives[${index}].givenName`}
-                                      explanation="Given Names"
                                     >
                                       <Input style={{ width: '99%' }} maxLength={33} placeholder="请输入名字" />
                                     </QuestionItem>
@@ -3925,7 +3918,6 @@ const DS160Form: React.FC = () => {
                                     <QuestionItem
                                       question="与您的关系"
                                       name={`otherRelatives[${index}].relationship`}
-                                      explanation="Relationship to You"
                                     >
                                       <Select placeholder="- 请选择一个 -" style={{ width: '100%' }}>
                                         <Select.Option value="F">未婚夫/妻 (FIANCE/FIANCEE)</Select.Option>
@@ -3938,7 +3930,6 @@ const DS160Form: React.FC = () => {
                                     <QuestionItem
                                       question="移民身份"
                                       name={`otherRelatives[${index}].status`}
-                                      explanation="Immigration Status"
                                     >
                                       <Select placeholder="- 请选择一个 -" style={{ width: '100%' }}>
                                         <Select.Option value="U">美国公民 (U.S. CITIZEN)</Select.Option>
