@@ -3645,6 +3645,7 @@ const DS160Form: React.FC = () => {
                     <QuestionItem
                       question="姓氏"
                       name="fatherSurname"
+                      required={false}
                       hasNaCheckbox={true}
                       naCheckboxName="fatherSurname_na"
                     >
@@ -3657,6 +3658,7 @@ const DS160Form: React.FC = () => {
                     <QuestionItem
                       question="名字"
                       name="fatherGivenName"
+                      required={false}
                       hasNaCheckbox={true}
                       naCheckboxName="fatherGivenName_na"
                     >
@@ -3752,6 +3754,7 @@ const DS160Form: React.FC = () => {
                     <QuestionItem
                       question="姓氏"
                       name="motherSurname"
+                      required={false}
                       hasNaCheckbox={true}
                       naCheckboxName="motherSurname_na"
                     >
@@ -3764,6 +3767,7 @@ const DS160Form: React.FC = () => {
                     <QuestionItem
                       question="名字"
                       name="motherGivenName"
+                      required={false}
                       hasNaCheckbox={true}
                       naCheckboxName="motherGivenName_na"
                     >
