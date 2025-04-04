@@ -197,6 +197,58 @@ class InterviewAssessmentResource(Resource):
             return {"error": str(e)}, 500
 
 
+@api.route("/client/<string:form_id>")
+class DS160ClientResource(Resource):
+    @jwt_required()
+    def get(self, form_id):
+        """Get DS-160 form data formatted for the Chrome extension"""
+        current_user_id = get_jwt_identity()
+        
+        # Find the form
+        form = ds160.DS160Form.query.filter_by(
+            id=form_id, user_id=current_user_id
+        ).first()
+        
+        if not form:
+            return {"error": "Form not found"}, 404
+        
+        # Format the form data for the extension
+        # This will need to be customized based on your form structure
+        # and the expected format for the extension
+        client_data = {
+            "client_id": str(form.id),
+            "personal_info": form.form_data.get("personal_info", {}),
+            "contact_info": form.form_data.get("contact_info", {}),
+            "passport_info": form.form_data.get("passport_info", {}),
+            "travel_info": form.form_data.get("travel_info", {}),
+            "us_contact_info": form.form_data.get("us_contact_info", {}),
+            "family_info": form.form_data.get("family_info", {}),
+            "work_education_info": form.form_data.get("work_education_info", {}),
+            "security_background_info": form.form_data.get("security_background_info", {})
+        }
+        
+        return client_data
+
+
+@api.route("/events")
+class DS160EventResource(Resource):
+    @jwt_required()
+    def post(self):
+        """Log a DS-160 form event from the Chrome extension"""
+        current_user_id = get_jwt_identity()
+        data = request.json
+        
+        # Log the event (you can customize this based on your needs)
+        logger.info(
+            f"DS-160 form event: user_id={current_user_id}, "
+            f"form_id={data.get('client_id')}, "
+            f"event_type={data.get('event_type')}, "
+            f"event_data={data.get('event_data')}"
+        )
+        
+        return {"message": "Event logged successfully"}, 201
+
+
 @api.route("/interview-assessment/history")
 class InterviewAssessmentHistoryResource(Resource):
     @jwt_required()
