@@ -10,13 +10,34 @@ import { generateApplicationId } from '../utils/formUtils';
 
 const { TextArea } = Input;
 const { Title, Text, Paragraph } = Typography;
-const [formId, setFormId] = React.useState<string | null>(generateApplicationId());
 
 const DS160Form: React.FC = () => {
   const [currentStep, setCurrentStep] = React.useState(0);
   const [completedSteps, setCompletedSteps] = React.useState<number[]>([0]);
   const [form] = Form.useForm();
   const navigate = useNavigate();
+  const [formId, setFormId] = React.useState<string | null>(generateApplicationId());
+
+  React.useEffect(() => {
+    // Check if there's a form ID in the URL (for resuming a draft)
+    const params = new URLSearchParams(window.location.search);
+    const draftId = params.get('id');
+    
+    if (draftId) {
+      // If we have an ID in the URL, use that instead of the generated one
+      setFormId(draftId);
+      // Here you would also load the form data from your backend
+    }
+    
+    // Save the form ID to localStorage for persistence
+    const savedFormId = localStorage.getItem('currentFormId');
+    if (!draftId && savedFormId) {
+      setFormId(savedFormId);
+    } else {
+      // Save the current form ID (either from URL or randomly generated)
+      localStorage.setItem('currentFormId', formId || '');
+    }
+  }, [formId]);
   
   // Define highlighted block style here, so it's available throughout the component
   const highlightedBlockStyle = {
@@ -400,27 +421,7 @@ const DS160Form: React.FC = () => {
     return dependentCodes.includes(value);
   };
 
-  React.useEffect(() => {
-    // Check if there's a form ID in the URL (for resuming a draft)
-    const params = new URLSearchParams(window.location.search);
-    const draftId = params.get('id');
-    
-    if (draftId) {
-      // If we have an ID in the URL, use that instead of the generated one
-      setFormId(draftId);
-      // Here you would also load the form data from your backend
-    }
-    
-    // Save the form ID to localStorage for persistence
-    const savedFormId = localStorage.getItem('currentFormId');
-    if (!draftId && savedFormId) {
-      setFormId(savedFormId);
-    } else {
-      // Save the current form ID (either from URL or randomly generated)
-      localStorage.setItem('currentFormId', formId || '');
-    }
-  }, [formId]);
-
+  
   const handleSubmit = async (values: any) => {
     try {
       console.log('Submitting form:', values);
