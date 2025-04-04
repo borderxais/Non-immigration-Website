@@ -11,6 +11,7 @@ const { Title, Text, Paragraph } = Typography;
 
 const DS160Form: React.FC = () => {
   const [currentStep, setCurrentStep] = React.useState(0);
+  const [completedSteps, setCompletedSteps] = React.useState<number[]>([0]);
   const [form] = Form.useForm();
   const navigate = useNavigate();
   
@@ -4093,10 +4094,22 @@ const DS160Form: React.FC = () => {
   ];
 
   const [formData, setFormData] = React.useState({});
+
   const next = async () => {
     try {
       const values = await form.validateFields();
       setFormData({ ...formData, ...values });
+      
+      // Add current step to completed steps if not already included
+      if (!completedSteps.includes(currentStep)) {
+        setCompletedSteps([...completedSteps, currentStep]);
+      }
+      
+      // Add next step to completed steps list
+      if (!completedSteps.includes(currentStep + 1)) {
+        setCompletedSteps([...completedSteps, currentStep + 1]);
+      }
+      
       setCurrentStep(currentStep + 1);
     } catch (error) {
       console.error('Validation failed:', error);
@@ -4106,6 +4119,17 @@ const DS160Form: React.FC = () => {
   const prev = () => {
     setCurrentStep(currentStep - 1);
   };
+  
+  // Add this new function here
+  const handleStepChange = (current: number) => {
+    // Only allow navigation to completed steps
+    if (completedSteps.includes(current)) {
+      setCurrentStep(current);
+    } else {
+      message.warning('请先完成当前步骤');
+    }
+  };
+
 
   const onFinish = (values: { [key: string]: any }) => {
     const finalData = { ...formData, ...values };
@@ -4126,14 +4150,16 @@ const DS160Form: React.FC = () => {
         <div style={{ display: 'flex', gap: '24px' }}>
           {/* Left sidebar with steps */}
           <div style={{ width: '25%', minWidth: '200px' }}>
-            <Steps
-              current={currentStep}
-              direction="vertical"
-              items={steps.map(item => ({
-                title: item.title,
-                description: item.description,
-              }))}
-             />
+          <Steps
+            current={currentStep}
+            direction="vertical"
+            onChange={handleStepChange}
+            items={steps.map((item, index) => ({
+              title: item.title,
+              description: item.description,
+              style: completedSteps.includes(index) ? { cursor: 'pointer' } : {},
+            }))}
+          />
           </div>
           
           {/* Right content area */}
