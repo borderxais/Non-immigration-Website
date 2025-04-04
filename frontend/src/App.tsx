@@ -11,6 +11,7 @@ import DS160Form from './pages/DS160Form';
 import DS160Upload from './pages/DS160Upload';
 import DS160History from './pages/DS160History';
 import DS160Success from './pages/DS160Success';
+import DS160FormRefactored from './pages/DS160FormRefactored';
 import InterviewPractice from './pages/InterviewPractice';
 import InterviewEvaluation from './pages/InterviewEvaluation';
 import InterviewSimulation from './pages/InterviewSimulation';
@@ -50,6 +51,7 @@ const App: React.FC = () => {
                   <Route path="/ds160/upload" element={<DS160Upload />} />
                   <Route path="/ds160/history" element={<DS160History />} />
                   <Route path="/ds160-success" element={<DS160Success />} />
+                  <Route path="/ds160-refactored" element={<DS160FormRefactored />} />
                   
                   {/* Interview Routes */}
                   <Route path="/interview/practice" element={<InterviewPractice />} />
@@ -82,5 +84,3 @@ const App: React.FC = () => {
 };
 
 export default App;
-
-
