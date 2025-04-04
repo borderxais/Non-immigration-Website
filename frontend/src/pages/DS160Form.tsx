@@ -3,12 +3,34 @@ import { Card, Steps, Form, Input, Select, DatePicker, Radio, Space, Button, Typ
 import ds160Service from '../services/ds160Service';
 import { useNavigate } from 'react-router-dom';
 import FormItemButtons from '../components/FormItemButtons';
+import ApplicationIdDisplay from '../components/ApplicationIdDisplay';
+import { generateApplicationId } from '../utils/formUtils';
 
 //  Application ID AA00EGS9G1
 
 const { TextArea } = Input;
 const { Title, Text, Paragraph } = Typography;
-
+const [formId, setFormId] = React.useState<string | null>(generateApplicationId());
+React.useEffect(() => {
+  // Check if there's a form ID in the URL (for resuming a draft)
+  const params = new URLSearchParams(window.location.search);
+  const draftId = params.get('id');
+  
+  if (draftId) {
+    // If we have an ID in the URL, use that instead of the generated one
+    setFormId(draftId);
+    // Here you would also load the form data from your backend
+  }
+  
+  // Save the form ID to localStorage for persistence
+  const savedFormId = localStorage.getItem('currentFormId');
+  if (!draftId && savedFormId) {
+    setFormId(savedFormId);
+  } else {
+    // Save the current form ID (either from URL or randomly generated)
+    localStorage.setItem('currentFormId', formId || '');
+  }
+}, [formId]);
 const DS160Form: React.FC = () => {
   const [currentStep, setCurrentStep] = React.useState(0);
   const [completedSteps, setCompletedSteps] = React.useState<number[]>([0]);
@@ -4147,6 +4169,7 @@ const DS160Form: React.FC = () => {
         scrollToFirstError
         preserve={true}
       >
+        <ApplicationIdDisplay formId={formId} />
         <div style={{ display: 'flex', gap: '24px' }}>
           {/* Left sidebar with steps */}
           <div style={{ width: '25%', minWidth: '200px' }}>
