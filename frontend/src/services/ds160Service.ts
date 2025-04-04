@@ -111,6 +111,38 @@ const generatePDF = async (formId: string): Promise<Blob> => {
   return response.data;
 };
 
+/**
+ * Save a draft of a DS-160 form
+ */
+const saveFormDraft = async (formData: any): Promise<DS160Form> => {
+  const token = localStorage.getItem('token');
+  if (!token) {
+    throw new Error('No token found. Please log in.');
+  }
+  
+  const payload = {
+    form_data: formData,
+    status: 'draft'
+  };
+  
+  // If the form has an ID, update it, otherwise create a new draft
+  if (formData.formId) {
+    const response = await axios.put(`${API_URL}/ds160/${formData.formId}`, payload, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    return response.data;
+  } else {
+    const response = await axios.post(`${API_URL}/ds160/form`, payload, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    return response.data;
+  }
+};
+
 const ds160Service = {
   createForm,
   updateForm,
@@ -118,7 +150,8 @@ const ds160Service = {
   getUserForms,
   deleteForm,
   validateForm,
-  generatePDF
+  generatePDF,
+  saveFormDraft
 };
 
 export default ds160Service;
