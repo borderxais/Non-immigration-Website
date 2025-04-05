@@ -16,6 +16,23 @@ const DS160Form: React.FC = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
 
+  // Function to load form data from backend
+  const loadFormData = useCallback(async (id: string) => {
+    try {
+      // Call your API to get form data
+      const response = await ds160Service.getFormById(id);
+      if (response) {
+        // Set form data
+        setFormData(response);
+        // Set form values
+        form.setFieldsValue(response);
+      }
+    } catch (error) {
+      console.error('Error loading form data:', error);
+      message.error('加载表单数据时出错');
+    }
+  }, [form]);
+
   useEffect(() => {
     // Check if there's a form ID in the URL (for resuming a draft)
     const params = new URLSearchParams(window.location.search);
@@ -34,28 +51,11 @@ const DS160Form: React.FC = () => {
       setFormId(savedFormId);
       // Load saved form data if available
       loadFormData(savedFormId);
-    } else {
+    } else if (formId) {
       // Save the current form ID (either from URL or randomly generated)
-      localStorage.setItem('currentFormId', formId || '');
+      localStorage.setItem('currentFormId', formId);
     }
-  }, []); // Empty dependency array to run only once
-
-  // Function to load form data from backend
-  const loadFormData = useCallback(async (id: string) => {
-    try {
-      // Call your API to get form data
-      const response = await ds160Service.getFormById(id);
-      if (response) {
-        // Set form data
-        setFormData(response);
-        // Set form values
-        form.setFieldsValue(response);
-      }
-    } catch (error) {
-      console.error('Error loading form data:', error);
-      message.error('加载表单数据时出错');
-    }
-  }, [form]);
+  }, [formId, loadFormData]); // Add formId and loadFormData to the dependency array
 
   // Load form data if formId is available
   useEffect(() => {
