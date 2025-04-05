@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Input, Select, Radio, Divider } from 'antd';
+import { Input, Select, Radio, Divider } from 'antd';
 import QuestionItem from '../common/QuestionItem';
 import DateInput from '../common/DateInput';
 import { countryOptions } from '../utils/formOptions';

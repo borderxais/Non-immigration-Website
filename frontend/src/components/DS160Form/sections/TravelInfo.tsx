@@ -2,7 +2,7 @@ import React from 'react';
 import { Form, Input, Select, Radio, Divider } from 'antd';
 import QuestionItem from '../common/QuestionItem';
 import DateInput from '../common/DateInput';
-import { countryOptions, losUnitOptions } from '../utils/formOptions';
+import { losUnitOptions } from '../utils/formOptions';
 
 interface TravelInfoProps {
   form: any;

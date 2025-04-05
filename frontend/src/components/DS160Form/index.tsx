@@ -57,6 +57,13 @@ const DS160Form: React.FC = () => {
     }
   };
 
+  // Load form data if formId is available
+  useEffect(() => {
+    if (formId) {
+      loadFormData(formId);
+    }
+  }, [formId, loadFormData]);
+
   // Function to save form data
   const saveFormData = async () => {
     try {
