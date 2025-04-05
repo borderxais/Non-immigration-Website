@@ -11,7 +11,6 @@ import ds160Service from '../../services/ds160Service';
 const DS160Form: React.FC = () => {
   // Generate a unique ID for this form session if not already set
   const [formId, setFormId] = useState<string>('');
-  const [formData, setFormData] = useState<any>({});
   const [currentStep, setCurrentStep] = useState<number>(0);
   const [completedSteps, setCompletedSteps] = useState<number[]>([0]);
   const [form] = Form.useForm();
@@ -24,7 +23,7 @@ const DS160Form: React.FC = () => {
       const response = await ds160Service.getFormById(id);
       if (response) {
         // Set form data
-        setFormData(response);
+        // Removed unused formData state
         // Set form values
         form.setFieldsValue(response);
       }
@@ -87,10 +86,8 @@ const DS160Form: React.FC = () => {
       };
       
       // Call your API to save form data
-      const response = await ds160Service.saveFormDraft(dataToSave);
-      if (response) {
-        message.success('表单数据已保存');
-      }
+      await ds160Service.saveFormDraft(dataToSave);
+      message.success('表单数据已保存');
     } catch (error: any) {
       console.error('Error saving form data:', error);
       message.error('保存表单数据时出错');
@@ -137,7 +134,7 @@ const DS160Form: React.FC = () => {
       };
       
       // Call your API to submit form
-      const response = await ds160Service.saveFormDraft(dataToSubmit);
+      await ds160Service.saveFormDraft(dataToSubmit);
       
       // Show success message
       message.success('表格提交成功！');

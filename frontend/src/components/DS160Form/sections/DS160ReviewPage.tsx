@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Card, Descriptions, Divider, Typography, Space, Row, Col, Form } from 'antd';
+import { Button, Card, Descriptions, Divider, Typography, Space, Row, Col } from 'antd';
 import { FormInstance } from 'antd/lib/form';
 
 const { Title, Text } = Typography;
