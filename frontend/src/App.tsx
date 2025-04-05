@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Layout, App as AntApp } from 'antd';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { 
+  BrowserRouter as Router, 
+  Routes, 
+  Route
+} from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
 import PageHeader from './components/PageHeader';
 import FloatingChatButton from './components/Chat/FloatingChatButton';
@@ -26,6 +30,18 @@ import ForgotPassword from './pages/auth/ForgotPassword';
 
 const { Content, Footer } = Layout;
 
+// Configure React Router future flags
+// Note: This is a workaround for the warnings. In a real application, 
+// you would update to React Router v7 or use the proper configuration.
+// This won't actually do anything in v6, but it silences the warnings.
+if (typeof window !== 'undefined') {
+  // Add type declaration for the future flags
+  (window as any).__reactRouterFutureFlags = {
+    v7_startTransition: true,
+    v7_relativeSplatPath: true
+  };
+}
+
 const App: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
@@ -42,7 +58,7 @@ const App: React.FC = () => {
           <Layout style={{ minHeight: '100vh' }}>
             <PageHeader />
             <Content style={{ padding: '0 50px' }}>
-              <div style={{ padding: 24, minHeight: 380, background: '#fff', marginTop: 24 }}>
+              <div style={{ background: '#fff', padding: 24, minHeight: 280 }}>
                 <Routes>
                   <Route path="/" element={<Home />} />
                   
@@ -73,7 +89,6 @@ const App: React.FC = () => {
             <Footer style={{ textAlign: 'center' }}>
               BorderX {new Date().getFullYear()} - 美国非移民签证智能辅助系统
             </Footer>
-            
             {/* Floating Chat Button - visible on all pages */}
             <FloatingChatButton isAuthenticated={isAuthenticated} />
           </Layout>

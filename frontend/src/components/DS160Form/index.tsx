@@ -9,10 +9,11 @@ import { generateApplicationId } from '../../utils/formUtils';
 import ds160Service from '../../services/ds160Service';
 
 const DS160Form: React.FC = () => {
-  const [currentStep, setCurrentStep] = useState(0);
-  const [completedSteps, setCompletedSteps] = useState<number[]>([0]);
-  const [formId, setFormId] = useState<string | null>(generateApplicationId());
+  // Generate a unique ID for this form session if not already set
+  const [formId, setFormId] = useState<string>('');
   const [formData, setFormData] = useState<any>({});
+  const [currentStep, setCurrentStep] = useState<number>(0);
+  const [completedSteps, setCompletedSteps] = useState<number[]>([0]);
   const [form] = Form.useForm();
   const navigate = useNavigate();
 
@@ -27,70 +28,79 @@ const DS160Form: React.FC = () => {
         // Set form values
         form.setFieldsValue(response);
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error loading form data:', error);
-      message.error('加载表单数据时出错');
+      // Show more detailed error message
+      if (error.response) {
+        // The request was made and the server responded with a status code
+        console.error('Response data:', error.response.data);
+        console.error('Response status:', error.response.status);
+        message.error(`加载表单数据时出错: ${error.response.status} - ${JSON.stringify(error.response.data)}`);
+      } else if (error.request) {
+        // The request was made but no response was received
+        console.error('Request made but no response received:', error.request);
+        message.error('服务器未响应请求');
+      } else {
+        // Something happened in setting up the request
+        console.error('Error message:', error.message);
+        message.error(`请求错误: ${error.message}`);
+      }
     }
   }, [form]);
 
+  // Initialize form ID and check URL parameters
   useEffect(() => {
     // Check if there's a form ID in the URL (for resuming a draft)
     const params = new URLSearchParams(window.location.search);
     const draftId = params.get('id');
     
     if (draftId) {
-      // If we have an ID in the URL, use that instead of the generated one
+      // If we have an ID in the URL, use that instead of generating a new one
       setFormId(draftId);
       // Load the form data from backend
       loadFormData(draftId);
+    } else {
+      // Generate a new application ID if none exists
+      const newFormId = generateApplicationId();
+      setFormId(newFormId);
+      
+      // Save to localStorage for persistence
+      localStorage.setItem('currentFormId', newFormId);
     }
-    
-    // Save the form ID to localStorage for persistence
-    const savedFormId = localStorage.getItem('currentFormId');
-    if (!draftId && savedFormId) {
-      setFormId(savedFormId);
-      // Load saved form data if available
-      loadFormData(savedFormId);
-    } else if (formId) {
-      // Save the current form ID (either from URL or randomly generated)
-      localStorage.setItem('currentFormId', formId);
-    }
-  }, [formId, loadFormData]); // Add formId and loadFormData to the dependency array
+  }, [loadFormData]);
 
-  // Load form data if formId is available
+  // Save form ID to localStorage when it changes
   useEffect(() => {
     if (formId) {
-      loadFormData(formId);
+      localStorage.setItem('currentFormId', formId);
     }
-  }, [formId, loadFormData]);
+  }, [formId]);
 
   // Function to save form data
   const saveFormData = async () => {
     try {
       const values = await form.validateFields();
       const dataToSave = {
-        ...formData,
-        ...values,
-        formId
+        id: formId,
+        form_data: values,
+        status: 'draft'
       };
       
-      setFormData(dataToSave);
-      
-      // Save to backend
+      // Call your API to save form data
       const response = await ds160Service.saveFormDraft(dataToSave);
       if (response) {
         message.success('表单数据已保存');
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error saving form data:', error);
       message.error('保存表单数据时出错');
     }
   };
 
-  // Handle next step
+  // Function to handle next step
   const handleNext = async () => {
     try {
-      // Validate current form fields
+      // Validate fields in current step
       await form.validateFields();
       
       // Save form data
@@ -103,110 +113,104 @@ const DS160Form: React.FC = () => {
       
       // Go to next step
       setCurrentStep(currentStep + 1);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Form validation failed:', error);
     }
   };
 
-  // Handle previous step
+  // Function to handle previous step
   const handlePrev = () => {
     setCurrentStep(currentStep - 1);
   };
 
-  // Handle step change (for navigation)
-  const handleStepChange = (step: number) => {
-    // Only allow navigation to completed steps
-    if (completedSteps.includes(step)) {
-      setCurrentStep(step);
-    }
-  };
-
-  // Handle final submission
+  // Function to handle form submission
   const handleSubmit = async () => {
     try {
-      console.log('Submitting form:', formData);
-      const response = await ds160Service.createForm(formData);
-      console.log('Form submitted successfully:', response);
+      // Validate all fields
+      const values = await form.validateFields();
+      
+      // Prepare data for submission
+      const dataToSubmit = {
+        id: formId,
+        form_data: values,
+        status: 'submitted'
+      };
+      
+      // Call your API to submit form
+      const response = await ds160Service.saveFormDraft(dataToSubmit);
+      
+      // Show success message
       message.success('表格提交成功！');
       // Redirect to a success page
       navigate('/ds160-success');
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error submitting form:', error);
       message.error('提交表格时出错，请稍后再试。');
     }
   };
 
-  // Define steps
+  // Define steps for the form
   const steps = [
     {
       title: '个人信息',
-      content: <PersonalInfo form={form} />,
+      content: <PersonalInfo form={form} />
     },
     {
       title: '旅行信息',
-      content: <TravelInfo form={form} />,
+      content: <TravelInfo form={form} />
     },
     {
-      title: '联系信息',
-      content: <div>联系信息表单（待实现）</div>,
-    },
-    {
-      title: '安全问题',
-      content: <div>安全问题表单（待实现）</div>,
-    },
-    {
-      title: '审核',
-      content: (
-        <DS160ReviewPage 
-          formData={formData} 
-          onSubmit={handleSubmit} 
-          onEdit={handleStepChange}
-        />
-      ),
+      title: '审核提交',
+      content: <DS160ReviewPage 
+        form={form} 
+        onSubmit={handleSubmit} 
+        onEdit={setCurrentStep} 
+      />
     }
   ];
 
   return (
-    <Card className="ds160-form-container">
-      {formId && <ApplicationIdDisplay formId={formId} />}
-      
-      <Form form={form} layout="vertical" initialValues={formData}>
-        <Row gutter={24}>
-          <Col span={6}>
-            <Steps
-              current={currentStep}
-              direction="vertical"
-              onChange={handleStepChange}
-              items={steps.map((item, index) => ({
-                title: item.title,
-                disabled: !completedSteps.includes(index),
-              }))}
-            />
-          </Col>
-          <Col span={18}>
-            <div className="steps-content">
-              {steps[currentStep].content}
-            </div>
-            
-            {currentStep < steps.length - 1 && (
+    <div className="ds160-form-container">
+      <Row gutter={[16, 16]}>
+        <Col span={24}>
+          <Card>
+            <ApplicationIdDisplay formId={formId} />
+            <Steps current={currentStep}>
+              {steps.map((step, index) => (
+                <Steps.Step key={index} title={step.title} />
+              ))}
+            </Steps>
+          </Card>
+        </Col>
+        <Col span={24}>
+          <Card>
+            <Form form={form} layout="vertical" name="ds160Form">
+              <div className="steps-content">{steps[currentStep].content}</div>
               <div className="steps-action" style={{ marginTop: '24px', display: 'flex', justifyContent: 'space-between' }}>
                 {currentStep > 0 && (
                   <Button onClick={handlePrev}>
                     上一步
                   </Button>
                 )}
-                <Button type="primary" onClick={handleNext}>
-                  {currentStep === steps.length - 2 ? '预览' : '下一步'}
-                </Button>
+                {currentStep < steps.length - 1 && (
+                  <Button type="primary" onClick={handleNext}>
+                    下一步
+                  </Button>
+                )}
+                {currentStep === steps.length - 1 && (
+                  <Button type="primary" onClick={handleSubmit}>
+                    提交
+                  </Button>
+                )}
                 <Button onClick={saveFormData}>
-                  保存
+                  保存草稿
                 </Button>
               </div>
-            )}
-          </Col>
-        </Row>
-      </Form>
-    </Card>
+            </Form>
+          </Card>
+        </Col>
+      </Row>
+    </div>
   );
 };
 
