@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Form, Steps, Button, Card, Row, Col, message } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import ApplicationIdDisplay from '../ApplicationIdDisplay';
@@ -41,7 +41,7 @@ const DS160Form: React.FC = () => {
   }, []); // Empty dependency array to run only once
 
   // Function to load form data from backend
-  const loadFormData = async (id: string) => {
+  const loadFormData = useCallback(async (id: string) => {
     try {
       // Call your API to get form data
       const response = await ds160Service.getFormById(id);
@@ -55,7 +55,7 @@ const DS160Form: React.FC = () => {
       console.error('Error loading form data:', error);
       message.error('加载表单数据时出错');
     }
-  };
+  }, [form]);
 
   // Load form data if formId is available
   useEffect(() => {
