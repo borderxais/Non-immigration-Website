@@ -151,3 +151,19 @@ export const isDependentSelection = (value: string): boolean => {
   
   return dependentCodes.includes(value);
 };
+
+// Education level options
+export const educationLevelOptions = [
+  { value: '', label: '- 请选择一个 -' },
+  { value: 'NO_EDUCATION', label: '无教育经历' },
+  { value: 'PRIMARY', label: '小学' },
+  { value: 'SECONDARY', label: '中学' },
+  { value: 'HIGH_SCHOOL', label: '高中' },
+  { value: 'VOCATIONAL', label: '职业学校' },
+  { value: 'ASSOCIATE', label: '大专' },
+  { value: 'BACHELOR', label: '本科' },
+  { value: 'MASTER', label: '硕士' },
+  { value: 'DOCTORAL', label: '博士' },
+  { value: 'PROFESSIONAL', label: '专业学位（如医学、法律）' },
+  { value: 'OTHER', label: '其他' },
+];

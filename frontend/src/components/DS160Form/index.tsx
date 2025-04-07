@@ -4,6 +4,12 @@ import { useNavigate } from 'react-router-dom';
 import ApplicationIdDisplay from '../ApplicationIdDisplay';
 import PersonalInfo from './sections/PersonalInfo';
 import TravelInfo from './sections/TravelInfo';
+import AddressHistory from './sections/AddressHistory';
+import EducationHistory from './sections/EducationHistory';
+import WorkHistory from './sections/WorkHistory';
+import FamilyInformation from './sections/FamilyInformation';
+import SecurityBackground from './sections/SecurityBackground';
+import PassportInformation from './sections/PassportInformation';
 import DS160ReviewPage from './sections/DS160ReviewPage';
 import { generateApplicationId } from '../../utils/formUtils';
 import ds160Service from '../../services/ds160Service';
@@ -155,6 +161,30 @@ const DS160Form: React.FC = () => {
     {
       title: '旅行信息',
       content: <TravelInfo form={form} />
+    },
+    {
+      title: '地址历史',
+      content: <AddressHistory form={form} />
+    },
+    {
+      title: '教育历史',
+      content: <EducationHistory form={form} />
+    },
+    {
+      title: '工作历史',
+      content: <WorkHistory form={form} />
+    },
+    {
+      title: '家庭信息',
+      content: <FamilyInformation form={form} />
+    },
+    {
+      title: '安全背景',
+      content: <SecurityBackground form={form} />
+    },
+    {
+      title: '护照信息',
+      content: <PassportInformation form={form} />
     },
     {
       title: '审核提交',

@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Card, Descriptions, Divider, Typography, Space, Row, Col } from 'antd';
 import { FormInstance } from 'antd/lib/form';
 
-const { Title, Text } = Typography;
+const { Title, Paragraph } = Typography;
 
 interface DS160ReviewPageProps {
   form: FormInstance;
@@ -28,7 +28,7 @@ const DS160ReviewPage: React.FC<DS160ReviewPageProps> = ({ form, onSubmit, onEdi
       <Card 
         title={
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <Text strong>{title}</Text>
+            <Typography.Text strong>{title}</Typography.Text>
             <Button type="link" onClick={() => onEdit(editStep)}>编辑</Button>
           </div>
         }
@@ -90,51 +90,98 @@ const DS160ReviewPage: React.FC<DS160ReviewPageProps> = ({ form, onSubmit, onEdi
     travelingWithOthers: formData.travelingWithOthers,
   };
 
-  const contactInfo = {
-    email: formData.email,
-    phone: formData.phone,
-    homeAddress: formData.homeAddress,
+  const addressHistory = {
+    currentAddress: formData.currentAddress,
+    currentCity: formData.currentCity,
+    currentState: formData.currentState,
+    currentPostalCode: formData.currentPostalCode,
+    currentCountry: formData.currentCountry,
+    currentAddressDuration: formData.currentAddressYears ? `${formData.currentAddressYears}年 ${formData.currentAddressMonths || 0}月` : '',
+    previousAddressesCount: formData.previousAddresses?.length || 0,
+  };
+
+  const educationHistory = {
+    highestEducationLevel: formData.highestEducationLevel,
+    educationHistoryCount: formData.educationHistory?.length || 0,
+  };
+
+  const workHistory = {
+    primaryOccupation: formData.primaryOccupation,
+    currentlyEmployed: formData.currentlyEmployed ? '是' : '否',
+    currentEmployerName: formData.currentEmployerName,
+    currentJobTitle: formData.currentJobTitle,
+    previousEmploymentCount: formData.previousEmployment?.length || 0,
+  };
+
+  const familyInfo = {
+    maritalStatus: formData.maritalStatus,
+    spouseName: formData.spouseSurname && formData.spouseGivenName ? `${formData.spouseSurname} ${formData.spouseGivenName}` : '',
+    fatherName: formData.fatherSurname && formData.fatherGivenName ? `${formData.fatherSurname} ${formData.fatherGivenName}` : '',
+    motherName: formData.motherSurname && formData.motherGivenName ? `${formData.motherSurname} ${formData.motherGivenName}` : '',
+    relativesInUSCount: formData.otherRelatives?.length || 0,
   };
 
   const securityInfo = {
-    hasCriminalRecord: formData.hasCriminalRecord,
-    hasDrugHistory: formData.hasDrugHistory,
-    hasTerroristActivity: formData.hasTerroristActivity,
+    hasArrestRecord: formData.hasArrestRecord ? '是' : '否',
+    hasViolatedDrugLaw: formData.hasViolatedDrugLaw ? '是' : '否',
+    hasMilitaryService: formData.hasMilitaryService ? '是' : '否',
+    militaryServiceCountry: formData.militaryServiceCountry,
+  };
+
+  const passportInfo = {
+    passportType: formData.passportType,
+    passportNumber: formData.passportNumber,
+    passportIssuingCountry: formData.passportIssuingCountry,
+    passportIssuanceDate: formatDate(formData.passportIssuanceDay, formData.passportIssuanceMonth, formData.passportIssuanceYear),
+    passportExpirationDate: formatDate(formData.passportExpirationDay, formData.passportExpirationMonth, formData.passportExpirationYear),
+    hasPreviousVisa: formData.hasPreviousVisa ? '是' : '否',
   };
 
   return (
     <div className="ds160-review-page">
-      <Space direction="vertical" style={{ width: '100%' }}>
-        <Title level={4}>请审核您的DS-160申请表信息</Title>
-        <Text>请仔细检查以下信息是否正确。如需修改，请点击相应部分的"编辑"按钮。</Text>
-        
-        <Divider />
-        
-        {/* Personal Information Section */}
-        {renderSection('个人信息', personalInfo, 0)}
-        
-        {/* Travel Information Section */}
-        {renderSection('旅行信息', travelInfo, 1)}
-        
-        {/* Contact Information Section */}
-        {renderSection('联系信息', contactInfo, 2)}
-        
-        {/* Security Information Section */}
-        {renderSection('安全问题', securityInfo, 3)}
-        
-        <Divider />
-        
-        <Row justify="center" style={{ marginTop: 24 }}>
-          <Col>
-            <Space>
-              <Button onClick={() => onEdit(0)}>返回编辑</Button>
-              <Button type="primary" onClick={onSubmit}>
-                确认提交
-              </Button>
-            </Space>
-          </Col>
-        </Row>
-      </Space>
+      <Title level={3}>申请表审核</Title>
+      <Paragraph>
+        请仔细检查以下信息。如需修改，请点击相应部分的"编辑"按钮。确认所有信息无误后，点击底部的"提交"按钮完成申请。
+      </Paragraph>
+      
+      <Divider />
+      
+      <Row gutter={[16, 16]}>
+        <Col span={24}>
+          {renderSection('个人信息', personalInfo, 0)}
+        </Col>
+        <Col span={24}>
+          {renderSection('旅行信息', travelInfo, 1)}
+        </Col>
+        <Col span={24}>
+          {renderSection('地址历史', addressHistory, 2)}
+        </Col>
+        <Col span={24}>
+          {renderSection('教育历史', educationHistory, 3)}
+        </Col>
+        <Col span={24}>
+          {renderSection('工作历史', workHistory, 4)}
+        </Col>
+        <Col span={24}>
+          {renderSection('家庭信息', familyInfo, 5)}
+        </Col>
+        <Col span={24}>
+          {renderSection('安全背景', securityInfo, 6)}
+        </Col>
+        <Col span={24}>
+          {renderSection('护照信息', passportInfo, 7)}
+        </Col>
+      </Row>
+      
+      <Divider />
+      
+      <div style={{ textAlign: 'center', marginTop: '24px' }}>
+        <Space size="large">
+          <Button type="primary" size="large" onClick={onSubmit}>
+            提交申请
+          </Button>
+        </Space>
+      </div>
     </div>
   );
 };
