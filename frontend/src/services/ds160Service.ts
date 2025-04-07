@@ -131,18 +131,34 @@ const saveFormDraft = async (formData: any): Promise<DS160Form> => {
     throw new Error('No token found. Please log in.');
   }
   
-  // Extract application_id if it exists
-  const application_id = formData.application_id || formData.applicationId;
+  // Extract form data and metadata with consistent naming
+  const { id, form_data, status, application_id } = formData;
   
-  const payload = {
-    form_data: formData,
-    status: 'draft',
-    application_id: application_id // Include application_id in the payload
-  };
+  // Prepare the payload correctly
+  const payload: any = {};
+  
+  // If form_data exists, use it, otherwise use the entire formData object as form_data
+  if (form_data) {
+    payload.form_data = form_data;
+  } else if (!id && !status && !application_id) {
+    // If only raw form data was passed (no metadata)
+    payload.form_data = formData;
+  }
+  
+  // Add other fields if they exist
+  if (status) payload.status = status;
+  
+  // Ensure application_id is always included if available
+  if (application_id) {
+    payload.application_id = application_id;
+    console.log('Including application_id in payload:', application_id);
+  }
+  
+  console.log('Saving form with payload:', payload);
   
   // If the form has an ID, update it, otherwise create a new draft
-  if (formData.formId) {
-    const response = await axios.put(`${API_URL}/ds160/${formData.formId}`, payload, {
+  if (id) {
+    const response = await axios.put(`${API_URL}/ds160/form/${id}`, payload, {
       headers: {
         Authorization: `Bearer ${token}`
       }

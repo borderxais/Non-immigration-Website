@@ -35,18 +35,30 @@ class DS160FormResource(Resource):
         current_user_id = get_jwt_identity()
         user = User.query.get(current_user_id)
         
-        # Extract application_id if provided
-        application_id = data.pop('application_id', None)
+        # Log the incoming data
+        logger.info(f"Creating new DS-160 form with data: {data}")
         
+        # Extract form_data and other fields
+        form_data = data.get('form_data', {})
+        status = data.get('status', 'draft')
+        
+        # Ensure consistent handling of application_id
+        application_id = data.get('application_id')
+        logger.info(f"Extracted application_id: {application_id}")
+        
+        # Create the form with all fields
         form = ds160.DS160Form(
             user_id=user.id, 
-            form_data=data, 
-            status="submitted",
+            form_data=form_data, 
+            status=status,
             application_id=application_id
         )
+        
         db.session.add(form)
         db.session.commit()
-        return {"message": "Form created successfully", "form_id": form.id}, 201
+        
+        # Return the complete form data including the application_id
+        return form.to_dict(), 201
 
 
 @api.route("/form/<string:form_id>")
@@ -63,6 +75,9 @@ class DS160FormDetailResource(Resource):
         data = request.json
         form = ds160.DS160Form.query.get(form_id)
         
+        # Log the incoming data
+        logger.info(f"Updating DS-160 form {form_id} with data: {data}")
+        
         if not form:
             return {"error": "Form not found"}, 404
             
@@ -72,6 +87,7 @@ class DS160FormDetailResource(Resource):
             
         # Update application_id if provided
         if 'application_id' in data:
+            logger.info(f"Updating application_id to: {data['application_id']}")
             form.application_id = data['application_id']
             
         # Update status if provided
@@ -79,7 +95,9 @@ class DS160FormDetailResource(Resource):
             form.status = data['status']
             
         db.session.commit()
-        return {"message": f"Form {form_id} updated successfully"}, 200
+        
+        # Return the updated form data
+        return form.to_dict(), 200
 
 
 @api.route("/user/forms")

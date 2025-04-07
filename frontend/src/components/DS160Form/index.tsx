@@ -149,13 +149,15 @@ const DS160Form: React.FC = () => {
       // Validate all fields
       const formValues = await form.validateFields();
       
-      // Prepare data for submission
+      // Prepare data for submission with consistent naming
       const dataToSubmit = {
         id: formId,
         form_data: formValues,
         status: 'submitted',
-        application_id: formId // Use the same ID as application_id
+        application_id: formId // Use the form ID as application_id
       };
+      
+      console.log('Submitting form with data:', dataToSubmit);
       
       // Call your API to submit form
       const response = await ds160Service.saveFormDraft(dataToSubmit);
@@ -166,7 +168,7 @@ const DS160Form: React.FC = () => {
       navigate('/ds160-success', { 
         state: { 
           formId: response.id,
-          applicationId: formId // Use the same ID as application_id
+          applicationId: formId // Make sure to use the original formId
         } 
       });
     } catch (error: any) {
