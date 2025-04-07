@@ -2,7 +2,7 @@ import React from 'react';
 import { Input, Radio, Divider, Typography, Form } from 'antd';
 import QuestionItem from '../common/QuestionItem';
 
-const { Text, Paragraph } = Typography;
+const { Paragraph } = Typography;
 
 interface SecurityBackgroundProps {
   form: any;
