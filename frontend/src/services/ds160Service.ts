@@ -10,6 +10,7 @@ export interface DS160Form {
   status: 'draft' | 'submitted' | 'approved' | 'rejected';
   created_at?: string;
   updated_at?: string;
+  application_id?: string;
 }
 
 export interface ValidationResult {
@@ -25,7 +26,17 @@ const createForm = async (formData: Omit<DS160Form, 'id'>): Promise<DS160Form> =
   if (!token) {
     throw new Error('No token found. Please log in.');
   }
-  const response = await axios.post(`${API_URL}/ds160/form`, formData, {
+  
+  // Extract application_id if it exists
+  const application_id = formData.application_id;
+  
+  // Prepare payload with application_id if available
+  const payload = {
+    ...formData,
+    application_id: application_id
+  };
+  
+  const response = await axios.post(`${API_URL}/ds160/form`, payload, {
     headers: {
       Authorization: `Bearer ${token}`
     }
@@ -120,9 +131,13 @@ const saveFormDraft = async (formData: any): Promise<DS160Form> => {
     throw new Error('No token found. Please log in.');
   }
   
+  // Extract application_id if it exists
+  const application_id = formData.application_id || formData.applicationId;
+  
   const payload = {
     form_data: formData,
-    status: 'draft'
+    status: 'draft',
+    application_id: application_id // Include application_id in the payload
   };
   
   // If the form has an ID, update it, otherwise create a new draft
