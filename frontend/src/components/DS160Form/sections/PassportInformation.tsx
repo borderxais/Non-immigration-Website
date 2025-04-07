@@ -4,7 +4,7 @@ import QuestionItem from '../common/QuestionItem';
 import DateInput from '../common/DateInput';
 import { countryOptions } from '../utils/formOptions';
 
-const { Text, Paragraph } = Typography;
+const { Paragraph } = Typography;
 
 interface PassportInformationProps {
   form: any;
