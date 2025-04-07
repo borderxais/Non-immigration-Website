@@ -34,10 +34,19 @@ class DS160FormResource(Resource):
         data = request.json
         current_user_id = get_jwt_identity()
         user = User.query.get(current_user_id)
-        form = ds160.DS160Form(user_id=user.id, form_data=data, status="submitted")
+        
+        # Extract application_id if provided
+        application_id = data.pop('application_id', None)
+        
+        form = ds160.DS160Form(
+            user_id=user.id, 
+            form_data=data, 
+            status="submitted",
+            application_id=application_id
+        )
         db.session.add(form)
         db.session.commit()
-        return {"message": "Form created successfully"}, 201
+        return {"message": "Form created successfully", "form_id": form.id}, 201
 
 
 @api.route("/form/<string:form_id>")
@@ -52,6 +61,24 @@ class DS160FormDetailResource(Resource):
     def put(self, form_id):
         """Update a DS-160 form"""
         data = request.json
+        form = ds160.DS160Form.query.get(form_id)
+        
+        if not form:
+            return {"error": "Form not found"}, 404
+            
+        # Update form data
+        if 'form_data' in data:
+            form.form_data = data['form_data']
+            
+        # Update application_id if provided
+        if 'application_id' in data:
+            form.application_id = data['application_id']
+            
+        # Update status if provided
+        if 'status' in data:
+            form.status = data['status']
+            
+        db.session.commit()
         return {"message": f"Form {form_id} updated successfully"}, 200
 
 
