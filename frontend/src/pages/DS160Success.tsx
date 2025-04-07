@@ -7,7 +7,6 @@ const { Paragraph, Text } = Typography;
 const DS160Success: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const formId = location.state?.formId;
   const applicationId = location.state?.applicationId;
 
   return (
