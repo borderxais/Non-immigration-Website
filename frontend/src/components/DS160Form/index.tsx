@@ -69,6 +69,23 @@ const DS160Form: React.FC = () => {
       const newFormId = generateApplicationId();
       setFormId(newFormId);
       
+      // Create a new form with the generated ID
+      const initialForm = {
+        id: newFormId,
+        form_data: {},
+        status: 'draft',
+        application_id: newFormId // Use the same ID as application_id
+      };
+      
+      // Save the initial form to the database
+      ds160Service.saveFormDraft(initialForm)
+        .then(() => {
+          console.log('Initial form created with ID:', newFormId);
+        })
+        .catch(error => {
+          console.error('Error creating initial form:', error);
+        });
+      
       // Save to localStorage for persistence
       localStorage.setItem('currentFormId', newFormId);
     }
@@ -130,22 +147,28 @@ const DS160Form: React.FC = () => {
   const handleSubmit = async () => {
     try {
       // Validate all fields
-      const values = await form.validateFields();
+      const formValues = await form.validateFields();
       
       // Prepare data for submission
       const dataToSubmit = {
         id: formId,
-        form_data: values,
-        status: 'submitted'
+        form_data: formValues,
+        status: 'submitted',
+        application_id: formId // Use the same ID as application_id
       };
       
       // Call your API to submit form
-      await ds160Service.saveFormDraft(dataToSubmit);
+      const response = await ds160Service.saveFormDraft(dataToSubmit);
       
       // Show success message
       message.success('表格提交成功！');
-      // Redirect to a success page
-      navigate('/ds160-success');
+      // Redirect to a success page with form ID and application ID
+      navigate('/ds160-success', { 
+        state: { 
+          formId: response.id,
+          applicationId: formId // Use the same ID as application_id
+        } 
+      });
     } catch (error: any) {
       console.error('Error submitting form:', error);
       message.error('提交表格时出错，请稍后再试。');

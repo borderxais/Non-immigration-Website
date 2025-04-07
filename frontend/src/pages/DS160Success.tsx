@@ -1,9 +1,14 @@
 import React from 'react';
-import { Result, Button, Card } from 'antd';
-import { useNavigate } from 'react-router-dom';
+import { Result, Button, Card, Typography } from 'antd';
+import { useNavigate, useLocation } from 'react-router-dom';
+
+const { Paragraph, Text } = Typography;
 
 const DS160Success: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const formId = location.state?.formId;
+  const applicationId = location.state?.applicationId;
 
   return (
     <Card style={{ maxWidth: 800, margin: '0 auto' }}>
@@ -20,6 +25,18 @@ const DS160Success: React.FC = () => {
           </Button>,
         ]}
       />
+      
+      {applicationId && (
+        <Card title="DS-160申请ID" style={{ marginTop: 24 }}>
+          <Paragraph>
+            您的DS-160申请ID已自动生成并保存。请妥善保管此ID，以便于后续查询和使用。
+          </Paragraph>
+          <Paragraph>
+            <Text strong>申请ID: </Text>
+            <Text copyable code>{applicationId}</Text>
+          </Paragraph>
+        </Card>
+      )}
     </Card>
   );
 };
