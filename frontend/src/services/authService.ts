@@ -22,7 +22,6 @@ const register = async (data: RegisterData): Promise<AuthResponse> => {
  * Login a user
  */
 const login = async (credentials: LoginCredentials): Promise<AuthResponse> => {
-
   const response = await axios.post(`${API_URL}/auth/login`, credentials);
   return response.data;
 };
