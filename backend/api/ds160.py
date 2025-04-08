@@ -275,6 +275,38 @@ class DS160ClientResource(Resource):
         return client_data
 
 
+@api.route("/client-data/by-application-id/<string:application_id>")
+class DS160ClientDataByApplicationIDResource(Resource):
+    @jwt_required()
+    def get(self, application_id):
+        """Get DS-160 form data formatted for the Chrome extension by application_id"""
+        current_user_id = get_jwt_identity()
+        
+        # Find the form by application_id
+        form = ds160.DS160Form.query.filter_by(
+            application_id=application_id, user_id=current_user_id
+        ).first()
+        
+        if not form:
+            return {"error": "Form not found with the given application ID"}, 404
+        
+        # Format the form data for the extension
+        client_data = {
+            "client_id": str(form.id),
+            "application_id": form.application_id,
+            "personal_info": form.form_data.get("personal_info", {}),
+            "contact_info": form.form_data.get("contact_info", {}),
+            "passport_info": form.form_data.get("passport_info", {}),
+            "travel_info": form.form_data.get("travel_info", {}),
+            "us_contact_info": form.form_data.get("us_contact_info", {}),
+            "family_info": form.form_data.get("family_info", {}),
+            "work_education_info": form.form_data.get("work_education_info", {}),
+            "security_background_info": form.form_data.get("security_background_info", {})
+        }
+        
+        return client_data
+
+
 @api.route("/events")
 class DS160EventResource(Resource):
     @jwt_required()
@@ -371,3 +403,21 @@ class DS160ValidationResource(Resource):
         """Validate form fields and provide suggestions"""
         data = request.json
         return {"valid": True, "suggestions": []}
+
+
+@api.route("/form/by-application-id/<string:application_id>")
+class DS160FormByApplicationIDResource(Resource):
+    @jwt_required()
+    def get(self, application_id):
+        """Retrieve a DS-160 form by its application_id"""
+        current_user_id = get_jwt_identity()
+        
+        # Find the form by application_id
+        form = ds160.DS160Form.query.filter_by(
+            application_id=application_id, user_id=current_user_id
+        ).first()
+        
+        if not form:
+            return {"error": "Form not found with the given application ID"}, 404
+            
+        return form.to_dict()
