@@ -290,22 +290,17 @@ class DS160ClientDataByApplicationIDResource(Resource):
         if not form:
             return {"error": "Form not found with the given application ID"}, 404
         
-        # Format the form data for the extension
+        # Format the form data for the extension - return flat structure
         client_data = {
             "client_id": str(form.id),
             "application_id": form.application_id,
-            "personal_info": form.form_data.get("personal_info", {}),
-            "contact_info": form.form_data.get("contact_info", {}),
-            "passport_info": form.form_data.get("passport_info", {}),
-            "travel_info": form.form_data.get("travel_info", {}),
-            "us_contact_info": form.form_data.get("us_contact_info", {}),
-            "family_info": form.form_data.get("family_info", {}),
-            "work_education_info": form.form_data.get("work_education_info", {}),
-            "security_background_info": form.form_data.get("security_background_info", {})
         }
         
+        # Add all form data fields directly to the client_data
+        if form.form_data:
+            client_data.update(form.form_data)
+        
         return client_data
-
 
 @api.route("/events")
 class DS160EventResource(Resource):
