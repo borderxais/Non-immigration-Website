@@ -691,8 +691,8 @@ const DS160Form: React.FC = () => {
             explanation="其它姓名包括您的婚前用名, 宗教用名、职业用名; 或任何为人所知的其它名字；或在过去为别人所知的其它名字。"
           >
             <Radio.Group>
-              <Radio value={true}>是</Radio>
-              <Radio value={false}>否</Radio>
+              <Radio value='Y'>是</Radio>
+              <Radio value='N'>否</Radio>
             </Radio.Group>
           </QuestionItem>
 
@@ -702,8 +702,8 @@ const DS160Form: React.FC = () => {
             explanation="电码由4位数字组成，代表着一些非罗马字母拼写而成的名字的字体。"
           >
             <Radio.Group>
-              <Radio value={true}>是</Radio>
-              <Radio value={false}>否</Radio>
+              <Radio value='Y'>是</Radio>
+              <Radio value='N'>否</Radio>
             </Radio.Group>
           </QuestionItem>
           
