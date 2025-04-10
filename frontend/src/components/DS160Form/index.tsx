@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Form, Steps, Button, Card, Typography, Row, Col, message } from 'antd';
+import { Form, Steps, Button, Card, Typography, message } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import ApplicationIdDisplay from '../ApplicationIdDisplay';
 import PersonalInfo from './sections/PersonalInfo';
