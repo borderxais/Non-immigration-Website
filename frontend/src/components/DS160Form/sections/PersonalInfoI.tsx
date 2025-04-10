@@ -92,69 +92,34 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
         <div className="field-group callout" style={highlightedBlockStyle}>
           <h4 style={{ marginBottom: '16px', fontWeight: 'normal' }}>请提供以下信息：</h4>
           
-          <Form.List name="otherNames">
-            {(fields, { add, remove }) => (
+          <RepeatableFormItem 
+            name="otherNames" 
+            addButtonText="增加另一个" 
+            removeButtonText="移走"
+          >
+            {(field: FormListFieldData) => (
               <>
-                {fields.map(({ key, name, ...restField }) => (
-                  <div key={key} style={{ marginBottom: '24px', padding: '16px', border: '1px dashed #d9d9d9', borderRadius: '8px', position: 'relative' }}>
-                    <Form.Item
-                      {...restField}
-                      name={[name, 'surname']}
-                      label="曾用姓氏 (婚前姓氏、宗教姓氏、职业姓氏、别姓等)"
-                      rules={[{ required: true, message: '请输入曾用姓氏' }]}
-                      style={{ marginBottom: '16px' }}
-                    >
-                      <Input style={{ width: '95%' }} maxLength={33} />
-                    </Form.Item>
-                    
-                    <Form.Item
-                      {...restField}
-                      name={[name, 'givenName']}
-                      label="曾用名字"
-                      rules={[{ required: true, message: '请输入曾用名字' }]}
-                    >
-                      <Input style={{ width: '95%' }} maxLength={33} />
-                    </Form.Item>
-                    
-                    <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '8px' }}>
-                      <Button 
-                        type="primary" 
-                        ghost
-                        icon={<PlusOutlined />} 
-                        onClick={() => add()}
-                        style={{ marginRight: '8px' }}
-                      >
-                        添加另一个
-                      </Button>
-                      
-                      {fields.length > 1 && (
-                        <Button 
-                          danger
-                          icon={<MinusOutlined />} 
-                          onClick={() => remove(name)}
-                        >
-                          移除
-                        </Button>
-                      )}
-                    </div>
-                  </div>
-                ))}
+                <Form.Item
+                  {...field}
+                  name={[field.name, 'surname']}
+                  label="曾用姓氏 (婚前姓氏、宗教姓氏、职业姓氏、别姓等)"
+                  rules={[{ required: true, message: '请输入曾用姓氏' }]}
+                  style={{ marginBottom: '16px' }}
+                >
+                  <Input style={{ width: '95%' }} maxLength={33} />
+                </Form.Item>
                 
-                {fields.length === 0 && (
-                  <Form.Item>
-                    <Button 
-                      type="dashed" 
-                      onClick={() => add()} 
-                      icon={<PlusOutlined />} 
-                      style={{ width: '100%' }}
-                    >
-                      添加名字
-                    </Button>
-                  </Form.Item>
-                )}
+                <Form.Item
+                  {...field}
+                  name={[field.name, 'givenName']}
+                  label="曾用名字"
+                  rules={[{ required: true, message: '请输入曾用名字' }]}
+                >
+                  <Input style={{ width: '95%' }} maxLength={33} />
+                </Form.Item>
               </>
             )}
-          </Form.List>
+          </RepeatableFormItem>
           
           <div style={{ marginTop: '16px', padding: '10px', backgroundColor: '#f9f9f9', borderRadius: '4px' }}>
             <h4 style={{ color: '#891300', marginBottom: '8px', fontWeight: 'normal' }}>帮助：其它姓名</h4>
