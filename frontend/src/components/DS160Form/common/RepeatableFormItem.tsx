@@ -13,7 +13,6 @@ interface RepeatableFormItemProps {
 
 const RepeatableFormItem: React.FC<RepeatableFormItemProps> = ({
   name,
-  title,
   children,
   addButtonText = "Add Another",
   removeButtonText = "Remove"
