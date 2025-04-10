@@ -3,6 +3,7 @@ import { Form, Steps, Button, Card, Typography, message } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import ApplicationIdDisplay from '../ApplicationIdDisplay';
 import PersonalInfoI from './sections/PersonalInfoI';
+import PersonalInfoII from './sections/PersonalInfoII';
 import TravelInfo from './sections/TravelInfo';
 import AddressHistory from './sections/AddressHistory';
 import EducationHistory from './sections/EducationHistory';
