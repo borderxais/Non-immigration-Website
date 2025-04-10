@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Form, Steps, Button, Card, Row, Col, message } from 'antd';
+import { Form, Steps, Button, Card, Typography, Row, Col, message } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import ApplicationIdDisplay from '../ApplicationIdDisplay';
 import PersonalInfo from './sections/PersonalInfo';
@@ -222,47 +222,69 @@ const DS160Form: React.FC = () => {
   ];
 
   return (
-    <div className="ds160-form-container">
-      <Row gutter={[16, 16]}>
-        <Col span={24}>
-          <Card>
-            <ApplicationIdDisplay formId={formId} />
-            <Steps current={currentStep}>
-              {steps.map((step, index) => (
-                <Steps.Step key={index} title={step.title} />
-              ))}
-            </Steps>
-          </Card>
-        </Col>
-        <Col span={24}>
-          <Card>
-            <Form form={form} layout="vertical" name="ds160Form">
-              <div className="steps-content">{steps[currentStep].content}</div>
-              <div className="steps-action" style={{ marginTop: '24px', display: 'flex', justifyContent: 'space-between' }}>
-                {currentStep > 0 && (
-                  <Button onClick={handlePrev}>
-                    上一步
-                  </Button>
-                )}
-                {currentStep < steps.length - 1 && (
-                  <Button type="primary" onClick={handleNext}>
-                    下一步
-                  </Button>
-                )}
-                {currentStep === steps.length - 1 && (
-                  <Button type="primary" onClick={handleSubmit}>
-                    提交
-                  </Button>
-                )}
-                <Button onClick={saveFormData}>
-                  保存草稿
+    <Card title="DS-160 非移民签证申请表" style={{ maxWidth: 1000, margin: '0 auto' }}>
+      <Form form={form} layout="vertical" name="ds160Form">
+        <ApplicationIdDisplay formId={formId} />
+        <div style={{ display: 'flex', gap: '24px' }}>
+          {/* Left sidebar with steps */}
+          <div style={{ width: '25%', minWidth: '200px' }}>
+            <Steps
+              current={currentStep}
+              direction="vertical"
+              onChange={(current) => {
+                // Only allow navigation to completed steps
+                if (completedSteps.includes(current)) {
+                  setCurrentStep(current);
+                } else {
+                  message.warning('请先完成当前步骤');
+                }
+              }}
+              items={steps.map((step, index) => ({
+                title: step.title,
+                style: completedSteps.includes(index) ? { cursor: 'pointer' } : {},
+              }))}
+            />
+          </div>
+          
+          {/* Right content area */}
+          <div style={{ flex: 1 }}>
+            {/* Page title outside the content card */}
+            <div style={{ marginBottom: '16px' }}>
+              <Typography.Title level={4}>{steps[currentStep].title}</Typography.Title>
+            </div>
+          
+            {/* Content card without the title */}
+            <Card style={{ backgroundColor: '#f5f5f5' }}>
+              {steps[currentStep].content}
+            </Card>
+
+            <div style={{ marginTop: 24, textAlign: 'right' }}>
+              {currentStep > 0 && (
+                <Button style={{ margin: '0 8px' }} onClick={handlePrev}>
+                  上一步
                 </Button>
-              </div>
-            </Form>
-          </Card>
-        </Col>
-      </Row>
-    </div>
+              )}
+              {currentStep < steps.length - 1 && (
+                <Button type="primary" onClick={handleNext}>
+                  下一步
+                </Button>
+              )}
+              {currentStep === steps.length - 1 && (
+                <Button type="primary" onClick={handleSubmit}>
+                  提交申请
+                </Button>
+              )}
+              <Button 
+                style={{ margin: '0 8px' }} 
+                onClick={saveFormData}
+                >
+                保存草稿
+              </Button>
+            </div>
+          </div>
+        </div>
+      </Form>
+    </Card>
   );
 };
 
