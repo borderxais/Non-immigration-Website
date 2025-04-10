@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Input, Select, Radio, Divider, Button, Form, Typography } from 'antd';
-import { PlusOutlined, MinusOutlined } from '@ant-design/icons';
 import QuestionItem from '../common/QuestionItem';
 import DateInput from '../common/DateInput';
 import RepeatableFormItem from '../common/RepeatableFormItem';
