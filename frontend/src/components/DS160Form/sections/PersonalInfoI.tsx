@@ -1,8 +1,11 @@
-import React from 'react';
-import { Input, Select, Radio, Divider } from 'antd';
+import React, { useState } from 'react';
+import { Input, Select, Radio, Divider, Button, Form, Typography } from 'antd';
+import { PlusOutlined, MinusOutlined } from '@ant-design/icons';
 import QuestionItem from '../common/QuestionItem';
 import DateInput from '../common/DateInput';
 import { countryOptions } from '../utils/formOptions';
+
+const { Paragraph } = Typography;
 
 interface PersonalInfoIProps {
   form: any;
@@ -16,6 +19,30 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
     borderRadius: '8px', 
     padding: '16px',
     marginBottom: '24px'
+  };
+
+  // State to track if user has other names
+  const [hasOtherNames, setHasOtherNames] = useState<boolean | null>(null);
+  
+  // Handle radio button change for other names
+  const handleOtherNamesChange = (e: any) => {
+    setHasOtherNames(e.target.value);
+    
+    // If user selects "No", clear any existing other names data
+    if (!e.target.value) {
+      form.setFieldsValue({ otherNames: [] });
+    } else if (e.target.value && (!form.getFieldValue('otherNames') || form.getFieldValue('otherNames').length === 0)) {
+      // If user selects "Yes" and there are no other names yet, add an empty one
+      form.setFieldsValue({ otherNames: [{ surname: '', givenName: '' }] });
+    }
+  };
+
+  // State to track if user has telecode
+  const [hasTelecode, setHasTelecode] = useState<boolean | null>(null);
+  
+  // Handle radio button change for telecode
+  const handleTelecodeChange = (e: any) => {
+    setHasTelecode(e.target.value);
   };
 
   return (
@@ -51,22 +78,131 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
         name="hasOtherNames"
         explanation="其它姓名包括您的婚前用名, 宗教用名、职业用名; 或任何为人所知的其它名字；或在过去为别人所知的其它名字。"
       >
-        <Radio.Group>
+        <Radio.Group onChange={handleOtherNamesChange}>
           <Radio value={true}>是</Radio>
           <Radio value={false}>否</Radio>
         </Radio.Group>
       </QuestionItem>
+
+      {hasOtherNames && (
+        <div className="field-group callout" style={highlightedBlockStyle}>
+          <h4 style={{ marginBottom: '16px', fontWeight: 'normal' }}>请提供以下信息：</h4>
+          
+          <Form.List name="otherNames">
+            {(fields, { add, remove }) => (
+              <>
+                {fields.map(({ key, name, ...restField }) => (
+                  <div key={key} style={{ marginBottom: '24px', padding: '16px', border: '1px dashed #d9d9d9', borderRadius: '8px', position: 'relative' }}>
+                    <Form.Item
+                      {...restField}
+                      name={[name, 'surname']}
+                      label="曾用姓氏 (婚前姓氏、宗教姓氏、职业姓氏、别姓等)"
+                      rules={[{ required: true, message: '请输入曾用姓氏' }]}
+                      style={{ marginBottom: '16px' }}
+                    >
+                      <Input style={{ width: '95%' }} maxLength={33} />
+                    </Form.Item>
+                    
+                    <Form.Item
+                      {...restField}
+                      name={[name, 'givenName']}
+                      label="曾用名字"
+                      rules={[{ required: true, message: '请输入曾用名字' }]}
+                    >
+                      <Input style={{ width: '95%' }} maxLength={33} />
+                    </Form.Item>
+                    
+                    <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '8px' }}>
+                      <Button 
+                        type="primary" 
+                        ghost
+                        icon={<PlusOutlined />} 
+                        onClick={() => add()}
+                        style={{ marginRight: '8px' }}
+                      >
+                        添加另一个
+                      </Button>
+                      
+                      {fields.length > 1 && (
+                        <Button 
+                          danger
+                          icon={<MinusOutlined />} 
+                          onClick={() => remove(name)}
+                        >
+                          移除
+                        </Button>
+                      )}
+                    </div>
+                  </div>
+                ))}
+                
+                {fields.length === 0 && (
+                  <Form.Item>
+                    <Button 
+                      type="dashed" 
+                      onClick={() => add()} 
+                      icon={<PlusOutlined />} 
+                      style={{ width: '100%' }}
+                    >
+                      添加名字
+                    </Button>
+                  </Form.Item>
+                )}
+              </>
+            )}
+          </Form.List>
+          
+          <div style={{ marginTop: '16px', padding: '10px', backgroundColor: '#f9f9f9', borderRadius: '4px' }}>
+            <h4 style={{ color: '#891300', marginBottom: '8px', fontWeight: 'normal' }}>帮助：其它姓名</h4>
+            <Paragraph style={{ fontSize: '13px', color: '#666' }}>
+              如果您只有其它姓氏需输入，请将上面相同的名字再输入一次；相反，如果您只有其它名字需输入，则将相同的姓氏再输入一次。
+            </Paragraph>
+          </div>
+        </div>
+      )}
 
       <QuestionItem
         question="您是否有代表您姓名的电码？"
         name="hasTelecode"
         explanation="电码由4位数字组成，代表着一些非罗马字母拼写而成的名字的字体。"
       >
-        <Radio.Group>
+        <Radio.Group onChange={handleTelecodeChange}>
           <Radio value={true}>是</Radio>
           <Radio value={false}>否</Radio>
         </Radio.Group>
       </QuestionItem>
+      
+      {hasTelecode && (
+        <div className="field-group callout" style={highlightedBlockStyle}>
+          <h4 style={{ marginBottom: '16px', fontWeight: 'normal' }}>请提供以下信息：</h4>
+          
+          <div className="field-group callout wadd">
+            <Form.Item
+              name="telecodeSurname"
+              label="姓氏的电码"
+              rules={[{ required: true, message: '请输入姓氏的电码' }]}
+              style={{ marginBottom: '16px' }}
+            >
+              <Input style={{ width: '95%' }} maxLength={20} />
+            </Form.Item>
+            
+            <Form.Item
+              name="telecodeGivenName"
+              label="名字的电码"
+              rules={[{ required: true, message: '请输入名字的电码' }]}
+            >
+              <Input style={{ width: '95%' }} maxLength={20} />
+            </Form.Item>
+          </div>
+          
+          <div style={{ marginTop: '16px', padding: '10px', backgroundColor: '#f9f9f9', borderRadius: '4px' }}>
+            <h4 style={{ color: '#891300', marginBottom: '8px', fontWeight: 'normal' }}>帮助：电码</h4>
+            <Paragraph style={{ fontSize: '13px', color: '#666' }}>
+              电码由4位数字组成，代表着一些非罗马字母拼写而成的名字的字体。
+            </Paragraph>
+          </div>
+        </div>
+      )}
       
       <Divider />
       
