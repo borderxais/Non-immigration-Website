@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Select, Radio, Input, Divider, Checkbox } from 'antd';
+import { Form, Select, Radio, Input, Divider } from 'antd';
 import { FormInstance } from 'antd/lib/form';
 import QuestionItem from '../common/QuestionItem';
 import { countryOptions } from '../utils/formOptions';
