@@ -184,6 +184,10 @@ const DS160Form: React.FC = () => {
       content: <PersonalInfoI form={form} />
     },
     {
+      title: '个人信息 II',
+      content: <PersonalInfoII form={form} />
+    },
+    {
       title: '旅行信息',
       content: <TravelInfo form={form} />
     },
