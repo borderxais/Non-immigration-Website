@@ -80,6 +80,7 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
         <Input
           {...(children.props as any)}
           disabled={isNaChecked}
+          placeholder={isNaChecked ? '' : (children.props as any).placeholder}
           style={{ 
             ...((children.props as any).style || {}),
             backgroundColor: isNaChecked ? '#f5f5f5' : 'white'
@@ -94,6 +95,7 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
         <Select
           {...(children.props as any)}
           disabled={isNaChecked}
+          placeholder={isNaChecked ? '' : (children.props as any).placeholder}
           style={{ 
             ...((children.props as any).style || {}),
             backgroundColor: isNaChecked ? '#f5f5f5' : 'white'
@@ -108,6 +110,7 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
         <DatePicker
           {...(children.props as any)}
           disabled={isNaChecked}
+          placeholder={isNaChecked ? '' : (children.props as any).placeholder}
           style={{ 
             ...((children.props as any).style || {}),
             backgroundColor: isNaChecked ? '#f5f5f5' : 'white'
@@ -132,7 +135,7 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
   
   return (
     <Row gutter={24} style={{ marginBottom: 24 }}>
-      <Col span={explanation && !isNaChecked ? 16 : 24}>
+      <Col span={explanation ? 16 : 24}>
         <Space direction="vertical" style={{ width: '100%' }} size={8}>
           <Text strong>
             {number ? `${number}. ` : ''}{question}{required && <span style={{ color: '#ff4d4f', marginLeft: '4px' }}>*</span>}
@@ -161,7 +164,7 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
           )}
         </Space>
       </Col>
-      {explanation && !isNaChecked && (
+      {explanation && (
         <Col span={8}>
           <div style={{ padding: '10px', backgroundColor: '#f9f9f9', borderRadius: '4px', height: '100%' }}>
             <Paragraph style={{ fontSize: '13px', color: '#666' }}>{explanation}</Paragraph>
