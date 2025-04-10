@@ -107,7 +107,6 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
       <div className="field-group callout" style={highlightedBlockStyle}>
         <QuestionItem
           question="日期"
-          name="dateOfBirth"
           explanation="若不知道具体日期或月份，请按护照所示填写。"
         >
           <DateInput 

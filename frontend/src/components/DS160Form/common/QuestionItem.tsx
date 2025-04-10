@@ -6,7 +6,7 @@ const { Text, Paragraph } = Typography;
 interface QuestionItemProps {
   number?: string;
   question: string;
-  name: string;
+  name?: string;
   required?: boolean;
   children: React.ReactNode;
   explanation?: string;
@@ -28,14 +28,14 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
   const form = Form.useFormInstance();
   
   // Use the form instance to get the current value of the NA checkbox
-  const isNaChecked = Form.useWatch(naCheckboxName || `${name}_na`, form);
-  
+  const naCheckboxFieldName = naCheckboxName || (name ? `${name}_na` : undefined);
+  const isNaChecked = naCheckboxFieldName ? Form.useWatch(naCheckboxFieldName, form) : false;
   // Handle NA checkbox change
   const handleNaCheckboxChange = (e: any) => {
     const checked = e.target.checked;
     
     // If the checkbox is checked, clear the related field value
-    if (checked) {
+    if (checked && name) {
       // Determine the field name to clear based on the component structure
       const fieldToClear: { [key: string]: undefined } = {};
       
@@ -135,17 +135,22 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
           <Text strong>
             {number ? `${number}. ` : ''}{question}{required && <span style={{ color: '#ff4d4f', marginLeft: '4px' }}>*</span>}
           </Text>
-          <Form.Item 
-            name={name} 
-            rules={fieldRules}
-            style={{ marginBottom: 0 }}
-          >
-            {renderDisableableInput()}
-          </Form.Item>
-          
-          {hasNaCheckbox && (
+          {name ? (
             <Form.Item 
-              name={naCheckboxName || `${name}_na`} 
+              name={name} 
+              rules={fieldRules}
+              style={{ marginBottom: 0 }}
+            >
+              {renderDisableableInput()}
+            </Form.Item>
+          ) : (
+            // If no name is provided, render children directly without Form.Item
+            renderDisableableInput()
+)}
+          
+          {hasNaCheckbox && naCheckboxFieldName && (
+            <Form.Item 
+              name={naCheckboxFieldName} 
               valuePropName="checked"
               style={{ marginBottom: 0, marginTop: 8, textAlign: 'right' }}
             >
