@@ -6,7 +6,7 @@ import FormItemButtons from '../components/FormItemButtons';
 import ApplicationIdDisplay from '../components/ApplicationIdDisplay';
 import { generateApplicationId } from '../utils/formUtils';
 
-//  Application ID AA00EGS9G1
+//  Application ID AA00EGS9G1, AA00EJ7QS1
 
 const { TextArea } = Input;
 const { Title, Text, Paragraph } = Typography;
