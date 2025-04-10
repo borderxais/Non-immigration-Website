@@ -42,7 +42,7 @@ const DS160FormRefactored: React.FC = () => {
   return (
     <div className="ds160-form-page">
       <Card className="page-card">
-        <Title level={2} className="page-title">DS-160 非移民签证申请表 (重构版)</Title>
+        <Title level={2} className="page-title">DS-160 非移民签证申请表</Title>
         <p className="page-description">
           请填写以下表格以完成您的DS-160非移民签证申请。所有带星号(*)的字段为必填项。
           您可以随时保存草稿并稍后返回继续填写。

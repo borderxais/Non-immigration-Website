@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Form, Steps, Button, Card, Typography, message } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import ApplicationIdDisplay from '../ApplicationIdDisplay';
-import PersonalInfo from './sections/PersonalInfo';
+import PersonalInfoI from './sections/PersonalInfoI';
 import TravelInfo from './sections/TravelInfo';
 import AddressHistory from './sections/AddressHistory';
 import EducationHistory from './sections/EducationHistory';
@@ -180,8 +180,8 @@ const DS160Form: React.FC = () => {
   // Define steps for the form
   const steps = [
     {
-      title: '个人信息',
-      content: <PersonalInfo form={form} />
+      title: '个人信息 I',
+      content: <PersonalInfoI form={form} />
     },
     {
       title: '旅行信息',

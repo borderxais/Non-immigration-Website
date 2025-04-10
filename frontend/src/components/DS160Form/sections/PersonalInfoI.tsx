@@ -4,11 +4,11 @@ import QuestionItem from '../common/QuestionItem';
 import DateInput from '../common/DateInput';
 import { countryOptions } from '../utils/formOptions';
 
-interface PersonalInfoProps {
+interface PersonalInfoIProps {
   form: any;
 }
 
-const PersonalInfo: React.FC<PersonalInfoProps> = ({ form }) => {
+const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
   // Define highlighted block style
   const highlightedBlockStyle = {
     background: '#f0f8ff', 
@@ -145,4 +145,4 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({ form }) => {
   );
 };
 
-export default PersonalInfo;
+export default PersonalInfoI;
