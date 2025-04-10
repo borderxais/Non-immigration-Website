@@ -44,6 +44,8 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
     setHasTelecode(e.target.value);
     if (!e.target.value) {
       form.setFieldsValue({ telecodes: [] });
+    } else if (e.target.value && (!form.getFieldValue('telecodes') || form.getFieldValue('telecodes').length === 0)) {
+      form.setFieldsValue({ telecodes: [{ surname: '', givenName: '' }] });
     }
   };
 
