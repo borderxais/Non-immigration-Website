@@ -18,13 +18,14 @@ const RepeatableFormItem: React.FC<RepeatableFormItemProps> = ({
 }) => {
   // Create a reference to store the Form.List's add function
   const addFieldRef = useRef<any>(null);
+  // Get the form instance at the component level
+  const form = Form.useFormInstance();
 
   // Initialize with at least one field when mounted
   useEffect(() => {
     // We need to wait for the next tick to ensure the form is fully rendered
     const timer = setTimeout(() => {
       if (addFieldRef.current) {
-        const form = Form.useFormInstance();
         const existingFields = form.getFieldValue(name);
         if (!existingFields || existingFields.length === 0) {
           addFieldRef.current();
@@ -33,7 +34,7 @@ const RepeatableFormItem: React.FC<RepeatableFormItemProps> = ({
     }, 0);
     
     return () => clearTimeout(timer);
-  }, [name]);
+  }, [form, name]);
 
   return (
     <Form.List name={name}>
