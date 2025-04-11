@@ -6,8 +6,6 @@ import RepeatableFormItem from '../common/RepeatableFormItem';
 import { countryOptions } from '../utils/formOptions';
 import { FormListFieldData } from 'antd/lib/form/FormList';
 
-const { Paragraph } = Typography;
-
 interface PersonalInfoIProps {
   form: any;
 }
