@@ -1,11 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Button, Form } from 'antd';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { FormListFieldData } from 'antd/lib/form/FormList';
 
 interface RepeatableFormItemProps {
   name: string;
-  title?: string;
   children: (field: FormListFieldData) => React.ReactNode;
   addButtonText?: string;
   removeButtonText?: string;
@@ -14,19 +13,34 @@ interface RepeatableFormItemProps {
 const RepeatableFormItem: React.FC<RepeatableFormItemProps> = ({
   name,
   children,
-  addButtonText = "Add Another",
-  removeButtonText = "Remove"
+  addButtonText = "添加另一个",
+  removeButtonText = "移除"
 }) => {
+  // Create a reference to store the Form.List's add function
+  const addFieldRef = useRef<any>(null);
+
+  // Initialize with at least one field when mounted
+  useEffect(() => {
+    // We need to wait for the next tick to ensure the form is fully rendered
+    const timer = setTimeout(() => {
+      if (addFieldRef.current) {
+        const form = Form.useFormInstance();
+        const existingFields = form.getFieldValue(name);
+        if (!existingFields || existingFields.length === 0) {
+          addFieldRef.current();
+        }
+      }
+    }, 0);
+    
+    return () => clearTimeout(timer);
+  }, [name]);
+
   return (
     <Form.List name={name}>
       {(fields, { add, remove }) => {
-        // If there are no fields, add one automatically
-        useEffect(() => {
-          if (fields.length === 0) {
-            add();
-          }
-        }, [fields.length, add]);
-
+        // Store the add function in the ref
+        addFieldRef.current = add;
+        
         return (
           <div className="repeatable-form-container">
             {/* Scrollable container for form fields */}
