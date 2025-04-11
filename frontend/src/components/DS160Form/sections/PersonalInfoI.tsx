@@ -119,13 +119,6 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
               </>
             )}
           </RepeatableFormItem>
-          
-          <div style={{ marginTop: '16px', padding: '10px', backgroundColor: '#f9f9f9', borderRadius: '4px' }}>
-            <h4 style={{ color: '#891300', marginBottom: '8px', fontWeight: 'normal' }}>帮助：其它姓名</h4>
-            <Paragraph style={{ fontSize: '13px', color: '#666' }}>
-              如果您只有其它姓氏需输入，请将上面相同的名字再输入一次；相反，如果您只有其它名字需输入，则将相同的姓氏再输入一次。
-            </Paragraph>
-          </div>
         </div>
       )}
 
@@ -161,13 +154,6 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
             >
               <Input style={{ width: '95%' }} maxLength={20} />
             </Form.Item>
-          </div>
-          
-          <div style={{ marginTop: '16px', padding: '10px', backgroundColor: '#f9f9f9', borderRadius: '4px' }}>
-            <h4 style={{ color: '#891300', marginBottom: '8px', fontWeight: 'normal' }}>帮助：电码</h4>
-            <Paragraph style={{ fontSize: '13px', color: '#666' }}>
-              电码由4位数字组成，代表着一些非罗马字母拼写而成的名字的字体。
-            </Paragraph>
           </div>
         </div>
       )}

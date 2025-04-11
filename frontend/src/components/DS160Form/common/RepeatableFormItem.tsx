@@ -49,29 +49,28 @@ const RepeatableFormItem: React.FC<RepeatableFormItemProps> = ({
               {fields.map((field) => (
                 <div key={field.key} className="field-group callout wadd" style={{ marginBottom: '16px', padding: '16px', border: '1px dashed #d9d9d9', borderRadius: '8px' }}>
                   {children(field)}
+                  
+                  {/* Buttons for each entry */}
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '8px' }}>
+                    <Button
+                      type="link"
+                      onClick={() => add()}
+                      icon={<PlusOutlined />}
+                    >
+                      {addButtonText}
+                    </Button>
+                    
+                    <Button 
+                      type="link" 
+                      onClick={() => fields.length > 1 && remove(field.name)}
+                      icon={<MinusCircleOutlined />}
+                      disabled={fields.length <= 1}
+                    >
+                      {removeButtonText}
+                    </Button>
+                  </div>
                 </div>
               ))}
-            </div>
-            
-            {/* Buttons container - outside the scrollable area */}
-            <div className="buttons-container" style={{ display: 'flex', justifyContent: 'space-between', marginTop: '8px' }}>
-              <Button
-                type="link"
-                onClick={() => add()}
-                icon={<PlusOutlined />}
-              >
-                {addButtonText}
-              </Button>
-              
-              {fields.length > 1 && (
-                <Button 
-                  type="link" 
-                  onClick={() => remove(fields[fields.length - 1].name)}
-                  icon={<MinusCircleOutlined />}
-                >
-                  {removeButtonText}
-                </Button>
-              )}
             </div>
           </div>
         );
