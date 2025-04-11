@@ -44,34 +44,31 @@ const RepeatableFormItem: React.FC<RepeatableFormItemProps> = ({
         
         return (
           <div className="repeatable-form-container">
-            {/* Scrollable container for form fields */}
-            <div style={{ maxHeight: '400px', overflowY: 'auto', border: '1px solid #f0f0f0', borderRadius: '4px', padding: '8px' }}>
-              {fields.map((field) => (
-                <div key={field.key} className="field-group callout wadd" style={{ marginBottom: '16px', padding: '16px', border: '1px dashed #d9d9d9', borderRadius: '8px' }}>
-                  {children(field)}
+            {fields.map((field) => (
+              <div key={field.key} className="field-group callout wadd" style={{ marginBottom: '16px', padding: '16px', border: '1px dashed #d9d9d9', borderRadius: '8px' }}>
+                {children(field)}
+                
+                {/* Buttons for each entry */}
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '8px' }}>
+                  <Button
+                    type="link"
+                    onClick={() => add()}
+                    icon={<PlusOutlined />}
+                  >
+                    {addButtonText}
+                  </Button>
                   
-                  {/* Buttons for each entry */}
-                  <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '8px' }}>
-                    <Button
-                      type="link"
-                      onClick={() => add()}
-                      icon={<PlusOutlined />}
-                    >
-                      {addButtonText}
-                    </Button>
-                    
-                    <Button 
-                      type="link" 
-                      onClick={() => fields.length > 1 && remove(field.name)}
-                      icon={<MinusCircleOutlined />}
-                      disabled={fields.length <= 1}
-                    >
-                      {removeButtonText}
-                    </Button>
-                  </div>
+                  <Button 
+                    type="link" 
+                    onClick={() => fields.length > 1 && remove(field.name)}
+                    icon={<MinusCircleOutlined />}
+                    disabled={fields.length <= 1}
+                  >
+                    {removeButtonText}
+                  </Button>
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
         );
       }}
