@@ -144,34 +144,24 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
         <div className="field-group callout" style={highlightedBlockStyle}>
           <h4 style={{ marginBottom: '16px', fontWeight: 'normal' }}>请提供以下信息：</h4>
           
-          <RepeatableFormItem 
-            name="telecodes" 
-            addButtonText="增加另一个" 
-            removeButtonText="移走"
-          >
-            {(field: FormListFieldData) => (
-              <>
-                <Form.Item
-                  {...field}
-                  name={[field.name, 'surname']}
-                  label="姓氏的电码"
-                  rules={[{ required: true, message: '请输入姓氏的电码' }]}
-                  style={{ marginBottom: '16px' }}
-                >
-                  <Input style={{ width: '95%' }} maxLength={20} />
-                </Form.Item>
-                
-                <Form.Item
-                  {...field}
-                  name={[field.name, 'givenName']}
-                  label="名字的电码"
-                  rules={[{ required: true, message: '请输入名字的电码' }]}
-                >
-                  <Input style={{ width: '95%' }} maxLength={20} />
-                </Form.Item>
-              </>
-            )}
-          </RepeatableFormItem>
+          <div style={{ maxHeight: '400px', overflowY: 'auto', border: '1px solid #f0f0f0', borderRadius: '4px', padding: '16px' }}>
+            <Form.Item
+              name={['telecode', 'surname']}
+              label="姓氏的电码"
+              rules={[{ required: true, message: '请输入姓氏的电码' }]}
+              style={{ marginBottom: '16px' }}
+            >
+              <Input style={{ width: '95%' }} maxLength={20} />
+            </Form.Item>
+            
+            <Form.Item
+              name={['telecode', 'givenName']}
+              label="名字的电码"
+              rules={[{ required: true, message: '请输入名字的电码' }]}
+            >
+              <Input style={{ width: '95%' }} maxLength={20} />
+            </Form.Item>
+          </div>
           
           <div style={{ marginTop: '16px', padding: '10px', backgroundColor: '#f9f9f9', borderRadius: '4px' }}>
             <h4 style={{ color: '#891300', marginBottom: '8px', fontWeight: 'normal' }}>帮助：电码</h4>
