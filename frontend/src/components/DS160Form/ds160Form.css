@@ -12,24 +12,17 @@
   flex: 3;
   border-left: 1px solid #eee;
   padding-left: 20px;
-  display: flex;
-  flex-direction: column;
 }
 
-/* This ensures explanations have the same spacing as questions */
 .explanation-item {
-  margin-bottom: 10px;
-  min-height: 60px; /* Adjust this value based on your average question height */
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
+  margin-bottom: 20px;
 }
 
 .question-section {
   margin-bottom: 20px;
   border: none;
   padding-bottom: 20px;
-  border-bottom: 1px solid #d9d9d9; /* Darker border color */
+  border-bottom: 1px solid #d8d8d8; 
 }
 
 /* Style for the last fieldset to avoid double borders */
