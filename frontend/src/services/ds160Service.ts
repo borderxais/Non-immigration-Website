@@ -47,9 +47,9 @@ const createForm = async (formData: Omit<DS160Form, 'id'>): Promise<DS160Form> =
 /**
  * Update an existing DS-160 form
  */
-const updateForm = async (formId: string, formData: Partial<DS160Form>): Promise<DS160Form> => {
+const updateForm = async (applicationId: string, formData: Partial<DS160Form>): Promise<DS160Form> => {
   const token = localStorage.getItem('token');
-  const response = await axios.put(`${API_URL}/ds160/${formId}`, formData, {
+  const response = await axios.put(`${API_URL}/ds160/form/${applicationId}`, formData, {
     headers: {
       Authorization: `Bearer ${token}`
     }
@@ -62,12 +62,23 @@ const updateForm = async (formId: string, formData: Partial<DS160Form>): Promise
  */
 const getFormByApplicationId = async (applicationId: string): Promise<DS160Form> => {
   const token = localStorage.getItem('token');
-  const response = await axios.get(`${API_URL}/ds160/form/by-application-id/${applicationId}`, {
+  
+  // Get all forms for the user
+  const response = await axios.get(`${API_URL}/ds160/user/forms`, {
     headers: {
       Authorization: `Bearer ${token}`
     }
   });
-  return response.data;
+  
+  // Find the form with the matching application_id
+  const forms = response.data;
+  const form = forms.find((f: DS160Form) => f.application_id === applicationId);
+  
+  if (!form) {
+    throw new Error('Form not found with the given application ID');
+  }
+  
+  return form;
 };
 
 /**
@@ -86,9 +97,9 @@ const getUserForms = async (): Promise<DS160Form[]> => {
 /**
  * Delete a DS-160 form
  */
-const deleteForm = async (formId: string): Promise<void> => {
+const deleteForm = async (applicationId: string): Promise<void> => {
   const token = localStorage.getItem('token');
-  await axios.delete(`${API_URL}/ds160/${formId}`, {
+  await axios.delete(`${API_URL}/ds160/form/${applicationId}`, {
     headers: {
       Authorization: `Bearer ${token}`
     }

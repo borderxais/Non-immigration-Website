@@ -29,10 +29,15 @@ const DS160Form: React.FC = () => {
       // Call your API to get form data
       const response = await ds160Service.getFormByApplicationId(id);
       if (response) {
-        // Set form data
-        // Removed unused formData state
-        // Set form values
-        form.setFieldsValue(response);
+        console.log('Retrieved form data:', response);
+        
+        // The form_data property contains the actual form field values
+        if (response.form_data) {
+          console.log('Setting form values from form_data:', response.form_data);
+          form.setFieldsValue(response.form_data);
+        } else {
+          console.warn('No form_data found in the response');
+        }
       }
     } catch (error: any) {
       console.error('Error loading form data:', error);
@@ -58,7 +63,7 @@ const DS160Form: React.FC = () => {
   useEffect(() => {
     // Check if there's a form ID in the URL (for resuming a draft)
     const params = new URLSearchParams(window.location.search);
-    const draftId = params.get('id');
+    const draftId = params.get('application_id');
     
     // Try to get the saved step from localStorage
     const savedStep = localStorage.getItem('currentFormStep');
