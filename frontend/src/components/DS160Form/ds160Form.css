@@ -1,24 +1,44 @@
 .section-content {
-    display: flex;
-    flex-direction: row;
-  }
-  
-  .questions-column {
-    flex: 3;
-    padding-right: 20px;
-  }
-  
-  .explanations-column {
-    flex: 2;
-    border-left: 1px solid #eee;
-    padding-left: 20px;
-  }
-  
-  .explanation-item {
-    margin-bottom: 20px;
-  }
-  
-  .question-section {
-    margin-bottom: 20px;
-    border: none;
-  }
+  display: flex;
+  flex-direction: row;
+}
+
+.questions-column {
+  flex: 7;
+  padding-right: 20px;
+}
+
+.explanations-column {
+  flex: 3;
+  border-left: 1px solid #eee;
+  padding-left: 20px;
+}
+
+.explanation-item {
+  margin-bottom: 20px;
+}
+
+.question-section {
+  margin-bottom: 20px;
+  border: none;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+/* Style for the last fieldset to avoid double borders */
+.question-section:last-child {
+  border-bottom: none;
+}
+
+/* Ensure form items have consistent spacing */
+.ant-form-item {
+  margin-bottom: 16px;
+}
+
+/* Ensure the highlighted blocks have consistent styling */
+.field-group {
+  background-color: #fafafa;
+  padding: 16px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+}
