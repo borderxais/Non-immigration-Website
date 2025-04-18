@@ -65,6 +65,19 @@ const DS160Form: React.FC = () => {
       setFormId(draftId);
       // Load the form data from backend
       loadFormData(draftId);
+      
+      // Restore the current step from localStorage if available
+      const savedStep = localStorage.getItem(`formStep_${draftId}`);
+      if (savedStep !== null) {
+        const stepIndex = parseInt(savedStep, 10);
+        setCurrentStep(stepIndex);
+        // Also update completed steps
+        const newCompletedSteps = Array.from(
+          { length: stepIndex + 1 }, 
+          (_, i) => i
+        );
+        setCompletedSteps(newCompletedSteps);
+      }
     } else {
       // Generate a new application ID if none exists
       const newFormId = generateApplicationId();
@@ -75,7 +88,8 @@ const DS160Form: React.FC = () => {
         id: newFormId,
         form_data: {},
         status: 'draft',
-        application_id: newFormId // Use the same ID as application_id
+        application_id: newFormId, // Use the same ID as application_id
+        current_step: 0 // Initialize current step
       };
       
       // Save the initial form to the database
@@ -89,8 +103,17 @@ const DS160Form: React.FC = () => {
       
       // Save to localStorage for persistence
       localStorage.setItem('currentFormId', newFormId);
+      // Initialize step to 0
+      localStorage.setItem(`formStep_${newFormId}`, '0');
     }
   }, [loadFormData]);
+
+  // Save current step to localStorage when it changes
+  useEffect(() => {
+    if (formId) {
+      localStorage.setItem(`formStep_${formId}`, currentStep.toString());
+    }
+  }, [currentStep, formId]);
 
   // Save form ID to localStorage when it changes
   useEffect(() => {
@@ -106,7 +129,8 @@ const DS160Form: React.FC = () => {
       const dataToSave = {
         id: formId,
         form_data: values,
-        status: 'draft'
+        status: 'draft',
+        current_step: currentStep // Also save current step to the backend
       };
       
       // Call your API to save form data
