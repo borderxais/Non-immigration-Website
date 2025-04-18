@@ -27,7 +27,7 @@ const DS160Form: React.FC = () => {
   const loadFormData = useCallback(async (id: string) => {
     try {
       // Call your API to get form data
-      const response = await ds160Service.getFormById(id);
+      const response = await ds160Service.getFormByApplicationId(id);
       if (response) {
         // Set form data
         // Removed unused formData state

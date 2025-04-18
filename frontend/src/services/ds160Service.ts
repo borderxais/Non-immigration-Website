@@ -58,11 +58,11 @@ const updateForm = async (formId: string, formData: Partial<DS160Form>): Promise
 };
 
 /**
- * Get a DS-160 form by ID
+ * Get a DS-160 form by application ID
  */
-const getFormById = async (formId: string): Promise<DS160Form> => {
+const getFormByApplicationId = async (applicationId: string): Promise<DS160Form> => {
   const token = localStorage.getItem('token');
-  const response = await axios.get(`${API_URL}/ds160/form/by-application-id/${formId}`, {
+  const response = await axios.get(`${API_URL}/ds160/form/by-application-id/${applicationId}`, {
     headers: {
       Authorization: `Bearer ${token}`
     }
@@ -177,7 +177,7 @@ const saveFormDraft = async (formData: any): Promise<DS160Form> => {
 const ds160Service = {
   createForm,
   updateForm,
-  getFormById,
+  getFormByApplicationId,
   getUserForms,
   deleteForm,
   validateForm,
