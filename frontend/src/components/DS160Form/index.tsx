@@ -54,17 +54,42 @@ const DS160Form: React.FC = () => {
     }
   }, [form]);
 
+  // Save current step to localStorage when it changes
+  useEffect(() => {
+    if (formId) {
+      localStorage.setItem(`formStep_${formId}`, currentStep.toString());
+    }
+  }, [currentStep, formId]);
+
   // Initialize form ID and check URL parameters
   useEffect(() => {
+    // First check if there's a form ID in localStorage
+    const storedFormId = localStorage.getItem('currentFormId');
     // Check if there's a form ID in the URL (for resuming a draft)
     const params = new URLSearchParams(window.location.search);
     const draftId = params.get('id');
     
-    if (draftId) {
-      // If we have an ID in the URL, use that instead of generating a new one
-      setFormId(draftId);
+    // Use URL parameter if available, otherwise use localStorage
+    const formIdToUse = draftId || storedFormId;
+    
+    if (formIdToUse) {
+      // If we have an ID, use that instead of generating a new one
+      setFormId(formIdToUse);
       // Load the form data from backend
-      loadFormData(draftId);
+      loadFormData(formIdToUse);
+      
+      // Restore the current step from localStorage if available
+      const savedStep = localStorage.getItem(`formStep_${formIdToUse}`);
+      if (savedStep !== null) {
+        const stepIndex = parseInt(savedStep, 10);
+        setCurrentStep(stepIndex);
+        // Also update completed steps
+        const newCompletedSteps = Array.from(
+          { length: stepIndex + 1 }, 
+          (_, i) => i
+        );
+        setCompletedSteps(newCompletedSteps);
+      }
     } else {
       // Generate a new application ID if none exists
       const newFormId = generateApplicationId();
@@ -89,6 +114,7 @@ const DS160Form: React.FC = () => {
       
       // Save to localStorage for persistence
       localStorage.setItem('currentFormId', newFormId);
+      localStorage.setItem(`formStep_${newFormId}`, '0');
     }
   }, [loadFormData]);
 
