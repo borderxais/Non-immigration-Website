@@ -5,13 +5,7 @@ import ApplicationIdDisplay from '../ApplicationIdDisplay';
 import PersonalInfoI from './sections/PersonalInfoI';
 import PersonalInfoII from './sections/PersonalInfoII';
 import TravelInfo from './sections/TravelInfo';
-import AddressHistory from './sections/AddressHistory';
-import EducationHistory from './sections/EducationHistory';
-import WorkHistory from './sections/WorkHistory';
-import FamilyInformation from './sections/FamilyInformation';
-import SecurityBackground from './sections/SecurityBackground';
 import PassportInformation from './sections/PassportInformation';
-import DS160ReviewPage from './sections/DS160ReviewPage';
 import { generateApplicationId } from '../../utils/formUtils';
 import ds160Service from '../../services/ds160Service';
 
