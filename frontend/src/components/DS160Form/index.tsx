@@ -29,10 +29,9 @@ const DS160Form: React.FC = () => {
       // Call your API to get form data
       const response = await ds160Service.getFormById(id);
       if (response) {
-        // Set form data
-        // Removed unused formData state
-        // Set form values
-        form.setFieldsValue(response);
+        // Set form values - access form_data property
+        form.setFieldsValue(response.form_data || {});
+        console.log('Form data loaded successfully');
       }
     } catch (error: any) {
       console.error('Error loading form data:', error);
@@ -43,7 +42,7 @@ const DS160Form: React.FC = () => {
         console.error('Response status:', error.response.status);
         message.error(`加载表单数据时出错: ${error.response.status} - ${JSON.stringify(error.response.data)}`);
       } else if (error.request) {
-        // The request was made but no response was received
+        // The request was made but no response received
         console.error('Request made but no response received:', error.request);
         message.error('服务器未响应请求');
       } else {
@@ -51,6 +50,9 @@ const DS160Form: React.FC = () => {
         console.error('Error message:', error.message);
         message.error(`请求错误: ${error.message}`);
       }
+      
+      // Even if loading fails, we can still use the form with the current step from localStorage
+      message.info('继续使用本地存储的表单状态');
     }
   }, [form]);
 
