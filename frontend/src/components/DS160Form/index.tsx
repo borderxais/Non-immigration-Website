@@ -181,6 +181,10 @@ const DS160Form: React.FC = () => {
   // Define steps for the form
   const steps = [
     {
+      title: '开始',
+      content: <></>
+    },
+    {
       title: '个人信息 I',
       content: <PersonalInfoI form={form} />
     },
