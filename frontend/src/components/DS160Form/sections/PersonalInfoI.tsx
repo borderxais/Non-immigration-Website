@@ -90,38 +90,39 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
             </QuestionItem>
             
             {hasOtherNames && (
-              <div className="highlighted-block">
+              <>
                 <h4 style={{ marginBottom: '16px', fontWeight: 'normal' }}>请提供以下信息：</h4>
-                
-                <RepeatableFormItem 
-                  name="otherNames" 
-                  addButtonText="增加另一个" 
-                  removeButtonText="移走"
-                >
-                  {(field: FormListFieldData) => (
-                    <>
-                      <Form.Item
-                        {...field}
-                        name={[field.name, 'surname']}
-                        label="曾用姓氏 (婚前姓氏、宗教姓氏、职业姓氏、别姓等)"
-                        rules={[{ required: true, message: '请输入曾用姓氏' }]}
-                        style={{ marginBottom: '16px' }}
-                      >
-                        <Input style={{ width: '95%' }} maxLength={33} />
-                      </Form.Item>
-                      
-                      <Form.Item
-                        {...field}
-                        name={[field.name, 'givenName']}
-                        label="曾用名字"
-                        rules={[{ required: true, message: '请输入曾用名字' }]}
-                      >
-                        <Input style={{ width: '95%' }} maxLength={33} />
-                      </Form.Item>
-                    </>
-                  )}
-                </RepeatableFormItem>
-              </div>
+                <div className="highlighted-block">
+                  <RepeatableFormItem 
+                    name="otherNames" 
+                    addButtonText="增加另一个" 
+                    removeButtonText="移走"
+                  >
+                    {(field: FormListFieldData) => (
+                      <>
+                        <Form.Item
+                          {...field}
+                          name={[field.name, 'surname']}
+                          label="曾用姓氏 (婚前姓氏、宗教姓氏、职业姓氏、别姓等)"
+                          rules={[{ required: true, message: '请输入曾用姓氏' }]}
+                          style={{ marginBottom: '16px' }}
+                        >
+                          <Input style={{ width: '95%' }} maxLength={33} />
+                        </Form.Item>
+                        
+                        <Form.Item
+                          {...field}
+                          name={[field.name, 'givenName']}
+                          label="曾用名字"
+                          rules={[{ required: true, message: '请输入曾用名字' }]}
+                        >
+                          <Input style={{ width: '95%' }} maxLength={33} />
+                        </Form.Item>
+                      </>
+                    )}
+                  </RepeatableFormItem>
+                </div>
+              </>
             )}
           </div>
           <div className="explanation-column">
@@ -146,26 +147,27 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
             </QuestionItem>
             
             {hasTelecode && (
-              <div className="highlighted-block">
+              <>
                 <h4 style={{ marginBottom: '16px', fontWeight: 'normal' }}>请提供以下信息：</h4>
-                
-                <Form.Item
-                  name={['telecode', 'surname']}
-                  label="姓氏的电码"
-                  rules={[{ required: true, message: '请输入姓氏的电码' }]}
-                  style={{ marginBottom: '16px' }}
-                >
-                  <Input style={{ width: '95%' }} maxLength={20} />
-                </Form.Item>
-                
-                <Form.Item
-                  name={['telecode', 'givenName']}
-                  label="名字的电码"
-                  rules={[{ required: true, message: '请输入名字的电码' }]}
-                >
-                  <Input style={{ width: '95%' }} maxLength={20} />
-                </Form.Item>
-              </div>
+                <div className="highlighted-block">
+                  <Form.Item
+                    name={['telecode', 'surname']}
+                    label="姓氏的电码"
+                    rules={[{ required: true, message: '请输入姓氏的电码' }]}
+                    style={{ marginBottom: '16px' }}
+                  >
+                    <Input style={{ width: '95%' }} maxLength={20} />
+                  </Form.Item>
+                  
+                  <Form.Item
+                    name={['telecode', 'givenName']}
+                    label="名字的电码"
+                    rules={[{ required: true, message: '请输入名字的电码' }]}
+                  >
+                    <Input style={{ width: '95%' }} maxLength={20} />
+                  </Form.Item>
+                </div>
+              </>
             )}
           </div>
           <div className="explanation-column">
