@@ -30,3 +30,18 @@
 .ant-form-item {
   margin-bottom: 16px;
 }
+
+/* Help header styling */
+.help-header {
+    color: #891300;
+    margin-bottom: 8px;
+  }
+
+/* Highlighted block styling */
+.highlighted-block {
+    background-color: #f0f8ff;
+    border: 1px solid #d6e8fa;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 16px;
+  }

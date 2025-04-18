@@ -15,13 +15,6 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
   const [hasOtherNames, setHasOtherNames] = useState<boolean>(false);
   const [hasTelecode, setHasTelecode] = useState<boolean>(false);
 
-  const highlightedBlockStyle = {
-    backgroundColor: '#fafafa',
-    padding: '16px',
-    borderRadius: '4px',
-    marginBottom: '16px'
-  };
-
   const handleOtherNamesChange = (e: any) => {
     setHasOtherNames(e.target.value);
   };
@@ -44,7 +37,7 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
             </QuestionItem>
           </div>
           <div className="explanation-column">
-            <h4 style={{ color: '#891300' }}>帮助：姓氏</h4>
+            <h4 className="help-header">帮助：姓氏</h4>
             <p>输入您护照上列出的所有姓氏。如果只有一个，请输入这一个。</p>
           </div>
         </div>
@@ -59,7 +52,7 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
             </QuestionItem>
           </div>
           <div className="explanation-column">
-            <h4 style={{ color: '#891300' }}>帮助：名字</h4>
+            <h4 className="help-header">帮助：名字</h4>
             <p>如果您的护照上不包括名字信息，请在名字栏内输入'FNU'。</p>
           </div>
         </div>
@@ -76,7 +69,7 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
             </QuestionItem>
           </div>
           <div className="explanation-column">
-            <h4 style={{ color: '#891300' }}>帮助：全名（本地语言）</h4>
+            <h4 className="help-header">帮助：全名（本地语言）</h4>
             <p>请用中文填写您的全名。如不适用/技术不可用，请勾选下方的复选框。</p>
           </div>
         </div>
@@ -97,7 +90,7 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
             </QuestionItem>
             
             {hasOtherNames && (
-              <div className="field-group" style={highlightedBlockStyle}>
+              <div className="highlighted-block">
                 <h4 style={{ marginBottom: '16px', fontWeight: 'normal' }}>请提供以下信息：</h4>
                 
                 <RepeatableFormItem 
@@ -132,7 +125,7 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
             )}
           </div>
           <div className="explanation-column">
-            <h4 style={{ color: '#891300' }}>帮助：其它姓名</h4>
+            <h4 className="help-header">帮助：其它姓名</h4>
             <p>其它姓名包括您的婚前用名, 宗教用名、职业用名; 或任何为人所知的其它名字；或在过去为别人所知的其它名字。</p>
           </div>
         </div>
@@ -153,7 +146,7 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
             </QuestionItem>
             
             {hasTelecode && (
-              <div className="field-group" style={highlightedBlockStyle}>
+              <div className="highlighted-block">
                 <h4 style={{ marginBottom: '16px', fontWeight: 'normal' }}>请提供以下信息：</h4>
                 
                 <Form.Item
@@ -176,7 +169,7 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
             )}
           </div>
           <div className="explanation-column">
-            <h4 style={{ color: '#891300' }}>帮助：电码</h4>
+            <h4 className="help-header">帮助：电码</h4>
             <p>电码由4位数字组成，代表着一些非罗马字母拼写而成的名字的字体。</p>
           </div>
         </div>
@@ -197,7 +190,7 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
             </QuestionItem>
           </div>
           <div className="explanation-column">
-            <h4 style={{ color: '#891300' }}>帮助：性别</h4>
+            <h4 className="help-header">帮助：性别</h4>
             <p>请选择您的性别，必须与护照上的信息一致。</p>
           </div>
         </div>
@@ -221,7 +214,7 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
             </QuestionItem>
           </div>
           <div className="explanation-column">
-            <h4 style={{ color: '#891300' }}>帮助：婚姻状况</h4>
+            <h4 className="help-header">帮助：婚姻状况</h4>
             <p>请选择您目前的婚姻状况。</p>
           </div>
         </div>
@@ -232,7 +225,7 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
         <h4 style={{ marginBottom: '10px' }}>
           <span>出生日期与出生地</span>
         </h4>
-        <div style={highlightedBlockStyle}>
+        <div className="highlighted-block">
           <div className="question-row">
             <div className="question-column">
               <div className="field-group" >
@@ -271,11 +264,11 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
               </div>
             </div>
             <div className="explanation-column">
-              <h4 style={{ color: '#891300' }}>帮助：出生日期</h4>
+              <h4 className="help-header">帮助：出生日期</h4>
               <p>若不知道具体日期或月份，请按护照所示填写。</p>
               
               <div style={{ marginTop: '20px' }}>
-                <h4 style={{ color: '#891300' }}>帮助：出生地国家/地区</h4>
+                <h4 className="help-header">帮助：出生地国家/地区</h4>
                 <p>请选择您出生地的现用国家/地区名称。</p>
               </div>
             </div>
