@@ -65,9 +65,6 @@ const PersonalInfoII: React.FC<PersonalInfoIIProps> = ({ form }) => {
                         <Select options={countryOptions} style={{ width: '98%' }} placeholder="- 选择一个 -" />
                       </QuestionItem>
                     </div>
-                    <div className="explanation-column">
-                      {/* Empty explanation column to maintain layout */}
-                    </div>
                   </div>
                 </div>
               </>
@@ -106,9 +103,6 @@ const PersonalInfoII: React.FC<PersonalInfoIIProps> = ({ form }) => {
                       >
                         <Select options={countryOptions} style={{ width: '98%' }} placeholder="- 选择一个 -" />
                       </QuestionItem>
-                    </div>
-                    <div className="explanation-column">
-                      {/* Empty explanation column to maintain layout */}
                     </div>
                   </div>
                 </div>
