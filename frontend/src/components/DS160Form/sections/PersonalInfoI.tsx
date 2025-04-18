@@ -228,54 +228,56 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
       </fieldset>
 
       {/* Fifth section - Birth Date and Place */}
-      <fieldset className="question-section" style={highlightedBlockStyle}>
+      <fieldset className="question-section">
         <h4 style={{ marginBottom: '10px' }}>
           <span>出生日期与出生地</span>
         </h4>
-        <div className="question-row">
-          <div className="question-column">
-            <div className="field-group" >
-              <QuestionItem
-                question="日期"
-              >
-                <DateInput 
-                  dayName="dobDay" 
-                  monthName="dobMonth" 
-                  yearName="dobYear"
-                />
-              </QuestionItem>
+        <div style={highlightedBlockStyle}>
+          <div className="question-row">
+            <div className="question-column">
+              <div className="field-group" >
+                <QuestionItem
+                  question="日期"
+                >
+                  <DateInput 
+                    dayName="dobDay" 
+                    monthName="dobMonth" 
+                    yearName="dobYear"
+                  />
+                </QuestionItem>
 
-              <QuestionItem
-                question="城市"
-                name="birthPlace"
-              >
-                <Input placeholder="例如：北京" style={{ width: '99%' }} />
-              </QuestionItem>
+                <QuestionItem
+                  question="城市"
+                  name="birthPlace"
+                >
+                  <Input placeholder="例如：北京" style={{ width: '99%' }} />
+                </QuestionItem>
 
-              <QuestionItem
-                question="州/省"
-                name="birthState"
-                hasNaCheckbox={true}
-                naCheckboxName="birthState_na"
-              >
-                <Input placeholder="例如：北京市" style={{ width: '99%' }} />
-              </QuestionItem>
+                <QuestionItem
+                  question="州/省"
+                  name="birthState"
+                  hasNaCheckbox={true}
+                  naCheckboxName="birthState_na"
+                >
+                  <Input placeholder="例如：北京市" style={{ width: '99%' }} />
+                </QuestionItem>
 
-              <QuestionItem
-                question="国家/地区"
-                name="birthCountry"
-              >
-                <Select options={countryOptions} placeholder="- 选择一个 -" style={{ width: '98%' }} />
-              </QuestionItem>
+                <QuestionItem
+                  question="国家/地区"
+                  name="birthCountry"
+                >
+                  <Select options={countryOptions} placeholder="- 选择一个 -" style={{ width: '98%' }} />
+                </QuestionItem>
+              </div>
             </div>
-          </div>
-          <div className="explanation-column">
-            <h4 style={{ color: '#891300' }}>帮助：出生日期</h4>
-            <p>若不知道具体日期或月份，请按护照所示填写。</p>
-            
-            <div style={{ marginTop: '20px' }}>
-              <h4 style={{ color: '#891300' }}>帮助：出生地国家/地区</h4>
-              <p>请选择您出生地的现用国家/地区名称。</p>
+            <div className="explanation-column">
+              <h4 style={{ color: '#891300' }}>帮助：出生日期</h4>
+              <p>若不知道具体日期或月份，请按护照所示填写。</p>
+              
+              <div style={{ marginTop: '20px' }}>
+                <h4 style={{ color: '#891300' }}>帮助：出生地国家/地区</h4>
+                <p>请选择您出生地的现用国家/地区名称。</p>
+              </div>
             </div>
           </div>
         </div>
