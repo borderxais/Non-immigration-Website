@@ -3,12 +3,28 @@
   flex-direction: row;
 }
 
-.questions-column {
+.question-row {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.question-column {
   flex: 7;
   padding-right: 20px;
 }
 
-.explanations-column {
+.explanation-column {
+  flex: 3;
+  border-left: 1px solid #eee;
+  padding-left: 20px;
+}
+
+.questions-group {
+  flex: 7;
+  padding-right: 20px;
+}
+
+.explanations-group {
   flex: 3;
   border-left: 1px solid #eee;
   padding-left: 20px;

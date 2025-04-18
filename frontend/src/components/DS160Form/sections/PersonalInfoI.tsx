@@ -48,24 +48,40 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
 
   return (
     <div className="personal-infoI-I-section">
-
       <fieldset className="question-section">
-        <div className="section-content">
-          <div className="questions-column">
+        <div className="question-row">
+          <div className="question-column">
             <QuestionItem
               question="姓（拼音，与护照一致）"
               name="surname"
             >
               <Input placeholder="例如：ZHANG" />
             </QuestionItem>
-            
+          </div>
+          <div className="explanation-column">
+            <h4 style={{ color: '#891300' }}>帮助：姓氏</h4>
+            <p>输入您护照上列出的所有姓氏。如果只有一个，请输入这一个。</p>
+          </div>
+        </div>
+        
+        <div className="question-row">
+          <div className="question-column">
             <QuestionItem
               question="名（拼音，与护照一致）"
               name="givenName"
             >
               <Input placeholder="例如：SAN" />
             </QuestionItem>
-            
+          </div>
+          <div className="explanation-column">
+            <h4 style={{ color: '#891300' }}>帮助：名字</h4>
+            <p>如果您的护照上不包括名字信息，请在名字栏内输入'FNU'。</p>
+          </div>
+        </div>
+        
+        
+        <div className="question-row">
+          <div className="question-column">
             <QuestionItem
               question="全名（本地语言书写）"
               name="fullNameNative"
@@ -75,22 +91,9 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
               <Input placeholder="请用中文填写您的全名" />
             </QuestionItem>
           </div>
-          
-          <div className="explanations-column">
-            <div className="explanation-item">
-              <h4 style={{ color: '#891300' }}>帮助：姓氏</h4>
-              <p>输入您护照上列出的所有姓氏。如果只有一个，请输入这一个。</p>
-            </div>
-            
-            <div className="explanation-item">
-              <h4 style={{ color: '#891300' }}>帮助：名字</h4>
-              <p>如果您的护照上不包括名字信息，请在名字栏内输入'FNU'。</p>
-            </div>
-            
-            <div className="explanation-item">
-              <h4 style={{ color: '#891300' }}>帮助：全名（本地语言）</h4>
-              <p>请用中文填写您的全名。如不适用/技术不可用，请勾选下方的复选框。</p>
-            </div>
+          <div className="explanation-column">
+            <h4 style={{ color: '#891300' }}>帮助：全名（本地语言）</h4>
+            <p>请用中文填写您的全名。如不适用/技术不可用，请勾选下方的复选框。</p>
           </div>
         </div>
       </fieldset>
@@ -198,6 +201,7 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
           </div>
         </div>
       </fieldset>
+      
       <fieldset className="question-section">
         <div className="section-content">
           <div className="questions-column">
