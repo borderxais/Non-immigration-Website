@@ -29,9 +29,10 @@ const DS160Form: React.FC = () => {
       // Call your API to get form data
       const response = await ds160Service.getFormById(id);
       if (response) {
-        // Set form values - access form_data property
-        form.setFieldsValue(response.form_data || {});
-        console.log('Form data loaded successfully');
+        // Set form data
+        // Removed unused formData state
+        // Set form values
+        form.setFieldsValue(response);
       }
     } catch (error: any) {
       console.error('Error loading form data:', error);
@@ -42,7 +43,7 @@ const DS160Form: React.FC = () => {
         console.error('Response status:', error.response.status);
         message.error(`加载表单数据时出错: ${error.response.status} - ${JSON.stringify(error.response.data)}`);
       } else if (error.request) {
-        // The request was made but no response received
+        // The request was made but no response was received
         console.error('Request made but no response received:', error.request);
         message.error('服务器未响应请求');
       } else {
@@ -50,48 +51,20 @@ const DS160Form: React.FC = () => {
         console.error('Error message:', error.message);
         message.error(`请求错误: ${error.message}`);
       }
-      
-      // Even if loading fails, we can still use the form with the current step from localStorage
-      message.info('继续使用本地存储的表单状态');
     }
   }, [form]);
 
-  // Save current step to localStorage when it changes
-  useEffect(() => {
-    if (formId) {
-      localStorage.setItem(`formStep_${formId}`, currentStep.toString());
-    }
-  }, [currentStep, formId]);
-
   // Initialize form ID and check URL parameters
   useEffect(() => {
-    // First check if there's a form ID in localStorage
-    const storedFormId = localStorage.getItem('currentFormId');
     // Check if there's a form ID in the URL (for resuming a draft)
     const params = new URLSearchParams(window.location.search);
     const draftId = params.get('id');
     
-    // Use URL parameter if available, otherwise use localStorage
-    const formIdToUse = draftId || storedFormId;
-    
-    if (formIdToUse) {
-      // If we have an ID, use that instead of generating a new one
-      setFormId(formIdToUse);
+    if (draftId) {
+      // If we have an ID in the URL, use that instead of generating a new one
+      setFormId(draftId);
       // Load the form data from backend
-      loadFormData(formIdToUse);
-      
-      // Restore the current step from localStorage if available
-      const savedStep = localStorage.getItem(`formStep_${formIdToUse}`);
-      if (savedStep !== null) {
-        const stepIndex = parseInt(savedStep, 10);
-        setCurrentStep(stepIndex);
-        // Also update completed steps
-        const newCompletedSteps = Array.from(
-          { length: stepIndex + 1 }, 
-          (_, i) => i
-        );
-        setCompletedSteps(newCompletedSteps);
-      }
+      loadFormData(draftId);
     } else {
       // Generate a new application ID if none exists
       const newFormId = generateApplicationId();
@@ -116,7 +89,6 @@ const DS160Form: React.FC = () => {
       
       // Save to localStorage for persistence
       localStorage.setItem('currentFormId', newFormId);
-      localStorage.setItem(`formStep_${newFormId}`, '0');
     }
   }, [loadFormData]);
 
