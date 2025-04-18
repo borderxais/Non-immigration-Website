@@ -257,6 +257,9 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
                 <Input placeholder="例如：北京" style={{ width: '99%' }} />
               </QuestionItem>
             </div>
+            <div className="explanation-column">
+              {/* Empty explanation column to maintain layout */}
+            </div>
           </div>
           
           <div className="question-row">
@@ -269,6 +272,9 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
               >
                 <Input placeholder="例如：北京市" style={{ width: '99%' }} />
               </QuestionItem>
+            </div>
+            <div className="explanation-column">
+              {/* Empty explanation column to maintain layout */}
             </div>
           </div>
           
