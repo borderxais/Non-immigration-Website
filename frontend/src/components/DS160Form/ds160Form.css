@@ -18,7 +18,7 @@
 
 /* This ensures explanations have the same spacing as questions */
 .explanation-item {
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   min-height: 60px; /* Adjust this value based on your average question height */
   display: flex;
   flex-direction: column;
