@@ -103,7 +103,7 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
                         <Form.Item
                           {...field}
                           name={[field.name, 'surname']}
-                          label="曾用姓氏 (婚前姓氏、宗教姓氏、职业姓氏、别姓等)"
+                          label="曾用姓氏"
                           rules={[{ required: true, message: '请输入曾用姓氏' }]}
                           style={{ marginBottom: '16px' }}
                         >
@@ -186,6 +186,7 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
               name="gender"
             >
               <Select placeholder="选择一个" style={{ width: '98%' }}>
+                <Select.Option value="">- 请选择一个 -</Select.Option>
                 <Select.Option value="M">男</Select.Option>
                 <Select.Option value="F">女</Select.Option>
               </Select>
@@ -204,6 +205,7 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
               name="maritalStatus"
             >
               <Select placeholder="选择一个" style={{ width: '98%' }}>
+                <Select.Option value="">- 请选择一个 -</Select.Option>
                 <Select.Option value="M">已婚</Select.Option>
                 <Select.Option value="C">普通法婚姻</Select.Option>
                 <Select.Option value="P">民事结合/同居伴侣关系</Select.Option>
