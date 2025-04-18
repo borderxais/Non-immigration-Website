@@ -47,9 +47,9 @@ const createForm = async (formData: Omit<DS160Form, 'id'>): Promise<DS160Form> =
 /**
  * Update an existing DS-160 form
  */
-const updateForm = async (applicationId: string, formData: Partial<DS160Form>): Promise<DS160Form> => {
+const updateForm = async (formId: string, formData: Partial<DS160Form>): Promise<DS160Form> => {
   const token = localStorage.getItem('token');
-  const response = await axios.put(`${API_URL}/ds160/form/${applicationId}`, formData, {
+  const response = await axios.put(`${API_URL}/ds160/${formId}`, formData, {
     headers: {
       Authorization: `Bearer ${token}`
     }
@@ -58,27 +58,16 @@ const updateForm = async (applicationId: string, formData: Partial<DS160Form>): 
 };
 
 /**
- * Get a DS-160 form by application ID
+ * Get a DS-160 form by ID
  */
-const getFormByApplicationId = async (applicationId: string): Promise<DS160Form> => {
+const getFormById = async (formId: string): Promise<DS160Form> => {
   const token = localStorage.getItem('token');
-  
-  // Get all forms for the user
-  const response = await axios.get(`${API_URL}/ds160/user/forms`, {
+  const response = await axios.get(`${API_URL}/ds160/forms/${formId}`, {
     headers: {
       Authorization: `Bearer ${token}`
     }
   });
-  
-  // Find the form with the matching application_id
-  const forms = response.data;
-  const form = forms.find((f: DS160Form) => f.application_id === applicationId);
-  
-  if (!form) {
-    throw new Error('Form not found with the given application ID');
-  }
-  
-  return form;
+  return response.data;
 };
 
 /**
@@ -97,9 +86,9 @@ const getUserForms = async (): Promise<DS160Form[]> => {
 /**
  * Delete a DS-160 form
  */
-const deleteForm = async (applicationId: string): Promise<void> => {
+const deleteForm = async (formId: string): Promise<void> => {
   const token = localStorage.getItem('token');
-  await axios.delete(`${API_URL}/ds160/form/${applicationId}`, {
+  await axios.delete(`${API_URL}/ds160/${formId}`, {
     headers: {
       Authorization: `Bearer ${token}`
     }
@@ -188,7 +177,7 @@ const saveFormDraft = async (formData: any): Promise<DS160Form> => {
 const ds160Service = {
   createForm,
   updateForm,
-  getFormByApplicationId,
+  getFormById,
   getUserForms,
   deleteForm,
   validateForm,

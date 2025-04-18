@@ -27,17 +27,12 @@ const DS160Form: React.FC = () => {
   const loadFormData = useCallback(async (id: string) => {
     try {
       // Call your API to get form data
-      const response = await ds160Service.getFormByApplicationId(id);
+      const response = await ds160Service.getFormById(id);
       if (response) {
-        console.log('Retrieved form data:', response);
-        
-        // The form_data property contains the actual form field values
-        if (response.form_data) {
-          console.log('Setting form values from form_data:', response.form_data);
-          form.setFieldsValue(response.form_data);
-        } else {
-          console.warn('No form_data found in the response');
-        }
+        // Set form data
+        // Removed unused formData state
+        // Set form values
+        form.setFieldsValue(response);
       }
     } catch (error: any) {
       console.error('Error loading form data:', error);
@@ -63,16 +58,7 @@ const DS160Form: React.FC = () => {
   useEffect(() => {
     // Check if there's a form ID in the URL (for resuming a draft)
     const params = new URLSearchParams(window.location.search);
-    const draftId = params.get('application_id');
-    
-    // Try to get the saved step from localStorage
-    const savedStep = localStorage.getItem('currentFormStep');
-    if (savedStep) {
-      const stepNumber = parseInt(savedStep, 10);
-      if (!isNaN(stepNumber)) {
-        setCurrentStep(stepNumber);
-      }
-    }
+    const draftId = params.get('id');
     
     if (draftId) {
       // If we have an ID in the URL, use that instead of generating a new one
@@ -80,36 +66,29 @@ const DS160Form: React.FC = () => {
       // Load the form data from backend
       loadFormData(draftId);
     } else {
-      // Check if we have a form ID in localStorage
-      const storedFormId = localStorage.getItem('currentFormId');
-      if (storedFormId) {
-        setFormId(storedFormId);
-        loadFormData(storedFormId);
-      } else {
-        // Generate a new application ID if none exists
-        const newFormId = generateApplicationId();
-        setFormId(newFormId);
-        
-        // Create a new form with the generated ID
-        const initialForm = {
-          id: newFormId,
-          form_data: {},
-          status: 'draft',
-          application_id: newFormId // Use the same ID as application_id
-        };
-        
-        // Save the initial form to the database
-        ds160Service.saveFormDraft(initialForm)
-          .then(() => {
-            console.log('Initial form created with ID:', newFormId);
-          })
-          .catch(error => {
-            console.error('Error creating initial form:', error);
-          });
-        
-        // Save to localStorage for persistence
-        localStorage.setItem('currentFormId', newFormId);
-      }
+      // Generate a new application ID if none exists
+      const newFormId = generateApplicationId();
+      setFormId(newFormId);
+      
+      // Create a new form with the generated ID
+      const initialForm = {
+        id: newFormId,
+        form_data: {},
+        status: 'draft',
+        application_id: newFormId // Use the same ID as application_id
+      };
+      
+      // Save the initial form to the database
+      ds160Service.saveFormDraft(initialForm)
+        .then(() => {
+          console.log('Initial form created with ID:', newFormId);
+        })
+        .catch(error => {
+          console.error('Error creating initial form:', error);
+        });
+      
+      // Save to localStorage for persistence
+      localStorage.setItem('currentFormId', newFormId);
     }
   }, [loadFormData]);
 
@@ -119,11 +98,6 @@ const DS160Form: React.FC = () => {
       localStorage.setItem('currentFormId', formId);
     }
   }, [formId]);
-
-  // Save current step to localStorage when it changes
-  useEffect(() => {
-    localStorage.setItem('currentFormStep', currentStep.toString());
-  }, [currentStep]);
 
   // Function to save form data
   const saveFormData = async () => {
