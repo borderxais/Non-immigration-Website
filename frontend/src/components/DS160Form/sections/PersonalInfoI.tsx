@@ -48,32 +48,53 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
 
   return (
     <div className="personal-infoI-I-section">
-      <QuestionItem
-        question="姓（拼音，与护照一致）"
-        name="surname"
-        explanation="输入您护照上列出的所有姓氏。如果只有一个，请输入这一个。"
-      >
-        <Input placeholder="例如：ZHANG" />
-      </QuestionItem>
 
-      <QuestionItem
-        question="名（拼音，与护照一致）"
-        name="givenName"
-        explanation="如果您的护照上不包括名字信息，请在名字栏内输入'FNU'。"
-      >
-        <Input placeholder="例如：SAN" />
-      </QuestionItem>
+      <fieldset className="question-section">
+        <div className="section-content">
+          <div className="questions-column">
+            <QuestionItem
+              question="姓（拼音，与护照一致）"
+              name="surname"
+            >
+              <Input placeholder="例如：ZHANG" />
+            </QuestionItem>
+            
+            <QuestionItem
+              question="名（拼音，与护照一致）"
+              name="givenName"
+            >
+              <Input placeholder="例如：SAN" />
+            </QuestionItem>
+            
+            <QuestionItem
+              question="全名（本地语言书写）"
+              name="fullNameNative"
+              hasNaCheckbox={true}
+              naCheckboxName="fullNameNative_na"
+            >
+              <Input placeholder="请用中文填写您的全名" />
+            </QuestionItem>
+          </div>
+          
+          <div className="explanations-column">
+            <div className="explanation-item">
+              <h4 style={{ color: '#891300' }}>帮助：姓氏</h4>
+              <p>输入您护照上列出的所有姓氏。如果只有一个，请输入这一个。</p>
+            </div>
+            
+            <div className="explanation-item">
+              <h4 style={{ color: '#891300' }}>帮助：名字</h4>
+              <p>如果您的护照上不包括名字信息，请在名字栏内输入'FNU'。</p>
+            </div>
+            
+            <div className="explanation-item">
+              <h4 style={{ color: '#891300' }}>帮助：全名（本地语言）</h4>
+              <p>请用中文填写您的全名。如不适用/技术不可用，请勾选下方的复选框。</p>
+            </div>
+          </div>
+        </div>
+      </fieldset>
 
-      <QuestionItem
-        question="全名（本地语言书写）"
-        name="fullNameNative"
-        explanation="请用中文填写您的全名。如不适用/技术不可用，请勾选下方的复选框。"
-        hasNaCheckbox={true}
-        naCheckboxName="fullNameNative_na"
-      >
-        <Input placeholder="请用中文填写您的全名" />
-      </QuestionItem>
-      
       <QuestionItem
         question="您是否曾使用其他姓名？（包括曾用名、英文名、别名等）"
         name="hasOtherNames"
@@ -85,40 +106,63 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
         </Radio.Group>
       </QuestionItem>
 
-      {hasOtherNames && (
-        <div className="field-group callout" style={highlightedBlockStyle}>
-          <h4 style={{ marginBottom: '16px', fontWeight: 'normal' }}>请提供以下信息：</h4>
-          
-          <RepeatableFormItem 
-            name="otherNames" 
-            addButtonText="增加另一个" 
-            removeButtonText="移走"
-          >
-            {(field: FormListFieldData) => (
-              <>
-                <Form.Item
-                  {...field}
-                  name={[field.name, 'surname']}
-                  label="曾用姓氏 (婚前姓氏、宗教姓氏、职业姓氏、别姓等)"
-                  rules={[{ required: true, message: '请输入曾用姓氏' }]}
-                  style={{ marginBottom: '16px' }}
-                >
-                  <Input style={{ width: '95%' }} maxLength={33} />
-                </Form.Item>
+      <fieldset className="question-section">
+        <div className="section-content">
+          <div className="questions-column">
+            <QuestionItem
+              question="您是否曾使用其他姓名？（包括曾用名、英文名、别名等）"
+              name="hasOtherNames"
+            >
+              <Radio.Group onChange={handleOtherNamesChange}>
+                <Radio value={true}>是</Radio>
+                <Radio value={false}>否</Radio>
+              </Radio.Group>
+            </QuestionItem>
+            
+            {hasOtherNames && (
+              <div className="field-group" style={highlightedBlockStyle}>
+                <h4 style={{ marginBottom: '16px', fontWeight: 'normal' }}>请提供以下信息：</h4>
                 
-                <Form.Item
-                  {...field}
-                  name={[field.name, 'givenName']}
-                  label="曾用名字"
-                  rules={[{ required: true, message: '请输入曾用名字' }]}
+                <RepeatableFormItem 
+                  name="otherNames" 
+                  addButtonText="增加另一个" 
+                  removeButtonText="移走"
                 >
-                  <Input style={{ width: '95%' }} maxLength={33} />
-                </Form.Item>
-              </>
+                  {(field: FormListFieldData) => (
+                    <>
+                      <Form.Item
+                        {...field}
+                        name={[field.name, 'surname']}
+                        label="曾用姓氏 (婚前姓氏、宗教姓氏、职业姓氏、别姓等)"
+                        rules={[{ required: true, message: '请输入曾用姓氏' }]}
+                        style={{ marginBottom: '16px' }}
+                      >
+                        <Input style={{ width: '95%' }} maxLength={33} />
+                      </Form.Item>
+                      
+                      <Form.Item
+                        {...field}
+                        name={[field.name, 'givenName']}
+                        label="曾用名字"
+                        rules={[{ required: true, message: '请输入曾用名字' }]}
+                      >
+                        <Input style={{ width: '95%' }} maxLength={33} />
+                      </Form.Item>
+                    </>
+                  )}
+                </RepeatableFormItem>
+              </div>
             )}
-          </RepeatableFormItem>
+          </div>
+          
+          <div className="explanations-column">
+            <div className="explanation-item">
+              <h4 style={{ color: '#891300' }}>帮助：其它姓名</h4>
+              <p>其它姓名包括您的婚前用名, 宗教用名、职业用名; 或任何为人所知的其它名字；或在过去为别人所知的其它名字。</p>
+            </div>
+          </div>
         </div>
-      )}
+      </fieldset>
 
       <QuestionItem
         question="您是否有代表您姓名的电码？"
