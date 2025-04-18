@@ -228,14 +228,13 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
       </fieldset>
 
       {/* Fifth section - Birth Date and Place */}
-      <fieldset className="question-section">
+      <fieldset className="question-section" style={highlightedBlockStyle}>
+        <h4 style={{ marginBottom: '10px' }}>
+          <span>出生日期与出生地</span>
+        </h4>
         <div className="question-row">
           <div className="question-column">
-            <h4 style={{ marginBottom: '10px' }}>
-              <span>出生日期与出生地</span>
-            </h4>
-            
-            <div className="field-group" style={highlightedBlockStyle}>
+            <div className="field-group" >
               <QuestionItem
                 question="日期"
               >
