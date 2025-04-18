@@ -5,49 +5,34 @@ import DateInput from '../common/DateInput';
 import RepeatableFormItem from '../common/RepeatableFormItem';
 import { countryOptions } from '../utils/formOptions';
 import { FormListFieldData } from 'antd/lib/form/FormList';
-import '../ds160Form.css';  // Add this import
+import '../ds160Form.css';  
+
 interface PersonalInfoIProps {
   form: any;
 }
 
 const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
-  // Define highlighted block style
+  const [hasOtherNames, setHasOtherNames] = useState<boolean>(false);
+  const [hasTelecode, setHasTelecode] = useState<boolean>(false);
+
   const highlightedBlockStyle = {
-    background: '#f0f8ff', 
-    border: '1px solid #d6e8fa', 
-    borderRadius: '8px', 
+    backgroundColor: '#fafafa',
     padding: '16px',
-    marginBottom: '24px'
+    borderRadius: '4px',
+    marginBottom: '16px'
   };
 
-  // State to track if user has other names
-  const [hasOtherNames, setHasOtherNames] = useState<boolean | null>(null);
-  
-  // Handle radio button change for other names
   const handleOtherNamesChange = (e: any) => {
     setHasOtherNames(e.target.value);
-    if (!e.target.value) {
-      form.setFieldsValue({ otherNames: [] });
-    } else if (e.target.value && (!form.getFieldValue('otherNames') || form.getFieldValue('otherNames').length === 0)) {
-      form.setFieldsValue({ otherNames: [{ surname: '', givenName: '' }] });
-    }
   };
 
-  // State to track if user has telecode
-  const [hasTelecode, setHasTelecode] = useState<boolean | null>(null);
-  
-  // Handle radio button change for telecode
   const handleTelecodeChange = (e: any) => {
     setHasTelecode(e.target.value);
-    if (!e.target.value) {
-      form.setFieldsValue({ telecodes: [] });
-    } else if (e.target.value && (!form.getFieldValue('telecodes') || form.getFieldValue('telecodes').length === 0)) {
-      form.setFieldsValue({ telecodes: [{ surname: '', givenName: '' }] });
-    }
   };
 
   return (
     <div className="personal-infoI-I-section">
+      {/* First section - Name fields */}
       <fieldset className="question-section">
         <div className="question-row">
           <div className="question-column">
@@ -79,7 +64,6 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
           </div>
         </div>
         
-        
         <div className="question-row">
           <div className="question-column">
             <QuestionItem
@@ -98,9 +82,10 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
         </div>
       </fieldset>
 
+      {/* Second section - Other names */}
       <fieldset className="question-section">
-        <div className="section-content">
-          <div className="questions-column">
+        <div className="question-row">
+          <div className="question-column">
             <QuestionItem
               question="您是否曾使用其他姓名？（包括曾用名、英文名、别名等）"
               name="hasOtherNames"
@@ -146,19 +131,17 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
               </div>
             )}
           </div>
-          
-          <div className="explanations-column">
-            <div className="explanation-item">
-              <h4 style={{ color: '#891300' }}>帮助：其它姓名</h4>
-              <p>其它姓名包括您的婚前用名, 宗教用名、职业用名; 或任何为人所知的其它名字；或在过去为别人所知的其它名字。</p>
-            </div>
+          <div className="explanation-column">
+            <h4 style={{ color: '#891300' }}>帮助：其它姓名</h4>
+            <p>其它姓名包括您的婚前用名, 宗教用名、职业用名; 或任何为人所知的其它名字；或在过去为别人所知的其它名字。</p>
           </div>
         </div>
       </fieldset>
       
+      {/* Third section - Telecode */}
       <fieldset className="question-section">
-        <div className="section-content">
-          <div className="questions-column">
+        <div className="question-row">
+          <div className="question-column">
             <QuestionItem
               question="您是否有代表您姓名的电码？"
               name="hasTelecode"
@@ -192,19 +175,17 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
               </div>
             )}
           </div>
-          
-          <div className="explanations-column">
-            <div className="explanation-item">
-              <h4 style={{ color: '#891300' }}>帮助：电码</h4>
-              <p>电码由4位数字组成，代表着一些非罗马字母拼写而成的名字的字体。</p>
-            </div>
+          <div className="explanation-column">
+            <h4 style={{ color: '#891300' }}>帮助：电码</h4>
+            <p>电码由4位数字组成，代表着一些非罗马字母拼写而成的名字的字体。</p>
           </div>
         </div>
       </fieldset>
-      
+
+      {/* Fourth section - Gender and Marital Status */}
       <fieldset className="question-section">
-        <div className="section-content">
-          <div className="questions-column">
+        <div className="question-row">
+          <div className="question-column">
             <QuestionItem
               question="性别"
               name="gender"
@@ -214,7 +195,15 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
                 <Select.Option value="F">女</Select.Option>
               </Select>
             </QuestionItem>
-
+          </div>
+          <div className="explanation-column">
+            <h4 style={{ color: '#891300' }}>帮助：性别</h4>
+            <p>请选择您的性别，必须与护照上的信息一致。</p>
+          </div>
+        </div>
+        
+        <div className="question-row">
+          <div className="question-column">
             <QuestionItem
               question="婚姻状况"
               name="maritalStatus"
@@ -231,24 +220,17 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
               </Select>
             </QuestionItem>
           </div>
-          
-          <div className="explanations-column">
-            <div className="explanation-item">
-              <h4 style={{ color: '#891300' }}>帮助：性别</h4>
-              <p>请选择您的性别，必须与护照上的信息一致。</p>
-            </div>
-            
-            <div className="explanation-item">
-              <h4 style={{ color: '#891300' }}>帮助：婚姻状况</h4>
-              <p>请选择您目前的婚姻状况。</p>
-            </div>
+          <div className="explanation-column">
+            <h4 style={{ color: '#891300' }}>帮助：婚姻状况</h4>
+            <p>请选择您目前的婚姻状况。</p>
           </div>
         </div>
       </fieldset>
 
+      {/* Fifth section - Birth Date and Place */}
       <fieldset className="question-section">
-        <div className="section-content">
-          <div className="questions-column">
+        <div className="question-row">
+          <div className="question-column">
             <h4 style={{ marginBottom: '10px' }}>
               <span>出生日期与出生地</span>
             </h4>
@@ -288,14 +270,11 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
               </QuestionItem>
             </div>
           </div>
-          
-          <div className="explanations-column">
-            <div className="explanation-item">
-              <h4 style={{ color: '#891300' }}>帮助：出生日期</h4>
-              <p>若不知道具体日期或月份，请按护照所示填写。</p>
-            </div>
+          <div className="explanation-column">
+            <h4 style={{ color: '#891300' }}>帮助：出生日期</h4>
+            <p>若不知道具体日期或月份，请按护照所示填写。</p>
             
-            <div className="explanation-item">
+            <div style={{ marginTop: '20px' }}>
               <h4 style={{ color: '#891300' }}>帮助：出生地国家/地区</h4>
               <p>请选择您出生地的现用国家/地区名称。</p>
             </div>
