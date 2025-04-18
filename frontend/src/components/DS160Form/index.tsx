@@ -197,6 +197,46 @@ const DS160Form: React.FC = () => {
       content: <TravelInfo form={form} />
     },
     {
+      title: '旅游同行人',
+      content: <></>
+    },
+    {
+      title: '过往美国旅行',
+      content: <></>
+    },
+    {
+      title: '地址和电话',
+      content: <></>
+    },
+    {
+      title: '护照',
+      content: <PassportInformation form={form} />
+    },
+    {
+      title: '美国联系人',
+      content: <></>
+    },
+    {
+      title: '家庭信息',
+      content: <></>
+    },
+    {
+      title: '工作教育',
+      content: <></>
+    },
+    {
+      title: '安全背景',
+      content: <></>
+    },
+    {
+      title: '确认页',
+      content: <></>
+    },
+    {
+      title: '确认提交',
+      content: <></>
+    },
+    {
       title: '地址历史',
       content: <AddressHistory form={form} />
     },
@@ -215,18 +255,6 @@ const DS160Form: React.FC = () => {
     {
       title: '安全背景',
       content: <SecurityBackground form={form} />
-    },
-    {
-      title: '护照信息',
-      content: <PassportInformation form={form} />
-    },
-    {
-      title: '审核提交',
-      content: <DS160ReviewPage 
-        form={form} 
-        onSubmit={handleSubmit} 
-        onEdit={setCurrentStep} 
-      />
     }
   ];
 
