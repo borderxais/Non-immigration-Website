@@ -60,35 +60,51 @@ const DS160Form: React.FC = () => {
     const params = new URLSearchParams(window.location.search);
     const draftId = params.get('id');
     
+    // Try to get the saved step from localStorage
+    const savedStep = localStorage.getItem('currentFormStep');
+    if (savedStep) {
+      const stepNumber = parseInt(savedStep, 10);
+      if (!isNaN(stepNumber)) {
+        setCurrentStep(stepNumber);
+      }
+    }
+    
     if (draftId) {
       // If we have an ID in the URL, use that instead of generating a new one
       setFormId(draftId);
       // Load the form data from backend
       loadFormData(draftId);
     } else {
-      // Generate a new application ID if none exists
-      const newFormId = generateApplicationId();
-      setFormId(newFormId);
-      
-      // Create a new form with the generated ID
-      const initialForm = {
-        id: newFormId,
-        form_data: {},
-        status: 'draft',
-        application_id: newFormId // Use the same ID as application_id
-      };
-      
-      // Save the initial form to the database
-      ds160Service.saveFormDraft(initialForm)
-        .then(() => {
-          console.log('Initial form created with ID:', newFormId);
-        })
-        .catch(error => {
-          console.error('Error creating initial form:', error);
-        });
-      
-      // Save to localStorage for persistence
-      localStorage.setItem('currentFormId', newFormId);
+      // Check if we have a form ID in localStorage
+      const storedFormId = localStorage.getItem('currentFormId');
+      if (storedFormId) {
+        setFormId(storedFormId);
+        loadFormData(storedFormId);
+      } else {
+        // Generate a new application ID if none exists
+        const newFormId = generateApplicationId();
+        setFormId(newFormId);
+        
+        // Create a new form with the generated ID
+        const initialForm = {
+          id: newFormId,
+          form_data: {},
+          status: 'draft',
+          application_id: newFormId // Use the same ID as application_id
+        };
+        
+        // Save the initial form to the database
+        ds160Service.saveFormDraft(initialForm)
+          .then(() => {
+            console.log('Initial form created with ID:', newFormId);
+          })
+          .catch(error => {
+            console.error('Error creating initial form:', error);
+          });
+        
+        // Save to localStorage for persistence
+        localStorage.setItem('currentFormId', newFormId);
+      }
     }
   }, [loadFormData]);
 
@@ -98,6 +114,11 @@ const DS160Form: React.FC = () => {
       localStorage.setItem('currentFormId', formId);
     }
   }, [formId]);
+
+  // Save current step to localStorage when it changes
+  useEffect(() => {
+    localStorage.setItem('currentFormStep', currentStep.toString());
+  }, [currentStep]);
 
   // Function to save form data
   const saveFormData = async () => {
