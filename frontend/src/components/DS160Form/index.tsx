@@ -2,8 +2,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Form, Steps, Button, Card, Typography, message } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import ApplicationIdDisplay from '../ApplicationIdDisplay';
-import PersonalInfoI from './sections/PersonalInfoI';
-import PersonalInfoII from './sections/PersonalInfoII';
+// import PersonalInfoI from './sections/PersonalInfoI';
+// import PersonalInfoII from './sections/PersonalInfoII';
 import TravelInfo from './sections/TravelInfo';
 import PassportInformation from './sections/PassportInformation';
 import { generateApplicationId } from '../../utils/formUtils';
@@ -191,6 +191,7 @@ const DS160Form: React.FC = () => {
     {
       title: '旅行信息',
       content: <TravelInfo form={form} />
+      // content: <></>
     },
     {
       title: '旅游同行人',
