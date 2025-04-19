@@ -13,7 +13,8 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
   const [visaClass, setVisaClass] = useState<string | null>(null);
   const [specificPurpose, setSpecificPurpose] = useState<string | null>(null);
   const [hasSpecificPlans, setHasSpecificPlans] = useState<string | null>(null);
-  
+  const [tripPayer, setTripPayer] = useState<string | null>(null);
+
   // Handle visa class change
   const handleVisaClassChange = (value: string) => {
     setVisaClass(value);
@@ -43,6 +44,11 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
   const handleSpecificPlansChange = (e: any) => {
     setHasSpecificPlans(e.target.value);
     form.setFieldsValue({ hasSpecificPlans: e.target.value });
+  };
+
+  // Handle trip payer change
+  const handleTripPayerChange = (e: any) => {
+    setTripPayer(e.target.value);
   };
 
   // Get specific options based on visa class
@@ -208,18 +214,193 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
             <p>如果您已确定行程，请选择'是'；如果尚未确定，请选择'否'并提供预计的信息。</p>
           </div>
         </div>
-      </fieldset>
+      
 
-      {/* Specific Travel Plans Section */}
-      {hasSpecificPlans === 'Y' && (
-        <fieldset className="question-section">
-          <h4 style={{ marginBottom: '16px', fontWeight: 'normal' }}>请提供您来美国的旅行的详细行程</h4>
-          <div className="highlighted-block">
+        {/* Specific Travel Plans Section */}
+        {hasSpecificPlans === 'Y' && (
+          <fieldset className="question-section">
+            <h4 style={{ marginBottom: '16px', fontWeight: 'normal' }}>请提供您来美国的旅行的详细行程</h4>
+            <div className="highlighted-block">
+              <div className="question-row">
+                <div className="question-column">
+                  <QuestionItem
+                    question="入境美国日期"
+                    name="arrivalUSDate"
+                  >
+                    <DateInput 
+                      dayName="arrivalDay" 
+                      monthName="arrivalMonth" 
+                      yearName="arrivalYear"
+                    />
+                  </QuestionItem>
+                </div>
+                <div className="explanation-column">
+                  <h4 className="help-header">帮助：入境日期</h4>
+                  <p>请输入您计划入境美国的日期</p>
+                </div>
+              </div>
+
+              <div className="question-row">
+                <div className="question-column">
+                  <QuestionItem
+                    question="抵达航班"
+                    name="arrivalFlight"
+                    required={false}
+                  >
+                    <Input style={{ width: '99%' }} maxLength={20} />
+                  </QuestionItem>
+                </div>
+                <div className="explanation-column">
+                  <h4 className="help-header">帮助：抵达航班</h4>
+                  <p>请输入您的抵达航班号（如果知道）</p>
+                </div>
+              </div>
+
+              <div className="question-row">
+                <div className="question-column">
+                  <QuestionItem
+                    question="抵达城市"
+                    name="arrivalCity"
+                  >
+                    <Input style={{ width: '99%' }} maxLength={20} />
+                  </QuestionItem>
+                </div>
+                <div className="explanation-column">
+                  <h4 className="help-header">帮助：抵达城市</h4>
+                  <p>请输入您入境的美国城市</p>
+                </div>
+              </div>
+
+              <div className="question-row">
+                <div className="question-column">
+                <QuestionItem
+                    question="离开美国日期"
+                    name="departureUSDate"
+                  >
+                    <DateInput 
+                      dayName="departureDay" 
+                      monthName="departureMonth" 
+                      yearName="departureYear"
+                    />
+                  </QuestionItem>
+                </div>
+                <div className="explanation-column">
+                  <h4 className="help-header">帮助：离开日期</h4>
+                  <p>请输入您计划离开美国的日期</p>
+                </div>
+              </div>
+
+              <div className="question-row">
+                <div className="question-column">
+                  <QuestionItem
+                    question="离开航班"
+                    name="departureFlight"
+                    required={false}
+                  >
+                    <Input style={{ width: '99%' }} maxLength={20} />
+                  </QuestionItem>
+                </div>
+                <div className="explanation-column">
+                  <h4 className="help-header">帮助：离开航班</h4>
+                  <p>请输入您的离开航班号（如果知道）</p>
+                </div>
+              </div>
+
+              <div className="question-row">
+                <div className="question-column">
+                  <QuestionItem
+                    question="离开城市"
+                    name="departureCity"
+                  >
+                    <Input style={{ width: '99%' }} maxLength={20} />
+                  </QuestionItem>
+                </div>
+                <div className="explanation-column">
+                  <h4 className="help-header">帮助：离开城市</h4>
+                  <p>请输入您离开美国的城市</p>
+                </div>
+              </div>
+
+              <div className="question-row">
+                <div className="question-column">
+                  <QuestionItem
+                    question="您计划在美国访问的地点"
+                    name="visitLocations"
+                  >
+                    <Form.List name="visitLocations" initialValue={[{}]}>
+                      {(fields, { add, remove }) => (
+                        <>
+                          {fields.map((field, index) => (
+                            <div 
+                              key={field.key} 
+                              style={{ 
+                                marginBottom: 24, 
+                                padding: index > 0 ? 16 : 0, 
+                                border: index > 0 ? '1px dashed #d6e8fa' : 'none',
+                                borderRadius: index > 0 ? '8px' : 0
+                              }}
+                            >
+                              <Form.Item name={[field.name, 'location']} rules={[{ required: true, message: '请输入访问地点' }]}>
+                                <Input placeholder="请输入访问地点" maxLength={40} style={{ width: '99%' }} />
+                              </Form.Item>
+                              
+                              <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '8px' }}>
+                                <button 
+                                  type="button" 
+                                  onClick={() => add()} 
+                                  style={{ 
+                                    marginRight: '8px',
+                                    padding: '4px 8px',
+                                    background: '#1890ff',
+                                    color: 'white',
+                                    border: 'none',
+                                    borderRadius: '2px',
+                                    cursor: 'pointer'
+                                  }}
+                                >
+                                  添加另一个
+                                </button>
+                                {fields.length > 1 && (
+                                  <button 
+                                    type="button" 
+                                    onClick={() => remove(field.name)} 
+                                    style={{ 
+                                      padding: '4px 8px',
+                                      background: '#ff4d4f',
+                                      color: 'white',
+                                      border: 'none',
+                                      borderRadius: '2px',
+                                      cursor: 'pointer'
+                                    }}
+                                  >
+                                    移除
+                                  </button>
+                                )}
+                              </div>
+                            </div>
+                          ))}
+                        </>
+                      )}
+                    </Form.List>
+                  </QuestionItem>
+                </div>
+                <div className="explanation-column">
+                  <h4 className="help-header">帮助：访问地点</h4>
+                  <p>请提供您计划在美国访问的地点</p>
+                </div>
+              </div>
+            </div>
+          </fieldset>
+        )}
+
+        {/* Approximate Travel Plans Section */}
+        {hasSpecificPlans === 'N' && (
+          <fieldset className="question-section">
             <div className="question-row">
               <div className="question-column">
                 <QuestionItem
-                  question="入境美国日期"
-                  name="arrivalUSDate"
+                  question="计划到达日期"
+                  name="intendedDateOfArrival"
                 >
                   <DateInput 
                     dayName="arrivalDay" 
@@ -229,270 +410,208 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                 </QuestionItem>
               </div>
               <div className="explanation-column">
-                <h4 className="help-header">帮助：入境日期</h4>
-                <p>请输入您计划入境美国的日期</p>
+                <h4 className="help-header">帮助：计划到达日期</h4>
+                <p>请提供您计划入境美国的日期。如果您还不确定，请提供一个预计日期。</p>
               </div>
             </div>
 
             <div className="question-row">
               <div className="question-column">
                 <QuestionItem
-                  question="抵达航班"
-                  name="arrivalFlight"
-                  required={false}
+                  question="计划在美停留时间"
+                  name="intendedLengthOfStay"
                 >
-                  <Input style={{ width: '99%' }} maxLength={20} />
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <Form.Item name="stayDuration" noStyle rules={[{ required: true, message: '请输入停留时间' }]}>
+                      <Input style={{ width: '80px' }} maxLength={3} placeholder="数量" />
+                    </Form.Item>
+                    
+                    <Form.Item name="stayDurationType" noStyle rules={[{ required: true, message: '请选择单位' }]}>
+                      <Select options={losUnitOptions} style={{ width: '120px' }} placeholder="单位" />
+                    </Form.Item>
+                  </div>
                 </QuestionItem>
               </div>
               <div className="explanation-column">
-                <h4 className="help-header">帮助：抵达航班</h4>
-                <p>请输入您的抵达航班号（如果知道）</p>
+                <h4 className="help-header">帮助：停留时间</h4>
+                <p>请输入您计划在美国停留的时间长度和单位。</p>
               </div>
             </div>
 
             <div className="question-row">
               <div className="question-column">
                 <QuestionItem
-                  question="抵达城市"
-                  name="arrivalCity"
+                  question="在美住址"
+                  name="addressWhereYouWillStay"
                 >
-                  <Input style={{ width: '99%' }} maxLength={20} />
+                  <div className="highlighted-block">
+                    <QuestionItem
+                      question="街道地址 (第1行)"
+                      name="streetAddress1"
+                    >
+                      <Input style={{ width: '99%' }} maxLength={40} />
+                    </QuestionItem>
+                    
+                    <QuestionItem
+                      question="街道地址 (第2行)"
+                      name="streetAddress2"
+                      required={false}
+                    >
+                      <Input style={{ width: '99%' }} maxLength={40} />
+                    </QuestionItem>
+                    
+                    <QuestionItem
+                      question="城市"
+                      name="city"
+                    >
+                      <Input style={{ width: '99%' }} maxLength={20} />
+                    </QuestionItem>
+                    
+                    <QuestionItem
+                      question="州"
+                      name="state"
+                    >
+                      <Select style={{ width: '99%' }} placeholder="- 选择州 -">
+                        <Select.Option value="AL">Alabama</Select.Option>
+                        <Select.Option value="AK">Alaska</Select.Option>
+                        <Select.Option value="AZ">Arizona</Select.Option>
+                        <Select.Option value="AR">Arkansas</Select.Option>
+                        <Select.Option value="CA">California</Select.Option>
+                        <Select.Option value="CO">Colorado</Select.Option>
+                        <Select.Option value="CT">Connecticut</Select.Option>
+                        {/* Additional states would go here */}
+                      </Select>
+                    </QuestionItem>
+                    
+                    <QuestionItem
+                      question="邮政编码"
+                      name="zipCode"
+                    >
+                      <Input style={{ width: '99%' }} maxLength={10} />
+                    </QuestionItem>
+                  </div>
                 </QuestionItem>
               </div>
               <div className="explanation-column">
-                <h4 className="help-header">帮助：抵达城市</h4>
-                <p>请输入您入境的美国城市</p>
+                <h4 className="help-header">帮助：在美住址</h4>
+                <p>请提供您在美国期间的详细住址，如酒店名称和地址、朋友或亲戚的住址等。</p>
               </div>
             </div>
+          </fieldset>
+        )}
+      </fieldset>
 
-            <div className="question-row">
-              <div className="question-column">
-              <QuestionItem
-                  question="离开美国日期"
-                  name="departureUSDate"
-                >
-                  <DateInput 
-                    dayName="departureDay" 
-                    monthName="departureMonth" 
-                    yearName="departureYear"
-                  />
-                </QuestionItem>
-              </div>
-              <div className="explanation-column">
-                <h4 className="help-header">帮助：离开日期</h4>
-                <p>请输入您计划离开美国的日期</p>
-              </div>
-            </div>
-
-            <div className="question-row">
-              <div className="question-column">
-                <QuestionItem
-                  question="离开航班"
-                  name="departureFlight"
-                  required={false}
-                >
-                  <Input style={{ width: '99%' }} maxLength={20} />
-                </QuestionItem>
-              </div>
-              <div className="explanation-column">
-                <h4 className="help-header">帮助：离开航班</h4>
-                <p>请输入您的离开航班号（如果知道）</p>
-              </div>
-            </div>
-
-            <div className="question-row">
-              <div className="question-column">
-                <QuestionItem
-                  question="离开城市"
-                  name="departureCity"
-                >
-                  <Input style={{ width: '99%' }} maxLength={20} />
-                </QuestionItem>
-              </div>
-              <div className="explanation-column">
-                <h4 className="help-header">帮助：离开城市</h4>
-                <p>请输入您离开美国的城市</p>
-              </div>
-            </div>
-
-            <div className="question-row">
-              <div className="question-column">
-                <QuestionItem
-                  question="您计划在美国访问的地点"
-                  name="visitLocations"
-                >
-                  <Form.List name="visitLocations" initialValue={[{}]}>
-                    {(fields, { add, remove }) => (
-                      <>
-                        {fields.map((field, index) => (
-                          <div 
-                            key={field.key} 
-                            style={{ 
-                              marginBottom: 24, 
-                              padding: index > 0 ? 16 : 0, 
-                              border: index > 0 ? '1px dashed #d6e8fa' : 'none',
-                              borderRadius: index > 0 ? '8px' : 0
-                            }}
-                          >
-                            <Form.Item name={[field.name, 'location']} rules={[{ required: true, message: '请输入访问地点' }]}>
-                              <Input placeholder="请输入访问地点" maxLength={40} style={{ width: '99%' }} />
-                            </Form.Item>
-                            
-                            <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '8px' }}>
-                              <button 
-                                type="button" 
-                                onClick={() => add()} 
-                                style={{ 
-                                  marginRight: '8px',
-                                  padding: '4px 8px',
-                                  background: '#1890ff',
-                                  color: 'white',
-                                  border: 'none',
-                                  borderRadius: '2px',
-                                  cursor: 'pointer'
-                                }}
-                              >
-                                添加另一个
-                              </button>
-                              {fields.length > 1 && (
-                                <button 
-                                  type="button" 
-                                  onClick={() => remove(field.name)} 
-                                  style={{ 
-                                    padding: '4px 8px',
-                                    background: '#ff4d4f',
-                                    color: 'white',
-                                    border: 'none',
-                                    borderRadius: '2px',
-                                    cursor: 'pointer'
-                                  }}
-                                >
-                                  移除
-                                </button>
-                              )}
-                            </div>
-                          </div>
-                        ))}
-                      </>
-                    )}
-                  </Form.List>
-                </QuestionItem>
-              </div>
-              <div className="explanation-column">
-                <h4 className="help-header">帮助：访问地点</h4>
-                <p>请提供您计划在美国访问的地点</p>
-              </div>
-            </div>
+      {/* Trip Payment Section */}
+      <fieldset className="question-section">
+        <div className="question-row">
+          <div className="question-column">
+            <QuestionItem
+              question="谁将支付您的旅行费用？"
+              name="tripPayer"
+            >
+              <Radio.Group onChange={handleTripPayerChange}>
+                <Radio value="self">本人</Radio>
+                <Radio value="other">他人</Radio>
+                <Radio value="organization">组织/公司</Radio>
+              </Radio.Group>
+            </QuestionItem>
           </div>
-        </fieldset>
-      )}
-
-      {/* Approximate Travel Plans Section */}
-      {hasSpecificPlans === 'N' && (
-        <fieldset className="question-section">
-          <div className="question-row">
-            <div className="question-column">
-              <QuestionItem
-                question="计划到达日期"
-                name="intendedDateOfArrival"
-              >
-                <DateInput 
-                  dayName="arrivalDay" 
-                  monthName="arrivalMonth" 
-                  yearName="arrivalYear"
-                />
-              </QuestionItem>
-            </div>
-            <div className="explanation-column">
-              <h4 className="help-header">帮助：计划到达日期</h4>
-              <p>请提供您计划入境美国的日期。如果您还不确定，请提供一个预计日期。</p>
-            </div>
+          <div className="explanation-column">
+            <h4 className="help-header">帮助：旅行费用</h4>
+            <p>请选择谁将支付您此次旅行的费用，包括机票、住宿等。</p>
           </div>
+        </div>
 
-          <div className="question-row">
-            <div className="question-column">
-              <QuestionItem
-                question="计划在美停留时间"
-                name="intendedLengthOfStay"
-              >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <Form.Item name="stayDuration" noStyle rules={[{ required: true, message: '请输入停留时间' }]}>
-                    <Input style={{ width: '80px' }} maxLength={3} placeholder="数量" />
-                  </Form.Item>
-                  
-                  <Form.Item name="stayDurationType" noStyle rules={[{ required: true, message: '请选择单位' }]}>
-                    <Select options={losUnitOptions} style={{ width: '120px' }} placeholder="单位" />
-                  </Form.Item>
-                </div>
-              </QuestionItem>
-            </div>
-            <div className="explanation-column">
-              <h4 className="help-header">帮助：停留时间</h4>
-              <p>请输入您计划在美国停留的时间长度和单位。</p>
-            </div>
-          </div>
+        {(tripPayer === 'other' || tripPayer === 'organization') && (
+          <>
+            <h4 style={{ marginBottom: '16px', fontWeight: 'normal' }}>请提供支付方的详细信息：</h4>
+            <div className="highlighted-block">
+              {tripPayer === 'other' && (
+                <>
+                  <div className="question-row">
+                    <div className="question-column">
+                      <QuestionItem
+                        question="支付人姓名"
+                        name="payerName"
+                      >
+                        <Input style={{ width: '99%' }} maxLength={40} />
+                      </QuestionItem>
+                    </div>
+                    <div className="explanation-column">
+                      <h4 className="help-header">帮助：支付人姓名</h4>
+                      <p>请输入将支付您旅行费用的人的全名</p>
+                    </div>
+                  </div>
 
-          <div className="question-row">
-            <div className="question-column">
-              <QuestionItem
-                question="在美住址"
-                name="addressWhereYouWillStay"
-              >
-                <div className="highlighted-block">
+                  <div className="question-row">
+                    <div className="question-column">
+                      <QuestionItem
+                        question="与您的关系"
+                        name="payerRelationship"
+                      >
+                        <Input style={{ width: '99%' }} maxLength={40} />
+                      </QuestionItem>
+                    </div>
+                    <div className="explanation-column">
+                      <h4 className="help-header">帮助：关系</h4>
+                      <p>请说明支付人与您的关系，如：父母、配偶、朋友等</p>
+                    </div>
+                  </div>
+                </>
+              )}
+
+              {tripPayer === 'organization' && (
+                <>
+                  <div className="question-row">
+                    <div className="question-column">
+                      <QuestionItem
+                        question="组织/公司名称"
+                        name="organizationName"
+                      >
+                        <Input style={{ width: '99%' }} maxLength={40} />
+                      </QuestionItem>
+                    </div>
+                    <div className="explanation-column">
+                      <h4 className="help-header">帮助：组织名称</h4>
+                      <p>请输入将支付您旅行费用的组织或公司的名称</p>
+                    </div>
+                  </div>
+
+                  <div className="question-row">
+                    <div className="question-column">
+                      <QuestionItem
+                        question="组织/公司电话"
+                        name="organizationPhone"
+                      >
+                        <Input style={{ width: '99%' }} maxLength={20} />
+                      </QuestionItem>
+                    </div>
+                    <div className="explanation-column">
+                      <h4 className="help-header">帮助：组织电话</h4>
+                      <p>请输入该组织或公司的联系电话</p>
+                    </div>
+                  </div>
+                </>
+              )}
+
+              <div className="question-row">
+                <div className="question-column">
                   <QuestionItem
-                    question="街道地址 (第1行)"
-                    name="streetAddress1"
+                    question="支付方地址"
+                    name="payerAddress"
                   >
-                    <Input style={{ width: '99%' }} maxLength={40} />
-                  </QuestionItem>
-                  
-                  <QuestionItem
-                    question="街道地址 (第2行)"
-                    name="streetAddress2"
-                    required={false}
-                  >
-                    <Input style={{ width: '99%' }} maxLength={40} />
-                  </QuestionItem>
-                  
-                  <QuestionItem
-                    question="城市"
-                    name="city"
-                  >
-                    <Input style={{ width: '99%' }} maxLength={20} />
-                  </QuestionItem>
-                  
-                  <QuestionItem
-                    question="州"
-                    name="state"
-                  >
-                    <Select style={{ width: '99%' }} placeholder="- 选择州 -">
-                      <Select.Option value="AL">Alabama</Select.Option>
-                      <Select.Option value="AK">Alaska</Select.Option>
-                      <Select.Option value="AZ">Arizona</Select.Option>
-                      <Select.Option value="AR">Arkansas</Select.Option>
-                      <Select.Option value="CA">California</Select.Option>
-                      <Select.Option value="CO">Colorado</Select.Option>
-                      <Select.Option value="CT">Connecticut</Select.Option>
-                      {/* Additional states would go here */}
-                    </Select>
-                  </QuestionItem>
-                  
-                  <QuestionItem
-                    question="邮政编码"
-                    name="zipCode"
-                  >
-                    <Input style={{ width: '99%' }} maxLength={10} />
+                    <Input.TextArea style={{ width: '99%' }} rows={4} maxLength={200} />
                   </QuestionItem>
                 </div>
-              </QuestionItem>
+                <div className="explanation-column">
+                  <h4 className="help-header">帮助：支付方地址</h4>
+                  <p>请输入支付方（个人或组织）的完整地址</p>
+                </div>
+              </div>
             </div>
-            <div className="explanation-column">
-              <h4 className="help-header">帮助：在美住址</h4>
-              <p>请提供您在美国期间的详细住址，如酒店名称和地址、朋友或亲戚的住址等。</p>
-            </div>
-          </div>
-        </fieldset>
-      )}
+          </>
+        )}
+      </fieldset>
     </div>
   );
 };
