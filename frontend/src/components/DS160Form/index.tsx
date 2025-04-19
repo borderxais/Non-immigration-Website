@@ -180,11 +180,13 @@ const DS160Form: React.FC = () => {
     },
     {
       title: '个人信息 I',
-      content: <PersonalInfoI form={form} />
+      // content: <PersonalInfoI form={form} />
+      content: <></>
     },
     {
       title: '个人信息 II',
-      content: <PersonalInfoII form={form} />
+      // content: <PersonalInfoII form={form} />
+      content: <></>
     },
     {
       title: '旅行信息',
