@@ -501,6 +501,105 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
         )}
       </fieldset>
 
+        
+      {/* Mission Information Section for A-type visas */}
+      {visaClass === 'A' && (
+        <fieldset className="question-section">
+          <h4 style={{ marginBottom: '16px', fontWeight: 'normal' }}>使团信息</h4>
+          <div className="highlighted-block">
+            <div className="question-row">
+              <div className="question-column">
+                <QuestionItem
+                  question="使团名称"
+                  name="missionName"
+                >
+                  <Input style={{ width: '99%' }} maxLength={40} />
+                </QuestionItem>
+              </div>
+              <div className="explanation-column">
+                <h4 className="help-header">帮助：使团名称</h4>
+                <p>请输入您所属使团的完整名称</p>
+              </div>
+            </div>
+
+            <div className="question-row">
+              <div className="question-column">
+                <QuestionItem
+                  question="使团地址"
+                  name="missionAddress"
+                >
+                  <Input.TextArea style={{ width: '99%' }} rows={4} maxLength={200} />
+                </QuestionItem>
+              </div>
+              <div className="explanation-column">
+                <h4 className="help-header">帮助：使团地址</h4>
+                <p>请输入使团在美国的详细地址</p>
+              </div>
+            </div>
+
+            <div className="question-row">
+              <div className="question-column">
+                <QuestionItem
+                  question="使团电话"
+                  name="missionPhone"
+                >
+                  <Input style={{ width: '99%' }} maxLength={20} />
+                </QuestionItem>
+              </div>
+              <div className="explanation-column">
+                <h4 className="help-header">帮助：使团电话</h4>
+                <p>请输入使团的联系电话</p>
+              </div>
+            </div>
+
+            <div className="question-row">
+              <div className="question-column">
+                <QuestionItem
+                  question="主管姓名"
+                  name="supervisorName"
+                >
+                  <Input style={{ width: '99%' }} maxLength={40} />
+                </QuestionItem>
+              </div>
+              <div className="explanation-column">
+                <h4 className="help-header">帮助：主管姓名</h4>
+                <p>请输入您在使团的直接主管姓名</p>
+              </div>
+            </div>
+
+            <div className="question-row">
+              <div className="question-column">
+                <QuestionItem
+                  question="主管职务"
+                  name="supervisorTitle"
+                >
+                  <Input style={{ width: '99%' }} maxLength={40} />
+                </QuestionItem>
+              </div>
+              <div className="explanation-column">
+                <h4 className="help-header">帮助：主管职务</h4>
+                <p>请输入您主管在使团中的职务</p>
+              </div>
+            </div>
+
+            <div className="question-row">
+              <div className="question-column">
+                <QuestionItem
+                  question="您的职务"
+                  name="applicantTitle"
+                >
+                  <Input style={{ width: '99%' }} maxLength={40} />
+                </QuestionItem>
+              </div>
+              <div className="explanation-column">
+                <h4 className="help-header">帮助：您的职务</h4>
+                <p>请输入您在使团中的职务</p>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+      )}
+      
       {/* Trip Payment Section */}
       <fieldset className="question-section">
         <div className="question-row">
