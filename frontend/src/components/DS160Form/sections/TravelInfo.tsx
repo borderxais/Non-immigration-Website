@@ -13,7 +13,6 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
   const [visaClass, setVisaClass] = useState<string | null>(null);
   const [specificPurpose, setSpecificPurpose] = useState<string | null>(null);
   const [hasSpecificPlans, setHasSpecificPlans] = useState<string | null>(null);
-  const [tripPayer, setTripPayer] = useState<string | null>(null);
 
   // Handle visa class change
   const handleVisaClassChange = (value: string) => {
@@ -44,11 +43,6 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
   const handleSpecificPlansChange = (e: any) => {
     setHasSpecificPlans(e.target.value);
     form.setFieldsValue({ hasSpecificPlans: e.target.value });
-  };
-
-  // Handle trip payer change
-  const handleTripPayerChange = (e: any) => {
-    setTripPayer(e.target.value);
   };
 
   // Get specific options based on visa class
