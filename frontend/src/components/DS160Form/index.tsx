@@ -8,6 +8,7 @@ import ApplicationIdDisplay from '../ApplicationIdDisplay';
 import PassportInformation from './sections/PassportInformation';
 import { generateApplicationId } from '../../utils/formUtils';
 import ds160Service from '../../services/ds160Service';
+import TravelCompanions from './sections/TravelCompanions';
 
 const DS160Form: React.FC = () => {
   // Generate a unique ID for this form session if not already set
@@ -195,7 +196,7 @@ const DS160Form: React.FC = () => {
     },
     {
       title: '旅游同行人',
-      content: <></>
+      content: <TravelCompanions form={form} />
     },
     {
       title: '过往美国旅行',
