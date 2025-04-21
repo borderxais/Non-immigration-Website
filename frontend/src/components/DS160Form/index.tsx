@@ -2,9 +2,9 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Form, Steps, Button, Card, Typography, message } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import ApplicationIdDisplay from '../ApplicationIdDisplay';
-// import PersonalInfoI from './sections/PersonalInfoI';
+import PersonalInfoI from './sections/PersonalInfoI';
 // import PersonalInfoII from './sections/PersonalInfoII';
-// import TravelInfo from './sections/TravelInfo';
+import TravelInfo from './sections/TravelInfo';
 import PassportInformation from './sections/PassportInformation';
 import { generateApplicationId } from '../../utils/formUtils';
 import ds160Service from '../../services/ds160Service';
@@ -181,8 +181,8 @@ const DS160Form: React.FC = () => {
     },
     {
       title: '个人信息 I',
-      // content: <PersonalInfoI form={form} />
-      content: <></>
+      content: <PersonalInfoI form={form} />
+      // content: <></>
     },
     {
       title: '个人信息 II',
@@ -191,8 +191,8 @@ const DS160Form: React.FC = () => {
     },
     {
       title: '旅行信息',
-      // content: <TravelInfo form={form} />
-      content: <></>
+      content: <TravelInfo form={form} />
+      // content: <></>
     },
     {
       title: '旅游同行人',
