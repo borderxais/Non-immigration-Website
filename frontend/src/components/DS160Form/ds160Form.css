@@ -45,3 +45,11 @@
     padding: 16px;
     margin-bottom: 16px;
   }
+
+/* Block inside highlighted block */
+.block-inside-highlight {
+  border: 1px solid #d6e8fa;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
