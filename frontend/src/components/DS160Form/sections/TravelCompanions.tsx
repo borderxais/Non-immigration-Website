@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Radio, Input, Select } from 'antd';
+import { Radio, Input, Select, Form } from 'antd';
 import QuestionItem from '../common/QuestionItem';
 import RepeatableFormItem from '../common/RepeatableFormItem';
 import '../ds160Form.css';
@@ -93,12 +93,17 @@ const TravelCompanions: React.FC<TravelCompanionsProps> = ({ form }) => {
                       <>
                         <div className="question-row">
                           <div className="question-column">
-                            <QuestionItem
-                              question="姓氏"
-                              name="surname"
+                            <Form.Item
+                              {...field}
+                              name={[field.name, 'surname']}
                             >
-                              <Input maxLength={33} placeholder="例如：ZHANG" style={{ width: '95%' }} />
-                            </QuestionItem>
+                              <QuestionItem
+                                question="姓氏"
+                                name="surname"
+                              >
+                                <Input maxLength={33} placeholder="例如：ZHANG" style={{ width: '95%' }} />
+                              </QuestionItem>
+                            </Form.Item>
                           </div>
                           <div className="explanation-column">
                             <h4 className="help-header">帮助：同行人姓氏</h4>
@@ -108,12 +113,17 @@ const TravelCompanions: React.FC<TravelCompanionsProps> = ({ form }) => {
 
                         <div className="question-row">
                           <div className="question-column">
-                            <QuestionItem
-                              question="名字"
-                              name="givenName"
+                            <Form.Item
+                              {...field}
+                              name={[field.name, 'givenName']}
                             >
-                              <Input maxLength={33} placeholder="例如：SAN" style={{ width: '95%' }} />
-                            </QuestionItem>
+                              <QuestionItem
+                                question="名字"
+                                name="givenName"
+                              >
+                                <Input maxLength={33} placeholder="例如：SAN" style={{ width: '95%' }} />
+                              </QuestionItem>
+                            </Form.Item>
                           </div>
                           <div className="explanation-column">
                             <h4 className="help-header">帮助：同行人名字</h4>
@@ -123,21 +133,26 @@ const TravelCompanions: React.FC<TravelCompanionsProps> = ({ form }) => {
 
                         <div className="question-row">
                           <div className="question-column">
-                            <QuestionItem
-                              question="关系"
-                              name="relationship"
+                            <Form.Item
+                              {...field}
+                              name={[field.name, 'relationship']}
                             >
-                              <Select style={{ width: '95%' }} placeholder="- 选择一个 -">
-                                <Select.Option value="spouse">配偶</Select.Option>
-                                <Select.Option value="child">子女</Select.Option>
-                                <Select.Option value="parent">父母</Select.Option>
-                                <Select.Option value="sibling">兄弟姐妹</Select.Option>
-                                <Select.Option value="relative">其他亲属</Select.Option>
-                                <Select.Option value="friend">朋友</Select.Option>
-                                <Select.Option value="business">商业伙伴</Select.Option>
-                                <Select.Option value="other">其他</Select.Option>
-                              </Select>
-                            </QuestionItem>
+                              <QuestionItem
+                                question="关系"
+                                name="relationship"
+                              >
+                                <Select style={{ width: '95%' }} placeholder="- 选择一个 -">
+                                  <Select.Option value="spouse">配偶</Select.Option>
+                                  <Select.Option value="child">子女</Select.Option>
+                                  <Select.Option value="parent">父母</Select.Option>
+                                  <Select.Option value="sibling">兄弟姐妹</Select.Option>
+                                  <Select.Option value="relative">其他亲属</Select.Option>
+                                  <Select.Option value="friend">朋友</Select.Option>
+                                  <Select.Option value="business">商业伙伴</Select.Option>
+                                  <Select.Option value="other">其他</Select.Option>
+                                </Select>
+                              </QuestionItem>
+                            </Form.Item>
                           </div>
                           <div className="explanation-column">
                             <h4 className="help-header">帮助：关系</h4>
