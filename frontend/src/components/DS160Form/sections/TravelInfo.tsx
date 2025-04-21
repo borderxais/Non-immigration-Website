@@ -762,6 +762,9 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                     <Input maxLength={33} />
                   </QuestionItem>
                 </div>
+                <div className="explanation-column">
+                  {/* Empty explanation column to maintain layout */}
+                </div>
               </div>
 
               <div className="question-row">
