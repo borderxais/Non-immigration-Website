@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Form, Input, Select, Radio, Checkbox } from 'antd';
 import QuestionItem from '../common/QuestionItem';
 import DateInput from '../common/DateInput';
+import RepeatableFormItem from '../common/RepeatableFormItem';
 import { isDependentSelection, losUnitOptions, usStateOptions, countryOptions } from '../utils/formOptions';
 import '../ds160Form.css';
 
@@ -329,61 +330,21 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                     question="您计划在美国访问的地点"
                     name="visitLocations"
                   >
-                    <Form.List name="visitLocations" initialValue={[{}]}>
-                      {(fields, { add, remove }) => (
-                        <>
-                          {fields.map((field, index) => (
-                            <div 
-                              key={field.key} 
-                              style={{ 
-                                marginBottom: 24, 
-                                padding: index > 0 ? 16 : 0, 
-                                border: index > 0 ? '1px dashed #d6e8fa' : 'none',
-                                borderRadius: index > 0 ? '8px' : 0
-                              }}
-                            >
-                              <Form.Item name={[field.name, 'location']} rules={[{ required: true, message: '请输入访问地点' }]}>
-                                <Input placeholder="请输入访问地点" maxLength={40} style={{ width: '99%' }} />
-                              </Form.Item>
-                              
-                              <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '8px' }}>
-                                <button 
-                                  type="button" 
-                                  onClick={() => add()} 
-                                  style={{ 
-                                    marginRight: '8px',
-                                    padding: '4px 8px',
-                                    background: '#1890ff',
-                                    color: 'white',
-                                    border: 'none',
-                                    borderRadius: '2px',
-                                    cursor: 'pointer'
-                                  }}
-                                >
-                                  添加另一个
-                                </button>
-                                {fields.length > 1 && (
-                                  <button 
-                                    type="button" 
-                                    onClick={() => remove(field.name)} 
-                                    style={{ 
-                                      padding: '4px 8px',
-                                      background: '#ff4d4f',
-                                      color: 'white',
-                                      border: 'none',
-                                      borderRadius: '2px',
-                                      cursor: 'pointer'
-                                    }}
-                                  >
-                                    移除
-                                  </button>
-                                )}
-                              </div>
-                            </div>
-                          ))}
-                        </>
+                    <RepeatableFormItem
+                      name="visitLocations"
+                      addButtonText="增加另一个"
+                      removeButtonText="移走"
+                    >
+                      {(field) => (
+                        <Form.Item
+                          {...field}
+                          name={[field.name, 'location']}
+                          rules={[{ required: true, message: '请输入访问地点' }]}
+                        >
+                          <Input placeholder="请输入访问地点" maxLength={40} style={{ width: '95%' }} />
+                        </Form.Item>
                       )}
-                    </Form.List>
+                    </RepeatableFormItem>
                   </QuestionItem>
                 </div>
                 <div className="explanation-column">
@@ -472,6 +433,8 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                     <QuestionItem
                       question="州"
                       name="state"
+                      hasNaCheckbox={true}
+                      naCheckboxName="state_na"
                     >
                       <Select style={{ width: '99%' }} placeholder="- 选择州 -">
                         {usStateOptions.map(option => (
@@ -483,6 +446,8 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                     <QuestionItem
                       question="邮政编码"
                       name="zipCode"
+                      hasNaCheckbox={true}
+                      naCheckboxName="zipCode_na"
                     >
                       <Input style={{ width: '99%' }} maxLength={10} />
                     </QuestionItem>
@@ -568,6 +533,8 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                 <QuestionItem
                   question="州"
                   name="missionState"
+                  hasNaCheckbox={true}
+                  naCheckboxName="missionState_na"
                 >
                   <Select style={{ width: '99%' }} placeholder="- 选择州 -">
                     {usStateOptions.map(option => (
@@ -586,6 +553,8 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                 <QuestionItem
                   question="邮政编码"
                   name="missionZipCode"
+                  hasNaCheckbox={true}
+                  naCheckboxName="missionZipCode_na"
                 >
                   <Input style={{ width: '99%' }} maxLength={10} />
                 </QuestionItem>
@@ -696,7 +665,7 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                         question="付款人姓氏"
                         name="payerSurname"
                       >
-                        <Input className="input-field" maxLength={33} placeholder="例如：FERNANDEZ GARCIA" />
+                        <Input maxLength={33} placeholder="例如：FERNANDEZ GARCIA" />
                       </QuestionItem>
                     </div>
                     <div className="explanation-column">
@@ -711,7 +680,7 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                         question="付款人名字"
                         name="payerGivenName"
                       >
-                        <Input className="input-field" maxLength={33} placeholder="例如：JUAN MIGUEL" />
+                        <Input maxLength={33} placeholder="例如：JUAN MIGUEL" />
                       </QuestionItem>
                     </div>
                     <div className="explanation-column">
@@ -726,7 +695,7 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                         question="电话号码"
                         name="payerPhone"
                       >
-                        <Input className="input-field" maxLength={15} minLength={5} placeholder="例如：5555555555" />
+                        <Input maxLength={15} minLength={5} placeholder="例如：5555555555" />
                       </QuestionItem>
                     </div>
                     <div className="explanation-column">
@@ -740,19 +709,13 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                       <QuestionItem
                         question="电子邮件地址"
                         name="payerEmail"
+                        hasNaCheckbox={true}
+                        naCheckboxName="payerEmail_na"
                       >
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                          <Form.Item name="payerEmail" noStyle>
-                            <Input 
-                              className="input-field"
-                              maxLength={50} 
-                              placeholder="例如：emailaddress@example.com" 
-                            />
-                          </Form.Item>
-                          <Form.Item name="payerEmailNotApply" noStyle valuePropName="checked">
-                            <Checkbox>不适用</Checkbox>
-                          </Form.Item>
-                        </div>
+                        <Input 
+                          placeholder="例如：example@email.com" 
+                          style={{ width: '99%' }} 
+                        />
                       </QuestionItem>
                     </div>
                     <div className="explanation-column">
@@ -794,14 +757,10 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                 <div className="question-column">
                   <QuestionItem
                     question="支付旅行费用的公司/组织名称"
-                    name="payingCompany"
+                    name="companyName"
                   >
-                    <Input className="input-field" maxLength={33} />
+                    <Input maxLength={33} />
                   </QuestionItem>
-                </div>
-                <div className="explanation-column">
-                  <h4 className="help-header">帮助：公司名称</h4>
-                  <p>请输入将支付您旅行费用的公司或组织名称（英文）</p>
                 </div>
               </div>
 
@@ -809,9 +768,9 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                 <div className="question-column">
                   <QuestionItem
                     question="电话号码"
-                    name="payerPhone"
+                    name="companyPhone"
                   >
-                    <Input className="input-field" maxLength={15} minLength={5} placeholder="例如：5555555555" />
+                    <Input maxLength={15} minLength={5} placeholder="例如：5555555555" />
                   </QuestionItem>
                 </div>
                 <div className="explanation-column">
@@ -823,15 +782,31 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
               <div className="question-row">
                 <div className="question-column">
                   <QuestionItem
-                    question="与您的关系"
-                    name="companyRelation"
+                    question="电子邮件地址"
+                    name="companyEmail"
+                    hasNaCheckbox={true}
+                    naCheckboxName="companyEmail_na"
                   >
-                    <Input className="input-field" />
+                    <Input 
+                      placeholder="例如：example@email.com" 
+                      style={{ width: '99%' }} 
+                    />
                   </QuestionItem>
                 </div>
                 <div className="explanation-column">
-                  <h4 className="help-header">帮助：关系</h4>
-                  <p>请说明该公司或组织与您的关系</p>
+                  <h4 className="help-header">帮助：电子邮件</h4>
+                  <p>请输入公司或组织的电子邮件地址，如不适用请勾选</p>
+                </div>
+              </div>
+
+              <div className="question-row">
+                <div className="question-column">
+                  <QuestionItem
+                    question="与您的关系"
+                    name="companyRelation"
+                  >
+                    <Input />
+                  </QuestionItem>
                 </div>
               </div>
 
@@ -841,14 +816,14 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                     question="公司/组织地址"
                     name="companyAddress"
                   >
-                    <div className="highlighted-block">
+                    <div className="block-inside-highlight">
                       <div className="question-row">
                         <div className="question-column">
                           <QuestionItem
                             question="街道地址 (第1行)"
-                            name="payerStreetAddress1"
+                            name="companyStreetAddress1"
                           >
-                            <Input className="input-field" maxLength={40} />
+                            <Input maxLength={40} />
                           </QuestionItem>
                         </div>
                         <div className="explanation-column">
@@ -861,15 +836,12 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                         <div className="question-column">
                           <QuestionItem
                             question="街道地址 (第2行)"
-                            name="payerStreetAddress2"
+                            name="companyStreetAddress2"
                             required={false}
                           >
-                            <Input className="input-field" maxLength={40} />
+                            <Input maxLength={40} />
                             <span className="optional-label">*可选</span>
                           </QuestionItem>
-                        </div>
-                        <div className="explanation-column">
-                          {/* Empty explanation column to maintain layout */}
                         </div>
                       </div>
 
@@ -877,13 +849,10 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                         <div className="question-column">
                           <QuestionItem
                             question="城市"
-                            name="payerCity"
+                            name="companyCity"
                           >
-                            <Input className="input-field" maxLength={20} />
+                            <Input maxLength={20} />
                           </QuestionItem>
-                        </div>
-                        <div className="explanation-column">
-                          {/* Empty explanation column to maintain layout */}
                         </div>
                       </div>
 
@@ -891,20 +860,12 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                         <div className="question-column">
                           <QuestionItem
                             question="州/省"
-                            name="payerStateProvince"
+                            name="companyStateProvince"
+                            hasNaCheckbox={true}
+                            naCheckboxName="companyStateProvince_na"
                           >
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                              <Form.Item name="payerStateProvince" noStyle>
-                                <Input className="input-field" maxLength={20} />
-                              </Form.Item>
-                              <Form.Item name="payerStateProvinceNotApply" noStyle valuePropName="checked">
-                                <Checkbox>不适用</Checkbox>
-                              </Form.Item>
-                            </div>
+                            <Input maxLength={20} />
                           </QuestionItem>
-                        </div>
-                        <div className="explanation-column">
-                          {/* Empty explanation column to maintain layout */}
                         </div>
                       </div>
 
@@ -912,20 +873,12 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                         <div className="question-column">
                           <QuestionItem
                             question="邮政编码"
-                            name="payerPostalZIPCode"
+                            name="companyPostalZIPCode"
+                            hasNaCheckbox={true}
+                            naCheckboxName="companyPostalZIPCode_na"
                           >
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                              <Form.Item name="payerPostalZIPCode" noStyle>
-                                <Input className="input-field" maxLength={10} />
-                              </Form.Item>
-                              <Form.Item name="payerPostalZIPCodeNotApply" noStyle valuePropName="checked">
-                                <Checkbox>不适用</Checkbox>
-                              </Form.Item>
-                            </div>
+                            <Input maxLength={10} />
                           </QuestionItem>
-                        </div>
-                        <div className="explanation-column">
-                          {/* Empty explanation column to maintain layout */}
                         </div>
                       </div>
 
@@ -933,20 +886,14 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                         <div className="question-column">
                           <QuestionItem
                             question="国家/地区"
-                            name="payerCountry"
+                            name="companyCountry"
                           >
                             <Select className="select-input" options={countryOptions} placeholder="- 选择一个 -" />
                           </QuestionItem>
                         </div>
-                        <div className="explanation-column">
-                          {/* Empty explanation column to maintain layout */}
-                        </div>
                       </div>
                     </div>
                   </QuestionItem>
-                </div>
-                <div className="explanation-column">
-                  {/* Empty explanation column to maintain layout */}
                 </div>
               </div>
             </div>
