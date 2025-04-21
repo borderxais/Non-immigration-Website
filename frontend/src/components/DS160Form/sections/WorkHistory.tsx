@@ -28,7 +28,6 @@ const WorkHistory: React.FC<WorkHistoryProps> = ({ form }) => {
       <QuestionItem
         question="您目前的主要职业是什么？"
         name="primaryOccupation"
-        explanation="请选择最能描述您当前职业的选项。"
       >
         <Select
           placeholder="选择职业"
@@ -169,7 +168,6 @@ const WorkHistory: React.FC<WorkHistoryProps> = ({ form }) => {
                 <QuestionItem
                   question="月收入（美元）"
                   name="monthlyIncome"
-                  explanation="请提供您的月收入，以美元为单位。如需换算，请使用当前汇率。"
                 >
                   <Input prefix="$" type="number" min={0} placeholder="例如：3000" />
                 </QuestionItem>
