@@ -5,10 +5,12 @@ import ApplicationIdDisplay from '../ApplicationIdDisplay';
 // import PersonalInfoI from './sections/PersonalInfoI';
 // import PersonalInfoII from './sections/PersonalInfoII';
 // import TravelInfo from './sections/TravelInfo';
-import PassportInformation from './sections/PassportInformation';
+// import PassportInformation from './sections/PassportInformation';
+import PreviousTravel from './sections/PreviousTravel';
 import { generateApplicationId } from '../../utils/formUtils';
 import ds160Service from '../../services/ds160Service';
-import TravelCompanions from './sections/TravelCompanions';
+// import TravelCompanions from './sections/TravelCompanions';
+
 
 const DS160Form: React.FC = () => {
   // Generate a unique ID for this form session if not already set
@@ -196,11 +198,13 @@ const DS160Form: React.FC = () => {
     },
     {
       title: '旅游同行人',
-      content: <TravelCompanions form={form} />
+      // content: <TravelCompanions form={form} />
+      content: <></>
     },
     {
       title: '过往美国旅行',
-      content: <></>
+      // content: <></>
+      content: <PreviousTravel form={form} />
     },
     {
       title: '地址和电话',
@@ -208,7 +212,7 @@ const DS160Form: React.FC = () => {
     },
     {
       title: '护照',
-      content: <PassportInformation form={form} />
+      content: <></>
     },
     {
       title: '美国联系人',
