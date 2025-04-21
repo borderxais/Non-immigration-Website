@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Form, Input, Select, Radio } from 'antd';
 import QuestionItem from '../common/QuestionItem';
 import DateInput from '../common/DateInput';
-import { isDependentSelection, losUnitOptions } from '../utils/formOptions';
+import { isDependentSelection, losUnitOptions, usStateOptions } from '../utils/formOptions';
 import '../ds160Form.css';
 
 interface TravelInfoProps {
@@ -472,14 +472,9 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                       name="state"
                     >
                       <Select style={{ width: '99%' }} placeholder="- 选择州 -">
-                        <Select.Option value="AL">Alabama</Select.Option>
-                        <Select.Option value="AK">Alaska</Select.Option>
-                        <Select.Option value="AZ">Arizona</Select.Option>
-                        <Select.Option value="AR">Arkansas</Select.Option>
-                        <Select.Option value="CA">California</Select.Option>
-                        <Select.Option value="CO">Colorado</Select.Option>
-                        <Select.Option value="CT">Connecticut</Select.Option>
-                        {/* Additional states would go here */}
+                        {usStateOptions.map(option => (
+                          <Select.Option key={option.value} value={option.value}>{option.label}</Select.Option>
+                        ))}
                       </Select>
                     </QuestionItem>
                     
@@ -518,22 +513,83 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
               </div>
               <div className="explanation-column">
                 <h4 className="help-header">帮助：使团名称</h4>
-                <p>请输入您所属使团的完整名称</p>
+                <p>请输入您所属使团的完整名称（英文）</p>
               </div>
             </div>
 
             <div className="question-row">
               <div className="question-column">
                 <QuestionItem
-                  question="使团地址"
-                  name="missionAddress"
+                  question="使团地址（第1行）"
+                  name="missionAddress1"
                 >
-                  <Input.TextArea style={{ width: '99%' }} rows={4} maxLength={200} />
+                  <Input style={{ width: '99%' }} maxLength={40} placeholder="街道地址" />
                 </QuestionItem>
               </div>
               <div className="explanation-column">
                 <h4 className="help-header">帮助：使团地址</h4>
-                <p>请输入使团在美国的详细地址</p>
+                <p>请输入使团在美国的详细地址（英文）</p>
+              </div>
+            </div>
+
+            <div className="question-row">
+              <div className="question-column">
+                <QuestionItem
+                  question="使团地址（第2行）"
+                  name="missionAddress2"
+                  required={false}
+                >
+                  <Input style={{ width: '99%' }} maxLength={40} placeholder="公寓号，套房号等（如有）" />
+                </QuestionItem>
+              </div>
+              <div className="explanation-column">
+                {/* Empty explanation column to maintain layout */}
+              </div>
+            </div>
+
+            <div className="question-row">
+              <div className="question-column">
+                <QuestionItem
+                  question="城市"
+                  name="missionCity"
+                >
+                  <Input style={{ width: '99%' }} maxLength={40} />
+                </QuestionItem>
+              </div>
+              <div className="explanation-column">
+                {/* Empty explanation column to maintain layout */}
+              </div>
+            </div>
+
+            <div className="question-row">
+              <div className="question-column">
+                <QuestionItem
+                  question="州"
+                  name="missionState"
+                >
+                  <Select style={{ width: '99%' }} placeholder="- 选择州 -">
+                    {usStateOptions.map(option => (
+                      <Select.Option key={option.value} value={option.value}>{option.label}</Select.Option>
+                    ))}
+                  </Select>
+                </QuestionItem>
+              </div>
+              <div className="explanation-column">
+                {/* Empty explanation column to maintain layout */}
+              </div>
+            </div>
+
+            <div className="question-row">
+              <div className="question-column">
+                <QuestionItem
+                  question="邮政编码"
+                  name="missionZipCode"
+                >
+                  <Input style={{ width: '99%' }} maxLength={10} />
+                </QuestionItem>
+              </div>
+              <div className="explanation-column">
+                {/* Empty explanation column to maintain layout */}
               </div>
             </div>
 
@@ -543,57 +599,57 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                   question="使团电话"
                   name="missionPhone"
                 >
-                  <Input style={{ width: '99%' }} maxLength={20} />
+                  <Input style={{ width: '99%' }} maxLength={20} placeholder="例如：+1-202-555-0123" />
                 </QuestionItem>
               </div>
               <div className="explanation-column">
                 <h4 className="help-header">帮助：使团电话</h4>
-                <p>请输入使团的联系电话</p>
+                <p>请输入使团的联系电话，包括国家代码和区号</p>
               </div>
             </div>
 
             <div className="question-row">
               <div className="question-column">
                 <QuestionItem
-                  question="主管姓名"
+                  question="主管姓名（英文）"
                   name="supervisorName"
                 >
-                  <Input style={{ width: '99%' }} maxLength={40} />
+                  <Input style={{ width: '99%' }} maxLength={40} placeholder="例如：JOHN SMITH" />
                 </QuestionItem>
               </div>
               <div className="explanation-column">
                 <h4 className="help-header">帮助：主管姓名</h4>
-                <p>请输入您在使团的直接主管姓名</p>
+                <p>请输入您在使团的直接主管姓名（英文）</p>
               </div>
             </div>
 
             <div className="question-row">
               <div className="question-column">
                 <QuestionItem
-                  question="主管职务"
+                  question="主管职务（英文）"
                   name="supervisorTitle"
                 >
-                  <Input style={{ width: '99%' }} maxLength={40} />
+                  <Input style={{ width: '99%' }} maxLength={40} placeholder="例如：DIRECTOR OF MISSION" />
                 </QuestionItem>
               </div>
               <div className="explanation-column">
                 <h4 className="help-header">帮助：主管职务</h4>
-                <p>请输入您主管在使团中的职务</p>
+                <p>请输入您主管在使团中的职务（英文）</p>
               </div>
             </div>
 
             <div className="question-row">
               <div className="question-column">
                 <QuestionItem
-                  question="您的职务"
+                  question="您的职务（英文）"
                   name="applicantTitle"
                 >
-                  <Input style={{ width: '99%' }} maxLength={40} />
+                  <Input style={{ width: '99%' }} maxLength={40} placeholder="例如：DIPLOMATIC OFFICER" />
                 </QuestionItem>
               </div>
               <div className="explanation-column">
                 <h4 className="help-header">帮助：您的职务</h4>
-                <p>请输入您在使团中的职务</p>
+                <p>请输入您在使团中的职务（英文）</p>
               </div>
             </div>
           </div>
@@ -602,43 +658,37 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
       
       {/* Trip Payment Section */}
       <fieldset className="question-section">
+        <h4 style={{ marginBottom: '16px', fontWeight: 'normal' }}>旅行费用支付信息</h4>
         <div className="question-row">
           <div className="question-column">
             <QuestionItem
               question="谁将支付您的旅行费用？"
               name="tripPayer"
             >
-              <Radio.Group onChange={handleTripPayerChange}>
-                <Radio value="self">本人</Radio>
-                <Radio value="other">他人</Radio>
-                <Radio value="organization">组织/公司</Radio>
+              <Radio.Group>
+                <Radio value="SELF">我自己</Radio>
+                <Radio value="OTHER_PERSON">其他个人</Radio>
+                <Radio value="COMPANY">公司或组织</Radio>
+                <Radio value="OTHER">其他</Radio>
               </Radio.Group>
             </QuestionItem>
-          </div>
-          <div className="explanation-column">
-            <h4 className="help-header">帮助：旅行费用</h4>
-            <p>请选择谁将支付您此次旅行的费用，包括机票、住宿等。</p>
-          </div>
-        </div>
 
-        {(tripPayer === 'other' || tripPayer === 'organization') && (
-          <>
-            <h4 style={{ marginBottom: '16px', fontWeight: 'normal' }}>请提供支付方的详细信息：</h4>
-            <div className="highlighted-block">
-              {tripPayer === 'other' && (
-                <>
+            {form.getFieldValue('tripPayer') === 'OTHER_PERSON' && (
+              <>
+                <h4 style={{ marginBottom: '16px', fontWeight: 'normal' }}>请提供以下信息：</h4>
+                <div className="highlighted-block">
                   <div className="question-row">
                     <div className="question-column">
                       <QuestionItem
-                        question="支付人姓名"
+                        question="支付人姓名（英文）"
                         name="payerName"
                       >
-                        <Input style={{ width: '99%' }} maxLength={40} />
+                        <Input style={{ width: '99%' }} maxLength={40} placeholder="例如：JOHN SMITH" />
                       </QuestionItem>
                     </div>
                     <div className="explanation-column">
                       <h4 className="help-header">帮助：支付人姓名</h4>
-                      <p>请输入将支付您旅行费用的人的全名</p>
+                      <p>请输入将支付您旅行费用的个人姓名（英文）</p>
                     </div>
                   </div>
 
@@ -648,68 +698,188 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                         question="与您的关系"
                         name="payerRelationship"
                       >
-                        <Input style={{ width: '99%' }} maxLength={40} />
+                        <Input style={{ width: '99%' }} maxLength={40} placeholder="例如：父亲、朋友" />
                       </QuestionItem>
                     </div>
                     <div className="explanation-column">
                       <h4 className="help-header">帮助：关系</h4>
-                      <p>请说明支付人与您的关系，如：父母、配偶、朋友等</p>
+                      <p>请说明支付人与您的关系</p>
                     </div>
                   </div>
-                </>
-              )}
 
-              {tripPayer === 'organization' && (
-                <>
                   <div className="question-row">
                     <div className="question-column">
                       <QuestionItem
-                        question="组织/公司名称"
-                        name="organizationName"
+                        question="联系电话"
+                        name="payerPhone"
+                      >
+                        <Input style={{ width: '99%' }} maxLength={20} placeholder="例如：+1-202-555-0123" />
+                      </QuestionItem>
+                    </div>
+                    <div className="explanation-column">
+                      <h4 className="help-header">帮助：联系电话</h4>
+                      <p>请输入支付人的联系电话，包括国家代码和区号</p>
+                    </div>
+                  </div>
+
+                  <div className="question-row">
+                    <div className="question-column">
+                      <QuestionItem
+                        question="电子邮件"
+                        name="payerEmail"
+                        required={false}
+                      >
+                        <Input style={{ width: '99%' }} maxLength={50} placeholder="例如：example@email.com" />
+                      </QuestionItem>
+                    </div>
+                    <div className="explanation-column">
+                      {/* Empty explanation column to maintain layout */}
+                    </div>
+                  </div>
+                </div>
+              </>
+            )}
+
+            {form.getFieldValue('tripPayer') === 'COMPANY' && (
+              <>
+                <h4 style={{ marginBottom: '16px', fontWeight: 'normal' }}>请提供以下信息：</h4>
+                <div className="highlighted-block">
+                  <div className="question-row">
+                    <div className="question-column">
+                      <QuestionItem
+                        question="公司或组织名称（英文）"
+                        name="payerCompanyName"
+                      >
+                        <Input style={{ width: '99%' }} maxLength={40} placeholder="例如：ACME CORPORATION" />
+                      </QuestionItem>
+                    </div>
+                    <div className="explanation-column">
+                      <h4 className="help-header">帮助：公司名称</h4>
+                      <p>请输入将支付您旅行费用的公司或组织名称（英文）</p>
+                    </div>
+                  </div>
+
+                  <div className="question-row">
+                    <div className="question-column">
+                      <QuestionItem
+                        question="联系电话"
+                        name="payerCompanyPhone"
+                      >
+                        <Input style={{ width: '99%' }} maxLength={20} placeholder="例如：+1-202-555-0123" />
+                      </QuestionItem>
+                    </div>
+                    <div className="explanation-column">
+                      <h4 className="help-header">帮助：联系电话</h4>
+                      <p>请输入公司或组织的联系电话，包括国家代码和区号</p>
+                    </div>
+                  </div>
+
+                  <div className="question-row">
+                    <div className="question-column">
+                      <QuestionItem
+                        question="公司或组织地址（第1行）"
+                        name="payerCompanyAddress1"
+                      >
+                        <Input style={{ width: '99%' }} maxLength={40} placeholder="街道地址" />
+                      </QuestionItem>
+                    </div>
+                    <div className="explanation-column">
+                      <h4 className="help-header">帮助：公司地址</h4>
+                      <p>请输入公司或组织的详细地址（英文）</p>
+                    </div>
+                  </div>
+
+                  <div className="question-row">
+                    <div className="question-column">
+                      <QuestionItem
+                        question="公司或组织地址（第2行）"
+                        name="payerCompanyAddress2"
+                        required={false}
+                      >
+                        <Input style={{ width: '99%' }} maxLength={40} placeholder="公寓号，套房号等（如有）" />
+                      </QuestionItem>
+                    </div>
+                    <div className="explanation-column">
+                      {/* Empty explanation column to maintain layout */}
+                    </div>
+                  </div>
+
+                  <div className="question-row">
+                    <div className="question-column">
+                      <QuestionItem
+                        question="城市"
+                        name="payerCompanyCity"
                       >
                         <Input style={{ width: '99%' }} maxLength={40} />
                       </QuestionItem>
                     </div>
                     <div className="explanation-column">
-                      <h4 className="help-header">帮助：组织名称</h4>
-                      <p>请输入将支付您旅行费用的组织或公司的名称</p>
+                      {/* Empty explanation column to maintain layout */}
                     </div>
                   </div>
 
                   <div className="question-row">
                     <div className="question-column">
                       <QuestionItem
-                        question="组织/公司电话"
-                        name="organizationPhone"
+                        question="州"
+                        name="payerCompanyState"
                       >
-                        <Input style={{ width: '99%' }} maxLength={20} />
+                        <Select style={{ width: '99%' }} placeholder="- 选择州 -">
+                          {usStateOptions.map(option => (
+                            <Select.Option key={option.value} value={option.value}>{option.label}</Select.Option>
+                          ))}
+                        </Select>
                       </QuestionItem>
                     </div>
                     <div className="explanation-column">
-                      <h4 className="help-header">帮助：组织电话</h4>
-                      <p>请输入该组织或公司的联系电话</p>
+                      {/* Empty explanation column to maintain layout */}
                     </div>
                   </div>
-                </>
-              )}
 
-              <div className="question-row">
-                <div className="question-column">
-                  <QuestionItem
-                    question="支付方地址"
-                    name="payerAddress"
-                  >
-                    <Input.TextArea style={{ width: '99%' }} rows={4} maxLength={200} />
-                  </QuestionItem>
+                  <div className="question-row">
+                    <div className="question-column">
+                      <QuestionItem
+                        question="邮政编码"
+                        name="payerCompanyZipCode"
+                      >
+                        <Input style={{ width: '99%' }} maxLength={10} />
+                      </QuestionItem>
+                    </div>
+                    <div className="explanation-column">
+                      {/* Empty explanation column to maintain layout */}
+                    </div>
+                  </div>
                 </div>
-                <div className="explanation-column">
-                  <h4 className="help-header">帮助：支付方地址</h4>
-                  <p>请输入支付方（个人或组织）的完整地址</p>
+              </>
+            )}
+
+            {form.getFieldValue('tripPayer') === 'OTHER' && (
+              <>
+                <h4 style={{ marginBottom: '16px', fontWeight: 'normal' }}>请提供以下信息：</h4>
+                <div className="highlighted-block">
+                  <div className="question-row">
+                    <div className="question-column">
+                      <QuestionItem
+                        question="请说明谁将支付您的旅行费用"
+                        name="payerOtherExplanation"
+                      >
+                        <Input.TextArea style={{ width: '99%' }} rows={4} maxLength={200} />
+                      </QuestionItem>
+                    </div>
+                    <div className="explanation-column">
+                      <h4 className="help-header">帮助：其他支付方式</h4>
+                      <p>请详细说明谁将支付您的旅行费用</p>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-          </>
-        )}
+              </>
+            )}
+          </div>
+          <div className="explanation-column">
+            <h4 className="help-header">帮助：旅行费用</h4>
+            <p>请选择谁将支付您此次旅行的费用，包括机票、住宿等费用</p>
+          </div>
+        </div>
       </fieldset>
     </div>
   );
