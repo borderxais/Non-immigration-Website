@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Radio, Input, Select, Form } from 'antd';
 import QuestionItem from '../common/QuestionItem';
 import RepeatableFormItem from '../common/RepeatableFormItem';
+import { FormListFieldData } from 'antd/lib/form/FormList';
 import '../ds160Form.css';
 
 interface TravelCompanionsProps {
@@ -89,76 +90,45 @@ const TravelCompanions: React.FC<TravelCompanionsProps> = ({ form }) => {
                     addButtonText="增加另一个同行人"
                     removeButtonText="移走"
                   >
-                    {(field) => (
+                    {(field: FormListFieldData) => (
                       <>
-                        <div className="question-row">
-                          <div className="question-column">
-                            <Form.Item
-                              {...field}
-                              name={[field.name, 'surname']}
-                            >
-                              <QuestionItem
-                                question="姓氏"
-                                name="surname"
-                              >
-                                <Input maxLength={33} placeholder="例如：ZHANG" style={{ width: '95%' }} />
-                              </QuestionItem>
-                            </Form.Item>
-                          </div>
-                          <div className="explanation-column">
-                            <h4 className="help-header">帮助：同行人姓氏</h4>
-                            <p>请输入同行人的姓氏（与护照一致）</p>
-                          </div>
-                        </div>
+                        <Form.Item
+                          {...field}
+                          name={[field.name, 'surname']}
+                          label="姓氏"
+                          rules={[{ required: true, message: '请输入同行人姓氏' }]}
+                          style={{ marginBottom: '16px' }}
+                        >
+                          <Input style={{ width: '95%' }} maxLength={33} placeholder="例如：ZHANG" />
+                        </Form.Item>
 
-                        <div className="question-row">
-                          <div className="question-column">
-                            <Form.Item
-                              {...field}
-                              name={[field.name, 'givenName']}
-                            >
-                              <QuestionItem
-                                question="名字"
-                                name="givenName"
-                              >
-                                <Input maxLength={33} placeholder="例如：SAN" style={{ width: '95%' }} />
-                              </QuestionItem>
-                            </Form.Item>
-                          </div>
-                          <div className="explanation-column">
-                            <h4 className="help-header">帮助：同行人名字</h4>
-                            <p>请输入同行人的名字（与护照一致）</p>
-                          </div>
-                        </div>
+                        <Form.Item
+                          {...field}
+                          name={[field.name, 'givenName']}
+                          label="名字"
+                          rules={[{ required: true, message: '请输入同行人名字' }]}
+                          style={{ marginBottom: '16px' }}
+                        >
+                          <Input style={{ width: '95%' }} maxLength={33} placeholder="例如：SAN" />
+                        </Form.Item>
 
-                        <div className="question-row">
-                          <div className="question-column">
-                            <Form.Item
-                              {...field}
-                              name={[field.name, 'relationship']}
-                            >
-                              <QuestionItem
-                                question="关系"
-                                name="relationship"
-                              >
-                                <Select style={{ width: '95%' }} placeholder="- 选择一个 -">
-                                  <Select.Option value="spouse">配偶</Select.Option>
-                                  <Select.Option value="child">子女</Select.Option>
-                                  <Select.Option value="parent">父母</Select.Option>
-                                  <Select.Option value="sibling">兄弟姐妹</Select.Option>
-                                  <Select.Option value="relative">其他亲属</Select.Option>
-                                  <Select.Option value="friend">朋友</Select.Option>
-                                  <Select.Option value="business">商业伙伴</Select.Option>
-                                  <Select.Option value="other">其他</Select.Option>
-                                </Select>
-                              </QuestionItem>
-                            </Form.Item>
-                          </div>
-                          <div className="explanation-column">
-                            <h4 className="help-header">帮助：关系</h4>
-                            <p>请选择此同行人与您的关系</p>
-                          </div>
-                        </div>
+                        <Form.Item
+                          {...field}
+                          name={[field.name, 'relationship']}
+                          label="关系"
+                          rules={[{ required: true, message: '请选择与同行人的关系' }]}
+                        >
+                          <Select style={{ width: '95%' }} placeholder="- 选择一个 -">
+                            <Select.Option value="spouse">配偶</Select.Option>
+                            <Select.Option value="child">子女</Select.Option>
+                            <Select.Option value="parent">父母</Select.Option>
+                            <Select.Option value="sibling">兄弟姐妹</Select.Option>
+                            <Select.Option value="relative">其他亲属</Select.Option>
+                            <Select.Option value="friend">朋友</Select.Option>
+                            <Select.Option value="business">商业伙伴</Select.Option>
+                            <Select.Option value="other">其他</Select.Option>
+                          </Select>
+                        </Form.Item>
                       </>
                     )}
                   </RepeatableFormItem>
