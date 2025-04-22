@@ -16,10 +16,26 @@ const { Step } = Steps;
 
 // Define the form sections and their titles
 const formSections = [
-  { key: 'personalInfo1', title: '个人信息 I', component: PersonalInfoI },
-  { key: 'personalInfo2', title: '个人信息 II', component: PersonalInfoII },
-  { key: 'travelInfo', title: '旅行信息', component: TravelInfo },
-  { key: 'previousTravel', title: '以前的旅行', component: PreviousTravel },
+  {
+    key: 'personalInfo1',
+    title: '个人信息 I',
+    component: PersonalInfoI
+  },
+  {
+    key: 'personalInfo2',
+    title: '个人信息 II',
+    component: PersonalInfoII
+  },
+  {
+    key: 'travelInfo',
+    title: '旅行信息',
+    component: TravelInfo
+  },
+  {
+    key: 'previousTravel',
+    title: '以前的旅行',
+    component: PreviousTravel
+  }
 ];
 
 const DS160Form: React.FC = () => {
