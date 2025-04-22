@@ -83,7 +83,6 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
                   <>
                     <QuestionItem
                       question="到达日期"
-                      name={`previousVisits.${field.name}.arrivalDate`}
                     >
                       <DateInput
                         dayName={`previousVisits.${field.name}.arrivalDay`}
