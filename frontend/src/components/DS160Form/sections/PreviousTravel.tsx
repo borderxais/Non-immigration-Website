@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Form, Input, Radio, Select } from 'antd';
+import { Input, Radio, Select } from 'antd';
 import { FormInstance } from 'antd/lib/form';
 import QuestionItem from '../common/QuestionItem';
 import DateInput from '../common/DateInput';
@@ -44,8 +44,8 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
     <>
       {/* Previous US Travel Question */}
       <fieldset className="question-section">
-        <div className="field-groups">
-          <div className="q">
+        <div className="question-row">
+          <div className="question-column">
             <QuestionItem
               question="您是否去过美国？"
               name="hasBeenToUS"
@@ -55,6 +55,9 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
                 <Radio value="N">否 (No)</Radio>
               </Radio.Group>
             </QuestionItem>
+          </div>
+          <div className="explanation-column">
+            {/* Empty explanation column to maintain layout */}
           </div>
         </div>
       </fieldset>
@@ -124,16 +127,21 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
 
       {/* Previous US Visa Question */}
       <fieldset className="question-section">
-        <div className="q">
-          <QuestionItem
-            question="您是否曾经获得过美国签证?"
-            name="previousUsVisa"
-          >
-            <Radio.Group onChange={handleHadUSVisaChange}>
-            <Radio value="Y">是 (Yes)</Radio>
-            <Radio value="N">否 (No)</Radio>
-            </Radio.Group>
-          </QuestionItem>
+        <div className="question-row">
+          <div className="question-column">
+            <QuestionItem
+              question="您是否曾经获得过美国签证?"
+              name="previousUsVisa"
+            >
+              <Radio.Group onChange={handleHadUSVisaChange}>
+              <Radio value="Y">是 (Yes)</Radio>
+              <Radio value="N">否 (No)</Radio>
+              </Radio.Group>
+            </QuestionItem>
+          </div>
+          <div className="explanation-column">
+            {/* Empty explanation column to maintain layout */}
+          </div>
         </div>
       </fieldset>
 
@@ -178,8 +186,8 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
 
       {/* Visa Refusal Question */}
       <fieldset className="question-section">
-        <div className="field-groups">
-          <div className="q">
+        <div className="question-row">
+          <div className="question-column">
             <QuestionItem
               question="您是否曾经被拒绝美国签证，或在入境口岸被拒入境，或撤销入境申请？"
               name="visaRefused"
@@ -189,6 +197,9 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
                 <Radio value="N">否 (No)</Radio>
               </Radio.Group>
             </QuestionItem>
+          </div>
+          <div className="explanation-column">
+            {/* Empty explanation column to maintain layout */}
           </div>
         </div>
       </fieldset>
@@ -216,8 +227,8 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
 
       {/* Immigrant Petition Question */}
       <fieldset className="question-section">
-        <div className="field-groups">
-          <div className="q">
+        <div className="question-row">
+          <div className="question-column">
             <QuestionItem
               question="曾有人在公民及移民服务局为您申请过移民吗？"
               name="immigrantPetition"
@@ -227,6 +238,9 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
                 <Radio value="N">否 (No)</Radio>
               </Radio.Group>
             </QuestionItem>
+          </div>
+          <div className="explanation-column">
+            {/* Empty explanation column to maintain layout */}
           </div>
         </div>
       </fieldset>
