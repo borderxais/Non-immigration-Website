@@ -16,8 +16,7 @@ const DS160Form: React.FC = () => {
   const [completedSteps, setCompletedSteps] = React.useState<number[]>([0]);
   const [form] = Form.useForm();
   const navigate = useNavigate();
-  const [formId, setFormId] = React.useState<string | null>(generateApplicationId());
-  const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const [applicationId, setApplicationId] = React.useState<string | null>(generateApplicationId());
 
   React.useEffect(() => {
     // Check if there's a form ID in the URL (for resuming a draft)
@@ -26,19 +25,19 @@ const DS160Form: React.FC = () => {
     
     if (draftId) {
       // If we have an ID in the URL, use that instead of the generated one
-      setFormId(draftId);
+      setApplicationId(draftId);
       // Here you would also load the form data from your backend
     }
     
     // Save the form ID to localStorage for persistence
     const savedFormId = localStorage.getItem('currentFormId');
     if (!draftId && savedFormId) {
-      setFormId(savedFormId);
+      setApplicationId(savedFormId);
     } else {
       // Save the current form ID (either from URL or randomly generated)
-      localStorage.setItem('currentFormId', formId || '');
+      localStorage.setItem('currentFormId', applicationId || '');
     }
-  }, [formId]);
+  }, [applicationId]);
   
   // Define highlighted block style here, so it's available throughout the component
   const highlightedBlockStyle = {
@@ -425,15 +424,8 @@ const DS160Form: React.FC = () => {
   
   const handleSubmit = async (values: any) => {
     try {
-      setIsSubmitting(true);
       console.log('Submitting form:', values);
-      // Set the status to 'submitted' when submitting the form
-      const formDataWithStatus = {
-        form_data: values,  // Nest the form values under form_data
-        status: 'submitted' as 'submitted',  // Explicitly type as a literal 'submitted'
-        application_id: formId || undefined  // Use undefined instead of null
-      };
-      const response = await ds160Service.createForm(formDataWithStatus);
+      const response = await ds160Service.createForm(values);
       console.log('Form submitted successfully:', response);
       message.success('表格提交成功！');
       // Redirect to a success page
@@ -441,8 +433,6 @@ const DS160Form: React.FC = () => {
     } catch (error) {
       console.error('Error submitting form:', error);
       message.error('提交表格时出错，请稍后再试。');
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
@@ -815,7 +805,7 @@ const DS160Form: React.FC = () => {
     //           explanation="请选择您出生地的现用国家/地区名称。"
     //         >
     //           <Select options={countryOptions} placeholder="- 选择一个 -" />
-    //         </Question.Item>
+    //         </QuestionItem>
     //       </div>
     //     </>
     //   ),
@@ -966,7 +956,7 @@ const DS160Form: React.FC = () => {
     //               <Select.Option value="N">其他 (N)</Select.Option>
     //               <Select.Option value="NATO">北约工作人员 (NATO)</Select.Option>
     //               <Select.Option value="O">具有特殊能力的外国人 (O)</Select.Option>
-    //               <Select.Option value="P">国际公认人员 (P)</Select.Option>
+    //               <Select.Option value="P">国际知名外国人 (P)</Select.Option>
     //               <Select.Option value="Q">文化交流访问者 (Q)</Select.Option>
     //               <Select.Option value="R">宗教工作者 (R)</Select.Option>
     //               <Select.Option value="S">信息提供者或证人 (S)</Select.Option>
@@ -1449,7 +1439,7 @@ const DS160Form: React.FC = () => {
     //                       explanation="请输入您离开美国的城市"
     //                     >
     //                       <Input style={{ width: '98%' }} maxLength={20} />
-    //                     </Question.Item>
+    //                     </QuestionItem>
 
     //                   </div>
     //                   <div style={blockInsideHighlightStyle}>
@@ -1462,7 +1452,7 @@ const DS160Form: React.FC = () => {
     //                               style={{ 
     //                                 marginBottom: 24, 
     //                                 padding: index > 0 ? 16 : 0, 
-    //                                 border: index > 0 ? '1px dashed #d6e8fa' : '1px solid #d6e8fa',
+    //                                 border: index > 0 ? '1px dashed #d6e8fa' : 'none',
     //                                 borderRadius: index > 0 ? '8px' : 0
     //                               }}
     //                             >
@@ -1655,9 +1645,8 @@ const DS160Form: React.FC = () => {
     //               </>
     //             );
     //           }
-              
-    //           return null;
-    //         }}
+    //         }
+    //       }
     //       </Form.Item>
                 
     //       <Form.Item
@@ -1871,14 +1860,14 @@ const DS160Form: React.FC = () => {
     //                             <h4>付款人地址</h4>
     //                             <div className="field-group callout" style={blockInsideHighlightStyle}>
     //                               <QuestionItem
-    //                                 question="街道地址（第一行）"
+    //                                 question="街道地址 (第1行)"
     //                                 name="payerStreetAddress1"
     //                               >
     //                                 <Input maxLength={40} />
     //                               </QuestionItem>
-
+                                
     //                               <QuestionItem
-    //                                 question="街道地址（第二行）"
+    //                                 question="街道地址 (第2行)"
     //                                 name="payerStreetAddress2"
     //                                 required={false}
     //                               >
@@ -1894,7 +1883,7 @@ const DS160Form: React.FC = () => {
     //                               </QuestionItem>
 
     //                               <QuestionItem
-    //                                 question="州/省份"
+    //                                 question="州/省"
     //                                 name="payerStateProvince"
     //                               >
     //                                 <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -1908,7 +1897,7 @@ const DS160Form: React.FC = () => {
     //                               </QuestionItem>
 
     //                               <QuestionItem
-    //                                 question="邮政区域/邮政编码"
+    //                                 question="邮政编码"
     //                                 name="payerPostalZIPCode"
     //                               >
     //                                 <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -1925,11 +1914,11 @@ const DS160Form: React.FC = () => {
     //                                 question="国家/地区"
     //                                 name="payerCountry"
     //                               >
-    //                                 <Select 
-    //                                   options={countryOptions}
-    //                                   style={{ width: '100%' }}
-    //                                   placeholder="- 选择一个 -"
-    //                                 />
+    //                                 <Select placeholder="- 请选择一个 -" style={{ width: '100%' }}>
+    //                                   <Select.Option value="CHIN">中国</Select.Option>
+    //                                   <Select.Option value="USA">美国</Select.Option>
+    //                                   {/* 这里可以添加更多国家选项 */}
+    //                                 </Select>
     //                               </QuestionItem>
     //                             </div>
     //                           </div>
@@ -1998,7 +1987,7 @@ const DS160Form: React.FC = () => {
     //                       </QuestionItem>
 
     //                       <QuestionItem
-    //                         question="州/省份"
+    //                         question="州/省"
     //                         name="payerStateProvince"
     //                       >
     //                         <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -2044,6 +2033,175 @@ const DS160Form: React.FC = () => {
     //         }}
     //       </Form.Item>
           
+    //     </>
+    //   ),
+    // },
+    // {
+    //   title: '旅游同行人',
+    //   description: '旅游同行人信息',
+    //   content: (
+    //     <>
+    //       <div className="field-groups">
+    //         <div className="q">
+    //           <QuestionItem
+    //             question="您是否有同行人？"
+    //             name="hasCompanions"
+    //             explanation="请选择是否有人与您一同旅行"
+    //           >
+    //             <Radio.Group onChange={(e) => {
+    //               // 当选项改变时，通过表单实例更新字段值
+    //               form.setFieldsValue({ hasCompanions: e.target.value });
+    //             }}>
+    //               <Radio value="Y">是</Radio>
+    //               <Radio value="N">否</Radio>
+    //             </Radio.Group>
+    //           </QuestionItem>
+    //         </div>
+    //       </div>
+    //       <Form.Item
+    //         noStyle
+    //         shouldUpdate={(prevValues, currentValues) => 
+    //           prevValues.hasCompanions !== currentValues.hasCompanions
+    //         }
+    //       >
+    //         {({ getFieldValue }) => {
+    //           const hasCompanions = getFieldValue('hasCompanions');
+              
+    //           // 如果没有选择是否有同行人，不显示任何后续问题
+    //           if (!hasCompanions) {
+    //             return null;
+    //           }
+              
+    //           if (hasCompanions === 'Y') {
+    //             return (
+    //               <div className="field-groups" style={{ marginBottom: '15px' }}>
+    //                 <div className="q">
+    //                   <QuestionItem
+    //                     question="您是否作为一个团队或者组织的成员去旅行？"
+    //                     name="groupTravel"
+    //                     explanation="如果您是作为一个组织、团队或旅行团的成员旅行，请选择'是'"
+    //                   >
+    //                     <Radio.Group onChange={(e) => {
+    //                       form.setFieldsValue({ groupTravel: e.target.value });
+    //                     }}>
+    //                       <Radio value="Y">是</Radio>
+    //                       <Radio value="N">否</Radio>
+    //                     </Radio.Group>
+    //                   </QuestionItem>
+    //                 </div>
+                    
+    //                 <Form.Item
+    //                   noStyle
+    //                   shouldUpdate={(prevValues, currentValues) => 
+    //                     prevValues.groupTravel !== currentValues.groupTravel
+    //                   }
+    //                 >
+    //                   {({ getFieldValue }) => {
+    //                     const groupTravel = getFieldValue('groupTravel');
+                        
+    //                     if (groupTravel === 'Y') {
+    //                       return (
+    //                         <div className="field-group callout" style={highlightedBlockStyle}>
+    //                           <QuestionItem
+    //                             question="团队或组织名称"
+    //                             name="groupName"
+    //                             explanation="请输入您所属团队或组织的名称"
+    //                           >
+    //                             <Input style={{ width: '98%' }} maxLength={40} />
+    //                           </QuestionItem>
+    //                         </div>
+    //                       );
+    //                     } else if (groupTravel === 'N') {
+    //                       return (
+    //                         <div className="field-groups" style={{ marginBottom: '15px' }}>
+    //                           <h4>
+    //                             <span>同行人信息</span>
+    //                           </h4>
+    //                           <div className="field-group callout" style={highlightedBlockStyle}>
+    //                             <div style={blockInsideHighlightStyle}>
+    //                               <Form.List name="companions" initialValue={[{}]}>
+    //                               {(fields, { add, remove }) => (
+    //                                 <>
+    //                                   {fields.map((field, index) => (
+    //                                     <div 
+    //                                       key={field.key} 
+    //                                       style={{ 
+    //                                         marginBottom: 24, 
+    //                                         padding: index > 0 ? 16 : 0, 
+    //                                         border: index > 0 ? '1px dashed #d6e8fa' : 'none',
+    //                                         borderRadius: index > 0 ? '8px' : 0
+    //                                       }}
+    //                                     >
+    //                                       <h4>同行人 #{index + 1}</h4>
+                                          
+    //                                       <QuestionItem
+    //                                         question="姓氏"
+    //                                         name={`companions[${index}].surname`}
+    //                                         explanation="请输入同行人的姓氏（与护照一致）"
+    //                                       >
+    //                                         <Input style={{ width: '98%' }} maxLength={33} />
+    //                                       </QuestionItem>
+                                          
+    //                                       <QuestionItem
+    //                                         question="名字"
+    //                                         name={`companions[${index}].givenName`}
+    //                                         explanation="请输入同行人的名字（与护照一致）"
+    //                                       >
+    //                                         <Input style={{ width: '98%' }} maxLength={33} />
+    //                                       </QuestionItem>
+                                          
+    //                                       <QuestionItem
+    //                                         question="与您的关系"
+    //                                         name={`companions[${index}].relationship`}
+    //                                         explanation="请选择此同行人与您的关系"
+    //                                       >
+    //                                         <Select placeholder="- 请选择一个 -" style={{ width: '100%' }}>
+    //                                           <Select.Option value="S">配偶</Select.Option>
+    //                                           <Select.Option value="C">子女</Select.Option>
+    //                                           <Select.Option value="P">父母</Select.Option>
+    //                                           <Select.Option value="SB">兄弟姐妹</Select.Option>
+    //                                           <Select.Option value="F">朋友</Select.Option>
+    //                                           <Select.Option value="B">商业伙伴</Select.Option>
+    //                                           <Select.Option value="O">其他</Select.Option>
+    //                                         </Select>
+    //                                       </QuestionItem>
+                                          
+    //                                       {/* FormItemButtons 组件，与旅行信息页面保持一致 */}
+    //                                       <FormItemButtons 
+    //                                         onAdd={() => add()}
+    //                                         onRemove={() => {
+    //                                           // 仅在有多于一个同行人时才允许删除
+    //                                           if (fields.length > 1) {
+    //                                             remove(field.name);
+    //                                           }
+    //                                         }}
+    //                                         addText="添加另一位同行人"
+    //                                         removeText="移除"
+    //                                       />
+    //                                     </div>
+    //                                   ))}
+    //                                 </>
+    //                               )}
+    //                             </Form.List>
+    //                           </div>
+    //                           </div>
+    //                         </div>
+    //                       );
+    //                     }
+                        
+    //                     return null;
+    //                   }}
+    //                 </Form.Item>
+    //               </div>
+    //             );
+    //           } else if (hasCompanions === 'N') {
+    //             // 如果没有同行人，不显示任何后续问题
+    //             return null;
+    //           }
+              
+    //           return null;
+    //         }}
+    //       </Form.Item>
     //     </>
     //   ),
     // },
@@ -2094,13 +2252,13 @@ const DS160Form: React.FC = () => {
                             >
                               <div className="field-group">
                                   <QuestionItem
-                                  question="日期"
+                                  question="抵达日期"
                                   name={`previousVisits[${index}].arrivalDate`}
                                   explanation="请输入抵达日期 (格式: DD-MMM-YYYY)"
                                 >
                                   <div style={dateBlockStyle}>
                                     <Form.Item 
-                                      name={`previousVisits[${index}].day`} 
+                                      name={`previousVisits[${index}].day`}
                                       noStyle
                                       rules={[{ required: true, message: '请选择日期' }]}
                                     >
@@ -2108,7 +2266,7 @@ const DS160Form: React.FC = () => {
                                     </Form.Item>
 
                                     <Form.Item 
-                                      name={`previousVisits[${index}].month`} 
+                                      name={`previousVisits[${index}].month`}
                                       noStyle
                                       rules={[{ required: true, message: '请选择月份' }]}
                                     >
@@ -2116,7 +2274,7 @@ const DS160Form: React.FC = () => {
                                     </Form.Item>
                                     
                                     <Form.Item 
-                                      name={`previousVisits[${index}].year`} 
+                                      name={`previousVisits[${index}].year`}
                                       noStyle
                                       rules={[
                                         { required: true, message: '请输入年份' },
@@ -2130,7 +2288,6 @@ const DS160Form: React.FC = () => {
                                     </div>
                                   </div>
                                 </QuestionItem>
-
                               </div>
                               
                               <div className="field-group">
@@ -2197,6 +2354,10 @@ const DS160Form: React.FC = () => {
                         if (hasLicense === 'Y') {
                           return (
                             <div className="field-group callout" style={highlightedBlockStyle}>
+                              <h4>
+                                <span>请提供以下信息：</span>
+                              </h4>
+                              
                               <Form.List name="driverLicenses" initialValue={[{}]}>
                                 {(fields, { add, remove }) => (
                                   <>
@@ -2469,7 +2630,7 @@ const DS160Form: React.FC = () => {
               </QuestionItem>
 
               <QuestionItem
-                question="州/省"
+                question="州/省份"
                 name="homeState"
                 hasNaCheckbox={true}
                 naCheckboxName="homeState_na"
@@ -2560,7 +2721,7 @@ const DS160Form: React.FC = () => {
                       </QuestionItem>
 
                       <QuestionItem
-                        question="州/省"
+                        question="州/省份"
                         name="mailingState"
                         explanation="State/Province"
                         hasNaCheckbox={true}
@@ -3149,11 +3310,7 @@ const DS160Form: React.FC = () => {
                       noStyle
                       rules={[{ required: true, message: '请选择日期' }]}
                     >
-                      <Select 
-                        options={dayOptions} 
-                        style={{ width: 70 }} 
-                        placeholder="" 
-                      />
+                      <Select options={dayOptions} style={{ width: '60px' }} placeholder="" />
                     </Form.Item>
     
                     <Form.Item 
@@ -3161,11 +3318,7 @@ const DS160Form: React.FC = () => {
                       noStyle
                       rules={[{ required: true, message: '请选择月份' }]}
                     >
-                      <Select 
-                        options={monthOptions} 
-                        style={{ width: 80 }} 
-                        placeholder="" 
-                      />
+                      <Select options={monthOptions} style={{ width: '70px' }} placeholder="" />
                     </Form.Item>
     
                     <Form.Item 
@@ -3208,11 +3361,7 @@ const DS160Form: React.FC = () => {
                       noStyle
                       rules={[{ required: true, message: '请选择日期' }]}
                     >
-                      <Select 
-                        options={dayOptions} 
-                        style={{ width: 70 }} 
-                        placeholder="" 
-                      />
+                      <Select options={dayOptions} style={{ width: '60px' }} placeholder="" />
                     </Form.Item>
     
                     <Form.Item 
@@ -3220,11 +3369,7 @@ const DS160Form: React.FC = () => {
                       noStyle
                       rules={[{ required: true, message: '请选择月份' }]}
                     >
-                      <Select 
-                        options={monthOptions} 
-                        style={{ width: 80 }} 
-                        placeholder="" 
-                      />
+                      <Select options={monthOptions} style={{ width: '70px' }} placeholder="" />
                     </Form.Item>
     
                     <Form.Item 
@@ -3578,7 +3723,7 @@ const DS160Form: React.FC = () => {
                             options={monthOptions} 
                             style={{ width: 80 }} 
                             placeholder="Month" 
-                            disabled={form.getFieldValue('fatherDobUnknown')}
+                            disabled={form.getFieldValue('fatherDobUnknown')} 
                           />
                         </Form.Item>
       
@@ -3597,7 +3742,6 @@ const DS160Form: React.FC = () => {
                             disabled={form.getFieldValue('fatherDobUnknown')}
                           />
                         </Form.Item>
-      
                         <div style={{ marginLeft: '8px', fontSize: '12px', color: '#666' }}>
                           (格式: DD-MMM-YYYY)
                         </div>
@@ -3613,8 +3757,8 @@ const DS160Form: React.FC = () => {
                           naCheckboxName="fatherInUs_na"
                         >
                           <Radio.Group>
-                            <Radio value="Y">是</Radio>
-                            <Radio value="N">否</Radio>
+                            <Radio value="Y">是 (Yes)</Radio>
+                            <Radio value="N">否 (No)</Radio>
                           </Radio.Group>
                         </QuestionItem>
                       </div>
@@ -3721,8 +3865,8 @@ const DS160Form: React.FC = () => {
                           name="motherInUs"
                         >
                           <Radio.Group>
-                            <Radio value="Y">是</Radio>
-                            <Radio value="N">否</Radio>
+                            <Radio value="Y">是 (Yes)</Radio>
+                            <Radio value="N">否 (No)</Radio>
                           </Radio.Group>
                         </QuestionItem>
                       </div>
@@ -3741,8 +3885,8 @@ const DS160Form: React.FC = () => {
                       name="hasOtherRelativesInUs"
                     >
                       <Radio.Group>
-                        <Radio value="Y">是</Radio>
-                        <Radio value="N">否</Radio>
+                        <Radio value="Y">是 (Yes)</Radio>
+                        <Radio value="N">否 (No)</Radio>
                       </Radio.Group>
                     </QuestionItem>
                   </div>
@@ -4012,10 +4156,9 @@ const DS160Form: React.FC = () => {
   };
 
 
-  const onFinish = async (values: { [key: string]: any }) => {
+  const onFinish = (values: { [key: string]: any }) => {
     const finalData = { ...formData, ...values };
-    console.log('Final form data:', finalData);
-    await handleSubmit(finalData);
+    handleSubmit(finalData);
     console.log('Success');
   };
 
@@ -4029,7 +4172,7 @@ const DS160Form: React.FC = () => {
         scrollToFirstError
         preserve={true}
       >
-        <ApplicationIdDisplay formId={formId} />
+        <ApplicationIdDisplay applicationId={applicationId} />
         <div style={{ display: 'flex', gap: '24px' }}>
           {/* Left sidebar with steps */}
           <div style={{ width: '25%', minWidth: '200px' }}>
@@ -4069,7 +4212,7 @@ const DS160Form: React.FC = () => {
                 </Button>
               )}
               {currentStep === steps.length - 1 && (
-                <Button type="primary" onClick={() => form.submit()} loading={isSubmitting}>
+                <Button type="primary" onClick={() => form.submit()}>
                   提交申请
                 </Button>
               )}
