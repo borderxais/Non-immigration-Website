@@ -231,9 +231,9 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                     name="arrivalUSDate"
                   >
                     <DateInput 
-                      dayName="arrivalDay" 
-                      monthName="arrivalMonth" 
-                      yearName="arrivalYear"
+                      dayName="arrivalUSDate.arrivalDay" 
+                      monthName="arrivalUSDate.arrivalMonth" 
+                      yearName="arrivalUSDate.arrivalYear"
                     />
                   </QuestionItem>
                 </div>
@@ -281,9 +281,9 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                     name="departureUSDate"
                   >
                     <DateInput 
-                      dayName="departureDay" 
-                      monthName="departureMonth" 
-                      yearName="departureYear"
+                      dayName="departureUSDate.departureDay" 
+                      monthName="departureUSDate.departureMonth" 
+                      yearName="departureUSDate.departureYear"
                     />
                   </QuestionItem>
                 </div>
@@ -361,16 +361,20 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
           <fieldset className="question-section">
             <div className="question-row">
               <div className="question-column">
-                <QuestionItem
-                  question="计划到达日期"
+                <Form.Item
                   name="intendedDateOfArrival"
+                  rules={[{ required: true, message: '请输入计划到达日期' }]}
                 >
-                  <DateInput 
-                    dayName="arrivalDay" 
-                    monthName="arrivalMonth" 
-                    yearName="arrivalYear"
-                  />
-                </QuestionItem>
+                  <QuestionItem
+                    question="计划到达日期"
+                  >
+                    <DateInput 
+                      dayName="intendedDateOfArrival.arrivalDay" 
+                      monthName="intendedDateOfArrival.arrivalMonth" 
+                      yearName="intendedDateOfArrival.arrivalYear"
+                    />
+                  </QuestionItem>
+                </Form.Item>
               </div>
               <div className="explanation-column">
                 <h4 className="help-header">帮助：计划到达日期</h4>

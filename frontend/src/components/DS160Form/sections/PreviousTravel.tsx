@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Input, Radio, Select } from 'antd';
+import { Input, Radio, Select, Form } from 'antd';
 import { FormInstance } from 'antd/lib/form';
 import QuestionItem from '../common/QuestionItem';
 import DateInput from '../common/DateInput';
@@ -66,59 +66,47 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
       {hasBeenToUS === 'Y' && (
         <fieldset className="question-section">
           <div className="highlighted-block">
-            <h4 style={{ marginBottom: '16px' }}>
-              <span>请提供最近五次赴美信息：</span>
-            </h4>
+            <h4 style={{ marginBottom: '16px', fontWeight: 'normal' }}>请提供以下信息：</h4>
             <RepeatableFormItem
               name="previousVisits"
-              addButtonText="Add Another"
-              removeButtonText="Remove"
+              addButtonText="增加另一次访问"
+              removeButtonText="移走"
             >
               {(field: FormListFieldData) => (
-                <div className="question-section">
-                  <div className="question-row">
-                    <div className="question-column">
-                      <QuestionItem
-                        question="抵达日期"
-                        name={`previousVisits[${field.name}].arrivalDate`}
-                      >
-                        <DateInput 
-                          dayName={`previousVisits[${field.name}].day`}
-                          monthName={`previousVisits[${field.name}].month`}
-                          yearName={`previousVisits[${field.name}].year`}
-                        />
-                      </QuestionItem>
-                    </div>
-                  </div>
+                <>
+                  <Form.Item
+                    {...field}
+                    name={[field.name, 'arrivalDate']}
+                    label="到达日期"
+                    rules={[{ required: true, message: '请输入到达日期' }]}
+                    style={{ marginBottom: '16px' }}
+                  >
+                    <DateInput
+                      dayName={`previousVisits.${field.name}.arrivalDay`}
+                      monthName={`previousVisits.${field.name}.arrivalMonth`}
+                      yearName={`previousVisits.${field.name}.arrivalYear`}
+                    />
+                  </Form.Item>
 
-                  <div className="question-row">
-                    <div className="question-column">
-                      <QuestionItem
-                        question="停留时间"
-                        name={`previousVisits[${field.name}].duration`}
-                      >
-                        <Input 
-                          style={{ width: 70 }}
-                          maxLength={3}
-                        />
-                      </QuestionItem>
-                    </div>
-                  </div>
+                  <Form.Item
+                    {...field}
+                    name={[field.name, 'stayLength']}
+                    label="停留时间"
+                    rules={[{ required: true, message: '请输入停留时间' }]}
+                    style={{ marginBottom: '16px' }}
+                  >
+                    <Input style={{ width: '95%' }} />
+                  </Form.Item>
 
-                  <div className="question-row">
-                    <div className="question-column">
-                      <QuestionItem
-                        question="单位"
-                        name={`previousVisits[${field.name}].durationUnit`}
-                      >
-                        <Select 
-                          options={losUnitOptions}
-                          style={{ width: 180 }}
-                        />
-                      </QuestionItem>
-                    </div>
-                  </div>
-                </div>
+                  <Form.Item
+                    {...field}
+                    name={[field.name, 'stayUnit']}
+                    label="时间单位"
+                    rules={[{ required: true, message: '请选择时间单位' }]}
+                  >
+                    <Select options={losUnitOptions} style={{ width: '95%' }} />
+                  </Form.Item>
+                </>
               )}
             </RepeatableFormItem>
           </div>
