@@ -22,3 +22,7 @@ frontend/.DS_Store
 
 backend/app.yaml
 backend/.gcloudignore
+
+# Development files to ignore
+.history/
+backend/test_translate.py
