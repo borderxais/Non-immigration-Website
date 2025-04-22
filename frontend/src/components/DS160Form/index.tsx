@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Form, Steps, Button, Card, Typography, message } from 'antd';
-import { useNavigate } from 'react-router-dom';
+import { Form, Steps, Button, Card, Typography, message, Spin } from 'antd';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useAuth } from '../../contexts/AuthContext';
 import ApplicationIdDisplay from '../ApplicationIdDisplay';
 import PersonalInfoI from './sections/PersonalInfoI';
 import PersonalInfoII from './sections/PersonalInfoII';
@@ -22,12 +23,29 @@ const formSections = [
 ];
 
 const DS160Form: React.FC = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { isAuthenticated, isLoading } = useAuth();
+  const [showForm, setShowForm] = useState(false);
   const [applicationId, setApplicationId] = useState<string>('');
   const [currentStep, setCurrentStep] = useState<number>(0);
   const [completedSteps, setCompletedSteps] = useState<number[]>([]);
   const [form] = Form.useForm();
-  const navigate = useNavigate();
-  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    // Only check authentication after loading is complete
+    if (!isLoading) {
+      if (!isAuthenticated) {
+        message.warning('请先登录以访问DS-160表格');
+        navigate('/auth/login', { 
+          state: { from: location.pathname + location.search } 
+        });
+      } else {
+        // User is authenticated, show the form
+        setShowForm(true);
+      }
+    }
+  }, [isAuthenticated, isLoading, navigate, location]);
 
   // Load form data from backend
   const loadFormData = useCallback(async (id: string) => {
@@ -70,7 +88,6 @@ const DS160Form: React.FC = () => {
 
   // Save form data
   const saveFormData = async (values: any, status: 'draft' | 'submitted' = 'draft') => {
-    setIsSubmitting(true);
     try {
       const formData = {
         form_data: values,
@@ -88,8 +105,6 @@ const DS160Form: React.FC = () => {
     } catch (error) {
       console.error('Error saving form:', error);
       message.error('保存表单时出错');
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
@@ -115,13 +130,34 @@ const DS160Form: React.FC = () => {
     }
   };
 
+  if (isLoading) {
+    return (
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+        <Spin size="large">
+          <div style={{ padding: '50px', textAlign: 'center' }}>
+            <p>加载中...</p>
+          </div>
+        </Spin>
+      </div>
+    );
+  }
+
+  if (!showForm) {
+    return null;
+  }
+
   const CurrentSection = formSections[currentStep].component;
 
   return (
     <div className="ds160-form-container">
       <Card>
-        <ApplicationIdDisplay applicationId={applicationId} />
         <Title level={2} className="form-title">DS-160 非移民签证申请表</Title>
+        <p className="page-description">
+          请填写以下表格以完成您的DS-160非移民签证申请。所有带星号(*)的字段为必填项。
+          您可以随时保存草稿并稍后返回继续填写。
+        </p>
+        
+        <ApplicationIdDisplay applicationId={applicationId} />
         
         <Steps current={currentStep} className="form-steps">
           {formSections.map(section => (
@@ -150,7 +186,6 @@ const DS160Form: React.FC = () => {
               <Button
                 type="primary"
                 htmlType="submit"
-                loading={isSubmitting}
               >
                 {currentStep === formSections.length - 1 ? '提交' : '下一步'}
               </Button>
