@@ -81,11 +81,15 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
                     rules={[{ required: true, message: '请输入到达日期' }]}
                     style={{ marginBottom: '16px' }}
                   >
-                    <DateInput
-                      dayName={`previousVisits.${field.name}.arrivalDay`}
-                      monthName={`previousVisits.${field.name}.arrivalMonth`}
-                      yearName={`previousVisits.${field.name}.arrivalYear`}
-                    />
+                    <QuestionItem
+                      question="到达日期"
+                    >
+                      <DateInput
+                        dayName={`previousVisits.${field.name}.arrivalDay`}
+                        monthName={`previousVisits.${field.name}.arrivalMonth`}
+                        yearName={`previousVisits.${field.name}.arrivalYear`}
+                      />
+                    </QuestionItem>
                   </Form.Item>
 
                   <Form.Item
@@ -95,7 +99,11 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
                     rules={[{ required: true, message: '请输入停留时间' }]}
                     style={{ marginBottom: '16px' }}
                   >
-                    <Input style={{ width: '95%' }} />
+                    <QuestionItem
+                      question="停留时间"
+                    >
+                      <Input style={{ width: '95%' }} maxLength={3} />
+                    </QuestionItem>
                   </Form.Item>
 
                   <Form.Item
@@ -104,7 +112,11 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
                     label="时间单位"
                     rules={[{ required: true, message: '请选择时间单位' }]}
                   >
-                    <Select options={losUnitOptions} style={{ width: '95%' }} />
+                    <QuestionItem
+                      question="时间单位"
+                    >
+                      <Select options={losUnitOptions} style={{ width: '95%' }} />
+                    </QuestionItem>
                   </Form.Item>
                 </>
               )}
