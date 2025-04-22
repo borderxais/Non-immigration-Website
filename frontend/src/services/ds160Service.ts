@@ -1,8 +1,14 @@
 import axios from 'axios';
 
 // Define the API URL directly in this file to avoid import issues
-const API_ENDPOINT = process.env.REACT_APP_SERVER_API_URL || 'http://localhost:5000';
-const API_URL = `${API_ENDPOINT}/api`;
+// This is for production
+// const API_ENDPOINT = process.env.REACT_APP_SERVER_API_URL || 'http://localhost:5000';
+// const API_URL = `${API_ENDPOINT}/api`;
+
+// Use relative URLs with proxy instead of absolute URLs
+// const API_ENDPOINT = 'http://localhost:5000';
+// const API_URL = `${API_ENDPOINT}/api`;
+const API_URL = '/api';  // This will be proxied to http://localhost:5000/api
 
 export interface DS160Form {
   id?: string;
@@ -22,6 +28,7 @@ export interface ValidationResult {
  * Create a new DS-160 form
  */
 const createForm = async (formData: Omit<DS160Form, 'id'>): Promise<DS160Form> => {
+  console.log('Creating new DS-160 form with payload:', formData);
   const token = localStorage.getItem('token');
   if (!token) {
     throw new Error('No token found. Please log in.');
@@ -36,11 +43,17 @@ const createForm = async (formData: Omit<DS160Form, 'id'>): Promise<DS160Form> =
     application_id: application_id
   };
   
+  console.log('Creating new DS-160 form with payload:', payload);
+  console.log('URL:', `${API_URL}/ds160/form`);
   const response = await axios.post(`${API_URL}/ds160/form`, payload, {
     headers: {
-      Authorization: `Bearer ${token}`
-    }
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    },
+    withCredentials: true
   });
+  console.log('Response:', response.data);
   return response.data;
 };
 
@@ -167,8 +180,11 @@ const saveFormDraft = async (formData: any): Promise<DS160Form> => {
   } else {
     const response = await axios.post(`${API_URL}/ds160/form`, payload, {
       headers: {
-        Authorization: `Bearer ${token}`
-      }
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      withCredentials: true
     });
     return response.data;
   }
