@@ -142,18 +142,20 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
                     <>
                       <QuestionItem
                         question="驾照号码"
-                        name={`driverLicenses.${field.name}.licenseNumber`}
+                        name="licenseNumber"
                         hasNaCheckbox={true}
+                        naCheckboxName="licenseNumber_na"
                       >
                         <Input 
                           style={{ width: '95%' }} 
                           maxLength={20}
+                          disabled={form.getFieldValue(`licenseNumber_na`)}
                         />
                       </QuestionItem>
 
                       <QuestionItem
                         question="发证州"
-                        name={`driverLicenses.${field.name}.state`}
+                        name="driver_license_issue_state"
                       >
                         <Select options={usStateOptions} style={{ width: '95%' }} />
                       </QuestionItem>
@@ -210,15 +212,13 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
                 <QuestionItem
                   question="上一次签证的签证号码"
                   name="lastVisaNumber"
-                  hasNaCheckbox={true}
-                  naCheckboxName="lastVisaNumber_na"
                 >
                   <Input style={{ width: '98%' }} />
                 </QuestionItem>
               </div>
               <div className="explanation-column">
                 <h4 className="help-header">帮助：签证信息</h4>
-                <p>请提供您最近一次美国签证的签发日期和签证号码。如果不记得签证号码，可以选择"不适用"。</p>
+                <p>请提供您最近一次美国签证的签发日期和签证号码。</p>
               </div>
             </div>
           </div>
