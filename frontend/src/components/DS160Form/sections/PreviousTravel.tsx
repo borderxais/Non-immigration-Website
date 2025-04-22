@@ -125,73 +125,73 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
                   </>
                 )}
               </RepeatableFormItem>
+              
+              {/* US Driver's License Question */}
+              <fieldset className="question-section">
+                <div className="question-row">
+                <div className="question-column">
+                    <QuestionItem
+                    question="您是否持有或者曾经持有美国驾照？"
+                    name="hasUSDriverLicense"
+                    >
+                    <Radio.Group onChange={handleUSDriverLicenseChange}>
+                        <Radio value="Y">是 (Yes)</Radio>
+                        <Radio value="N">否 (No)</Radio>
+                    </Radio.Group>
+                    </QuestionItem>
+                </div>
+                <div className="explanation-column">
+                    <h4 className="help-header">帮助：美国驾照</h4>
+                    <p>包括任何州颁发的驾驶证。如果您持有或曾经持有美国驾照，请选择"是"。</p>
+                </div>
+                </div>
+              </fieldset>
+
+              {hasUSDriverLicense === 'Y' && (
+                <fieldset className="question-section">
+                <div className="highlighted-block">
+                    <h4 style={{ marginBottom: '16px', fontWeight: 'normal' }}>请提供以下信息：</h4>
+                    <div className="question-row">
+                    <div className="question-column">
+                        <Form.Item
+                        name="driverLicenseNumber"
+                        rules={[{ required: true, message: '请输入驾照号码' }]}
+                        style={{ marginBottom: '16px' }}
+                        >
+                        <QuestionItem
+                            question="驾照号码"
+                        >
+                            <Input style={{ width: '95%' }} maxLength={20} />
+                        </QuestionItem>
+                        </Form.Item>
+                    </div>
+                    <div className="explanation-column">
+                        {/* Empty explanation column to maintain layout */}
+                    </div>
+                    </div>
+
+                    <div className="question-row">
+                    <div className="question-column">
+                        <Form.Item
+                        name="driverLicenseState"
+                        rules={[{ required: true, message: '请选择发证州' }]}
+                        >
+                        <QuestionItem
+                            question="发证州"
+                        >
+                            <Select options={usStateOptions} style={{ width: '95%' }} />
+                        </QuestionItem>
+                        </Form.Item>
+                    </div>
+                    <div className="explanation-column">
+                        {/* Empty explanation column to maintain layout */}
+                    </div>
+                    </div>
+                </div>
+                </fieldset>
+              )}
             </div>
           </fieldset>
-
-          {/* US Driver's License Question */}
-          <fieldset className="question-section">
-            <div className="question-row">
-              <div className="question-column">
-                <QuestionItem
-                  question="您是否持有或者曾经持有美国驾照？"
-                  name="hasUSDriverLicense"
-                >
-                  <Radio.Group onChange={handleUSDriverLicenseChange}>
-                    <Radio value="Y">是 (Yes)</Radio>
-                    <Radio value="N">否 (No)</Radio>
-                  </Radio.Group>
-                </QuestionItem>
-              </div>
-              <div className="explanation-column">
-                <h4 className="help-header">帮助：美国驾照</h4>
-                <p>包括任何州颁发的驾驶证。如果您持有或曾经持有美国驾照，请选择"是"。</p>
-              </div>
-            </div>
-          </fieldset>
-
-          {hasUSDriverLicense === 'Y' && (
-            <fieldset className="question-section">
-              <div className="highlighted-block">
-                <h4 style={{ marginBottom: '16px', fontWeight: 'normal' }}>请提供以下信息：</h4>
-                <div className="question-row">
-                  <div className="question-column">
-                    <Form.Item
-                      name="driverLicenseNumber"
-                      rules={[{ required: true, message: '请输入驾照号码' }]}
-                      style={{ marginBottom: '16px' }}
-                    >
-                      <QuestionItem
-                        question="驾照号码"
-                      >
-                        <Input style={{ width: '95%' }} maxLength={20} />
-                      </QuestionItem>
-                    </Form.Item>
-                  </div>
-                  <div className="explanation-column">
-                    {/* Empty explanation column to maintain layout */}
-                  </div>
-                </div>
-
-                <div className="question-row">
-                  <div className="question-column">
-                    <Form.Item
-                      name="driverLicenseState"
-                      rules={[{ required: true, message: '请选择发证州' }]}
-                    >
-                      <QuestionItem
-                        question="发证州"
-                      >
-                        <Select options={usStateOptions} style={{ width: '95%' }} />
-                      </QuestionItem>
-                    </Form.Item>
-                  </div>
-                  <div className="explanation-column">
-                    {/* Empty explanation column to maintain layout */}
-                  </div>
-                </div>
-              </div>
-            </fieldset>
-          )}
         </>
       )}
 
