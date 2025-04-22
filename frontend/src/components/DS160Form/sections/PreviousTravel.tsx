@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Input, Radio, Select, Form, Checkbox } from 'antd';
+import { Input, Radio, Select, Checkbox } from 'antd';
 import { FormInstance } from 'antd/lib/form';
 import QuestionItem from '../common/QuestionItem';
 import DateInput from '../common/DateInput';
