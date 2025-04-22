@@ -143,23 +143,13 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
                       <QuestionItem
                         question="驾照号码"
                         name={`driverLicenses.${field.name}.licenseNumber`}
+                        hasNaCheckbox={true}
+                        naCheckboxName={`driverLicenses.${field.name}.forgotNumber`}
                       >
-                        <Input.Group>
-                          <Checkbox 
-                            style={{ marginRight: '8px' }}
-                            onChange={(e) => {
-                              const path = ['driverLicenses', field.name, 'forgotNumber'];
-                              form.setFieldsValue({ [path.join('.')]: e.target.checked });
-                            }}
-                          >
-                            不记得驾照号码
-                          </Checkbox>
-                          <Input 
-                            style={{ width: 'calc(95% - 120px)' }} 
-                            maxLength={20}
-                            disabled={form.getFieldValue(['driverLicenses', field.name, 'forgotNumber'])}
-                          />
-                        </Input.Group>
+                        <Input 
+                          style={{ width: '95%' }} 
+                          maxLength={20}
+                        />
                       </QuestionItem>
 
                       <QuestionItem
