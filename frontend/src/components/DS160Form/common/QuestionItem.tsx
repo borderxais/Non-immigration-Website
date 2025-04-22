@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form, Input, Select, DatePicker, Radio, Space, Checkbox, Row, Col, Typography } from 'antd';
 
-const { Text, Paragraph } = Typography;
+const { Text } = Typography;
 
 interface QuestionItemProps {
   number?: string;

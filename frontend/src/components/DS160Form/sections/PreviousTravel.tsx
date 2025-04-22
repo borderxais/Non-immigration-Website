@@ -61,77 +61,84 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
       {/* Previous visits section */}
       {hasBeenToUS === 'Y' && (
         <fieldset className="question-section">
-          <h4 style={{ marginBottom: '16px', fontWeight: 'normal' }}>请提供您最近5次访问美国的信息：</h4>
           <div className="highlighted-block">
+            <h4 style={{ marginBottom: '16px' }}>
+              <span>请提供最近五次赴美信息：</span>
+            </h4>
             <RepeatableFormItem
               name="previousVisits"
-              addButtonText="增加另一个访问记录"
-              removeButtonText="移走"
+              addButtonText="Add Another"
+              removeButtonText="Remove"
             >
               {(field: FormListFieldData) => (
-                <fieldset className="question-section">
+                <div className="question-section">
                   <div className="question-row">
                     <div className="question-column">
-                      {/* Arrival Date */}
-                      <Form.Item
-                        {...field}
-                        name={[field.name, 'arrivalDate']}
-                        label="到达日期"
-                        rules={[{ required: true, message: '请输入到达日期' }]}
-                        style={{ marginBottom: '16px' }}
+                      <QuestionItem
+                        question="抵达日期"
+                        name={`previousVisits[${field.name}].arrivalDate`}
                       >
-                        <DateInput
-                          dayName={`${field.name}_arrivalDay`}
-                          monthName={`${field.name}_arrivalMonth`}
-                          yearName={`${field.name}_arrivalYear`}
-                        />
-                      </Form.Item>
-
-                      {/* Length of Stay */}
-                      <Form.Item
-                        {...field}
-                        name={[field.name, 'lengthOfStay']}
-                        label="停留时长"
-                        rules={[{ required: true, message: '请输入停留时长' }]}
-                        style={{ marginBottom: '16px' }}
-                      >
-                        <Input style={{ width: '95%' }} placeholder="例如：30天" />
-                      </Form.Item>
-
-                      {/* Visit Purpose */}
-                      <Form.Item
-                        {...field}
-                        name={[field.name, 'visitPurpose']}
-                        label="访问目的"
-                        rules={[{ required: true, message: '请输入访问目的' }]}
-                        style={{ marginBottom: '16px' }}
-                      >
-                        <Input style={{ width: '95%' }} placeholder="例如：旅游、商务、学习" />
-                      </Form.Item>
-
-                      {/* Visa Type */}
-                      <Form.Item
-                        {...field}
-                        name={[field.name, 'visaType']}
-                        label="签证类型"
-                        rules={[{ required: true, message: '请选择签证类型' }]}
-                        style={{ marginBottom: '16px' }}
-                      >
-                        <Select style={{ width: '95%' }} placeholder="- 选择一个 -">
-                          <Select.Option value="B1/B2">B1/B2 (商务/旅游)</Select.Option>
-                          <Select.Option value="F1">F1 (学生)</Select.Option>
-                          <Select.Option value="J1">J1 (交流访问)</Select.Option>
-                          <Select.Option value="H1B">H1B (工作)</Select.Option>
-                          <Select.Option value="other">其他</Select.Option>
-                        </Select>
-                      </Form.Item>
-                    </div>
-                    <div className="explanation-column">
-                      <h4 className="help-header">帮助：访问信息</h4>
-                      <p>请提供您访问美国的详细信息，包括到达日期、停留时长、访问目的和使用的签证类型。</p>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                          <Form.Item 
+                            name={`previousVisits[${field.name}].day`}
+                            noStyle
+                            rules={[{ required: true, message: '请选择日期' }]}
+                          >
+                            <Select style={{ width: 70 }} placeholder="Day" />
+                          </Form.Item>
+                          <Form.Item 
+                            name={`previousVisits[${field.name}].month`}
+                            noStyle
+                            rules={[{ required: true, message: '请选择月份' }]}
+                          >
+                            <Select style={{ width: 80 }} placeholder="Month" />
+                          </Form.Item>
+                          <Form.Item 
+                            name={`previousVisits[${field.name}].year`}
+                            noStyle
+                            rules={[
+                              { required: true, message: '请输入年份' },
+                              { pattern: /^\d{4}$/, message: '请输入4位数年份' }
+                            ]}
+                          >
+                            <Input placeholder="Year" style={{ width: '60px' }} maxLength={4} />
+                          </Form.Item>
+                          <div style={{ marginLeft: '8px', fontSize: '12px', color: '#666' }}>
+                            (格式: DD-MMM-YYYY)
+                          </div>
+                        </div>
+                      </QuestionItem>
                     </div>
                   </div>
-                </fieldset>
+
+                  <div className="question-row">
+                    <div className="question-column">
+                      <QuestionItem
+                        question="停留时间"
+                        name={`previousVisits[${field.name}].duration`}
+                      >
+                        <Input 
+                          style={{ width: 70 }}
+                          maxLength={3}
+                        />
+                      </QuestionItem>
+                    </div>
+                  </div>
+
+                  <div className="question-row">
+                    <div className="question-column">
+                      <QuestionItem
+                        question="单位"
+                        name={`previousVisits[${field.name}].durationUnit`}
+                      >
+                        <Select 
+                          options={[]}
+                          style={{ width: 180 }}
+                        />
+                      </QuestionItem>
+                    </div>
+                  </div>
+                </div>
               )}
             </RepeatableFormItem>
           </div>
@@ -140,18 +147,16 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
 
       {/* Previous US Visa Question */}
       <fieldset className="question-section">
-        <div className="field-groups">
-          <div className="q">
-            <QuestionItem
-              question="您是否曾经获得过美国签证?"
-              name="previousUsVisa"
-            >
-              <Radio.Group onChange={handleHadUSVisaChange}>
-                <Radio value="Y">是 (Yes)</Radio>
-                <Radio value="N">否 (No)</Radio>
-              </Radio.Group>
-            </QuestionItem>
-          </div>
+        <div className="q">
+          <QuestionItem
+            question="您是否曾经获得过美国签证?"
+            name="previousUsVisa"
+          >
+            <Radio.Group onChange={handleHadUSVisaChange}>
+            <Radio value="Y">是 (Yes)</Radio>
+            <Radio value="N">否 (No)</Radio>
+            </Radio.Group>
+          </QuestionItem>
         </div>
       </fieldset>
 
