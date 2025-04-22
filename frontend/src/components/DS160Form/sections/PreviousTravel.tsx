@@ -110,9 +110,7 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
                 )}
               </RepeatableFormItem>
             </div>
-          </fieldset>
-
-          <fieldset className="question-section">
+            
             <div className="question-row">
               <div className="question-column">
                 <QuestionItem

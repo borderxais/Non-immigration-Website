@@ -1,5 +1,6 @@
 import React from 'react';
 import { Form, Select, Input } from 'antd';
+import { NamePath } from 'antd/lib/form/interface';
 
 // Format for month dropdown options
 const monthOptions = [
@@ -55,9 +56,9 @@ const dayOptions = [
 ];
 
 interface DateInputProps {
-  dayName: string;
-  monthName: string;
-  yearName: string;
+  dayName: NamePath;
+  monthName: NamePath;
+  yearName: NamePath;
   required?: boolean;
   disabled?: boolean;
 }
