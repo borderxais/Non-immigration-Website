@@ -5,6 +5,7 @@ import QuestionItem from '../common/QuestionItem';
 import DateInput from '../common/DateInput';
 import RepeatableFormItem from '../common/RepeatableFormItem';
 import { FormListFieldData } from 'antd/lib/form/FormList';
+import { losUnitOptions } from '../utils/formOptions';
 import '../ds160Form.css';
 
 const { TextArea } = Input;
@@ -78,35 +79,11 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
                         question="抵达日期"
                         name={`previousVisits[${field.name}].arrivalDate`}
                       >
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                          <Form.Item 
-                            name={`previousVisits[${field.name}].day`}
-                            noStyle
-                            rules={[{ required: true, message: '请选择日期' }]}
-                          >
-                            <Select style={{ width: 70 }} placeholder="Day" />
-                          </Form.Item>
-                          <Form.Item 
-                            name={`previousVisits[${field.name}].month`}
-                            noStyle
-                            rules={[{ required: true, message: '请选择月份' }]}
-                          >
-                            <Select style={{ width: 80 }} placeholder="Month" />
-                          </Form.Item>
-                          <Form.Item 
-                            name={`previousVisits[${field.name}].year`}
-                            noStyle
-                            rules={[
-                              { required: true, message: '请输入年份' },
-                              { pattern: /^\d{4}$/, message: '请输入4位数年份' }
-                            ]}
-                          >
-                            <Input placeholder="Year" style={{ width: '60px' }} maxLength={4} />
-                          </Form.Item>
-                          <div style={{ marginLeft: '8px', fontSize: '12px', color: '#666' }}>
-                            (格式: DD-MMM-YYYY)
-                          </div>
-                        </div>
+                        <DateInput 
+                          dayName={`previousVisits[${field.name}].day`}
+                          monthName={`previousVisits[${field.name}].month`}
+                          yearName={`previousVisits[${field.name}].year`}
+                        />
                       </QuestionItem>
                     </div>
                   </div>
@@ -132,7 +109,7 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
                         name={`previousVisits[${field.name}].durationUnit`}
                       >
                         <Select 
-                          options={[]}
+                          options={losUnitOptions}
                           style={{ width: 180 }}
                         />
                       </QuestionItem>
@@ -169,22 +146,18 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
                   question="上一次美国签证签发日期"
                   name="lastVisaIssueDate"
                 >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <Form.Item name="lastVisaDay" noStyle>
-                      <Select options={[]} style={{ width: 70 }} placeholder="Day" />
-                    </Form.Item>
-                    <Form.Item name="lastVisaMonth" noStyle>
-                      <Select options={[]} style={{ width: 80 }} placeholder="Month" />
-                    </Form.Item>
-                    <Form.Item name="lastVisaYear" noStyle>
-                      <Input placeholder="Year" style={{ width: '60px' }} maxLength={4} />
-                    </Form.Item>
-                    <div style={{ marginLeft: '8px', fontSize: '12px', color: '#666' }}>
-                      (格式: DD-MMM-YYYY)
-                    </div>
-                  </div>
+                  <DateInput 
+                    dayName="lastVisaDay"
+                    monthName="lastVisaMonth"
+                    yearName="lastVisaYear"
+                  />
                 </QuestionItem>
-
+              </div>
+              <div className="explanation-column">
+              </div>
+            </div>
+            <div className="question-row">
+              <div className="question-column">
                 <QuestionItem
                   question="上一次签证的签证号码"
                   name="lastVisaNumber"
