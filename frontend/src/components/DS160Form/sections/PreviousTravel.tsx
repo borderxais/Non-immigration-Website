@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Input, Radio, Select, Form } from 'antd';
+import { Input, Radio, Select, Form, Checkbox } from 'antd';
 import { FormInstance } from 'antd/lib/form';
 import QuestionItem from '../common/QuestionItem';
 import DateInput from '../common/DateInput';
@@ -81,117 +81,102 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
               >
                 {(field: FormListFieldData) => (
                   <>
-                    <Form.Item
-                      {...field}
-                      name={[field.name, 'arrivalDate']}
-                      rules={[{ required: true, message: '请输入到达日期' }]}
-                      style={{ marginBottom: '16px' }}
+                    <QuestionItem
+                      question="到达日期"
+                      name={`previousVisits.${field.name}.arrivalDate`}
                     >
-                      <QuestionItem
-                        question="到达日期"
-                      >
-                        <DateInput
-                          dayName={`previousVisits.${field.name}.arrivalDay`}
-                          monthName={`previousVisits.${field.name}.arrivalMonth`}
-                          yearName={`previousVisits.${field.name}.arrivalYear`}
-                        />
-                      </QuestionItem>
-                    </Form.Item>
+                      <DateInput
+                        dayName={`previousVisits.${field.name}.arrivalDay`}
+                        monthName={`previousVisits.${field.name}.arrivalMonth`}
+                        yearName={`previousVisits.${field.name}.arrivalYear`}
+                        required={true}
+                      />
+                    </QuestionItem>
 
-                    <Form.Item
-                      {...field}
-                      name={[field.name, 'stayLength']}
-                      rules={[{ required: true, message: '请输入停留时间' }]}
-                      style={{ marginBottom: '16px' }}
+                    <QuestionItem
+                      question="停留时间"
+                      name={`previousVisits.${field.name}.stayLength`}
                     >
-                      <QuestionItem
-                        question="停留时间"
-                      >
-                        <Input style={{ width: '95%' }} maxLength={3} />
-                      </QuestionItem>
-                    </Form.Item>
+                      <Input style={{ width: '95%' }} maxLength={3} />
+                    </QuestionItem>
 
-                    <Form.Item
-                      {...field}
-                      name={[field.name, 'stayUnit']}
-                      rules={[{ required: true, message: '请选择时间单位' }]}
+                    <QuestionItem
+                      question="时间单位"
+                      name={`previousVisits.${field.name}.stayUnit`}
                     >
-                      <QuestionItem
-                        question="时间单位"
-                      >
-                        <Select options={losUnitOptions} style={{ width: '95%' }} />
-                      </QuestionItem>
-                    </Form.Item>
+                      <Select options={losUnitOptions} style={{ width: '95%' }} />
+                    </QuestionItem>
                   </>
                 )}
               </RepeatableFormItem>
-              
-              {/* US Driver's License Question */}
-              <fieldset className="question-section">
-                <div className="question-row">
-                <div className="question-column">
-                    <QuestionItem
-                    question="您是否持有或者曾经持有美国驾照？"
-                    name="hasUSDriverLicense"
-                    >
-                    <Radio.Group onChange={handleUSDriverLicenseChange}>
-                        <Radio value="Y">是 (Yes)</Radio>
-                        <Radio value="N">否 (No)</Radio>
-                    </Radio.Group>
-                    </QuestionItem>
-                </div>
-                <div className="explanation-column">
-                    <h4 className="help-header">帮助：美国驾照</h4>
-                    <p>包括任何州颁发的驾驶证。如果您持有或曾经持有美国驾照，请选择"是"。</p>
-                </div>
-                </div>
-              </fieldset>
-
-              {hasUSDriverLicense === 'Y' && (
-                <fieldset className="question-section">
-                <div className="highlighted-block">
-                    <h4 style={{ marginBottom: '16px', fontWeight: 'normal' }}>请提供以下信息：</h4>
-                    <div className="question-row">
-                    <div className="question-column">
-                        <Form.Item
-                        name="driverLicenseNumber"
-                        rules={[{ required: true, message: '请输入驾照号码' }]}
-                        style={{ marginBottom: '16px' }}
-                        >
-                        <QuestionItem
-                            question="驾照号码"
-                        >
-                            <Input style={{ width: '95%' }} maxLength={20} />
-                        </QuestionItem>
-                        </Form.Item>
-                    </div>
-                    <div className="explanation-column">
-                        {/* Empty explanation column to maintain layout */}
-                    </div>
-                    </div>
-
-                    <div className="question-row">
-                    <div className="question-column">
-                        <Form.Item
-                        name="driverLicenseState"
-                        rules={[{ required: true, message: '请选择发证州' }]}
-                        >
-                        <QuestionItem
-                            question="发证州"
-                        >
-                            <Select options={usStateOptions} style={{ width: '95%' }} />
-                        </QuestionItem>
-                        </Form.Item>
-                    </div>
-                    <div className="explanation-column">
-                        {/* Empty explanation column to maintain layout */}
-                    </div>
-                    </div>
-                </div>
-                </fieldset>
-              )}
             </div>
           </fieldset>
+
+          <fieldset className="question-section">
+            <div className="question-row">
+              <div className="question-column">
+                <QuestionItem
+                  question="您是否持有或者曾经持有美国驾照？"
+                  name="hasUSDriverLicense"
+                >
+                  <Radio.Group onChange={handleUSDriverLicenseChange}>
+                    <Radio value="Y">是 (Yes)</Radio>
+                    <Radio value="N">否 (No)</Radio>
+                  </Radio.Group>
+                </QuestionItem>
+              </div>
+              <div className="explanation-column">
+                <h4 className="help-header">帮助：美国驾照</h4>
+                <p>包括任何州颁发的驾驶证。如果您持有或曾经持有美国驾照，请选择"是"。</p>
+              </div>
+            </div>
+          </fieldset>
+
+          {hasUSDriverLicense === 'Y' && (
+            <fieldset className="question-section">
+              <div className="highlighted-block">
+                <h4 style={{ marginBottom: '16px', fontWeight: 'normal' }}>请提供驾照信息：</h4>
+                <RepeatableFormItem
+                  name="driverLicenses"
+                  addButtonText="增加另一个驾照"
+                  removeButtonText="移走"
+                >
+                  {(field: FormListFieldData) => (
+                    <>
+                      <QuestionItem
+                        question="驾照号码"
+                        name={`driverLicenses.${field.name}.licenseNumber`}
+                      >
+                        <Input.Group>
+                          <Checkbox 
+                            style={{ marginRight: '8px' }}
+                            onChange={(e) => {
+                              const path = ['driverLicenses', field.name, 'forgotNumber'];
+                              form.setFieldsValue({ [path.join('.')]: e.target.checked });
+                            }}
+                          >
+                            不记得驾照号码
+                          </Checkbox>
+                          <Input 
+                            style={{ width: 'calc(95% - 120px)' }} 
+                            maxLength={20}
+                            disabled={form.getFieldValue(['driverLicenses', field.name, 'forgotNumber'])}
+                          />
+                        </Input.Group>
+                      </QuestionItem>
+
+                      <QuestionItem
+                        question="发证州"
+                        name={`driverLicenses.${field.name}.state`}
+                      >
+                        <Select options={usStateOptions} style={{ width: '95%' }} />
+                      </QuestionItem>
+                    </>
+                  )}
+                </RepeatableFormItem>
+              </div>
+            </fieldset>
+          )}
         </>
       )}
 
