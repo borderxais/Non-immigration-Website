@@ -253,12 +253,14 @@ const DS160Form: React.FC = () => {
                   </Button>
                 )}
                 
-                <Button
-                  type="primary"
-                  htmlType="submit"
-                >
-                  {currentStep === formSections.length - 1 ? '提交' : '下一步'}
-                </Button>
+                {currentStep !== formSections.length - 1 && (
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                  >
+                    下一步
+                  </Button>
+                )}
               </div>
             </Form>
           </div>
