@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Card, Descriptions, Typography, Row, Col } from 'antd';
+import { Button, Card, Descriptions, Typography, Space, Row, Col } from 'antd';
 import { FormInstance } from 'antd/lib/form';
 
 const { Title, Paragraph } = Typography;
@@ -30,11 +30,27 @@ const DS160ReviewPage: React.FC<DS160ReviewPageProps> = ({ form, onSubmit, onEdi
           <Descriptions.Item label="姓">{formData.surname || 'N/A'}</Descriptions.Item>
           <Descriptions.Item label="名">{formData.givenName || 'N/A'}</Descriptions.Item>
           <Descriptions.Item label="出生日期">
-            {formatDate(formData.dobDay, formData.dobMonth, formData.dobYear)}
+            {formatDate(formData.birthDay, formData.birthMonth, formData.birthYear)}
           </Descriptions.Item>
-          <Descriptions.Item label="性别">{formData.gender === 'M' ? '男' : '女'}</Descriptions.Item>
+          <Descriptions.Item label="性别">{formData.gender || 'N/A'}</Descriptions.Item>
           <Descriptions.Item label="出生地">{formData.birthPlace || 'N/A'}</Descriptions.Item>
           <Descriptions.Item label="国籍">{formData.nationality || 'N/A'}</Descriptions.Item>
+        </Descriptions>
+      )
+    },
+    {
+      title: '个人信息 II',
+      key: 'personalInfo2',
+      content: (
+        <Descriptions column={2}>
+          <Descriptions.Item label="婚姻状况">{formData.maritalStatus || 'N/A'}</Descriptions.Item>
+          <Descriptions.Item label="护照号码">{formData.passportNumber || 'N/A'}</Descriptions.Item>
+          <Descriptions.Item label="护照签发日期">
+            {formatDate(formData.passportIssuanceDay, formData.passportIssuanceMonth, formData.passportIssuanceYear)}
+          </Descriptions.Item>
+          <Descriptions.Item label="护照有效期">
+            {formatDate(formData.passportExpirationDay, formData.passportExpirationMonth, formData.passportExpirationYear)}
+          </Descriptions.Item>
         </Descriptions>
       )
     },
@@ -47,86 +63,48 @@ const DS160ReviewPage: React.FC<DS160ReviewPageProps> = ({ form, onSubmit, onEdi
             {formatDate(formData.arrivalDay, formData.arrivalMonth, formData.arrivalYear)}
           </Descriptions.Item>
           <Descriptions.Item label="停留时间">{formData.losLength} {formData.losUnit}</Descriptions.Item>
-          <Descriptions.Item label="美国地址">{formData.usAddressLine1}, {formData.usAddressLine2 || ''}, {formData.usCity}, {formData.usState}, {formData.usZipCode}</Descriptions.Item>
-          <Descriptions.Item label="旅行资金来源">{formData.travelFunder || 'N/A'}</Descriptions.Item>
+          <Descriptions.Item label="美国地址">{formData.usAddressLine1} {formData.usAddressLine2} {formData.usCity} {formData.usState} {formData.usZipCode}</Descriptions.Item>
+        </Descriptions>
+      )
+    },
+    {
+      title: '同行人',
+      key: 'travelCompanions',
+      content: (
+        <Descriptions column={2}>
           <Descriptions.Item label="是否与他人同行">{formData.travelingWithOthers ? '是' : '否'}</Descriptions.Item>
+          <Descriptions.Item label="同行人数量">{formData.companions?.length || 0}</Descriptions.Item>
         </Descriptions>
       )
     },
     {
-      title: '地址历史',
-      key: 'addressHistory',
+      title: '以前的旅行',
+      key: 'previousTravel',
       content: (
         <Descriptions column={2}>
-          <Descriptions.Item label="当前地址">{formData.currentAddress || 'N/A'}</Descriptions.Item>
-          <Descriptions.Item label="当前城市">{formData.currentCity || 'N/A'}</Descriptions.Item>
-          <Descriptions.Item label="当前州">{formData.currentState || 'N/A'}</Descriptions.Item>
-          <Descriptions.Item label="当前邮编">{formData.currentPostalCode || 'N/A'}</Descriptions.Item>
-          <Descriptions.Item label="当前国家">{formData.currentCountry || 'N/A'}</Descriptions.Item>
-          <Descriptions.Item label="当前地址居住时间">{formData.currentAddressYears ? `${formData.currentAddressYears}年 ${formData.currentAddressMonths || 0}月` : ''}</Descriptions.Item>
-          <Descriptions.Item label="之前地址数量">{formData.previousAddresses?.length || 0}</Descriptions.Item>
+          <Descriptions.Item label="是否去过美国">{formData.hasVisitedUS ? '是' : '否'}</Descriptions.Item>
+          <Descriptions.Item label="之前旅行次数">{formData.previousVisits?.length || 0}</Descriptions.Item>
         </Descriptions>
       )
     },
     {
-      title: '教育历史',
-      key: 'educationHistory',
-      content: (
-        <Descriptions column={2}>
-          <Descriptions.Item label="最高教育水平">{formData.highestEducationLevel || 'N/A'}</Descriptions.Item>
-          <Descriptions.Item label="教育历史数量">{formData.educationHistory?.length || 0}</Descriptions.Item>
-        </Descriptions>
-      )
-    },
-    {
-      title: '工作历史',
+      title: '工作经历',
       key: 'workHistory',
       content: (
         <Descriptions column={2}>
-          <Descriptions.Item label="主要职业">{formData.primaryOccupation || 'N/A'}</Descriptions.Item>
-          <Descriptions.Item label="是否目前就业">{formData.currentlyEmployed ? '是' : '否'}</Descriptions.Item>
-          <Descriptions.Item label="当前雇主名称">{formData.currentEmployerName || 'N/A'}</Descriptions.Item>
-          <Descriptions.Item label="当前工作职位">{formData.currentJobTitle || 'N/A'}</Descriptions.Item>
-          <Descriptions.Item label="之前工作数量">{formData.previousEmployment?.length || 0}</Descriptions.Item>
-        </Descriptions>
-      )
-    },
-    {
-      title: '家庭信息',
-      key: 'familyInfo',
-      content: (
-        <Descriptions column={2}>
-          <Descriptions.Item label="婚姻状况">{formData.maritalStatus || 'N/A'}</Descriptions.Item>
-          <Descriptions.Item label="配偶姓名">{formData.spouseSurname && formData.spouseGivenName ? `${formData.spouseSurname} ${formData.spouseGivenName}` : ''}</Descriptions.Item>
-          <Descriptions.Item label="父亲姓名">{formData.fatherSurname && formData.fatherGivenName ? `${formData.fatherSurname} ${formData.fatherGivenName}` : ''}</Descriptions.Item>
-          <Descriptions.Item label="母亲姓名">{formData.motherSurname && formData.motherGivenName ? `${formData.motherSurname} ${formData.motherGivenName}` : ''}</Descriptions.Item>
-          <Descriptions.Item label="美国亲属数量">{formData.otherRelatives?.length || 0}</Descriptions.Item>
+          <Descriptions.Item label="当前职业">{formData.currentOccupation || 'N/A'}</Descriptions.Item>
+          <Descriptions.Item label="工作单位">{formData.employer || 'N/A'}</Descriptions.Item>
+          <Descriptions.Item label="工作年限">{formData.yearsOfWork || 'N/A'}</Descriptions.Item>
         </Descriptions>
       )
     },
     {
       title: '安全背景',
-      key: 'securityInfo',
+      key: 'securityBackground',
       content: (
         <Descriptions column={2}>
-          <Descriptions.Item label="是否有逮捕记录">{formData.hasArrestRecord ? '是' : '否'}</Descriptions.Item>
-          <Descriptions.Item label="是否违反过毒品法">{formData.hasViolatedDrugLaw ? '是' : '否'}</Descriptions.Item>
-          <Descriptions.Item label="是否有军事服务">{formData.hasMilitaryService ? '是' : '否'}</Descriptions.Item>
-          <Descriptions.Item label="军事服务国家">{formData.militaryServiceCountry || 'N/A'}</Descriptions.Item>
-        </Descriptions>
-      )
-    },
-    {
-      title: '护照信息',
-      key: 'passportInfo',
-      content: (
-        <Descriptions column={2}>
-          <Descriptions.Item label="护照类型">{formData.passportType || 'N/A'}</Descriptions.Item>
-          <Descriptions.Item label="护照号码">{formData.passportNumber || 'N/A'}</Descriptions.Item>
-          <Descriptions.Item label="护照签发国家">{formData.passportIssuingCountry || 'N/A'}</Descriptions.Item>
-          <Descriptions.Item label="护照签发日期">{formatDate(formData.passportIssuanceDay, formData.passportIssuanceMonth, formData.passportIssuanceYear)}</Descriptions.Item>
-          <Descriptions.Item label="护照有效期">{formatDate(formData.passportExpirationDay, formData.passportExpirationMonth, formData.passportExpirationYear)}</Descriptions.Item>
-          <Descriptions.Item label="是否有之前签证">{formData.hasPreviousVisa ? '是' : '否'}</Descriptions.Item>
+          <Descriptions.Item label="是否有犯罪记录">{formData.hasCriminalRecord ? '是' : '否'}</Descriptions.Item>
+          <Descriptions.Item label="是否有签证被拒记录">{formData.hasVisaRefusal ? '是' : '否'}</Descriptions.Item>
         </Descriptions>
       )
     }
