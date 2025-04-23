@@ -37,12 +37,22 @@ const Navigation: React.FC = () => {
       children: [
         {
           key: '/ds160/fill',
-          label: '在线填写',
+          label: '申请表管理',
+          children: [
+            {
+              key: '/ds160/fill',
+              label: '开始新申请',
+            },
+            {
+              key: '/ds160/history',
+              label: '我的申请',
+            }
+          ]
         },
         {
-          key: '/ds160/history',
-          label: '历史记录',
-        },
+          key: '/ds160/upload',
+          label: '上传DS-160',
+        }
       ]
     },
     {
