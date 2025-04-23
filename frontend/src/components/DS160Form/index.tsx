@@ -140,11 +140,22 @@ const DS160Form: React.FC = () => {
   }, [location, loadExistingApplication]);
 
   // Start a new application
-  const startNewApplication = () => {
-    const newId = generateApplicationId();
-    setApplicationId(newId);
-    setShowLandingPage(false);
-    navigate(`/ds160/fill?id=${newId}`, { replace: true });
+  const startNewApplication = async () => {
+    try {
+      const newId = generateApplicationId();
+      // Create a new form first
+      await ds160Service.createForm({
+        form_data: {},
+        status: 'draft',
+        application_id: newId
+      });
+      setApplicationId(newId);
+      setShowLandingPage(false);
+      navigate(`/ds160/fill?id=${newId}`, { replace: true });
+    } catch (error) {
+      console.error('Error creating new form:', error);
+      message.error('创建新申请表时出错');
+    }
   };
 
   // Handle existing application retrieval
