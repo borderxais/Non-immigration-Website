@@ -12,7 +12,6 @@ import ds160Service from '../../services/ds160Service';
 import './ds160Form.css';
 
 const { Title } = Typography;
-const { Step } = Steps;
 
 // Define the form sections and their titles
 const formSections = [
