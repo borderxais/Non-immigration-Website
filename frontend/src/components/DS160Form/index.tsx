@@ -5,12 +5,12 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import ApplicationIdDisplay from '../ApplicationIdDisplay';
 import PersonalInfoI from './sections/PersonalInfoI';
-import PersonalInfoII from './sections/PersonalInfoII';
-import TravelInfo from './sections/TravelInfo';
-import PreviousTravel from './sections/PreviousTravel';
-import SecurityBackground from './sections/SecurityBackground';
-import TravelCompanions from './sections/TravelCompanions';
-import WorkHistory from './sections/WorkHistory';
+// import PersonalInfoII from './sections/PersonalInfoII';
+// import TravelInfo from './sections/TravelInfo';
+// import PreviousTravel from './sections/PreviousTravel';
+// import SecurityBackground from './sections/SecurityBackground';
+// import TravelCompanions from './sections/TravelCompanions';
+// import WorkHistory from './sections/WorkHistory';
 import DS160ReviewPage from './sections/DS160ReviewPage';
 import { generateApplicationId } from '../../utils/formUtils';
 import ds160Service from '../../services/ds160Service';
@@ -35,36 +35,36 @@ const formSections: FormSection[] = [
     title: '个人信息 I',
     component: PersonalInfoI
   },
-  {
-    key: 'personalInfo2',
-    title: '个人信息 II',
-    component: PersonalInfoII
-  },
-  {
-    key: 'travelInfo',
-    title: '旅行信息',
-    component: TravelInfo
-  },
-  {
-    key: 'travelCompanions',
-    title: '同行人',
-    component: TravelCompanions
-  },
-  {
-    key: 'previousTravel',
-    title: '以前的旅行',
-    component: PreviousTravel
-  },
-  {
-    key: 'workHistory',
-    title: '工作经历',
-    component: WorkHistory
-  },
-  {
-    key: 'securityBackground',
-    title: '安全背景',
-    component: SecurityBackground
-  },
+  // {
+  //   key: 'personalInfo2',
+  //   title: '个人信息 II',
+  //   component: PersonalInfoII
+  // },
+  // {
+  //   key: 'travelInfo',
+  //   title: '旅行信息',
+  //   component: TravelInfo
+  // },
+  // {
+  //   key: 'travelCompanions',
+  //   title: '同行人',
+  //   component: TravelCompanions
+  // },
+  // {
+  //   key: 'previousTravel',
+  //   title: '以前的旅行',
+  //   component: PreviousTravel
+  // },
+  // {
+  //   key: 'workHistory',
+  //   title: '工作经历',
+  //   component: WorkHistory
+  // },
+  // {
+  //   key: 'securityBackground',
+  //   title: '安全背景',
+  //   component: SecurityBackground
+  // },
   {
     key: 'review',
     title: '审核提交',
@@ -82,27 +82,6 @@ const DS160Form: React.FC = () => {
   const [completedSteps, setCompletedSteps] = useState<number[]>([]);
   const [form] = Form.useForm();
 
-  useEffect(() => {
-    // Only check authentication after loading is complete
-    if (!isLoading) {
-      if (!isAuthenticated) {
-        message.warning('请先登录以访问DS-160表格');
-        navigate('/auth/login', { 
-          state: { from: location.pathname + location.search } 
-        });
-      } else {
-        // User is authenticated, show the form and generate application ID if needed
-        setShowForm(true);
-        if (!applicationId) {
-          const newApplicationId = generateApplicationId();
-          setApplicationId(newApplicationId);
-          // Store in local storage for persistence
-          localStorage.setItem('currentApplicationId', newApplicationId);
-        }
-      }
-    }
-  }, [isAuthenticated, isLoading, navigate, location, applicationId]);
-
   // Load form data from backend
   const loadFormData = useCallback(async (id: string) => {
     try {
@@ -115,6 +94,31 @@ const DS160Form: React.FC = () => {
       message.error('加载表单数据时出错');
     }
   }, [form]);
+
+  useEffect(() => {
+    // Only check authentication after loading is complete
+    if (!isLoading) {
+      if (!isAuthenticated) {
+        message.warning('请先登录以访问DS-160表格');
+        navigate('/auth/login', { 
+          state: { from: location.pathname + location.search } 
+        });
+      } else {
+        // User is authenticated, show the form and generate application ID if needed
+        setShowForm(true);
+        const existingId = localStorage.getItem('currentApplicationId');
+        if (existingId) {
+          setApplicationId(existingId);
+          loadFormData(existingId);
+        } else {
+          const newApplicationId = generateApplicationId();
+          setApplicationId(newApplicationId);
+          // Store in local storage for persistence
+          localStorage.setItem('currentApplicationId', newApplicationId);
+        }
+      }
+    }
+  }, [isAuthenticated, isLoading, navigate, location, applicationId, loadFormData]);
 
   // Handle section completion
   const handleSectionComplete = async (values: any) => {
