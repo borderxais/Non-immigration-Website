@@ -1,8 +1,16 @@
 import axios from 'axios';
 
-// Define the API URL
-const API_ENDPOINT = process.env.REACT_APP_SERVER_API_URL || 'http://localhost:5000';
+// Define the API URL based on environment
+const API_ENDPOINT = process.env.REACT_APP_API_URL || 'https://visasupport-dot-overseabiz-453023.wl.r.appspot.com';
 const API_URL = `${API_ENDPOINT}/api`;
+
+// Create axios instance
+const api = axios.create({
+  baseURL: API_URL,
+  headers: {
+    'Content-Type': 'application/json'
+  }
+});
 
 export interface InterviewAssessment {
   assessment: string;
@@ -33,12 +41,12 @@ const getAssessment = async (forceRefresh: boolean = false): Promise<InterviewAs
     throw new Error('No token found. Please log in.');
   }
   
-  const response = await axios.get(`${API_URL}/ds160/interview-assessment`, {
-    headers: {
-      Authorization: `Bearer ${token}`
-    },
+  const response = await api.get('/ds160/interview-assessment', {
     params: {
       refresh: forceRefresh
+    },
+    headers: {
+      Authorization: `Bearer ${token}`
     }
   });
   return response.data;
@@ -53,7 +61,7 @@ const getAssessmentHistory = async (): Promise<InterviewAssessment[]> => {
     throw new Error('No token found. Please log in.');
   }
 
-  const response = await axios.get(`${API_URL}/ds160/interview-assessment/history`, {
+  const response = await api.get('/ds160/interview-assessment/history', {
     headers: {
       Authorization: `Bearer ${token}`
     }
@@ -70,7 +78,7 @@ const deleteAssessmentHistory = async (assessmentId: string): Promise<void> => {
     throw new Error('No token found. Please log in.');
   }
 
-  await axios.delete(`${API_URL}/ds160/interview-assessment/history/${assessmentId}`, {
+  await api.delete(`/ds160/interview-assessment/history/${assessmentId}`, {
     headers: {
       Authorization: `Bearer ${token}`
     }

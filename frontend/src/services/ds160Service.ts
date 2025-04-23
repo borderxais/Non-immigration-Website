@@ -4,10 +4,9 @@ import axios from 'axios';
 const API_ENDPOINT = process.env.REACT_APP_API_URL || 'https://visasupport-dot-overseabiz-453023.wl.r.appspot.com';
 const API_URL = `${API_ENDPOINT}/api`;
 
-// Add CORS headers to all requests
-axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
-axios.defaults.headers.common['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS';
-axios.defaults.headers.common['Access-Control-Allow-Headers'] = 'Origin, Content-Type, Accept, Authorization';
+// Configure axios defaults
+axios.defaults.headers.common['Content-Type'] = 'application/json';
+axios.defaults.headers.common['Accept'] = 'application/json';
 
 export interface DS160Form {
   id?: string;
