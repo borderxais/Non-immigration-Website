@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Form, Steps, Button, Card, Typography, message, Spin, Input, Space, Row, Col } from 'antd';
+import { Form, Steps, Button, Card, Typography, message, Spin } from 'antd';
 import { FormInstance } from 'antd';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import ApplicationIdDisplay from '../ApplicationIdDisplay';
 import PersonalInfoI from './sections/PersonalInfoI';
-import PersonalInfoII from './sections/PersonalInfoII';
+// import PersonalInfoII from './sections/PersonalInfoII';
 // import TravelInfo from './sections/TravelInfo';
 // import PreviousTravel from './sections/PreviousTravel';
 // import SecurityBackground from './sections/SecurityBackground';
@@ -35,11 +35,11 @@ const formSections: FormSection[] = [
     title: '个人信息 I',
     component: PersonalInfoI
   },
-  {
-    key: 'personalInfo2',
-    title: '个人信息 II',
-    component: PersonalInfoII
-  },
+  // {
+  //   key: 'personalInfo2',
+  //   title: '个人信息 II',
+  //   component: PersonalInfoII
+  // },
   // {
   //   key: 'travelInfo',
   //   title: '旅行信息',
@@ -73,33 +73,14 @@ const formSections: FormSection[] = [
 ];
 
 const DS160Form: React.FC = () => {
-  const [form] = Form.useForm();
   const navigate = useNavigate();
   const location = useLocation();
-  const { isAuthenticated } = useAuth();
-  const [isFormLoading, setIsFormLoading] = useState(false);
-  const [showLandingPage, setShowLandingPage] = useState(true);
+  const { isAuthenticated, isLoading } = useAuth();
+  const [showForm, setShowForm] = useState(false);
   const [applicationId, setApplicationId] = useState<string>('');
-  const [currentStep, setCurrentStep] = useState(0);
+  const [currentStep, setCurrentStep] = useState<number>(0);
   const [completedSteps, setCompletedSteps] = useState<number[]>([]);
-
-  // Load existing application data
-  const loadExistingApplication = useCallback(async (id: string) => {
-    setIsFormLoading(true);
-    try {
-      const response = await ds160Service.getFormById(id);
-      if (response?.form_data) {
-        setApplicationId(id);
-        form.setFieldsValue(response.form_data);
-        setShowLandingPage(false);
-        message.success('已加载申请表');
-      }
-    } catch (error) {
-      message.error('无法找到该申请表，请检查申请号是否正确');
-    } finally {
-      setIsFormLoading(false);
-    }
-  }, [form, setApplicationId, setIsFormLoading, setShowLandingPage]);
+  const [form] = Form.useForm();
 
   // Load form data from backend
   const loadFormData = useCallback(async (id: string) => {
@@ -114,108 +95,30 @@ const DS160Form: React.FC = () => {
     }
   }, [form]);
 
-  // Check authentication and load form data
   useEffect(() => {
-    if (!isAuthenticated) {
-      message.warning('请先登录以访问DS-160表格');
-      navigate('/auth/login', { 
-        state: { from: location.pathname + location.search } 
-      });
-      return;
+    // Only check authentication after loading is complete
+    if (!isLoading) {
+      if (!isAuthenticated) {
+        message.warning('请先登录以访问DS-160表格');
+        navigate('/auth/login', { 
+          state: { from: location.pathname + location.search } 
+        });
+      } else {
+        // User is authenticated, show the form and generate application ID if needed
+        setShowForm(true);
+        const existingId = localStorage.getItem('currentApplicationId');
+        if (existingId) {
+          setApplicationId(existingId);
+          loadFormData(existingId);
+        } else {
+          const newApplicationId = generateApplicationId();
+          setApplicationId(newApplicationId);
+          // Store in local storage for persistence
+          localStorage.setItem('currentApplicationId', newApplicationId);
+        }
+      }
     }
-
-    // Only proceed if we're not loading and have an application ID
-    if (!isFormLoading && applicationId) {
-      loadFormData(applicationId);
-    }
-  }, [isAuthenticated, isFormLoading, navigate, location, applicationId, loadFormData]);
-
-  // Load existing application if ID is provided in URL
-  useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    const id = params.get('id');
-    if (id) {
-      loadExistingApplication(id);
-    }
-  }, [location, loadExistingApplication]);
-
-  // Start a new application
-  const startNewApplication = () => {
-    try {
-      const newId = generateApplicationId();
-      // Initialize local form state
-      setApplicationId(newId);
-      setShowLandingPage(false);
-      form.setFieldsValue({}); // Clear form
-      setCurrentStep(0);
-      setCompletedSteps([]);
-      
-      // Navigate to form page
-      navigate(`/ds160/fill?id=${newId}`, { replace: true });
-
-      // Attempt to create form in background
-      ds160Service.createForm({
-        form_data: {},
-        status: 'draft',
-        application_id: newId
-      }).catch(error => {
-        console.warn('Form will be synced with server on first save:', error);
-      });
-    } catch (error) {
-      console.error('Error starting new form:', error);
-      message.error('创建新申请表时出错');
-    }
-  };
-
-  // Handle existing application retrieval
-  const retrieveApplication = async (values: { applicationId: string }) => {
-    await loadExistingApplication(values.applicationId);
-  };
-
-  if (isFormLoading) {
-    return (
-      <div style={{ textAlign: 'center', padding: '50px' }}>
-        <Spin size="large" />
-        <p>加载中...</p>
-      </div>
-    );
-  }
-
-  if (showLandingPage) {
-    return (
-      <Card>
-        <Title level={2}>DS-160 非移民签证申请表</Title>
-        <Row gutter={[16, 16]} justify="center">
-          <Col span={24} md={12}>
-            <Card title="开始新的申请" style={{ textAlign: 'center' }}>
-              <p>点击下方按钮开始填写新的DS-160申请表</p>
-              <Button type="primary" size="large" onClick={startNewApplication}>
-                开始新申请
-              </Button>
-            </Card>
-          </Col>
-          <Col span={24} md={12}>
-            <Card title="继续已有申请" style={{ textAlign: 'center' }}>
-              <p>输入申请号继续填写已保存的申请表</p>
-              <Form onFinish={retrieveApplication}>
-                <Space direction="vertical" style={{ width: '100%' }}>
-                  <Form.Item
-                    name="applicationId"
-                    rules={[{ required: true, message: '请输入申请号' }]}
-                  >
-                    <Input placeholder="请输入申请号" style={{ width: '100%' }} />
-                  </Form.Item>
-                  <Button type="primary" htmlType="submit">
-                    继续填写
-                  </Button>
-                </Space>
-              </Form>
-            </Card>
-          </Col>
-        </Row>
-      </Card>
-    );
-  }
+  }, [isAuthenticated, isLoading, navigate, location, applicationId, loadFormData]);
 
   // Handle section completion
   const handleSectionComplete = async (values: any) => {
@@ -271,6 +174,22 @@ const DS160Form: React.FC = () => {
       message.error('保存表单时出错');
     }
   };
+
+  if (isLoading) {
+    return (
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+        <Spin size="large">
+          <div style={{ padding: '50px', textAlign: 'center' }}>
+            <p>加载中...</p>
+          </div>
+        </Spin>
+      </div>
+    );
+  }
+
+  if (!showForm) {
+    return null;
+  }
 
   const CurrentSection = formSections[currentStep].component;
 

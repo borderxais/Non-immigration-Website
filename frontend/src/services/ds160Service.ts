@@ -1,16 +1,14 @@
 import axios from 'axios';
 
-// Define the API URL based on environment
-const API_ENDPOINT = process.env.REACT_APP_API_URL || 'https://visasupport-dot-overseabiz-453023.wl.r.appspot.com';
-const API_URL = `${API_ENDPOINT}/api`;
+// Define the API URL directly in this file to avoid import issues
+// This is for production
+// const API_ENDPOINT = process.env.REACT_APP_SERVER_API_URL || 'http://localhost:5000';
+// const API_URL = `${API_ENDPOINT}/api`;
 
-// Create axios instance
-const api = axios.create({
-  baseURL: API_URL,
-  headers: {
-    'Content-Type': 'application/json'
-  }
-});
+// Use relative URLs with proxy instead of absolute URLs
+// const API_ENDPOINT = 'http://localhost:5000';
+// const API_URL = `${API_ENDPOINT}/api`;
+const API_URL = '/api';  // This will be proxied to http://localhost:5000/api
 
 export interface DS160Form {
   id?: string;
@@ -46,10 +44,14 @@ const createForm = async (formData: Omit<DS160Form, 'id'>): Promise<DS160Form> =
   };
   
   console.log('Creating new DS-160 form with payload:', payload);
-  const response = await api.post('/ds160/form', payload, {
+  console.log('URL:', `${API_URL}/ds160/form`);
+  const response = await axios.post(`${API_URL}/ds160/form`, payload, {
     headers: {
-      Authorization: `Bearer ${token}`
-    }
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    },
+    withCredentials: true
   });
   console.log('Response:', response.data);
   return response.data;
@@ -58,9 +60,9 @@ const createForm = async (formData: Omit<DS160Form, 'id'>): Promise<DS160Form> =
 /**
  * Update an existing DS-160 form
  */
-const updateForm = async (applicationId: string, formData: Partial<DS160Form>): Promise<DS160Form> => {
+const updateForm = async (formId: string, formData: Partial<DS160Form>): Promise<DS160Form> => {
   const token = localStorage.getItem('token');
-  const response = await api.put(`/ds160/forms/${applicationId}`, formData, {
+  const response = await axios.put(`${API_URL}/ds160/${formId}`, formData, {
     headers: {
       Authorization: `Bearer ${token}`
     }
@@ -71,9 +73,9 @@ const updateForm = async (applicationId: string, formData: Partial<DS160Form>): 
 /**
  * Get a DS-160 form by ID
  */
-const getFormById = async (applicationId: string): Promise<DS160Form> => {
+const getFormById = async (formId: string): Promise<DS160Form> => {
   const token = localStorage.getItem('token');
-  const response = await api.get(`/ds160/forms/${applicationId}`, {
+  const response = await axios.get(`${API_URL}/ds160/forms/${formId}`, {
     headers: {
       Authorization: `Bearer ${token}`
     }
@@ -86,7 +88,7 @@ const getFormById = async (applicationId: string): Promise<DS160Form> => {
  */
 const getUserForms = async (): Promise<DS160Form[]> => {
   const token = localStorage.getItem('token');
-  const response = await api.get('/ds160/user', {
+  const response = await axios.get(`${API_URL}/ds160/user`, {
     headers: {
       Authorization: `Bearer ${token}`
     }
@@ -97,9 +99,9 @@ const getUserForms = async (): Promise<DS160Form[]> => {
 /**
  * Delete a DS-160 form
  */
-const deleteForm = async (applicationId: string): Promise<void> => {
+const deleteForm = async (formId: string): Promise<void> => {
   const token = localStorage.getItem('token');
-  await api.delete(`/ds160/${applicationId}`, {
+  await axios.delete(`${API_URL}/ds160/${formId}`, {
     headers: {
       Authorization: `Bearer ${token}`
     }
@@ -111,7 +113,7 @@ const deleteForm = async (applicationId: string): Promise<void> => {
  */
 const validateForm = async (formData: any): Promise<ValidationResult> => {
   const token = localStorage.getItem('token');
-  const response = await api.post('/ds160/validate', { form_data: formData }, {
+  const response = await axios.post(`${API_URL}/ds160/validate`, { form_data: formData }, {
     headers: {
       Authorization: `Bearer ${token}`
     }
@@ -122,9 +124,9 @@ const validateForm = async (formData: any): Promise<ValidationResult> => {
 /**
  * Generate PDF for a DS-160 form
  */
-const generatePDF = async (applicationId: string): Promise<Blob> => {
+const generatePDF = async (formId: string): Promise<Blob> => {
   const token = localStorage.getItem('token');
-  const response = await api.get(`/ds160/${applicationId}/pdf`, {
+  const response = await axios.get(`${API_URL}/ds160/${formId}/pdf`, {
     headers: {
       Authorization: `Bearer ${token}`
     },
@@ -169,17 +171,20 @@ const saveFormDraft = async (formData: any): Promise<DS160Form> => {
   
   // If the form has an ID, update it, otherwise create a new draft
   if (id) {
-    const response = await api.put(`/ds160/form/${id}`, payload, {
+    const response = await axios.put(`${API_URL}/ds160/form/${id}`, payload, {
       headers: {
         Authorization: `Bearer ${token}`
       }
     });
     return response.data;
   } else {
-    const response = await api.post('/ds160/form', payload, {
+    const response = await axios.post(`${API_URL}/ds160/form`, payload, {
       headers: {
-        Authorization: `Bearer ${token}`
-      }
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      withCredentials: true
     });
     return response.data;
   }
