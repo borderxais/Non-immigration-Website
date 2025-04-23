@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Form, Steps, Button, Card, Typography, message, Spin } from 'antd';
+import { FormInstance } from 'antd';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import ApplicationIdDisplay from '../ApplicationIdDisplay';
@@ -7,14 +8,28 @@ import PersonalInfoI from './sections/PersonalInfoI';
 import PersonalInfoII from './sections/PersonalInfoII';
 import TravelInfo from './sections/TravelInfo';
 import PreviousTravel from './sections/PreviousTravel';
+import SecurityBackground from './sections/SecurityBackground';
+import TravelCompanions from './sections/TravelCompanions';
+import WorkHistory from './sections/WorkHistory';
+import DS160ReviewPage from './sections/DS160ReviewPage';
 import { generateApplicationId } from '../../utils/formUtils';
 import ds160Service from '../../services/ds160Service';
 import './ds160Form.css';
 
 const { Title } = Typography;
 
+interface SectionProps {
+  form: FormInstance;
+}
+
+interface FormSection {
+  key: string;
+  title: string;
+  component: React.FC<SectionProps>;
+}
+
 // Define the form sections and their titles
-const formSections = [
+const formSections: FormSection[] = [
   {
     key: 'personalInfo1',
     title: '个人信息 I',
@@ -31,9 +46,29 @@ const formSections = [
     component: TravelInfo
   },
   {
+    key: 'travelCompanions',
+    title: '同行人',
+    component: TravelCompanions
+  },
+  {
     key: 'previousTravel',
     title: '以前的旅行',
     component: PreviousTravel
+  },
+  {
+    key: 'workHistory',
+    title: '工作经历',
+    component: WorkHistory
+  },
+  {
+    key: 'securityBackground',
+    title: '安全背景',
+    component: SecurityBackground
+  },
+  {
+    key: 'review',
+    title: '审核提交',
+    component: DS160ReviewPage as unknown as React.FC<SectionProps>
   }
 ];
 
@@ -56,11 +91,17 @@ const DS160Form: React.FC = () => {
           state: { from: location.pathname + location.search } 
         });
       } else {
-        // User is authenticated, show the form
+        // User is authenticated, show the form and generate application ID if needed
         setShowForm(true);
+        if (!applicationId) {
+          const newApplicationId = generateApplicationId();
+          setApplicationId(newApplicationId);
+          // Store in local storage for persistence
+          localStorage.setItem('currentApplicationId', newApplicationId);
+        }
       }
     }
-  }, [isAuthenticated, isLoading, navigate, location]);
+  }, [isAuthenticated, isLoading, navigate, location, applicationId]);
 
   // Load form data from backend
   const loadFormData = useCallback(async (id: string) => {
@@ -75,31 +116,38 @@ const DS160Form: React.FC = () => {
     }
   }, [form]);
 
-  // Initialize form ID and load data
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const draftId = params.get('id');
-    
-    if (draftId) {
-      setApplicationId(draftId);
-      loadFormData(draftId);
-    } else {
-      const newApplicationId = generateApplicationId();
-      setApplicationId(newApplicationId);
-      
-      const initialForm = {
-        form_data: {},
-        status: 'draft',
-        application_id: newApplicationId
-      };
-      
-      ds160Service.saveFormDraft(initialForm)
-        .then(() => console.log('Initial form created:', newApplicationId))
-        .catch(error => console.error('Error creating form:', error));
-      
-      localStorage.setItem('currentApplicationId', newApplicationId);
+  // Handle section completion
+  const handleSectionComplete = async (values: any) => {
+    try {
+      await saveFormData(values);
+      setCompletedSteps([...completedSteps, currentStep]);
+      setCurrentStep(currentStep + 1);
+    } catch (error) {
+      console.error('Error completing section:', error);
+      message.error('保存表单时出错');
     }
-  }, [loadFormData]);
+  };
+
+  // Handle final submission
+  const handleSubmit = async (values: any) => {
+    try {
+      await saveFormData(values, 'submitted');
+      message.success('表单提交成功！');
+      navigate('/ds160-success', { state: { applicationId } });
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      message.error('提交表单时出错');
+    }
+  };
+
+  // Handle edit request from review page
+  const handleEdit = (sectionIndex: number) => {
+    if (completedSteps.includes(sectionIndex)) {
+      setCurrentStep(sectionIndex);
+    } else {
+      message.warning('请先完成之前的步骤');
+    }
+  };
 
   // Save form data
   const saveFormData = async (values: any, status: 'draft' | 'submitted' = 'draft') => {
@@ -120,28 +168,6 @@ const DS160Form: React.FC = () => {
     } catch (error) {
       console.error('Error saving form:', error);
       message.error('保存表单时出错');
-    }
-  };
-
-  // Handle section completion
-  const handleSectionComplete = async (values: any) => {
-    await saveFormData(values);
-    if (!completedSteps.includes(currentStep)) {
-      setCompletedSteps([...completedSteps, currentStep]);
-    }
-    if (currentStep < formSections.length - 1) {
-      setCurrentStep(currentStep + 1);
-    }
-  };
-
-  // Handle form submission
-  const handleSubmit = async (values: any) => {
-    try {
-      await saveFormData(values, 'submitted');
-      navigate('/ds160-success', { state: { applicationId } });
-    } catch (error) {
-      console.error('Error submitting form:', error);
-      message.error('提交表单时出错');
     }
   };
 
@@ -201,8 +227,18 @@ const DS160Form: React.FC = () => {
               layout="vertical"
               onFinish={currentStep === formSections.length - 1 ? handleSubmit : handleSectionComplete}
             >
-              <CurrentSection form={form} />
-
+              {currentStep === formSections.length - 1 ? (
+                <DS160ReviewPage 
+                  form={form}
+                  onSubmit={() => {
+                    const values = form.getFieldsValue();
+                    handleSubmit(values);
+                  }}
+                  onEdit={handleEdit}
+                />
+              ) : (
+                <CurrentSection form={form} />
+              )}
               <div className="form-buttons">
                 {currentStep > 0 && (
                   <Button 
