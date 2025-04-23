@@ -6,11 +6,11 @@ import { useAuth } from '../../contexts/AuthContext';
 import ApplicationIdDisplay from '../ApplicationIdDisplay';
 import PersonalInfoI from './sections/PersonalInfoI';
 import PersonalInfoII from './sections/PersonalInfoII';
-import TravelInfo from './sections/TravelInfo';
-import PreviousTravel from './sections/PreviousTravel';
-import SecurityBackground from './sections/SecurityBackground';
-import TravelCompanions from './sections/TravelCompanions';
-import WorkHistory from './sections/WorkHistory';
+// import TravelInfo from './sections/TravelInfo';
+// import PreviousTravel from './sections/PreviousTravel';
+// import SecurityBackground from './sections/SecurityBackground';
+// import TravelCompanions from './sections/TravelCompanions';
+// import WorkHistory from './sections/WorkHistory';
 import DS160ReviewPage from './sections/DS160ReviewPage';
 import { generateApplicationId } from '../../utils/formUtils';
 import ds160Service from '../../services/ds160Service';
@@ -40,31 +40,31 @@ const formSections: FormSection[] = [
     title: '个人信息 II',
     component: PersonalInfoII
   },
-  {
-    key: 'travelInfo',
-    title: '旅行信息',
-    component: TravelInfo
-  },
-  {
-    key: 'travelCompanions',
-    title: '同行人',
-    component: TravelCompanions
-  },
-  {
-    key: 'previousTravel',
-    title: '以前的旅行',
-    component: PreviousTravel
-  },
-  {
-    key: 'workHistory',
-    title: '工作经历',
-    component: WorkHistory
-  },
-  {
-    key: 'securityBackground',
-    title: '安全背景',
-    component: SecurityBackground
-  },
+  // {
+  //   key: 'travelInfo',
+  //   title: '旅行信息',
+  //   component: TravelInfo
+  // },
+  // {
+  //   key: 'travelCompanions',
+  //   title: '同行人',
+  //   component: TravelCompanions
+  // },
+  // {
+  //   key: 'previousTravel',
+  //   title: '以前的旅行',
+  //   component: PreviousTravel
+  // },
+  // {
+  //   key: 'workHistory',
+  //   title: '工作经历',
+  //   component: WorkHistory
+  // },
+  // {
+  //   key: 'securityBackground',
+  //   title: '安全背景',
+  //   component: SecurityBackground
+  // },
   {
     key: 'review',
     title: '审核提交',
