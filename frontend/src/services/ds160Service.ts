@@ -60,12 +60,15 @@ const createForm = async (formData: Omit<DS160Form, 'id'>): Promise<DS160Form> =
 /**
  * Update an existing DS-160 form
  */
-const updateForm = async (formId: string, formData: Partial<DS160Form>): Promise<DS160Form> => {
+const updateForm = async (applicationId: string, formData: Partial<DS160Form>): Promise<DS160Form> => {
   const token = localStorage.getItem('token');
-  const response = await axios.put(`${API_URL}/ds160/${formId}`, formData, {
+  const response = await axios.post(`${API_URL}/ds160/${applicationId}`, formData, {
     headers: {
-      Authorization: `Bearer ${token}`
-    }
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    },
+    withCredentials: true
   });
   return response.data;
 };
@@ -73,12 +76,15 @@ const updateForm = async (formId: string, formData: Partial<DS160Form>): Promise
 /**
  * Get a DS-160 form by ID
  */
-const getFormById = async (formId: string): Promise<DS160Form> => {
+const getFormById = async (applicationId: string): Promise<DS160Form> => {
   const token = localStorage.getItem('token');
-  const response = await axios.get(`${API_URL}/ds160/forms/${formId}`, {
+  const response = await axios.get(`${API_URL}/ds160/forms/${applicationId}`, {
     headers: {
-      Authorization: `Bearer ${token}`
-    }
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    },
+    withCredentials: true
   });
   return response.data;
 };
@@ -99,9 +105,9 @@ const getUserForms = async (): Promise<DS160Form[]> => {
 /**
  * Delete a DS-160 form
  */
-const deleteForm = async (formId: string): Promise<void> => {
+const deleteForm = async (applicationId: string): Promise<void> => {
   const token = localStorage.getItem('token');
-  await axios.delete(`${API_URL}/ds160/${formId}`, {
+  await axios.delete(`${API_URL}/ds160/${applicationId}`, {
     headers: {
       Authorization: `Bearer ${token}`
     }
@@ -124,9 +130,9 @@ const validateForm = async (formData: any): Promise<ValidationResult> => {
 /**
  * Generate PDF for a DS-160 form
  */
-const generatePDF = async (formId: string): Promise<Blob> => {
+const generatePDF = async (applicationId: string): Promise<Blob> => {
   const token = localStorage.getItem('token');
-  const response = await axios.get(`${API_URL}/ds160/${formId}/pdf`, {
+  const response = await axios.get(`${API_URL}/ds160/${applicationId}/pdf`, {
     headers: {
       Authorization: `Bearer ${token}`
     },
