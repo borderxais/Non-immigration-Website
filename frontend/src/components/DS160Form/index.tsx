@@ -140,20 +140,29 @@ const DS160Form: React.FC = () => {
   }, [location, loadExistingApplication]);
 
   // Start a new application
-  const startNewApplication = async () => {
+  const startNewApplication = () => {
     try {
       const newId = generateApplicationId();
-      // Create a new form first
-      await ds160Service.createForm({
+      // Initialize local form state
+      setApplicationId(newId);
+      setShowLandingPage(false);
+      form.setFieldsValue({}); // Clear form
+      setCurrentStep(0);
+      setCompletedSteps([]);
+      
+      // Navigate to form page
+      navigate(`/ds160/fill?id=${newId}`, { replace: true });
+
+      // Attempt to create form in background
+      ds160Service.createForm({
         form_data: {},
         status: 'draft',
         application_id: newId
+      }).catch(error => {
+        console.warn('Form will be synced with server on first save:', error);
       });
-      setApplicationId(newId);
-      setShowLandingPage(false);
-      navigate(`/ds160/fill?id=${newId}`, { replace: true });
     } catch (error) {
-      console.error('Error creating new form:', error);
+      console.error('Error starting new form:', error);
       message.error('创建新申请表时出错');
     }
   };

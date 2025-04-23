@@ -1,8 +1,13 @@
 import axios from 'axios';
 
-// Define the API URL directly in this file to avoid import issues
-const API_ENDPOINT = 'https://visasupport-dot-overseabiz-453023.wl.r.appspot.com';
+// Define the API URL based on environment
+const API_ENDPOINT = process.env.REACT_APP_API_URL || 'https://visasupport-dot-overseabiz-453023.wl.r.appspot.com';
 const API_URL = `${API_ENDPOINT}/api`;
+
+// Add CORS headers to all requests
+axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+axios.defaults.headers.common['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS';
+axios.defaults.headers.common['Access-Control-Allow-Headers'] = 'Origin, Content-Type, Accept, Authorization';
 
 export interface DS160Form {
   id?: string;
