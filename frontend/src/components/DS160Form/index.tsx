@@ -175,38 +175,54 @@ const DS160Form: React.FC = () => {
         
         <ApplicationIdDisplay applicationId={applicationId} />
         
-        <Steps current={currentStep} className="form-steps">
-          {formSections.map(section => (
-            <Step key={section.key} title={section.title} />
-          ))}
-        </Steps>
+        <div style={{ display: 'flex', gap: '24px' }}>
+          {/* Left sidebar with steps */}
+          <div style={{ width: '25%', minWidth: '200px' }}>
+            <Steps 
+              current={currentStep} 
+              direction="vertical"
+              items={formSections.map((section, index) => ({
+                title: section.title,
+                disabled: !completedSteps.includes(index) && index !== currentStep,
+              }))}
+              onChange={(current) => {
+                if (completedSteps.includes(current) || current === currentStep) {
+                  setCurrentStep(current);
+                } else {
+                  message.warning('请先完成当前步骤');
+                }
+              }}
+            />
+          </div>
 
-        <div className="form-section">
-          <Form
-            form={form}
-            layout="vertical"
-            onFinish={currentStep === formSections.length - 1 ? handleSubmit : handleSectionComplete}
-          >
-            <CurrentSection form={form} />
+          {/* Right content area */}
+          <div style={{ flex: 1 }}>
+            <Form
+              form={form}
+              layout="vertical"
+              onFinish={currentStep === formSections.length - 1 ? handleSubmit : handleSectionComplete}
+            >
+              <CurrentSection form={form} />
 
-            <div className="form-buttons">
-              {currentStep > 0 && (
-                <Button 
-                  onClick={() => setCurrentStep(currentStep - 1)}
-                  style={{ marginRight: 8 }}
+              <div className="form-buttons">
+                {currentStep > 0 && (
+                  <Button 
+                    onClick={() => setCurrentStep(currentStep - 1)}
+                    style={{ marginRight: 8 }}
+                  >
+                    上一步
+                  </Button>
+                )}
+                
+                <Button
+                  type="primary"
+                  htmlType="submit"
                 >
-                  上一步
+                  {currentStep === formSections.length - 1 ? '提交' : '下一步'}
                 </Button>
-              )}
-              
-              <Button
-                type="primary"
-                htmlType="submit"
-              >
-                {currentStep === formSections.length - 1 ? '提交' : '下一步'}
-              </Button>
-            </div>
-          </Form>
+              </div>
+            </Form>
+          </div>
         </div>
       </Card>
     </div>
