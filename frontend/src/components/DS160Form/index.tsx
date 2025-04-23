@@ -83,6 +83,24 @@ const DS160Form: React.FC = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [completedSteps, setCompletedSteps] = useState<number[]>([]);
 
+  // Load existing application data
+  const loadExistingApplication = useCallback(async (id: string) => {
+    setIsFormLoading(true);
+    try {
+      const response = await ds160Service.getFormById(id);
+      if (response?.form_data) {
+        setApplicationId(id);
+        form.setFieldsValue(response.form_data);
+        setShowLandingPage(false);
+        message.success('已加载申请表');
+      }
+    } catch (error) {
+      message.error('无法找到该申请表，请检查申请号是否正确');
+    } finally {
+      setIsFormLoading(false);
+    }
+  }, [form, setApplicationId, setIsFormLoading, setShowLandingPage]);
+
   // Load form data from backend
   const loadFormData = useCallback(async (id: string) => {
     try {
@@ -119,25 +137,7 @@ const DS160Form: React.FC = () => {
     if (id) {
       loadExistingApplication(id);
     }
-  }, [location]);
-
-  // Load existing application data
-  const loadExistingApplication = async (id: string) => {
-    setIsFormLoading(true);
-    try {
-      const response = await ds160Service.getFormById(id);
-      if (response?.form_data) {
-        setApplicationId(id);
-        form.setFieldsValue(response.form_data);
-        setShowLandingPage(false);
-        message.success('已加载申请表');
-      }
-    } catch (error) {
-      message.error('无法找到该申请表，请检查申请号是否正确');
-    } finally {
-      setIsFormLoading(false);
-    }
-  };
+  }, [location, loadExistingApplication]);
 
   // Start a new application
   const startNewApplication = () => {
