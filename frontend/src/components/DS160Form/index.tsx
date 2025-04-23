@@ -83,6 +83,35 @@ const DS160Form: React.FC = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [completedSteps, setCompletedSteps] = useState<number[]>([]);
 
+  // Load form data from backend
+  const loadFormData = useCallback(async (id: string) => {
+    try {
+      const response = await ds160Service.getFormById(id);
+      if (response?.form_data) {
+        form.setFieldsValue(response.form_data);
+      }
+    } catch (error: any) {
+      console.error('Error loading form data:', error);
+      message.error('加载表单数据时出错');
+    }
+  }, [form]);
+
+  // Check authentication and load form data
+  useEffect(() => {
+    if (!isAuthenticated) {
+      message.warning('请先登录以访问DS-160表格');
+      navigate('/auth/login', { 
+        state: { from: location.pathname + location.search } 
+      });
+      return;
+    }
+
+    // Only proceed if we're not loading and have an application ID
+    if (!isFormLoading && applicationId) {
+      loadFormData(applicationId);
+    }
+  }, [isAuthenticated, isFormLoading, navigate, location, applicationId, loadFormData]);
+
   // Load existing application if ID is provided in URL
   useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -167,43 +196,6 @@ const DS160Form: React.FC = () => {
       </Card>
     );
   }
-
-  // Load form data from backend
-  const loadFormData = useCallback(async (id: string) => {
-    try {
-      const response = await ds160Service.getFormById(id);
-      if (response?.form_data) {
-        form.setFieldsValue(response.form_data);
-      }
-    } catch (error: any) {
-      console.error('Error loading form data:', error);
-      message.error('加载表单数据时出错');
-    }
-  }, [form]);
-
-  useEffect(() => {
-    // Only check authentication after loading is complete
-    if (!isFormLoading) {
-      if (!isAuthenticated) {
-        message.warning('请先登录以访问DS-160表格');
-        navigate('/auth/login', { 
-          state: { from: location.pathname + location.search } 
-        });
-      } else {
-        // User is authenticated, show the form and generate application ID if needed
-        const existingId = localStorage.getItem('currentApplicationId');
-        if (existingId) {
-          setApplicationId(existingId);
-          loadFormData(existingId);
-        } else {
-          const newApplicationId = generateApplicationId();
-          setApplicationId(newApplicationId);
-          // Store in local storage for persistence
-          localStorage.setItem('currentApplicationId', newApplicationId);
-        }
-      }
-    }
-  }, [isAuthenticated, isFormLoading, navigate, location, applicationId, loadFormData]);
 
   // Handle section completion
   const handleSectionComplete = async (values: any) => {
