@@ -77,15 +77,15 @@ const DS160Form: React.FC = () => {
   const location = useLocation();
   const { isAuthenticated, isLoading } = useAuth();
   const [showForm, setShowForm] = useState(false);
-  const [applicationId, setApplicationId] = useState<string>('');
+  const [application_id, setApplicationId] = useState<string>('');
   const [currentStep, setCurrentStep] = useState<number>(0);
   const [completedSteps, setCompletedSteps] = useState<number[]>([]);
   const [form] = Form.useForm();
 
   // Load form data from backend
-  const loadFormData = useCallback(async (applicationId: string) => {
+  const loadFormData = useCallback(async (application_id: string) => {
     try {
-      const response = await ds160Service.getFormById(applicationId);
+      const response = await ds160Service.getFormById(application_id);
       if (response?.form_data) {
         form.setFieldsValue(response.form_data);
       }
@@ -118,7 +118,7 @@ const DS160Form: React.FC = () => {
         }
       }
     }
-  }, [isAuthenticated, isLoading, navigate, location, applicationId, loadFormData]);
+  }, [isAuthenticated, isLoading, navigate, location, application_id, loadFormData]);
 
   // Handle section completion
   const handleSectionComplete = async (values: any) => {
@@ -137,7 +137,7 @@ const DS160Form: React.FC = () => {
     try {
       await saveFormData(values, 'submitted');
       message.success('表单提交成功！');
-      navigate('/ds160-success', { state: { applicationId } });
+      navigate('/ds160-success', { state: { application_id } });
     } catch (error) {
       console.error('Error submitting form:', error);
       message.error('提交表单时出错');
@@ -159,19 +159,19 @@ const DS160Form: React.FC = () => {
       const formData = {
         form_data: values,
         status,
-        application_id: applicationId
+        application_id: application_id
       };
 
-      if (applicationId) {
-        console.log('Updating form with application ID:', applicationId);
-        await ds160Service.updateForm(applicationId, formData);
+      if (application_id) {
+        console.log('Updating form with application ID:', application_id);
+        await ds160Service.updateForm(application_id, formData);
         message.success('表单已保存');
       } else {
         console.log('Creating new form');
         const response = await ds160Service.createForm(formData);
-        if (response?.applicationId) {
-          setApplicationId(response.applicationId);
-          localStorage.setItem('currentApplicationId', response.applicationId);
+        if (response?.application_id) {
+          setApplicationId(response.application_id);
+          localStorage.setItem('currentApplicationId', response.application_id);
         } else {
           throw new Error('No application ID returned from server');
         }
@@ -211,7 +211,7 @@ const DS160Form: React.FC = () => {
           您可以随时保存草稿并稍后返回继续填写。
         </p>
         
-        <ApplicationIdDisplay applicationId={applicationId} />
+        <ApplicationIdDisplay applicationId={application_id} />
         
         <div style={{ display: 'flex', gap: '24px' }}>
           {/* Left sidebar with steps */}

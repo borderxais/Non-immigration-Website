@@ -1,8 +1,14 @@
 import axios from 'axios';
 
-// Define the API URL based on environment
-const API_ENDPOINT = process.env.REACT_APP_API_URL || 'https://visasupport-dot-overseabiz-453023.wl.r.appspot.com';
+// Define the API URL directly in this file to avoid import issues
+// This is for production
+const API_ENDPOINT = process.env.REACT_APP_SERVER_API_URL || 'http://localhost:5000';
 const API_URL = `${API_ENDPOINT}/api`;
+
+// Use relative URLs with proxy instead of absolute URLs
+// const API_ENDPOINT = 'http://localhost:5000';
+// const API_URL = `${API_ENDPOINT}/api`;
+// const API_URL = '/api';  // This will be proxied to http://localhost:5000/api
 
 export interface DS160Form {
   id?: string;
@@ -10,7 +16,7 @@ export interface DS160Form {
   status: 'draft' | 'submitted' | 'approved' | 'rejected';
   created_at?: string;
   updated_at?: string;
-  applicationId?: string;
+  application_id?: string;
 }
 
 export interface ValidationResult {
@@ -39,14 +45,14 @@ const createForm = async (formData: Omit<DS160Form, 'id'>): Promise<DS160Form> =
 /**
  * Update an existing DS-160 form by application ID
  */
-const updateForm = async (applicationId: string, formData: Partial<DS160Form>): Promise<DS160Form> => {
+const updateForm = async (application_id: string, formData: Partial<DS160Form>): Promise<DS160Form> => {
   const token = localStorage.getItem('token');
   if (!token) {
     throw new Error('No token found. Please log in.');
   }
 
   // Use POST instead of PUT since the server doesn't support PUT
-  const response = await axios.post(`${API_URL}/ds160/form/${applicationId}`, formData, {
+  const response = await axios.post(`${API_URL}/ds160/form/${application_id}`, formData, {
     headers: {
       'Authorization': `Bearer ${token}`,
       'Content-Type': 'application/json'
@@ -58,9 +64,9 @@ const updateForm = async (applicationId: string, formData: Partial<DS160Form>): 
 /**
  * Get a DS-160 form by ID
  */
-const getFormById = async (applicationId: string): Promise<DS160Form> => {
+const getFormById = async (application_id: string): Promise<DS160Form> => {
   const token = localStorage.getItem('token');
-  const response = await axios.get(`${API_URL}/ds160/forms/${applicationId}`, {
+  const response = await axios.get(`${API_URL}/ds160/fill/${application_id}`, {
     headers: {
       Authorization: `Bearer ${token}`
     }
