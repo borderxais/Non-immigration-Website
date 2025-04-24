@@ -12,7 +12,6 @@ import PersonalInfoI from './sections/PersonalInfoI';
 // import TravelCompanions from './sections/TravelCompanions';
 // import WorkHistory from './sections/WorkHistory';
 import DS160ReviewPage from './sections/DS160ReviewPage';
-import { generateApplicationId } from '../../utils/formUtils';
 import ds160Service from '../../services/ds160Service';
 import './ds160Form.css';
 

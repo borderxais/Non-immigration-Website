@@ -11,12 +11,12 @@ const API_URL = `${API_ENDPOINT}/api`;
 // const API_URL = '/api';  // This will be proxied to http://localhost:5000/api
 
 export interface DS160Form {
-  id?: string;
-  form_data: any;
+  _id?: string;              // Internal database ID
+  application_id: string;    // User-facing form identifier
+  form_data: any;           // The actual form content
   status: 'draft' | 'submitted' | 'approved' | 'rejected';
   created_at?: string;
   updated_at?: string;
-  application_id?: string;
 }
 
 export interface ValidationResult {
@@ -27,7 +27,7 @@ export interface ValidationResult {
 /**
  * Create a new DS-160 form
  */
-const createForm = async (formData: Omit<DS160Form, 'id'>): Promise<DS160Form> => {
+const createForm = async (formData: Omit<DS160Form, '_id'>): Promise<DS160Form> => {
   const token = localStorage.getItem('token');
   if (!token) {
     throw new Error('No token found. Please log in.');
@@ -136,7 +136,7 @@ const saveFormDraft = async (formData: any): Promise<DS160Form> => {
   }
   
   // Extract form data and metadata with consistent naming
-  const { id, form_data, status, application_id } = formData;
+  const { _id, form_data, status, application_id } = formData;
   
   // Prepare the payload correctly
   const payload: any = {};
@@ -144,7 +144,7 @@ const saveFormDraft = async (formData: any): Promise<DS160Form> => {
   // If form_data exists, use it, otherwise use the entire formData object as form_data
   if (form_data) {
     payload.form_data = form_data;
-  } else if (!id && !status && !application_id) {
+  } else if (!_id && !status && !application_id) {
     // If only raw form data was passed (no metadata)
     payload.form_data = formData;
   }
@@ -161,8 +161,8 @@ const saveFormDraft = async (formData: any): Promise<DS160Form> => {
   console.log('Saving form with payload:', payload);
   
   // If the form has an ID, update it, otherwise create a new draft
-  if (id) {
-    const response = await axios.post(`${API_URL}/ds160/form/${id}`, payload, {
+  if (_id) {
+    const response = await axios.post(`${API_URL}/ds160/form/${_id}`, payload, {
       headers: {
         Authorization: `Bearer ${token}`
       }
