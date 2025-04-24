@@ -9,19 +9,25 @@ const api = axios.create({
   baseURL: API_URL,
   headers: {
     'Content-Type': 'application/json',
-    'Accept': 'application/json',
-    'Origin': 'https://visaimmigration.netlify.app'
+    'Accept': 'application/json'
   },
   withCredentials: false // Must be false for cross-origin requests
 });
 
-// Add request interceptor for authentication
+// Add request interceptor for authentication and CORS
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
+    
+    // Add CORS headers for preflight
+    if (config.method?.toUpperCase() === 'OPTIONS') {
+      config.headers['Access-Control-Request-Method'] = 'POST';
+      config.headers['Access-Control-Request-Headers'] = 'content-type,authorization';
+    }
+    
     return config;
   },
   (error) => Promise.reject(error)
