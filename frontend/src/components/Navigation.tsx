@@ -7,8 +7,7 @@ import {
   MobileOutlined,
   HomeOutlined,
   UserOutlined,
-  LogoutOutlined,
-  EditOutlined
+  LogoutOutlined
 } from '@ant-design/icons';
 import { useAuth } from '../contexts/AuthContext';
 import type { MenuProps } from 'antd';

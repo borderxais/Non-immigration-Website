@@ -66,7 +66,7 @@ const updateForm = async (application_id: string, formData: Partial<DS160Form>):
  */
 const getFormById = async (application_id: string): Promise<DS160Form> => {
   const token = localStorage.getItem('token');
-  const response = await axios.get(`${API_URL}/ds160/fill/${application_id}`, {
+  const response = await axios.get(`${API_URL}/ds160/form/${application_id}`, {
     headers: {
       Authorization: `Bearer ${token}`
     }
