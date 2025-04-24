@@ -83,9 +83,9 @@ const DS160Form: React.FC = () => {
   const [form] = Form.useForm();
 
   // Load form data from backend
-  const loadFormData = useCallback(async (id: string) => {
+  const loadFormData = useCallback(async (applicationId: string) => {
     try {
-      const response = await ds160Service.getFormById(id);
+      const response = await ds160Service.getFormById(applicationId);
       if (response?.form_data) {
         form.setFieldsValue(response.form_data);
       }
