@@ -117,7 +117,7 @@ const DS160Form: React.FC = () => {
             } else {
               // Create new form
               const newApplicationId = generateApplicationId();
-              const newForm = await ds160Service.createForm({
+              await ds160Service.createForm({
                 form_data: {},
                 status: 'draft',
                 application_id: newApplicationId
