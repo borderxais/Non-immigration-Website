@@ -16,12 +16,12 @@ const DS160Form: React.FC = () => {
   const [completedSteps, setCompletedSteps] = React.useState<number[]>([0]);
   const [form] = Form.useForm();
   const navigate = useNavigate();
-  const [applicationId, setApplicationId] = React.useState<string | null>(generateApplicationId());
+  const [application_id, setApplicationId] = React.useState<string | null>(generateApplicationId());
 
   React.useEffect(() => {
     // Check if there's a form ID in the URL (for resuming a draft)
     const params = new URLSearchParams(window.location.search);
-    const draftId = params.get('id');
+    const draftId = params.get('application_id');
     
     if (draftId) {
       // If we have an ID in the URL, use that instead of the generated one
@@ -35,9 +35,9 @@ const DS160Form: React.FC = () => {
       setApplicationId(savedFormId);
     } else {
       // Save the current form ID (either from URL or randomly generated)
-      localStorage.setItem('currentFormId', applicationId || '');
+      localStorage.setItem('currentFormId', application_id || '');
     }
-  }, [applicationId]);
+  }, [application_id]);
   
   // Define highlighted block style here, so it's available throughout the component
   const highlightedBlockStyle = {
@@ -4172,7 +4172,7 @@ const DS160Form: React.FC = () => {
         scrollToFirstError
         preserve={true}
       >
-        <ApplicationIdDisplay applicationId={applicationId} />
+        <ApplicationIdDisplay application_id={application_id} />
         <div style={{ display: 'flex', gap: '24px' }}>
           {/* Left sidebar with steps */}
           <div style={{ width: '25%', minWidth: '200px' }}>

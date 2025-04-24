@@ -211,7 +211,7 @@ const DS160Form: React.FC = () => {
           您可以随时保存草稿并稍后返回继续填写。
         </p>
         
-        <ApplicationIdDisplay applicationId={application_id} />
+        <ApplicationIdDisplay application_id={application_id} />
         
         <div style={{ display: 'flex', gap: '24px' }}>
           {/* Left sidebar with steps */}

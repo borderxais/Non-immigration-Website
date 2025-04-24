@@ -5,17 +5,17 @@ import { InfoCircleOutlined, CopyOutlined } from '@ant-design/icons';
 const { Text } = Typography;
 
 interface ApplicationIdDisplayProps {
-  applicationId: string | null;
+  application_id: string | null;
 }
 
-const ApplicationIdDisplay: React.FC<ApplicationIdDisplayProps> = ({ applicationId }) => {
+const ApplicationIdDisplay: React.FC<ApplicationIdDisplayProps> = ({ application_id }) => {
   const copyToClipboard = () => {
-    if (applicationId) {
-      navigator.clipboard.writeText(applicationId);
+    if (application_id) {
+      navigator.clipboard.writeText(application_id);
     }
   };
 
-  if (!applicationId) return null;
+  if (!application_id) return null;
 
   return (
     <Card 
@@ -28,7 +28,7 @@ const ApplicationIdDisplay: React.FC<ApplicationIdDisplayProps> = ({ application
     >
       <Space>
         <Text type="secondary">申请识别码 (Application ID):</Text>
-        <Text strong>{applicationId}</Text>
+        <Text strong>{application_id}</Text>
         <Tooltip title="复制识别码">
           <CopyOutlined 
             onClick={copyToClipboard} 
