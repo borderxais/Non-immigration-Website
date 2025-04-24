@@ -7,7 +7,8 @@ import {
   MobileOutlined,
   HomeOutlined,
   UserOutlined,
-  LogoutOutlined
+  LogoutOutlined,
+  EditOutlined
 } from '@ant-design/icons';
 import { useAuth } from '../contexts/AuthContext';
 import type { MenuProps } from 'antd';
@@ -36,18 +37,9 @@ const Navigation: React.FC = () => {
       label: 'DS-160表格',
       children: [
         {
-          key: '/ds160/fill',
-          label: '申请表管理',
-          children: [
-            {
-              key: '/ds160/fill',
-              label: '开始新申请',
-            },
-            {
-              key: '/ds160/history',
-              label: '我的申请',
-            }
-          ]
+          key: '/ds160',
+          icon: <FormOutlined />,
+          label: 'DS-160表格'
         },
         {
           key: '/ds160/upload',

@@ -11,6 +11,7 @@ import FloatingChatButton from './components/Chat/FloatingChatButton';
 
 // Pages
 import Home from './pages/Home';
+import DS160Landing from './pages/DS160Landing';
 import DS160Upload from './pages/DS160Upload';
 import DS160History from './pages/DS160History';
 import DS160Success from './pages/DS160Success';
@@ -62,7 +63,8 @@ const App: React.FC = () => {
                   <Route path="/" element={<Home />} />
                   
                   {/* DS-160 Routes */}
-                  <Route path="/ds160/fill" element={<DS160Form />} />
+                  <Route path="/ds160" element={<DS160Landing />} />
+                  <Route path="/ds160/form/:id" element={<DS160Form />} />
                   <Route path="/ds160/upload" element={<DS160Upload />} />
                   <Route path="/ds160/history" element={<DS160History />} />
                   <Route path="/ds160-success" element={<DS160Success />} />

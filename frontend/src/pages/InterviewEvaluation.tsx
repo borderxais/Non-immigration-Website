@@ -88,8 +88,8 @@ const InterviewEvaluation: React.FC = () => {
           type="info"
           showIcon
           action={
-            <Button size="small" type="primary" onClick={() => navigate('/ds160/fill')}>
-              填写DS-160
+            <Button size="small" type="primary" onClick={() => navigate('/ds160/form')}>
+              开始填写DS-160表格
             </Button>
           }
         />

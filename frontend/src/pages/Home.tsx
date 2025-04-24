@@ -21,7 +21,7 @@ const Home: React.FC = () => {
       title: 'DS-160表格',
       icon: <FormOutlined style={{ fontSize: '32px', color: '#1890ff' }} />,
       description: '智能表格填写系统，中英文自动翻译，实时保存进度，确保填写准确无误',
-      link: '/ds160/fill',
+      link: '/ds160/form',
       color: '#e6f7ff',
     },
     {
@@ -91,7 +91,7 @@ const Home: React.FC = () => {
           基于AI技术，为您提供专业、高效、便捷的签证申请服务
         </Paragraph>
         <Space size="large">
-          <Button type="primary" size="large" onClick={() => navigate('/ds160/fill')}>
+          <Button type="primary" size="large" onClick={() => navigate('/ds160/form')}>
             开始填写DS-160
           </Button>
           <Button 
