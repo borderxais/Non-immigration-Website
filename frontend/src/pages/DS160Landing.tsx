@@ -1,8 +1,9 @@
 import React from 'react';
-import { Card, Row, Col, Typography, Button } from 'antd';
+import { Card, Row, Col, Typography, Button, message } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { FormOutlined, HistoryOutlined } from '@ant-design/icons';
 import { generateApplicationId } from '../utils/formUtils';
+import ds160Service from '../services/ds160Service'; // Assuming ds160Service is imported from this location
 
 const { Title, Paragraph } = Typography;
 
@@ -11,7 +12,19 @@ const DS160Landing: React.FC = () => {
 
   const handleNewApplication = () => {
     const application_id = generateApplicationId();
-    navigate(`/ds160/form/${application_id}`);
+    // Create new form in database
+    ds160Service.createForm({
+      form_data: {},
+      status: 'draft',
+      application_id: application_id
+    }).then(() => {
+      // Set flag to indicate this is a new application
+      localStorage.setItem('isNewApplication', 'true');
+      navigate(`/ds160/form/${application_id}`);
+    }).catch(error => {
+      console.error('Error creating form:', error);
+      message.error('创建表单时出错');
+    });
   };
 
   return (

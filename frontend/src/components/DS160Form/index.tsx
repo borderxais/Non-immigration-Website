@@ -82,6 +82,11 @@ const DS160Form: React.FC = () => {
   const [completedSteps, setCompletedSteps] = useState<number[]>([]);
   const [form] = Form.useForm();
 
+  // Extract application_id from URL
+  const urlParams = new URLSearchParams(location.search);
+  const pathSegments = location.pathname.split('/');
+  const urlApplicationId = pathSegments[pathSegments.length - 1];
+
   // Load form data from backend
   const loadFormData = useCallback(async (application_id: string) => {
     try {
@@ -104,26 +109,23 @@ const DS160Form: React.FC = () => {
           state: { from: location.pathname + location.search } 
         });
       } else {
-        // User is authenticated, show the form and handle application ID
+        // User is authenticated, show the form
         setShowForm(true);
-        const existingId = localStorage.getItem('currentApplicationId');
         
         const initializeForm = async () => {
           try {
-            if (existingId) {
-              // Load existing form
-              setApplicationId(existingId);
-              await loadFormData(existingId);
+            if (urlApplicationId) {
+              setApplicationId(urlApplicationId);
+              // Only try to load data if it's not a new form from landing page
+              const isFromLanding = localStorage.getItem('isNewApplication') === 'true';
+              if (!isFromLanding) {
+                await loadFormData(urlApplicationId);
+              }
+              // Clear the flag
+              localStorage.removeItem('isNewApplication');
             } else {
-              // Create new form
-              const newApplicationId = generateApplicationId();
-              await ds160Service.createForm({
-                form_data: {},
-                status: 'draft',
-                application_id: newApplicationId
-              });
-              setApplicationId(newApplicationId);
-              localStorage.setItem('currentApplicationId', newApplicationId);
+              message.error('无效的申请ID');
+              navigate('/ds160');
             }
           } catch (error) {
             console.error('Error initializing form:', error);
@@ -134,7 +136,7 @@ const DS160Form: React.FC = () => {
         initializeForm();
       }
     }
-  }, [isAuthenticated, isLoading, navigate, location, loadFormData]);
+  }, [isAuthenticated, isLoading, navigate, location, loadFormData, urlApplicationId]);
 
   // Handle section completion
   const handleSectionComplete = async (values: any) => {
