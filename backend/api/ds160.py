@@ -28,6 +28,13 @@ else:
 
 logger.info("Begin DS-160 API registration")
 
+# Allowed origins
+ALLOWED_ORIGINS = [
+    'http://localhost:3000',
+    'https://visaimmigration.netlify.app',
+    'https://www.visaimmigration.netlify.app'
+]
+
 # Create a separate blueprint for CORS preflight handling
 cors_handler = Blueprint('cors_handler', __name__)
 
@@ -35,24 +42,26 @@ cors_handler = Blueprint('cors_handler', __name__)
 def handle_ds160_form_options():
     """Handle preflight OPTIONS request outside of JWT and RESTx"""
     response = make_response()
-    response.headers.add('Access-Control-Allow-Origin', 'http://localhost:3000')
-    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-    response.headers.add('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS')
-    response.headers.add('Access-Control-Allow-Credentials', 'true')
+    origin = request.headers.get('Origin')
+    if origin in ALLOWED_ORIGINS:
+        response.headers.add('Access-Control-Allow-Origin', origin)
+        response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+        response.headers.add('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS')
     return response, 200
 
 @api.route("/form")
 class DS160FormResource(Resource):
-    # The options method can stay but will likely be intercepted by the blueprint handler
     def options(self):
         """Handle preflight OPTIONS request"""
-        # Return an empty response with 200 status code
-        return {'success': True}, 200, {
-            'Access-Control-Allow-Origin': 'http://localhost:3000',
-            'Access-Control-Allow-Headers': 'Content-Type,Authorization',
-            'Access-Control-Allow-Methods': 'GET,POST,PUT,DELETE,OPTIONS',
-            'Access-Control-Allow-Credentials': 'true'
-        }
+        origin = request.headers.get('Origin')
+        headers = {}
+        if origin in ALLOWED_ORIGINS:
+            headers = {
+                'Access-Control-Allow-Origin': origin,
+                'Access-Control-Allow-Headers': 'Content-Type,Authorization',
+                'Access-Control-Allow-Methods': 'GET,POST,PUT,DELETE,OPTIONS'
+            }
+        return {'success': True}, 200, headers
 
     # @jwt_required()  # Temporarily commented out for CORS testing
     def post(self):
