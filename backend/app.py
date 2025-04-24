@@ -27,15 +27,7 @@ CORS(
                 "https://www.visaimmigration.netlify.app"
             ],
             "methods": ["GET", "POST", "OPTIONS", "PUT", "DELETE", "PATCH"],
-            "allow_headers": [
-                "Content-Type",
-                "Authorization",
-                "Accept",
-                "Origin",
-                "X-Requested-With",
-                "Access-Control-Request-Method",
-                "Access-Control-Request-Headers"
-            ],
+            "allow_headers": ["*"],  # Allow all headers
             "supports_credentials": False,
             "expose_headers": ["Content-Range", "X-Content-Range"],
             "max_age": 600
@@ -50,18 +42,17 @@ def after_request(response):
     # Get the origin from the request
     origin = request.headers.get('Origin')
     # If the origin is in our allowed origins, set it in the response
-    allowed_origins = [
+    if origin in [
         "http://localhost:3000",
         "http://localhost:3001",
         "http://127.0.0.1:3000",
         "http://127.0.0.1:3001",
         "https://visaimmigration.netlify.app",
         "https://www.visaimmigration.netlify.app"
-    ]
-    if origin in allowed_origins:
+    ]:
         response.headers['Access-Control-Allow-Origin'] = origin
-    response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'
-    response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization, Accept, Origin, X-Requested-With'
+        response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'
+        response.headers['Access-Control-Allow-Headers'] = '*'
     return response
 
 

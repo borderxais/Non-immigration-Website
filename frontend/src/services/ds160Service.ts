@@ -43,7 +43,7 @@ const createForm = async (formData: Omit<DS160Form, '_id'>): Promise<DS160Form> 
  */
 const updateForm = async (application_id: string, formData: Partial<DS160Form>): Promise<DS160Form> => {
   try {
-    const response = await api.post(`/ds160/form/${application_id}`, formData);
+    const response = await api.put(`/ds160/form/${application_id}`, formData);
     return response.data;
   } catch (error: any) {
     console.error('Error updating form:', error);

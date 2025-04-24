@@ -143,8 +143,13 @@ const DS160Form: React.FC = () => {
         const initializeForm = async () => {
           try {
             if (!urlApplicationId) {
-              message.error('无效的申请ID');
-              navigate('/ds160');
+              // Create a new form if no application ID is provided
+              const newForm = await ds160Service.createForm({
+                application_id: '', // Backend will generate this
+                form_data: {},
+                status: 'draft'
+              });
+              setApplicationId(newForm.application_id);
               return;
             }
 
@@ -168,9 +173,10 @@ const DS160Form: React.FC = () => {
                 
               setCompletedSteps(completedSections);
             }
-          } catch (error) {
+          } catch (error: any) {
             console.error('Error initializing form:', error);
-            message.error('初始化表单时出错');
+            const errorMessage = error.response?.data?.error || '初始化表单时出错';
+            message.error(errorMessage);
             navigate('/ds160');
           }
         };

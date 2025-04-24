@@ -108,9 +108,8 @@ class DS160FormResource(Resource):
         )
         
         db.session.add(form)
-        # Ensure form.id is assigned for translation FK
         db.session.flush()
-        logger.info(f"Session flushed, generated form.id={form.id}")
+        logger.info(f"Session flushed, form created with application_id={form.application_id}")
         
         # Log the form status to debug the condition check
         logger.info(f"Form status after creation: {status}, Will create translation: {status == 'submitted'}")
@@ -125,7 +124,7 @@ class DS160FormResource(Resource):
                 from services.translation import translate_form_data
                 
                 # Log before translation
-                logger.info(f"Starting translation for form_id: {form.id}")
+                logger.info(f"Starting translation for application_id: {form.application_id}")
                 print("Starting form translation process...")
                 
                 # Translate the form data to English
@@ -138,13 +137,13 @@ class DS160FormResource(Resource):
                 
                 # Create a new translation record in the dedicated translations table
                 translation = DS160FormTranslation(
-                    original_form_id=form.id,
+                    original_form_id=form.application_id,
                     form_data=english_form_data,
                     application_id=application_id
                 )
                 
                 # Log translation object
-                logger.info(f"Created translation object with original_form_id: {form.id}")
+                logger.info(f"Created translation object with application_id: {form.application_id}")
                 
                 db.session.add(translation)
                 logger.info(f"Added translation to session for form with application_id: {application_id}")
@@ -172,92 +171,81 @@ class DS160FormResource(Resource):
         return form.to_dict(), 201
 
 
-@api.route("/form/<string:form_id>")
+@api.route("/form/<string:application_id>")
 class DS160FormDetailResource(Resource):
-    def get(self, form_id):
-        """Retrieve a DS-160 form"""
-        form = DS160Form.query.get(form_id)
-        if not form:
-            return {"error": "Form not found"}, 404
-        return form.to_dict()
+    def options(self, application_id):
+        """Handle preflight OPTIONS request"""
+        origin = request.headers.get('Origin')
+        headers = {}
+        if origin in ALLOWED_ORIGINS:
+            headers = {
+                'Access-Control-Allow-Origin': origin,
+                'Access-Control-Allow-Headers': '*',
+                'Access-Control-Allow-Methods': 'GET,POST,PUT,DELETE,OPTIONS'
+            }
+        return {'success': True}, 200, headers
 
-    def put(self, form_id):
+    def get(self, application_id):
+        """Retrieve a DS-160 form"""
+        try:
+            form = DS160Form.query.filter_by(application_id=application_id).first()
+            if not form:
+                return {"error": "Form not found"}, 404
+
+            # Add CORS headers
+            origin = request.headers.get('Origin')
+            headers = {}
+            if origin in ALLOWED_ORIGINS:
+                headers = {
+                    'Access-Control-Allow-Origin': origin,
+                    'Access-Control-Allow-Headers': '*',
+                    'Access-Control-Allow-Methods': 'GET,POST,PUT,DELETE,OPTIONS'
+                }
+
+            return form.to_dict(), 200, headers
+
+        except Exception as e:
+            logger.error(f"Error retrieving form: {str(e)}")
+            return {"error": str(e)}, 500
+
+    def put(self, application_id):
         """Update a DS-160 form"""
-        data = request.json
-        form = DS160Form.query.get(form_id)
-        
-        # Log the incoming data
-        logger.info(f"Updating DS-160 form {form_id} with data: {data}")
-        
-        if not form:
-            return {"error": "Form not found"}, 404
+        try:
+            data = request.json
+            form = DS160Form.query.filter_by(application_id=application_id).first()
             
-        # Store the original status before update
-        original_status = form.status
-        
-        # Update form data
-        if 'form_data' in data:
-            form.form_data = data['form_data']
+            # Log the incoming data
+            logger.info(f"Updating DS-160 form {application_id} with data: {data}")
             
-        # Update application_id if provided
-        if 'application_id' in data:
-            logger.info(f"Updating application_id to: {data['application_id']}")
-            form.application_id = data['application_id']
+            if not form:
+                return {"error": "Form not found"}, 404
+                
+            # Store the original status before update
+            original_status = form.status
             
-        # Update status if provided
-        if 'status' in data:
-            form.status = data['status']
-        
-        # Check if this is a submission (status changed from draft to submitted)
-        is_new_submission = original_status == 'draft' and form.status == 'submitted'
-        
-        # Check if this is an update to an already submitted form
-        is_update_to_submitted = original_status == 'submitted' and 'form_data' in data
-        
-        # If this is a new submission or an update to a submitted form, handle translation
-        if is_new_submission or is_update_to_submitted:
-            try:
-                # Import the translation service
-                from services.translation import translate_form_data
+            # Update form data
+            if 'form_data' in data:
+                form.form_data = data['form_data']
                 
-                # Log before translation
-                logger.info(f"Starting translation for form_id: {form.id}")
-                
-                # Translate the form data to English
-                english_form_data = translate_form_data(form.form_data, source_lang='zh', target_lang='en')
-                
-                # Log after translation
-                logger.info(f"Translation completed successfully")
-                
-                # Check if there's already a translated version for this form
-                existing_translation = DS160FormTranslation.query.filter_by(
-                    original_form_id=form.id
-                ).first()
-                
-                if existing_translation:
-                    # Update the existing translation
-                    existing_translation.form_data = english_form_data
-                    existing_translation.application_id = form.application_id
-                    logger.info(f"Updated existing English translation for form {form.id}")
-                else:
-                    # Create a new translation record
-                    translation = DS160FormTranslation(
-                        original_form_id=form.id,
-                        form_data=english_form_data,
-                        application_id=form.application_id
-                    )
-                    db.session.add(translation)
-                    logger.info(f"Created new English translation for form {form.id}")
-            except Exception as e:
-                logger.error(f"Error handling English translation: {str(e)}")
-                import traceback
-                logger.error(f"Traceback: {traceback.format_exc()}")
-                # Continue even if translation fails
-            
-        db.session.commit()
-        
-        # Return the updated form data
-        return form.to_dict(), 200
+            # Update application_id if provided
+            if 'application_id' in data:
+                form.application_id = data['application_id']
+
+            # Add CORS headers
+            origin = request.headers.get('Origin')
+            headers = {}
+            if origin in ALLOWED_ORIGINS:
+                headers = {
+                    'Access-Control-Allow-Origin': origin,
+                    'Access-Control-Allow-Headers': '*',
+                    'Access-Control-Allow-Methods': 'GET,POST,PUT,DELETE,OPTIONS'
+                }
+
+            return form.to_dict(), 200, headers
+
+        except Exception as e:
+            logger.error(f"Error updating form: {str(e)}")
+            return {"error": str(e)}, 500
 
 
 @api.route("/user/forms")
@@ -324,7 +312,7 @@ class InterviewAssessmentResource(Resource):
             # Create a new assessment record
             assessment = InterviewAssessment(
                 user_id=current_user_id,
-                ds160_form_id=latest_form.id,
+                ds160_form_id=latest_form.application_id,
                 assessment=assessment_text,
             )
             db.session.add(assessment)
@@ -355,7 +343,7 @@ class InterviewAssessmentResource(Resource):
             # Check if we already have an assessment for this form
             existing_assessment = (
                 InterviewAssessment.query.filter_by(
-                    user_id=current_user_id, ds160_form_id=latest_form.id
+                    user_id=current_user_id, ds160_form_id=latest_form.application_id
                 )
                 .order_by(InterviewAssessment.created_at.desc())
                 .first()
@@ -401,17 +389,17 @@ class InterviewAssessmentResource(Resource):
             logger.error(f"Error in assessment process: {str(e)}")
             return {"error": str(e)}, 500
 
+@api.route("/client/<string:application_id>")
 
-@api.route("/client/<string:form_id>")
 class DS160ClientResource(Resource):
     @jwt_required()
-    def get(self, form_id):
+    def get(self, application_id):
         """Get DS-160 form data formatted for the Chrome extension"""
         current_user_id = get_jwt_identity()
         
         # Find the form
         form = DS160Form.query.filter_by(
-            id=form_id, user_id=current_user_id
+            application_id=application_id, user_id=current_user_id
         ).first()
         
         if not form:
@@ -421,7 +409,7 @@ class DS160ClientResource(Resource):
         # This will need to be customized based on your form structure
         # and the expected format for the extension
         client_data = {
-            "client_id": str(form.id),
+            "client_id": str(form.application_id),
             "personal_info": form.form_data.get("personal_info", {}),
             "contact_info": form.form_data.get("contact_info", {}),
             "passport_info": form.form_data.get("passport_info", {}),
@@ -452,7 +440,7 @@ class DS160ClientDataByApplicationIDResource(Resource):
         
         # Format the form data for the extension - return flat structure
         client_data = {
-            "client_id": str(form.id),
+            "client_id": str(form.application_id),
             "application_id": form.application_id,
         }
         
@@ -512,7 +500,7 @@ class InterviewAssessmentHistoryResource(Resource):
 
         assessment = InterviewAssessment(
             user_id=current_user_id,
-            ds160_form_id=latest_form.id,
+            ds160_form_id=latest_form.application_id,
             assessment=data["assessment"],
         )
         db.session.add(assessment)
@@ -578,20 +566,22 @@ class DS160FormByApplicationIDResource(Resource):
         return form.to_dict()
 
 
-@api.route("/form/<string:form_id>/translation")
+@api.route("/form/<string:application_id>/translation")
 class DS160FormTranslationResource(Resource):
     """Resource to handle DS-160 form translations"""
     
-    def get(self, form_id):
+    def get(self, application_id):
         """Retrieve the English translation for a specific DS-160 form"""
         # First check if the original form exists
-        original_form = DS160Form.query.get(form_id)
+        original_form = DS160Form.query.filter_by(
+            application_id=application_id
+        ).first()
         if not original_form:
             return {"error": "Original form not found"}, 404
             
         # Find the translation for this form
         translation = DS160FormTranslation.query.filter_by(
-            original_form_id=original_form.id
+            original_form_id=original_form.application_id
         ).first()
         
         if not translation:
