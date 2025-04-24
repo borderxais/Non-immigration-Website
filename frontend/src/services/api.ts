@@ -1,15 +1,18 @@
 import axios from 'axios';
 
 // Define the API URL based on environment
-const API_ENDPOINT = process.env.REACT_APP_API_URL || 'https://visasupport-dot-overseabiz-453023.wl.r.appspot.com';
+const API_ENDPOINT = process.env.REACT_APP_SERVER_API_URL || 'https://visasupport-dot-overseabiz-453023.wl.r.appspot.com';
 const API_URL = `${API_ENDPOINT}/api`;
 
 // Create axios instance with base URL
 const api = axios.create({
   baseURL: API_URL,
   headers: {
-    'Content-Type': 'application/json'
-  }
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+    'Origin': 'https://visaimmigration.netlify.app'
+  },
+  withCredentials: false // Must be false for cross-origin requests
 });
 
 // Add request interceptor for authentication

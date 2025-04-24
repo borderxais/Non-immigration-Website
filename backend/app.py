@@ -17,18 +17,28 @@ app = Flask(__name__)
 CORS(
     app,
     resources={
-        r"/*": {
+        r"/*": {  # Match all routes to be safe
             "origins": [
                 "http://localhost:3000",
                 "http://localhost:3001",
                 "http://127.0.0.1:3000",
                 "http://127.0.0.1:3001",
                 "https://visaimmigration.netlify.app",
+                "https://www.visaimmigration.netlify.app"
             ],
-            "methods": ["GET", "POST", "OPTIONS", "PUT", "DELETE"],
-            "allow_headers": ["Content-Type", "Authorization"],
+            "methods": ["GET", "POST", "OPTIONS", "PUT", "DELETE", "PATCH"],
+            "allow_headers": [
+                "Content-Type",
+                "Authorization",
+                "Accept",
+                "Origin",
+                "X-Requested-With"
+            ],
+            "supports_credentials": False,
+            "expose_headers": ["Content-Range", "X-Content-Range"],
+            "max_age": 600
         }
-    },
+    }
 )
 
 
