@@ -5,7 +5,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import ApplicationIdDisplay from '../ApplicationIdDisplay';
 import PersonalInfoI from './sections/PersonalInfoI';
-import PersonalInfoII from './sections/PersonalInfoII';
+// import PersonalInfoII from './sections/PersonalInfoII';
 // import TravelInfo from './sections/TravelInfo';
 // import PreviousTravel from './sections/PreviousTravel';
 // import SecurityBackground from './sections/SecurityBackground';
@@ -34,11 +34,11 @@ const formSections: FormSection[] = [
     title: '个人信息 I',
     component: PersonalInfoI
   },
-  {
-    key: 'personalInfo2',
-    title: '个人信息 II',
-    component: PersonalInfoII
-  },
+  // {
+  //   key: 'personalInfo2',
+  //   title: '个人信息 II',
+  //   component: PersonalInfoII
+  // },
   // {
   //   key: 'travelInfo',
   //   title: '旅行信息',
@@ -189,7 +189,15 @@ const DS160Form: React.FC = () => {
   // Handle final submission
   const handleSubmit = async (values: any) => {
     try {
-      await saveSectionData(values);
+      // Get current form data first
+      const currentForm = await ds160Service.getFormById(application_id);
+      
+      // Update form with current data and set status to submitted
+      await ds160Service.updateForm(application_id, {
+        form_data: currentForm.form_data, // Keep existing form data
+        status: 'submitted'
+      });
+
       message.success('表单提交成功！');
       navigate('/ds160-success', { state: { application_id } });
     } catch (error) {

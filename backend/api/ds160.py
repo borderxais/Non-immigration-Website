@@ -231,6 +231,15 @@ class DS160FormDetailResource(Resource):
             if 'application_id' in data:
                 form.application_id = data['application_id']
 
+            # Update status if provided
+            if 'status' in data:
+                form.status = data['status']
+                logger.info(f"Updating form status from {original_status} to {data['status']}")
+
+            # Commit changes to database
+            db.session.commit()
+            logger.info(f"Successfully updated form {application_id}")
+
             # Add CORS headers
             origin = request.headers.get('Origin')
             headers = {}
@@ -245,6 +254,7 @@ class DS160FormDetailResource(Resource):
 
         except Exception as e:
             logger.error(f"Error updating form: {str(e)}")
+            db.session.rollback()  # Rollback on error
             return {"error": str(e)}, 500
 
 
