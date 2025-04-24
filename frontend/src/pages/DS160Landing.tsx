@@ -2,6 +2,7 @@ import React from 'react';
 import { Card, Row, Col, Typography, Button } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { FormOutlined, HistoryOutlined } from '@ant-design/icons';
+import { generateApplicationId } from '../utils/formUtils';
 
 const { Title, Paragraph } = Typography;
 
@@ -9,9 +10,8 @@ const DS160Landing: React.FC = () => {
   const navigate = useNavigate();
 
   const handleNewApplication = () => {
-    // Generate a new application ID and navigate to the form
-    const newApplicationId = 'DS160-' + Date.now();
-    navigate(`/ds160/form/${newApplicationId}`);
+    const application_id = generateApplicationId();
+    navigate(`/ds160/form/${application_id}`);
   };
 
   return (
