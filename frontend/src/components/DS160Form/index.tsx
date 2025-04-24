@@ -169,9 +169,9 @@ const DS160Form: React.FC = () => {
       } else {
         console.log('Creating new form');
         const response = await ds160Service.createForm(formData);
-        if (response?.application_id) {
-          setApplicationId(response.application_id);
-          localStorage.setItem('currentApplicationId', response.application_id);
+        if (response?.applicationId) {
+          setApplicationId(response.applicationId);
+          localStorage.setItem('currentApplicationId', response.applicationId);
         } else {
           throw new Error('No application ID returned from server');
         }

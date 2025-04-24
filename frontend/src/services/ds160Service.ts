@@ -10,7 +10,7 @@ export interface DS160Form {
   status: 'draft' | 'submitted' | 'approved' | 'rejected';
   created_at?: string;
   updated_at?: string;
-  application_id?: string;
+  applicationId?: string;
 }
 
 export interface ValidationResult {
@@ -58,9 +58,9 @@ const updateForm = async (applicationId: string, formData: Partial<DS160Form>): 
 /**
  * Get a DS-160 form by ID
  */
-const getFormById = async (formId: string): Promise<DS160Form> => {
+const getFormById = async (applicationId: string): Promise<DS160Form> => {
   const token = localStorage.getItem('token');
-  const response = await axios.get(`${API_URL}/ds160/forms/${formId}`, {
+  const response = await axios.get(`${API_URL}/ds160/forms/${applicationId}`, {
     headers: {
       Authorization: `Bearer ${token}`
     }
