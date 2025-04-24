@@ -1,14 +1,8 @@
 import axios from 'axios';
 
-// Define the API URL directly in this file to avoid import issues
-// This is for production
-// const API_ENDPOINT = process.env.REACT_APP_SERVER_API_URL || 'http://localhost:5000';
-// const API_URL = `${API_ENDPOINT}/api`;
-
-// Use relative URLs with proxy instead of absolute URLs
-// const API_ENDPOINT = 'http://localhost:5000';
-// const API_URL = `${API_ENDPOINT}/api`;
-const API_URL = '/api';  // This will be proxied to http://localhost:5000/api
+// Define the API URL based on environment
+const API_ENDPOINT = process.env.REACT_APP_API_URL || 'https://visasupport-dot-overseabiz-453023.wl.r.appspot.com';
+const API_URL = `${API_ENDPOINT}/api`;
 
 export interface DS160Form {
   id?: string;
@@ -28,32 +22,17 @@ export interface ValidationResult {
  * Create a new DS-160 form
  */
 const createForm = async (formData: Omit<DS160Form, 'id'>): Promise<DS160Form> => {
-  console.log('Creating new DS-160 form with payload:', formData);
   const token = localStorage.getItem('token');
   if (!token) {
     throw new Error('No token found. Please log in.');
   }
   
-  // Extract application_id if it exists
-  const application_id = formData.application_id;
-  
-  // Prepare payload with application_id if available
-  const payload = {
-    ...formData,
-    application_id: application_id
-  };
-  
-  console.log('Creating new DS-160 form with payload:', payload);
-  console.log('URL:', `${API_URL}/ds160/form`);
-  const response = await axios.post(`${API_URL}/ds160/form`, payload, {
+  const response = await axios.post(`${API_URL}/ds160/form`, formData, {
     headers: {
       'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
-    },
-    withCredentials: true
+      'Content-Type': 'application/json'
+    }
   });
-  console.log('Response:', response.data);
   return response.data;
 };
 
@@ -62,9 +41,15 @@ const createForm = async (formData: Omit<DS160Form, 'id'>): Promise<DS160Form> =
  */
 const updateForm = async (applicationId: string, formData: Partial<DS160Form>): Promise<DS160Form> => {
   const token = localStorage.getItem('token');
-  const response = await axios.put(`${API_URL}/ds160/application/${applicationId}`, formData, {
+  if (!token) {
+    throw new Error('No token found. Please log in.');
+  }
+
+  // Use POST instead of PUT since the server doesn't support PUT
+  const response = await axios.post(`${API_URL}/ds160/form/${applicationId}`, formData, {
     headers: {
-      Authorization: `Bearer ${token}`
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
     }
   });
   return response.data;
@@ -171,7 +156,7 @@ const saveFormDraft = async (formData: any): Promise<DS160Form> => {
   
   // If the form has an ID, update it, otherwise create a new draft
   if (id) {
-    const response = await axios.put(`${API_URL}/ds160/form/${id}`, payload, {
+    const response = await axios.post(`${API_URL}/ds160/form/${id}`, payload, {
       headers: {
         Authorization: `Bearer ${token}`
       }
