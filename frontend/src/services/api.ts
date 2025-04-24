@@ -122,12 +122,12 @@ export const ds160API = {
     }
   },
 
-  getFormById: async (id: string) => {
+  getFormById: async (application_id: string) => {
     try {
-      const response = await api.get(`/ds160/${id}`);
+      const response = await api.get(`/ds160/${application_id}`);
       return response.data;
     } catch (error) {
-      console.error(`Error getting DS-160 form with ID ${id}:`, error);
+      console.error(`Error getting DS-160 form with ID ${application_id}:`, error);
       throw error;
     }
   },
