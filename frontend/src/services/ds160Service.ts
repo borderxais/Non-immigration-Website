@@ -58,11 +58,11 @@ const createForm = async (formData: Omit<DS160Form, 'id'>): Promise<DS160Form> =
 };
 
 /**
- * Update an existing DS-160 form
+ * Update an existing DS-160 form by application ID
  */
-const updateForm = async (formId: string, formData: Partial<DS160Form>): Promise<DS160Form> => {
+const updateForm = async (applicationId: string, formData: Partial<DS160Form>): Promise<DS160Form> => {
   const token = localStorage.getItem('token');
-  const response = await axios.put(`${API_URL}/ds160/${formId}`, formData, {
+  const response = await axios.put(`${API_URL}/ds160/application/${applicationId}`, formData, {
     headers: {
       Authorization: `Bearer ${token}`
     }

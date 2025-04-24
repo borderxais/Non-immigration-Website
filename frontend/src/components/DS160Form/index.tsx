@@ -163,15 +163,24 @@ const DS160Form: React.FC = () => {
       };
 
       if (applicationId) {
+        console.log('Updating form with application ID:', applicationId);
         await ds160Service.updateForm(applicationId, formData);
         message.success('表单已保存');
       } else {
+        console.log('Creating new form');
         const response = await ds160Service.createForm(formData);
-        setApplicationId(response.application_id || '');
+        if (response?.application_id) {
+          setApplicationId(response.application_id);
+          localStorage.setItem('currentApplicationId', response.application_id);
+        } else {
+          throw new Error('No application ID returned from server');
+        }
       }
-    } catch (error) {
-      console.error('Error saving form:', error);
-      message.error('保存表单时出错');
+    } catch (error: any) {
+      console.error('Error saving form data:', error);
+      console.error('Error details:', error.response?.data || error.message);
+      message.error('保存表单时出错: ' + (error.response?.data?.message || error.message));
+      throw error;
     }
   };
 
