@@ -90,13 +90,27 @@ const getUserForms = async (): Promise<DS160Form[]> => {
 /**
  * Delete a DS-160 form
  */
-const deleteForm = async (formId: string): Promise<void> => {
+const deleteForm = async (application_id: string): Promise<void> => {
   const token = localStorage.getItem('token');
-  await axios.delete(`${API_URL}/ds160/${formId}`, {
+  await axios.delete(`${API_URL}/ds160/form/${application_id}`, {
     headers: {
       Authorization: `Bearer ${token}`
     }
   });
+};
+
+/**
+ * Generate PDF for a DS-160 form
+ */
+const generatePDF = async (application_id: string): Promise<Blob> => {
+  const token = localStorage.getItem('token');
+  const response = await axios.get(`${API_URL}/ds160/form/${application_id}/pdf`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+    responseType: 'blob'
+  });
+  return response.data;
 };
 
 /**
@@ -108,20 +122,6 @@ const validateForm = async (formData: any): Promise<ValidationResult> => {
     headers: {
       Authorization: `Bearer ${token}`
     }
-  });
-  return response.data;
-};
-
-/**
- * Generate PDF for a DS-160 form
- */
-const generatePDF = async (formId: string): Promise<Blob> => {
-  const token = localStorage.getItem('token');
-  const response = await axios.get(`${API_URL}/ds160/${formId}/pdf`, {
-    headers: {
-      Authorization: `Bearer ${token}`
-    },
-    responseType: 'blob'
   });
   return response.data;
 };
