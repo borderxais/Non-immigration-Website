@@ -104,21 +104,37 @@ const DS160Form: React.FC = () => {
           state: { from: location.pathname + location.search } 
         });
       } else {
-        // User is authenticated, show the form and generate application ID if needed
+        // User is authenticated, show the form and handle application ID
         setShowForm(true);
         const existingId = localStorage.getItem('currentApplicationId');
-        if (existingId) {
-          setApplicationId(existingId);
-          loadFormData(existingId);
-        } else {
-          const newApplicationId = generateApplicationId();
-          setApplicationId(newApplicationId);
-          // Store in local storage for persistence
-          localStorage.setItem('currentApplicationId', newApplicationId);
-        }
+        
+        const initializeForm = async () => {
+          try {
+            if (existingId) {
+              // Load existing form
+              setApplicationId(existingId);
+              await loadFormData(existingId);
+            } else {
+              // Create new form
+              const newApplicationId = generateApplicationId();
+              const newForm = await ds160Service.createForm({
+                form_data: {},
+                status: 'draft',
+                application_id: newApplicationId
+              });
+              setApplicationId(newApplicationId);
+              localStorage.setItem('currentApplicationId', newApplicationId);
+            }
+          } catch (error) {
+            console.error('Error initializing form:', error);
+            message.error('初始化表单时出错');
+          }
+        };
+
+        initializeForm();
       }
     }
-  }, [isAuthenticated, isLoading, navigate, location, application_id, loadFormData]);
+  }, [isAuthenticated, isLoading, navigate, location, loadFormData]);
 
   // Handle section completion
   const handleSectionComplete = async (values: any) => {
