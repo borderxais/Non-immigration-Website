@@ -83,25 +83,55 @@ const DS160Form: React.FC = () => {
   const [form] = Form.useForm();
 
   // Extract application_id from URL
-  const urlParams = new URLSearchParams(location.search);
   const pathSegments = location.pathname.split('/');
   const urlApplicationId = pathSegments[pathSegments.length - 1];
 
-  // Load form data from backend
-  const loadFormData = useCallback(async (application_id: string) => {
+  // Save form section data to database
+  const saveSectionData = useCallback(async (sectionData: any) => {
     try {
+      // Merge with existing form data
       const response = await ds160Service.getFormById(application_id);
-      if (response?.form_data) {
-        form.setFieldsValue(response.form_data);
-      }
-    } catch (error: any) {
-      console.error('Error loading form data:', error);
-      message.error('加载表单数据时出错');
+      const existingData = response?.form_data || {};
+      const updatedData = { ...existingData, ...sectionData };
+      
+      // Save to database
+      await ds160Service.updateForm(application_id, {
+        form_data: updatedData,
+        status: 'draft'
+      });
+      
+      return true;
+    } catch (error) {
+      console.error('Error saving section data:', error);
+      message.error('保存表单数据时出错');
+      return false;
     }
-  }, [form]);
+  }, [application_id]);
+
+  // Handle section completion
+  const handleSectionComplete = async (values: any) => {
+    try {
+      const saved = await saveSectionData(values);
+      if (saved) {
+        // Update completed steps
+        const newCompletedSteps = [...completedSteps];
+        if (!newCompletedSteps.includes(currentStep)) {
+          newCompletedSteps.push(currentStep);
+        }
+        setCompletedSteps(newCompletedSteps);
+        
+        // Move to next section
+        if (currentStep < formSections.length - 1) {
+          setCurrentStep(currentStep + 1);
+        }
+      }
+    } catch (error) {
+      console.error('Error completing section:', error);
+      message.error('完成部分时出错');
+    }
+  };
 
   useEffect(() => {
-    // Only check authentication after loading is complete
     if (!isLoading) {
       if (!isAuthenticated) {
         message.warning('请先登录以访问DS-160表格');
@@ -109,51 +139,52 @@ const DS160Form: React.FC = () => {
           state: { from: location.pathname + location.search } 
         });
       } else {
-        // User is authenticated, show the form
         setShowForm(true);
         
         const initializeForm = async () => {
           try {
-            if (urlApplicationId) {
-              setApplicationId(urlApplicationId);
-              // Only try to load data if it's not a new form from landing page
-              const isFromLanding = localStorage.getItem('isNewApplication') === 'true';
-              if (!isFromLanding) {
-                await loadFormData(urlApplicationId);
-              }
-              // Clear the flag
-              localStorage.removeItem('isNewApplication');
-            } else {
+            if (!urlApplicationId) {
               message.error('无效的申请ID');
               navigate('/ds160');
+              return;
+            }
+
+            setApplicationId(urlApplicationId);
+            
+            // Load existing form data
+            const response = await ds160Service.getFormById(urlApplicationId);
+            if (response?.form_data) {
+              form.setFieldsValue(response.form_data);
+              
+              // Determine completed steps from saved data
+              const completedSections = formSections
+                .map((section, index) => ({
+                  index,
+                  hasData: Object.keys(response.form_data).some(key => 
+                    key.startsWith(section.key)
+                  )
+                }))
+                .filter(section => section.hasData)
+                .map(section => section.index);
+                
+              setCompletedSteps(completedSections);
             }
           } catch (error) {
             console.error('Error initializing form:', error);
             message.error('初始化表单时出错');
+            navigate('/ds160');
           }
         };
 
         initializeForm();
       }
     }
-  }, [isAuthenticated, isLoading, navigate, location, loadFormData, urlApplicationId]);
-
-  // Handle section completion
-  const handleSectionComplete = async (values: any) => {
-    try {
-      await saveFormData(values);
-      setCompletedSteps([...completedSteps, currentStep]);
-      setCurrentStep(currentStep + 1);
-    } catch (error) {
-      console.error('Error completing section:', error);
-      message.error('保存表单时出错');
-    }
-  };
+  }, [isAuthenticated, isLoading, navigate, location, form, urlApplicationId]);
 
   // Handle final submission
   const handleSubmit = async (values: any) => {
     try {
-      await saveFormData(values, 'submitted');
+      await saveSectionData(values);
       message.success('表单提交成功！');
       navigate('/ds160-success', { state: { application_id } });
     } catch (error) {
@@ -168,37 +199,6 @@ const DS160Form: React.FC = () => {
       setCurrentStep(sectionIndex);
     } else {
       message.warning('请先完成之前的步骤');
-    }
-  };
-
-  // Save form data
-  const saveFormData = async (values: any, status: 'draft' | 'submitted' = 'draft') => {
-    try {
-      const formData = {
-        form_data: values,
-        status,
-        application_id: application_id
-      };
-
-      if (application_id) {
-        console.log('Updating form with application ID:', application_id);
-        await ds160Service.updateForm(application_id, formData);
-        message.success('表单已保存');
-      } else {
-        console.log('Creating new form');
-        const response = await ds160Service.createForm(formData);
-        if (response?.application_id) {
-          setApplicationId(response.application_id);
-          localStorage.setItem('currentApplicationId', response.application_id);
-        } else {
-          throw new Error('No application ID returned from server');
-        }
-      }
-    } catch (error: any) {
-      console.error('Error saving form data:', error);
-      console.error('Error details:', error.response?.data || error.message);
-      message.error('保存表单时出错: ' + (error.response?.data?.message || error.message));
-      throw error;
     }
   };
 
