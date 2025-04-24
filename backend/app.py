@@ -101,9 +101,40 @@ api.add_namespace(search_ns, path="/search")
 app.register_blueprint(chat_bp)
 
 
-@app.route("/health")
+@app.route("/api/health")
 def health_check():
-    return {"status": "healthy", "version": "1.0.0"}
+    response = jsonify({"status": "healthy", "version": "1.0.0"})
+    origin = request.headers.get('Origin')
+    if origin in [
+        "http://localhost:3000",
+        "http://localhost:3001",
+        "http://127.0.0.1:3000",
+        "http://127.0.0.1:3001",
+        "https://visaimmigration.netlify.app",
+        "https://www.visaimmigration.netlify.app"
+    ]:
+        response.headers['Access-Control-Allow-Origin'] = origin
+        response.headers['Access-Control-Allow-Methods'] = 'GET,OPTIONS'
+        response.headers['Access-Control-Allow-Headers'] = '*'
+    return response
+
+
+@app.route("/api/health", methods=['OPTIONS'])
+def health_check_options():
+    response = jsonify({"success": True})
+    origin = request.headers.get('Origin')
+    if origin in [
+        "http://localhost:3000",
+        "http://localhost:3001",
+        "http://127.0.0.1:3000",
+        "http://127.0.0.1:3001",
+        "https://visaimmigration.netlify.app",
+        "https://www.visaimmigration.netlify.app"
+    ]:
+        response.headers['Access-Control-Allow-Origin'] = origin
+        response.headers['Access-Control-Allow-Methods'] = 'GET,OPTIONS'
+        response.headers['Access-Control-Allow-Headers'] = '*'
+    return response
 
 
 if __name__ == "__main__":
