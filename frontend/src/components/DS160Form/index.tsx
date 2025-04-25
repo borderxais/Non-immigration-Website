@@ -4,7 +4,7 @@ import { FormInstance } from 'antd';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import ApplicationIdDisplay from '../ApplicationIdDisplay';
-// import PersonalInfoI from './sections/PersonalInfoI';
+import PersonalInfoI from './sections/PersonalInfoI';
 import PersonalInfoII from './sections/PersonalInfoII';
 import TravelInfo from './sections/TravelInfo';
 // import PreviousTravel from './sections/PreviousTravel';
@@ -29,22 +29,21 @@ interface FormSection {
 
 // Define the form sections and their titles
 const formSections: FormSection[] = [
-  // {
-
-  //   key: 'personalInfo1',
-  //   title: '个人信息 I',
-  //   component: PersonalInfoI
-  // },
+  {
+    key: 'personalInfo1',
+    title: '个人信息 I',
+    component: PersonalInfoI
+  },
   {
     key: 'personalInfo2',
     title: '个人信息 II',
     component: PersonalInfoII
   },
-  {
-    key: 'travelInfo',
-    title: '旅行信息',
-    component: TravelInfo
-  },
+  // {
+  //   key: 'travelInfo',
+  //   title: '旅行信息',
+  //   component: TravelInfo
+  // },
   // {
   //   key: 'travelCompanions',
   //   title: '同行人',
@@ -89,10 +88,21 @@ const DS160Form: React.FC = () => {
   // Save form section data to database
   const saveSectionData = useCallback(async (sectionData: any) => {
     try {
-      // Merge with existing form data
+      // Get the current form data
       const response = await ds160Service.getFormById(application_id);
       const existingData = response?.form_data || {};
-      const updatedData = { ...existingData, ...sectionData };
+      
+      // Get current section key
+      const currentSection = formSections[currentStep];
+      
+      // Create nested structure for current section
+      const updatedData = {
+        ...existingData,
+        [currentSection.key]: {
+          ...existingData[currentSection.key],
+          ...sectionData
+        }
+      };
       
       // Save to database
       await ds160Service.updateForm(application_id, {
@@ -106,7 +116,7 @@ const DS160Form: React.FC = () => {
       message.error('保存表单数据时出错');
       return false;
     }
-  }, [application_id]);
+  }, [application_id, currentStep, formSections]);
 
   // Handle section completion
   const handleSectionComplete = async (values: any) => {
@@ -128,6 +138,26 @@ const DS160Form: React.FC = () => {
     } catch (error) {
       console.error('Error completing section:', error);
       message.error('完成部分时出错');
+    }
+  };
+
+  // Handle final submission
+  const handleSubmit = async (values: any) => {
+    try {
+      // Get current form data first
+      const response = await ds160Service.getFormById(application_id);
+      
+      // Update form with current data and set status to submitted
+      await ds160Service.updateForm(application_id, {
+        form_data: response.form_data,
+        status: 'submitted'
+      });
+
+      message.success('表单提交成功！');
+      navigate('/ds160-success', { state: { application_id } });
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      message.error('提交表单时出错');
     }
   };
 
@@ -165,9 +195,8 @@ const DS160Form: React.FC = () => {
               const completedSections = formSections
                 .map((section, index) => ({
                   index,
-                  hasData: Object.keys(response.form_data).some(key => 
-                    key.startsWith(section.key)
-                  )
+                  hasData: response.form_data[section.key] && 
+                          Object.keys(response.form_data[section.key]).length > 0
                 }))
                 .filter(section => section.hasData)
                 .map(section => section.index);
@@ -185,27 +214,7 @@ const DS160Form: React.FC = () => {
         initializeForm();
       }
     }
-  }, [isAuthenticated, isLoading, navigate, location, form, urlApplicationId]);
-
-  // Handle final submission
-  const handleSubmit = async (values: any) => {
-    try {
-      // Get current form data first
-      const currentForm = await ds160Service.getFormById(application_id);
-      
-      // Update form with current data and set status to submitted
-      await ds160Service.updateForm(application_id, {
-        form_data: currentForm.form_data, // Keep existing form data
-        status: 'submitted'
-      });
-
-      message.success('表单提交成功！');
-      navigate('/ds160-success', { state: { application_id } });
-    } catch (error) {
-      console.error('Error submitting form:', error);
-      message.error('提交表单时出错');
-    }
-  };
+  }, [isLoading, isAuthenticated, navigate, location.pathname, location.search, urlApplicationId, form]);
 
   // Handle edit request from review page
   const handleEdit = (sectionIndex: number) => {

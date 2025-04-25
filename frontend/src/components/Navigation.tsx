@@ -31,14 +31,14 @@ const Navigation: React.FC = () => {
       label: '首页',
     },
     {
-      key: '/ds160',
+      key: 'ds160-menu',
       icon: <FormOutlined />,
-      label: 'DS-160表格',
+      label: 'DS-160服务',
       children: [
         {
           key: '/ds160',
           icon: <FormOutlined />,
-          label: 'DS-160表格'
+          label: '填写DS-160'
         },
         {
           key: '/ds160/upload',
