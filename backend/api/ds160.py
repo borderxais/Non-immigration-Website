@@ -438,38 +438,32 @@ class InterviewAssessmentResource(Resource):
             return {"error": str(e)}, 500
 
 @api.route("/client/<string:application_id>")
-
 class DS160ClientResource(Resource):
     @jwt_required()
     def get(self, application_id):
-        """Get DS-160 form data formatted for the Chrome extension"""
+        """Get DS-160 form translation data formatted for the Chrome extension"""
         current_user_id = get_jwt_identity()
         
-        # Find the form
-        form = DS160Form.query.filter_by(
-            application_id=application_id, user_id=current_user_id
+        # Find the translation
+        translation = DS160FormTranslation.query.filter_by(
+            original_form_application_id=application_id
         ).first()
         
-        if not form:
-            return {"error": "Form not found"}, 404
+        if not translation:
+            return {"error": "Translation not found for this form"}, 404
         
-        # Format the form data for the extension
-        # This will need to be customized based on your form structure
-        # and the expected format for the extension
+        # Format the translation data for the extension
         client_data = {
-            "client_id": str(form.application_id),
-            "personal_info": form.form_data.get("personal_info", {}),
-            "contact_info": form.form_data.get("contact_info", {}),
-            "passport_info": form.form_data.get("passport_info", {}),
-            "travel_info": form.form_data.get("travel_info", {}),
-            "us_contact_info": form.form_data.get("us_contact_info", {}),
-            "family_info": form.form_data.get("family_info", {}),
-            "work_education_info": form.form_data.get("work_education_info", {}),
-            "security_background_info": form.form_data.get("security_background_info", {})
+            "application_id": application_id  # Use consistent naming
         }
         
+        # Add translation data
+        if translation.form_data:
+            client_data.update(translation.form_data)
+            client_data["translation_created_at"] = translation.created_at.isoformat()
+            client_data["translation_updated_at"] = translation.updated_at.isoformat()
+        
         return client_data
-
 
 @api.route("/client-data/by-application-id/<string:application_id>")
 class DS160ClientDataByApplicationIDResource(Resource):
