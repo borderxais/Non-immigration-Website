@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Form, Steps, Button, Card, Typography, message, Spin } from 'antd';
 import { FormInstance } from 'antd';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -6,7 +6,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import ApplicationIdDisplay from '../ApplicationIdDisplay';
 import PersonalInfoI from './sections/PersonalInfoI';
 import PersonalInfoII from './sections/PersonalInfoII';
-import TravelInfo from './sections/TravelInfo';
+// import TravelInfo from './sections/TravelInfo';
 // import PreviousTravel from './sections/PreviousTravel';
 // import SecurityBackground from './sections/SecurityBackground';
 // import TravelCompanions from './sections/TravelCompanions';
@@ -80,6 +80,9 @@ const DS160Form: React.FC = () => {
   const [currentStep, setCurrentStep] = useState<number>(0);
   const [completedSteps, setCompletedSteps] = useState<number[]>([]);
   const [form] = Form.useForm();
+  
+  // Store formSections in a ref since it's static and doesn't need to trigger re-renders
+  const formSectionsRef = useRef(formSections);
 
   // Extract application_id from URL
   const pathSegments = location.pathname.split('/');
@@ -92,8 +95,8 @@ const DS160Form: React.FC = () => {
       const response = await ds160Service.getFormById(application_id);
       const existingData = response?.form_data || {};
       
-      // Get current section key
-      const currentSection = formSections[currentStep];
+      // Get current section key using the ref
+      const currentSection = formSectionsRef.current[currentStep];
       
       // Create nested structure for current section
       const updatedData = {
@@ -116,7 +119,7 @@ const DS160Form: React.FC = () => {
       message.error('保存表单数据时出错');
       return false;
     }
-  }, [application_id, currentStep, formSections]);
+  }, [application_id, currentStep]); // formSections removed from dependencies since we use ref
 
   // Handle section completion
   const handleSectionComplete = async (values: any) => {
@@ -131,7 +134,7 @@ const DS160Form: React.FC = () => {
         setCompletedSteps(newCompletedSteps);
         
         // Move to next section
-        if (currentStep < formSections.length - 1) {
+        if (currentStep < formSectionsRef.current.length - 1) {
           setCurrentStep(currentStep + 1);
         }
       }
@@ -192,7 +195,7 @@ const DS160Form: React.FC = () => {
               form.setFieldsValue(response.form_data);
               
               // Determine completed steps from saved data
-              const completedSections = formSections
+              const completedSections = formSectionsRef.current
                 .map((section, index) => ({
                   index,
                   hasData: response.form_data[section.key] && 
@@ -241,7 +244,7 @@ const DS160Form: React.FC = () => {
     return null;
   }
 
-  const CurrentSection = formSections[currentStep].component;
+  const CurrentSection = formSectionsRef.current[currentStep].component;
 
   return (
     <div className="ds160-form-container">
@@ -260,7 +263,7 @@ const DS160Form: React.FC = () => {
             <Steps 
               current={currentStep} 
               direction="vertical"
-              items={formSections.map((section, index) => ({
+              items={formSectionsRef.current.map((section, index) => ({
                 title: section.title,
                 disabled: !completedSteps.includes(index) && index !== currentStep,
               }))}
@@ -279,9 +282,9 @@ const DS160Form: React.FC = () => {
             <Form
               form={form}
               layout="vertical"
-              onFinish={currentStep === formSections.length - 1 ? handleSubmit : handleSectionComplete}
+              onFinish={currentStep === formSectionsRef.current.length - 1 ? handleSubmit : handleSectionComplete}
             >
-              {currentStep === formSections.length - 1 ? (
+              {currentStep === formSectionsRef.current.length - 1 ? (
                 <DS160ReviewPage 
                   form={form}
                   onSubmit={() => {
@@ -303,7 +306,7 @@ const DS160Form: React.FC = () => {
                   </Button>
                 )}
                 
-                {currentStep !== formSections.length - 1 && (
+                {currentStep !== formSectionsRef.current.length - 1 && (
                   <>
                     <Button
                       onClick={async () => {
