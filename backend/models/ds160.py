@@ -30,8 +30,12 @@ class DS160FormTranslation(db.Model):
     """
     __tablename__ = 'ds160_form_translations'
 
-    id = db.Column(db.Integer, primary_key=True)
-    original_form_application_id = db.Column(db.String(50), db.ForeignKey('ds160_forms.application_id'), nullable=False)
+    # Explicitly tell SQLAlchemy this model doesn't use auto-incrementing IDs
+    __mapper_args__ = {
+        'primary_key': ['original_form_application_id']
+    }
+
+    original_form_application_id = db.Column(db.String(50), db.ForeignKey('ds160_forms.application_id'), primary_key=True)
     form_data = db.Column(db.JSON)  # The translated form data
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
@@ -41,7 +45,6 @@ class DS160FormTranslation(db.Model):
     
     def to_dict(self):
         return {
-            'id': self.id,
             'original_form_application_id': self.original_form_application_id,
             'form_data': self.form_data,
             'created_at': self.created_at.isoformat(),

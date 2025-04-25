@@ -137,9 +137,8 @@ class DS160FormResource(Resource):
                 
                 # Create a new translation record in the dedicated translations table
                 translation = DS160FormTranslation(
-                    original_form_id=form.application_id,
-                    form_data=english_form_data,
-                    application_id=application_id
+                    original_form_application_id=form.application_id,
+                    form_data=english_form_data
                 )
                 
                 # Log translation object
@@ -235,6 +234,45 @@ class DS160FormDetailResource(Resource):
             if 'status' in data:
                 form.status = data['status']
                 logger.info(f"Updating form status from {original_status} to {data['status']}")
+                
+                # If status is being changed to 'submitted', create translation
+                if data['status'] == 'submitted' and original_status != 'submitted':
+                    logger.info("Form status changed to 'submitted', creating translation")
+                    try:
+                        # Import the translation service
+                        from services.translation import translate_form_data
+                        
+                        # Log form data before translation
+                        logger.info(f"Form data before translation: {form.form_data}")
+                        
+                        # Translate the form data to English
+                        english_form_data = translate_form_data(form.form_data, source_lang='zh', target_lang='en')
+                        
+                        # Log translation result
+                        logger.info(f"Translation result: {english_form_data}")
+                        
+                        # Create a new translation record
+                        translation = DS160FormTranslation(
+                            original_form_application_id=form.application_id,
+                            form_data=english_form_data
+                        )
+                        
+                        # Log translation object details
+                        logger.info(f"Translation object created with: original_form_application_id={translation.original_form_application_id}")
+                        logger.info(f"Translation form_data: {translation.form_data}")
+                        
+                        db.session.add(translation)
+                        logger.info("Added translation to session")
+                        
+                        # Flush to detect any database errors early
+                        db.session.flush()
+                        logger.info("Session flushed successfully")
+                        
+                    except Exception as e:
+                        logger.error(f"Error creating English translation: {str(e)}")
+                        import traceback
+                        logger.error(f"Traceback: {traceback.format_exc()}")
+                        # Continue even if translation fails - we still want to save the form status
 
             # Commit changes to database
             db.session.commit()
@@ -591,7 +629,7 @@ class DS160FormTranslationResource(Resource):
             
         # Find the translation for this form
         translation = DS160FormTranslation.query.filter_by(
-            original_form_id=original_form.application_id
+            original_form_application_id=original_form.application_id
         ).first()
         
         if not translation:
