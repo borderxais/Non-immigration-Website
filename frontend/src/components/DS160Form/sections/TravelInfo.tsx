@@ -228,7 +228,7 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                 <div className="question-column">
                   <QuestionItem
                     question="入境美国日期"
-                    name="arrivalUSDate"
+                    // name="arrivalUSDate"
                   >
                     <DateInput 
                       dayName="arrivalUSDate.arrivalDay" 
@@ -278,7 +278,7 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                 <div className="question-column">
                 <QuestionItem
                     question="离开美国日期"
-                    name="departureUSDate"
+                    // name="departureUSDate"
                   >
                     <DateInput 
                       dayName="departureUSDate.departureDay" 
@@ -361,10 +361,6 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
           <fieldset className="question-section">
             <div className="question-row">
               <div className="question-column">
-                <Form.Item
-                  name="intendedDateOfArrival"
-                  rules={[{ required: true, message: '请输入计划到达日期' }]}
-                >
                   <QuestionItem
                     question="计划到达日期"
                   >
@@ -374,7 +370,6 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                       yearName="intendedDateOfArrival.arrivalYear"
                     />
                   </QuestionItem>
-                </Form.Item>
               </div>
               <div className="explanation-column">
                 <h4 className="help-header">帮助：计划到达日期</h4>
