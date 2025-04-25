@@ -294,12 +294,38 @@ const DS160Form: React.FC = () => {
                 )}
                 
                 {currentStep !== formSections.length - 1 && (
-                  <Button
-                    type="primary"
-                    htmlType="submit"
-                  >
-                    下一步
-                  </Button>
+                  <>
+                    <Button
+                      onClick={async () => {
+                        try {
+                          const values = form.getFieldsValue();
+                          // Get current form data first
+                          const response = await ds160Service.getFormById(application_id);
+                          const existingData = response?.form_data || {};
+                          
+                          // Update form with merged data
+                          await ds160Service.updateForm(application_id, {
+                            form_data: { ...existingData, ...values },
+                            status: 'draft'
+                          });
+                          
+                          message.success('保存成功');
+                        } catch (error) {
+                          console.error('Error saving form:', error);
+                          message.error('保存失败');
+                        }
+                      }}
+                      style={{ marginRight: 8 }}
+                    >
+                      保存
+                    </Button>
+                    <Button
+                      type="primary"
+                      htmlType="submit"
+                    >
+                      下一步
+                    </Button>
+                  </>
                 )}
               </div>
             </Form>
