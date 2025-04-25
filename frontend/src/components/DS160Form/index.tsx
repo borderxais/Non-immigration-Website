@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { Form, Steps, Button, Card, Typography, message, Spin } from 'antd';
+import { Form, Steps, Button, Card, Typography, message, Spin, Modal } from 'antd';
 import { FormInstance } from 'antd';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
@@ -121,6 +121,39 @@ const DS160Form: React.FC = () => {
     }
   }, [application_id, currentStep]); // formSections removed from dependencies since we use ref
 
+  // Handle save button click
+  const handleSave = async () => {
+    try {
+      const values = await form.validateFields();
+      const saved = await saveSectionData(values);
+      if (saved) {
+        Modal.confirm({
+          title: '保存成功',
+          content: '请选择下一步操作：',
+          okText: '继续填写',
+          cancelText: '退出申请',
+          onOk: () => {
+            // Stay on current page and continue filling
+            message.success('请继续填写表格');
+          },
+          onCancel: () => {
+            // Navigate back to DS-160 landing page
+            message.success('已保存当前进度');
+            navigate('/ds160');
+          }
+        });
+      }
+    } catch (error: any) {
+      // Check if it's a form validation error
+      if (error?.errorFields?.length > 0) {
+        message.error('请先填写必填项');
+      } else {
+        console.error('Error saving form data:', error);
+        message.error('保存表单数据时出错');
+      }
+    }
+  };
+
   // Handle section completion
   const handleSectionComplete = async (values: any) => {
     try {
@@ -130,8 +163,8 @@ const DS160Form: React.FC = () => {
         const newCompletedSteps = [...completedSteps];
         if (!newCompletedSteps.includes(currentStep)) {
           newCompletedSteps.push(currentStep);
+          setCompletedSteps(newCompletedSteps);
         }
-        setCompletedSteps(newCompletedSteps);
         
         // Move to next section
         if (currentStep < formSectionsRef.current.length - 1) {
@@ -309,31 +342,13 @@ const DS160Form: React.FC = () => {
                 {currentStep !== formSectionsRef.current.length - 1 && (
                   <>
                     <Button
-                      onClick={async () => {
-                        try {
-                          const values = form.getFieldsValue();
-                          // Get current form data first
-                          const response = await ds160Service.getFormById(application_id);
-                          const existingData = response?.form_data || {};
-                          
-                          // Update form with merged data
-                          await ds160Service.updateForm(application_id, {
-                            form_data: { ...existingData, ...values },
-                            status: 'draft'
-                          });
-                          
-                          message.success('保存成功');
-                        } catch (error) {
-                          console.error('Error saving form:', error);
-                          message.error('保存失败');
-                        }
-                      }}
-                      style={{ marginRight: 8 }}
+                      onClick={handleSave}
+                      style={{ marginRight: '8px' }}
                     >
                       保存
                     </Button>
-                    <Button
-                      type="primary"
+                    <Button 
+                      type="primary" 
                       htmlType="submit"
                     >
                       下一步
