@@ -80,9 +80,11 @@ const DS160Form: React.FC = () => {
   const [currentStep, setCurrentStep] = useState<number>(0);
   const [completedSteps, setCompletedSteps] = useState<number[]>([]);
   const [form] = Form.useForm();
-  
-  // Store formSections in a ref since it's static and doesn't need to trigger re-renders
   const formSectionsRef = useRef(formSections);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  // Store formSections in a ref since it's static and doesn't need to trigger re-renders
+  // const formSectionsRef = useRef(formSections);
 
   // Extract application_id from URL
   const pathSegments = location.pathname.split('/');
@@ -127,21 +129,7 @@ const DS160Form: React.FC = () => {
       const values = await form.validateFields();
       const saved = await saveSectionData(values);
       if (saved) {
-        Modal.confirm({
-          title: '保存成功',
-          content: '请选择下一步操作：',
-          okText: '继续填写',
-          cancelText: '退出申请',
-          onOk: () => {
-            // Stay on current page and continue filling
-            message.success('请继续填写表格');
-          },
-          onCancel: () => {
-            // Navigate back to DS-160 landing page
-            message.success('已保存当前进度');
-            navigate('/ds160');
-          }
-        });
+        setIsModalVisible(true);
       }
     } catch (error: any) {
       // Check if it's a form validation error
@@ -152,6 +140,17 @@ const DS160Form: React.FC = () => {
         message.error('保存表单数据时出错');
       }
     }
+  };
+
+  const handleContinue = () => {
+    setIsModalVisible(false);
+    message.success('请继续填写表格');
+  };
+
+  const handleExit = () => {
+    setIsModalVisible(false);
+    message.success('已保存当前进度');
+    navigate('/ds160'); 
   };
 
   // Handle section completion
@@ -360,6 +359,17 @@ const DS160Form: React.FC = () => {
           </div>
         </div>
       </Card>
+      <Modal
+        title="保存成功"
+        open={isModalVisible}
+        onOk={handleContinue}
+        onCancel={handleExit}
+        okText="继续填写"
+        cancelText="退出申请"
+        maskClosable={false}
+      >
+        <p>请选择下一步操作：</p>
+      </Modal>
     </div>
   );
 };
