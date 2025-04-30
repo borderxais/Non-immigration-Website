@@ -83,11 +83,53 @@ const DS160ReviewPage: React.FC<DS160ReviewPageProps> = ({ form, onSubmit, onEdi
   };
 
   const travelInfo = {
-    arrivalDate: formatDate(formData.arrivalDay, formData.arrivalMonth, formData.arrivalYear),
-    lengthOfStay: `${formData.losLength} ${formData.losUnit}`,
-    usAddress: `${formData.usAddressLine1}, ${formData.usAddressLine2 || ''}, ${formData.usCity}, ${formData.usState}, ${formData.usZipCode}`,
-    travelFunder: formData.travelFunder,
-    travelingWithOthers: formData.travelingWithOthers,
+    visaClass: formData.visaClass || 'N/A',
+    specificPurpose: formData.specificPurpose || 'N/A',
+    applicationReceiptNumber: formData.applicationReceiptNumber || 'N/A',
+    arrivalDate: formatDate(
+      formData['intendedDateOfArrival.arrivalDay'] || formData.arrivalDay, 
+      formData['intendedDateOfArrival.arrivalMonth'] || formData.arrivalMonth, 
+      formData['intendedDateOfArrival.arrivalYear'] || formData.arrivalYear
+    ),
+    lengthOfStay: (formData.stayDuration || formData.intendedLengthOfStay) ? 
+      `${formData.stayDuration || formData.intendedLengthOfStay} ${formData.stayDurationType || formData.losUnit || 'Days'}` : 
+      'N/A',
+    usAddress: formData.streetAddress1 ? 
+      `${formData.streetAddress1}${formData.streetAddress2 ? ', ' + formData.streetAddress2 : ''}${formData.city ? ', ' + formData.city : ''}${formData.state ? ', ' + formData.state : ''}${formData.zipCode ? ', ' + formData.zipCode : ''}` : 
+      (formData.usAddressLine1 ? 
+        `${formData.usAddressLine1}${formData.usAddressLine2 ? ', ' + formData.usAddressLine2 : ''}${formData.usCity ? ', ' + formData.usCity : ''}${formData.usState ? ', ' + formData.usState : ''}${formData.usZipCode ? ', ' + formData.usZipCode : ''}` : 
+        'N/A'),
+    whoIsPaying: formData.whoIsPaying ? 
+      (formData.whoIsPaying === 'S' ? '本人' : 
+       formData.whoIsPaying === 'H' ? '美国申请人' : 
+       formData.whoIsPaying === 'O' ? '其他个人' : 
+       formData.whoIsPaying === 'P' ? '当前雇主' : 
+       formData.whoIsPaying === 'U' ? '美国雇主' : 
+       formData.whoIsPaying === 'C' ? '其他公司/组织' : 'N/A') : 'N/A',
+    payerName: formData.whoIsPaying === 'O' ? 
+      `${formData.payerSurname || ''} ${formData.payerGivenName || ''}`.trim() || 'N/A' : 
+      (formData.whoIsPaying === 'C' ? formData.companyName || 'N/A' : 'N/A'),
+    payerRelationship: formData.whoIsPaying === 'O' ? 
+      (formData.payerRelationship === 'C' ? '子女' : 
+       formData.payerRelationship === 'P' ? '父母' : 
+       formData.payerRelationship === 'S' ? '配偶' : 
+       formData.payerRelationship === 'R' ? '其他亲属' : 
+       formData.payerRelationship === 'F' ? '朋友' : 
+       formData.payerRelationship === 'O' ? '其他' : 'N/A') : 
+      (formData.whoIsPaying === 'C' ? formData.companyRelation || 'N/A' : 'N/A'),
+    payerAddress: formData.whoIsPaying === 'O' && formData.isSameAddress === 'N' ? 
+      `${formData.payerAddress1 || ''}${formData.payerAddress2 ? ', ' + formData.payerAddress2 : ''}${formData.payerCity ? ', ' + formData.payerCity : ''}${formData.payerStateProvince ? ', ' + formData.payerStateProvince : ''}${formData.payerPostalZIPCode ? ', ' + formData.payerPostalZIPCode : ''}${formData.payerCountry ? ', ' + formData.payerCountry : ''}`.trim() || 'N/A' : 
+      (formData.whoIsPaying === 'C' ? 
+        `${formData.companyStreetAddress1 || ''}${formData.companyStreetAddress2 ? ', ' + formData.companyStreetAddress2 : ''}${formData.companyCity ? ', ' + formData.companyCity : ''}${formData.companyStateProvince ? ', ' + formData.companyStateProvince : ''}${formData.companyPostalZIPCode ? ', ' + formData.companyPostalZIPCode : ''}${formData.companyCountry ? ', ' + formData.companyCountry : ''}`.trim() || 'N/A' : 
+        (formData.whoIsPaying === 'O' && formData.isSameAddress === 'Y' ? '与申请人地址相同' : 'N/A')),
+    payerContact: formData.whoIsPaying === 'O' ? 
+      `电话: ${formData.payerPhone || 'N/A'}${formData.payerEmail && !formData.payerEmail_na ? ', 邮箱: ' + formData.payerEmail : ''}` : 
+      (formData.whoIsPaying === 'C' ? 
+        `电话: ${formData.companyPhone || 'N/A'}${formData.companyEmail && !formData.companyEmail_na ? ', 邮箱: ' + formData.companyEmail : ''}` : 'N/A'),
+    principalApplicantInfo: formData.specificPurpose && (formData.specificPurpose.includes('H4-') || (formData.visaClass === 'H' && !formData.specificPurpose.includes('H1B1'))) ? 
+      `姓: ${formData.principalApplicantSurname || 'N/A'}, 名: ${formData.principalApplicantGivenName || 'N/A'}, 申请收据号: ${formData.applicationReceiptNumber || 'N/A'}` : 'N/A',
+    travelingWithOthers: formData.travelingWithOthers === true ? '是' : formData.travelingWithOthers === false ? '否' : 'N/A',
+    travelFunder: formData.whoIsPaying || formData.travelFunder || 'N/A',
   };
 
   const addressHistory = {

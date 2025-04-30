@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Form, Input, Select, Radio } from 'antd';
 import QuestionItem from '../common/QuestionItem';
 import DateInput from '../common/DateInput';
@@ -11,10 +11,26 @@ interface TravelInfoProps {
 }
 
 const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
-  const [visaClass, setVisaClass] = useState<string | null>(null);
-  const [specificPurpose, setSpecificPurpose] = useState<string | null>(null);
-  const [hasSpecificPlans, setHasSpecificPlans] = useState<string | null>(null);
-  const [whoIsPaying, setWhoIsPaying] = useState<string | null>(null);
+  const [visaClass, setVisaClass] = useState<string | null>(form.getFieldValue('visaClass') || null);
+  const [specificPurpose, setSpecificPurpose] = useState<string | null>(form.getFieldValue('specificPurpose') || null);
+  const [hasSpecificPlans, setHasSpecificPlans] = useState<string | null>(form.getFieldValue('hasSpecificPlans') || null);
+  const [whoIsPaying, setWhoIsPaying] = useState<string | null>(form.getFieldValue('whoIsPaying') || null);
+  const [isSameAddress, setIsSameAddress] = useState<string | null>(form.getFieldValue('isSameAddress') || null);
+
+  // Initialize state from form values when component mounts
+  useEffect(() => {
+    const formVisaClass = form.getFieldValue('visaClass');
+    const formSpecificPurpose = form.getFieldValue('specificPurpose');
+    const formHasSpecificPlans = form.getFieldValue('hasSpecificPlans');
+    const formWhoIsPaying = form.getFieldValue('whoIsPaying');
+    const formIsSameAddress = form.getFieldValue('isSameAddress');
+    
+    if (formVisaClass) setVisaClass(formVisaClass);
+    if (formSpecificPurpose) setSpecificPurpose(formSpecificPurpose);
+    if (formHasSpecificPlans) setHasSpecificPlans(formHasSpecificPlans);
+    if (formWhoIsPaying) setWhoIsPaying(formWhoIsPaying);
+    if (formIsSameAddress) setIsSameAddress(formIsSameAddress);
+  }, [form]);
 
   // Handle visa class change
   const handleVisaClassChange = (value: string) => {
@@ -52,6 +68,18 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
   const handleWhoIsPayingChange = (value: string) => {
     setWhoIsPaying(value);
     form.setFieldsValue({ whoIsPaying: value });
+    
+    // Reset the isSameAddress value when changing who is paying
+    if (value !== 'O') {
+      setIsSameAddress(null);
+      form.setFieldsValue({ isSameAddress: null });
+    }
+  };
+
+  // Handle same address change
+  const handleSameAddressChange = (e: any) => {
+    setIsSameAddress(e.target.value);
+    form.setFieldsValue({ isSameAddress: e.target.value });
   };
 
   // Get specific options based on visa class
@@ -76,7 +104,196 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
           { value: 'B1-CF', label: '商务/会议 (B1)' },
           { value: 'B2-TM', label: '旅游/医疗治疗 (B2)' }
         ];
-      // Additional cases would go here
+      case 'C':
+        return [
+          { value: 'C1-D', label: '过境机组人员 (C1/D)' },
+          { value: 'C1-TR', label: '过境 (C1)' },
+          { value: 'C2-UN', label: '过境前往联合国总部 (C2)' },
+          { value: 'C3-CH', label: 'C3持有者的子女 (C3)' },
+          { value: 'C3-EM', label: 'C3持有者的个人雇员 (C3)' },
+          { value: 'C3-FR', label: '过境外国官员 (C3)' },
+          { value: 'C3-SP', label: 'C3持有者的配偶 (C3)' },
+          { value: 'C4-NO', label: '非公民过境驳船操作 (C4)' },
+          { value: 'C4-D3', label: '过境驳船机组人员 (C4/D3)' }
+        ];
+      case 'CNMI':
+        return [
+          { value: 'CW1-CW1', label: 'CNMI临时工作者 (CW1)' },
+          { value: 'CW2-CH', label: 'CW1持有者的子女 (CW2)' },
+          { value: 'CW2-SP', label: 'CW1持有者的配偶 (CW2)' },
+          { value: 'E2C-E2C', label: 'CNMI长期投资者 (E2C)' }
+        ];
+      case 'D':
+        return [
+          { value: 'D-D', label: '机组人员 (D)' },
+          { value: 'D3-LI', label: '驳船机组人员 (D3)' }
+        ];
+      case 'E':
+        return [
+          { value: 'E1-CH', label: 'E1持有者的子女 (E1)' },
+          { value: 'E1-EX', label: '高管/经理/重要雇员 (E1)' },
+          { value: 'E1-SP', label: 'E1持有者的配偶 (E1)' },
+          { value: 'E1-TR', label: '条约贸易商 (E1)' },
+          { value: 'E2-CH', label: 'E2持有者的子女 (E2)' },
+          { value: 'E2-EX', label: '高管/经理/重要雇员 (E2)' },
+          { value: 'E2-SP', label: 'E2持有者的配偶 (E2)' },
+          { value: 'E2-TR', label: '条约投资者 (E2)' },
+          { value: 'E3D-CH', label: 'E3持有者的子女 (E3D)' },
+          { value: 'E3D-SP', label: 'E3持有者的配偶 (E3D)' }
+        ];
+      case 'F':
+        return [
+          { value: 'F1-F1', label: '学生 (F1)' },
+          { value: 'F2-CH', label: 'F1持有者的子女 (F2)' },
+          { value: 'F2-SP', label: 'F1持有者的配偶 (F2)' }
+        ];
+      case 'G':
+        return [
+          { value: 'G1-CH', label: 'G1持有者的子女 (G1)' },
+          { value: 'G1-G1', label: '首席代表 (G1)' },
+          { value: 'G1-SP', label: 'G1持有者的配偶 (G1)' },
+          { value: 'G1-ST', label: '首席代表的工作人员 (G1)' },
+          { value: 'G2-CH', label: 'G2持有者的子女 (G2)' },
+          { value: 'G2-RP', label: '代表 (G2)' },
+          { value: 'G2-SP', label: 'G2持有者的配偶 (G2)' },
+          { value: 'G3-CH', label: 'G3持有者的子女 (G3)' },
+          { value: 'G3-RP', label: '非认可/非成员国家代表 (G3)' },
+          { value: 'G3-SP', label: 'G3持有者的配偶 (G3)' },
+          { value: 'G4-CH', label: 'G4持有者的子女 (G4)' },
+          { value: 'G4-G4', label: '国际组织雇员 (G4)' },
+          { value: 'G4-SP', label: 'G4持有者的配偶 (G4)' },
+          { value: 'G5-CH', label: 'G5持有者的子女 (G5)' },
+          { value: 'G5-EM', label: 'G1、G2、G3或G4持有者的个人雇员 (G5)' },
+          { value: 'G5-SP', label: 'G5持有者的配偶 (G5)' }
+        ];
+      case 'H':
+        return [
+          { value: 'H1B-H1B', label: '特殊职业 (H1B)' },
+          { value: 'H1B1-CHL', label: '智利特殊职业 (H1B1)' },
+          { value: 'H1B1-SGP', label: '新加坡特殊职业 (H1B1)' },
+          { value: 'H1C-NR', label: '短缺地区护士 (H1C)' },
+          { value: 'H2A-AG', label: '农业工人 (H2A)' },
+          { value: 'H2B-NA', label: '非农业工人 (H2B)' },
+          { value: 'H3-TR', label: '实习生 (H3)' },
+          { value: 'H4-CH', label: 'H签证持有者的子女 (H4)' },
+          { value: 'H4-SP', label: 'H签证持有者的配偶 (H4)' }
+        ];
+      case 'I':
+        return [
+          { value: 'I-CH', label: 'I签证持有者的子女 (I)' },
+          { value: 'I-FR', label: '外国媒体代表 (I)' },
+          { value: 'I-SP', label: 'I签证持有者的配偶 (I)' }
+        ];
+      case 'J':
+        return [
+          { value: 'J1-J1', label: '交流访问者 (J1)' },
+          { value: 'J2-CH', label: 'J1持有者的子女 (J2)' },
+          { value: 'J2-SP', label: 'J1持有者的配偶 (J2)' }
+        ];
+      case 'K':
+        return [
+          { value: 'K1-K1', label: '美国公民的未婚夫(妻) (K1)' },
+          { value: 'K2-K2', label: 'K1持有者的子女 (K2)' },
+          { value: 'K3-K3', label: '美国公民的配偶 (K3)' },
+          { value: 'K4-K4', label: 'K3持有者的子女 (K4)' }
+        ];
+      case 'L':
+        return [
+          { value: 'L1-L1', label: '公司内部调动人员 (L1)' },
+          { value: 'L2-CH', label: 'L1持有者的子女 (L2)' },
+          { value: 'L2-SP', label: 'L1持有者的配偶 (L2)' }
+        ];
+      case 'M':
+        return [
+          { value: 'M1-M1', label: '学生 (M1)' },
+          { value: 'M2-CH', label: 'M1持有者的子女 (M2)' },
+          { value: 'M2-SP', label: 'M1持有者的配偶 (M2)' },
+          { value: 'M3-M3', label: '通勤学生 (M3)' }
+        ];
+      case 'N':
+        return [
+          { value: 'N8-N8', label: '特殊移民的父母 (N8)' },
+          { value: 'N8-CH', label: 'N8持有者的子女 (N9)' }
+        ];
+      case 'NATO':
+        return [
+          { value: 'NATO1-PR', label: '首席代表 (NATO1)' },
+          { value: 'NATO1-SP', label: 'NATO1持有者的配偶 (NATO1)' },
+          { value: 'NATO1-CH', label: 'NATO1持有者的子女 (NATO1)' },
+          { value: 'NATO2-RP', label: '代表 (NATO2)' },
+          { value: 'NATO2-SP', label: 'NATO2持有者的配偶 (NATO2)' },
+          { value: 'NATO2-CH', label: 'NATO2持有者的子女 (NATO2)' },
+          { value: 'NATO3-ST', label: '文职人员 (NATO3)' },
+          { value: 'NATO3-SP', label: 'NATO3持有者的配偶 (NATO3)' },
+          { value: 'NATO3-CH', label: 'NATO3持有者的子女 (NATO3)' },
+          { value: 'NATO4-OF', label: '官员 (NATO4)' },
+          { value: 'NATO4-SP', label: 'NATO4持有者的配偶 (NATO4)' },
+          { value: 'NATO4-CH', label: 'NATO4持有者的子女 (NATO4)' },
+          { value: 'NATO5-EX', label: '专家 (NATO5)' },
+          { value: 'NATO5-SP', label: 'NATO5持有者的配偶 (NATO5)' },
+          { value: 'NATO5-CH', label: 'NATO5持有者的子女 (NATO5)' },
+          { value: 'NATO6-ST', label: '平民工作人员 (NATO6)' },
+          { value: 'NATO6-SP', label: 'NATO6持有者的配偶 (NATO6)' },
+          { value: 'NATO6-CH', label: 'NATO6持有者的子女 (NATO6)' },
+          { value: 'NATO7-EM', label: 'NATO1-NATO6雇佣的个人员工 (NATO7)' },
+          { value: 'NATO7-SP', label: 'NATO7持有者的配偶 (NATO7)' },
+          { value: 'NATO7-CH', label: 'NATO7持有者的子女 (NATO7)' }
+        ];
+      case 'O': 
+        return [
+          { value: 'O1-EX', label: '杰出能力者 (O1)' },
+          { value: 'O2-AL', label: '随行/协助人员 (O2)' },
+          { value: 'O3-SP', label: 'O1或O2持有者的配偶 (O3)' },
+          { value: 'O3-CH', label: 'O1或O2持有者的子女 (O3)' }
+        ];
+      case 'P':
+        return [
+          { value: 'P1-P1', label: '国际公认人员 (P1)' },
+          { value: 'P2-P2', label: '艺术家/艺人交流项目 (P2)' },
+          { value: 'P3-P3', label: '文化项目中的艺术家/艺人 (P3)' },
+          { value: 'P4-SP', label: 'P1、P2或P3持有者的配偶 (P4)' },
+          { value: 'P4-CH', label: 'P1、P2或P3持有者的子女 (P4)' }
+        ];
+      case 'Q':
+        return [
+          { value: 'Q1-Q1', label: '文化交流访问者 (Q1)' }
+        ];
+      case 'R':
+        return [
+          { value: 'R1-R1', label: '宗教工作者 (R1)' },
+          { value: 'R2-R2', label: '宗教工作者的配偶 (R2)' },
+          { value: 'R3-R3', label: '宗教工作者的子女 (R3)' }
+        ];
+      case 'S':
+        return [
+          { value: 'S7-S7', label: '线人的家庭成员 (S7)' }
+        ];
+      case 'T':
+        return [
+          { value: 'T1-T1', label: '人口贩卖受害者 (T1)' },
+          { value: 'T2-SP', label: 'T1持有者的配偶 (T2)' },
+          { value: 'T3-CH', label: 'T1持有者的子女 (T3)' },
+          { value: 'T4-PR', label: 'T1持有者的父母 (T4)' },
+          { value: 'T5-SB', label: 'T1持有者的兄弟姐妹 (T5)' },
+          { value: 'T6-CB', label: 'T1派生受益人的成年/未成年子女 (T6)' }
+        ];
+      case 'TD/TN':
+        return [
+          { value: 'TD-SP', label: 'TN持有者的配偶 (TD)' },
+          { value: 'TD-CH', label: 'TN持有者的子女 (TD)' }
+        ];
+      case 'U':
+        return [
+          { value: 'U1-U1', label: '犯罪受害者 (U1)' },
+          { value: 'U2-SP', label: 'U1持有者的配偶 (U2)' },
+          { value: 'U3-CH', label: 'U1持有者的子女 (U3)' },
+          { value: 'U4-PR', label: 'U1持有者的父母 (U4)' },
+          { value: 'U5-SB', label: 'U1持有者的兄弟姐妹 (U5)' }
+        ];
+      case 'PAROLE-BEN':
+        return [
+          { value: 'PRL-PARCIS', label: 'PARCIS (USCIS批准的临时入境许可)' }
+        ];
       default:
         return [{ value: 'OTHER', label: '其他' }];
     }
@@ -158,44 +375,91 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
               </div>
             </div>
           )}
-        </div>
 
-        {specificPurpose && isDependentSelection(specificPurpose) && (
-          <>
-            <h4 style={{ marginBottom: '16px', fontWeight: 'normal' }}>主申请人信息</h4>
-            <div className="highlighted-block">
-              <div className="question-row">
-                <div className="question-column">
-                  <QuestionItem
-                    question="主申请人姓氏"
-                    name="principalApplicantSurname"
-                  >
-                    <Input style={{ width: '99%' }} placeholder="请输入主申请人姓氏" />
-                  </QuestionItem>
-                </div>
-                <div className="explanation-column">
-                  <h4 className="help-header">帮助：主申请人姓氏</h4>
-                  <p>请输入持有签证的主申请人的姓氏（与护照一致）</p>
-                </div>
+          {/* Add Application Receipt/Petition Number field for H-type visas (except H1B1) */}
+          {specificPurpose && specificPurpose.startsWith('H') && 
+           !specificPurpose.includes('H1B1') && 
+           !specificPurpose.includes('H4') && (
+            <div className="question-row">
+              <div className="question-column">
+                <QuestionItem
+                  question="申请收据/申请号码"
+                  name="applicationReceiptNumber"
+                >
+                  <Input 
+                    style={{ width: '99%' }} 
+                    placeholder="例如: ABC1234567890" 
+                    maxLength={13}
+                  />
+                </QuestionItem>
               </div>
-
-              <div className="question-row">
-                <div className="question-column">
-                  <QuestionItem
-                    question="主申请人名字"
-                    name="principalApplicantGivenName"
-                  >
-                    <Input style={{ width: '99%' }} placeholder="请输入主申请人名字" />
-                  </QuestionItem>
-                </div>
-                <div className="explanation-column">
-                  <h4 className="help-header">帮助：主申请人名字</h4>
-                  <p>请输入持有签证的主申请人的名字（与护照一致）</p>
-                </div>
+              <div className="explanation-column">
+                <h4 className="help-header">帮助：申请收据/申请号码</h4>
+                <p>请输入您的H类签证申请收据号码或申请号码。这通常是由USCIS提供的，格式为三个字母后跟10个数字。</p>
               </div>
             </div>
-          </>
-        )}
+          )}
+
+          {/* Add Principal Applicant Information block for H4 visa */}
+          {specificPurpose && specificPurpose.includes('H4') && (
+            <>
+              <h4 style={{ marginBottom: '16px', fontWeight: 'normal' }}>主申请人信息</h4>
+              <div className="highlighted-block">
+                <div className="question-row">
+                  <div className="question-column">
+                    <QuestionItem
+                      question="主申请人姓氏"
+                      name="principalApplicantSurname"
+                      required
+                    >
+                      <Input style={{ width: '99%' }} placeholder="请输入主申请人姓氏" />
+                    </QuestionItem>
+                  </div>
+                  <div className="explanation-column">
+                    <h4 className="help-header">帮助：主申请人姓氏</h4>
+                    <p>请输入持有签证的主申请人的姓氏（与护照一致）</p>
+                  </div>
+                </div>
+
+                <div className="question-row">
+                  <div className="question-column">
+                    <QuestionItem
+                      question="主申请人名字"
+                      name="principalApplicantGivenName"
+                      required
+                    >
+                      <Input style={{ width: '99%' }} placeholder="请输入主申请人名字" />
+                    </QuestionItem>
+                  </div>
+                  <div className="explanation-column">
+                    <h4 className="help-header">帮助：主申请人名字</h4>
+                    <p>请输入持有签证的主申请人的名字（与护照一致）</p>
+                  </div>
+                </div>
+
+                <div className="question-row">
+                  <div className="question-column">
+                    <QuestionItem
+                      question="申请收据/申请号码"
+                      name="applicationReceiptNumber"
+                      required
+                    >
+                      <Input 
+                        style={{ width: '99%' }} 
+                        placeholder="例如: ABC1234567890" 
+                        maxLength={13}
+                      />
+                    </QuestionItem>
+                  </div>
+                  <div className="explanation-column">
+                    <h4 className="help-header">帮助：申请收据/申请号码</h4>
+                    <p>请输入主申请人的申请收据号码或申请号码。这通常是由USCIS提供的，格式为三个字母后跟10个数字。</p>
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
+        </div>
       </fieldset>
 
       {/* Travel Plans Section */}
@@ -744,6 +1008,118 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                       <p>请选择付款人与您的关系</p>
                     </div>
                   </div>
+
+                  <div className="question-row">
+                    <div className="question-column">
+                      <QuestionItem
+                        question="付款人地址是否与您的家庭/通信地址相同？"
+                        name="isSameAddress"
+                      >
+                        <Radio.Group onChange={handleSameAddressChange}>
+                          <Radio value="Y">是</Radio>
+                          <Radio value="N">否</Radio>
+                        </Radio.Group>
+                      </QuestionItem>
+                    </div>
+                    <div className="explanation-column">
+                      <h4 className="help-header">帮助：付款人地址</h4>
+                      <p>请选择付款人地址是否与您的家庭/通信地址相同</p>
+                    </div>
+                  </div>
+
+                  {isSameAddress === 'N' && (
+                    <>
+                      <div className="question-row">
+                        <div className="question-column">
+                          <QuestionItem
+                            question="付款人地址（第1行）"
+                            name="payerAddress1"
+                          >
+                            <Input maxLength={40} placeholder="例如：123 MAIN STREET" />
+                          </QuestionItem>
+                        </div>
+                        <div className="explanation-column">
+                          <h4 className="help-header">帮助：付款人地址</h4>
+                          <p>请输入付款人的详细地址（英文）</p>
+                        </div>
+                      </div>
+
+                      <div className="question-row">
+                        <div className="question-column">
+                          <QuestionItem
+                            question="付款人地址（第2行）"
+                            name="payerAddress2"
+                            required={false}
+                          >
+                            <Input maxLength={40} placeholder="例如：公寓号，套房号等（如有）" />
+                          </QuestionItem>
+                        </div>
+                        <div className="explanation-column">
+                          {/* Empty explanation column to maintain layout */}
+                        </div>
+                      </div>
+
+                      <div className="question-row">
+                        <div className="question-column">
+                          <QuestionItem
+                            question="城市"
+                            name="payerCity"
+                          >
+                            <Input maxLength={20} />
+                          </QuestionItem>
+                        </div>
+                        <div className="explanation-column">
+                          {/* Empty explanation column to maintain layout */}
+                        </div>
+                      </div>
+
+                      <div className="question-row">
+                        <div className="question-column">
+                          <QuestionItem
+                            question="州/省"
+                            name="payerStateProvince"
+                            hasNaCheckbox={true}
+                            naCheckboxName="payerStateProvince_na"
+                          >
+                            <Input maxLength={20} />
+                          </QuestionItem>
+                        </div>
+                        <div className="explanation-column">
+                          {/* Empty explanation column to maintain layout */}
+                        </div>
+                      </div>
+
+                      <div className="question-row">
+                        <div className="question-column">
+                          <QuestionItem
+                            question="邮政编码"
+                            name="payerPostalZIPCode"
+                            hasNaCheckbox={true}
+                            naCheckboxName="payerPostalZIPCode_na"
+                          >
+                            <Input maxLength={10} />
+                          </QuestionItem>
+                        </div>
+                        <div className="explanation-column">
+                          {/* Empty explanation column to maintain layout */}
+                        </div>
+                      </div>
+
+                      <div className="question-row">
+                        <div className="question-column">
+                          <QuestionItem
+                            question="国家/地区"
+                            name="payerCountry"
+                          >
+                            <Select className="select-input" options={countryOptions} placeholder="- 选择一个 -" />
+                          </QuestionItem>
+                        </div>
+                        <div className="explanation-column">
+                          {/* Empty explanation column to maintain layout */}
+                        </div>
+                      </div>
+                    </>
+                  )}
                 </div>
               </>
         )}
@@ -902,6 +1278,7 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
           </>
         )}
       </fieldset>
+
     </div>
   );
 };
