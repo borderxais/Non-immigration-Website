@@ -24,7 +24,8 @@ CORS(
                 "http://127.0.0.1:3000",
                 "http://127.0.0.1:3001",
                 "https://visaimmigration.netlify.app",
-                "https://www.visaimmigration.netlify.app"
+                "https://www.visaimmigration.netlify.app",
+                "chrome-extension://oimcinbapiapghcakhbbobdfdfncdgfe"
             ],
             "methods": ["GET", "POST", "OPTIONS", "PUT", "DELETE", "PATCH"],
             "allow_headers": ["*"],  # Allow all headers
@@ -48,7 +49,8 @@ def after_request(response):
         "http://127.0.0.1:3000",
         "http://127.0.0.1:3001",
         "https://visaimmigration.netlify.app",
-        "https://www.visaimmigration.netlify.app"
+        "https://www.visaimmigration.netlify.app",
+        "chrome-extension://oimcinbapiapghcakhbbobdfdfncdgfe"
     ]:
         response.headers['Access-Control-Allow-Origin'] = origin
         response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'
@@ -111,7 +113,8 @@ def health_check():
         "http://127.0.0.1:3000",
         "http://127.0.0.1:3001",
         "https://visaimmigration.netlify.app",
-        "https://www.visaimmigration.netlify.app"
+        "https://www.visaimmigration.netlify.app",
+        "chrome-extension://oimcinbapiapghcakhbbobdfdfncdgfe"
     ]:
         response.headers['Access-Control-Allow-Origin'] = origin
         response.headers['Access-Control-Allow-Methods'] = 'GET,OPTIONS'
@@ -129,7 +132,8 @@ def health_check_options():
         "http://127.0.0.1:3000",
         "http://127.0.0.1:3001",
         "https://visaimmigration.netlify.app",
-        "https://www.visaimmigration.netlify.app"
+        "https://www.visaimmigration.netlify.app",
+        "chrome-extension://oimcinbapiapghcakhbbobdfdfncdgfe"
     ]:
         response.headers['Access-Control-Allow-Origin'] = origin
         response.headers['Access-Control-Allow-Methods'] = 'GET,OPTIONS'
