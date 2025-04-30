@@ -40,6 +40,8 @@ def translate_text(text: str, source_lang: str = 'zh', target_lang: str = 'pinyi
         - English words, single letters (e.g., 'Y'), numbers, or dates
         - Email addresses, country/state codes, abbreviations
         - Any text that appears to be IDs or reference codes
+        - Field labels such as "Full Name in Native Alphabet" — leave them in Original characters exactly as they were
+          ("Full Name in Native Alphabet" field should be completed if the name is written using a non-Roman alphabet.)
 
         3. FORMAT RULES:
         - Do NOT include tone numbers in Pinyin
@@ -52,6 +54,7 @@ def translate_text(text: str, source_lang: str = 'zh', target_lang: str = 'pinyi
         - "王大明在北京大學學習" → "Wang Daming studies at Beijing University"
         - "Y" → Keep as "Y"
         - "aven@borderxai.com" → Keep as "aven@borderxai.com"
+        - "Full Name in Native Alphabet: 孙意" → Keep as "孙意"
 
         Text to translate:
         {text}
