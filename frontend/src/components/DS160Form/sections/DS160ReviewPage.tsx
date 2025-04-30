@@ -77,7 +77,7 @@ const DS160ReviewPage: React.FC<DS160ReviewPageProps> = ({ form, onSubmit, onEdi
     gender: formData.gender === 'M' ? '男' : '女',
     maritalStatus: formData.maritalStatus,
     dateOfBirth: formatDate(formData.dobDay, formData.dobMonth, formData.dobYear),
-    birthPlace: formData.birthPlace,
+    birthCity: formData.birthCity,
     birthState: formData.birthState,
     birthCountry: formData.birthCountry,
   };

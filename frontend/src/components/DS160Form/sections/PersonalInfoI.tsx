@@ -252,7 +252,7 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
             <div className="question-column">
               <QuestionItem
                 question="城市"
-                name="birthPlace"
+                name="birthCity"
               >
                 <Input placeholder="例如：北京" style={{ width: '99%' }} />
               </QuestionItem>

@@ -785,7 +785,7 @@ const DS160Form: React.FC = () => {
 
     //         <QuestionItem
     //           question="城市"
-    //           name="birthPlace"
+    //           name="birthCity"
     //         >
     //           <Input placeholder="例如：北京" />
     //         </QuestionItem>

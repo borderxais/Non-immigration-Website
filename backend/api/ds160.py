@@ -441,9 +441,7 @@ class InterviewAssessmentResource(Resource):
 class DS160ClientResource(Resource):
     @jwt_required()
     def get(self, application_id):
-        """Get DS-160 form translation data formatted for the Chrome extension"""
-        current_user_id = get_jwt_identity()
-        
+        """Get DS-160 form translation data formatted for the Chrome extension"""        
         # Find the translation
         translation = DS160FormTranslation.query.filter_by(
             original_form_application_id=application_id
