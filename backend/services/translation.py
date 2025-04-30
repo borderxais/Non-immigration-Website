@@ -27,46 +27,38 @@ def translate_text(text: str, source_lang: str = 'zh', target_lang: str = 'pinyi
     try:
         # Create a specific prompt for Pinyin conversion
         prompt = f"""
-        Convert the following text to Pinyin (romanized Chinese), following these rules:
-        
-        1. ONLY convert Chinese characters to Pinyin.
-        2. DO NOT convert or modify:
-           - Single letters like 'Y' or 'N'
-           - Numbers or dates
-           - Email addresses
-           - Names that are already in English or Latin alphabet
-           - Country codes, state codes, or other abbreviations
-           - Any text that appears to be IDs, codes, or references
-        3. DO NOT include tone numbers in the Pinyin output
-        4. Use spaces between syllables for readability
-        
-        Examples of what NOT to convert:
+        Translate the following text from Chinese to English, following these specific rules:
+
+        1. TRANSLATION RULES:
+        - Translate general Chinese phrases to fluent English (e.g., "學生" → "student")
+        - Convert Chinese PERSON NAMES to capitalized Pinyin (e.g., "孫意" → "Sun Yi")
+        - For PLACE NAMES:
+            • Use standard English names where available (e.g., "北京" → "Beijing")
+            • Otherwise, convert to capitalized Pinyin (e.g., "天津大學" → "Tianjin University")
+
+        2. DO NOT translate or alter:
+        - English words, single letters (e.g., 'Y'), numbers, or dates
+        - Email addresses, country/state codes, abbreviations
+        - Any text that appears to be IDs or reference codes
+
+        3. FORMAT RULES:
+        - Do NOT include tone numbers in Pinyin
+        - Ensure correct spacing and capitalization
+        - If the input contains **no Chinese characters**, return it **unchanged**
+        - DO NOT add explanations or comments — only return the translated result
+
+        Examples:
+        - "我喜歡學習" → "I like to study"
+        - "王大明在北京大學學習" → "Wang Daming studies at Beijing University"
         - "Y" → Keep as "Y"
-        - "N" → Keep as "N"
-        - "2012" → Keep as "2012"
-        - "CA" → Keep as "CA"
         - "aven@borderxai.com" → Keep as "aven@borderxai.com"
-        - "ALB" → Keep as "ALB"
-        
-        Examples of what TO convert:
-        - "学生" → "xue sheng"
-        - "天津大學" → "tian jin da xue"
-        - "無" → "wu"
-        - "我是学生" → "wo shi xue sheng"
-        
-        IMPORTANT: 
-        - Do NOT include tone numbers (1-4) in the output
-        - Separate syllables with spaces for readability
-        - If the text has no Chinese characters, return EXACTLY the original text without any modification
-        - Do NOT add any explanations or comments
-        - Just return either the Pinyin (if Chinese) or the EXACT original text (if not Chinese)
-        
-        Text to convert:
+
+        Text to translate:
         {text}
         """
         
         response = client.chat.completions.create(
-            model="gpt-4",
+            model="gpt-4o",
             messages=[
                 {"role": "system", "content": "You are a Chinese to Pinyin converter. Only output the converted text, no explanations."},
                 {"role": "user", "content": prompt}
