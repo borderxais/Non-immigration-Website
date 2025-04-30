@@ -594,326 +594,326 @@ const DS160Form: React.FC = () => {
   };
 
   const steps = [
-    // {
-    //   title: '开始',
-    //   description: '基本信息',
-    //   content: (
-    //     <>
-    //       <QuestionItem
-    //         question="请选择一个安全问题"
-    //         name="securityQuestion"
-    //       >
-    //         <Select placeholder="选择安全问题" style={{ width: '100%' }}>
-    //           <Select.Option value="1">您母亲的母亲的名字是什么？</Select.Option>
-    //           <Select.Option value="2">您父亲的父亲的名字是什么？</Select.Option>
-    //           <Select.Option value="3">您外祖母的娘家姓是什么？</Select.Option>
-    //           <Select.Option value="4">您小时候家人怎么称呼您？</Select.Option>
-    //           <Select.Option value="5">您在哪个城市遇到您的配偶/伴侣？</Select.Option>
-    //           <Select.Option value="6">您最好的童年朋友叫什么名字？</Select.Option>
-    //           <Select.Option value="7">您8岁时住在哪条街？</Select.Option>
-    //           <Select.Option value="8">您最年长的兄弟姐妹的生日月份和年份？（例如：1900年1月）</Select.Option>
-    //           <Select.Option value="9">您最小的孩子的中间名是什么？</Select.Option>
-    //           <Select.Option value="10">您最年长的兄弟姐妹的中间名是什么？</Select.Option>
-    //           <Select.Option value="11">您11岁时就读的学校是什么？</Select.Option>
-    //           <Select.Option value="12">您小时候的家庭电话号码是什么？</Select.Option>
-    //           <Select.Option value="13">您最年长的表亲/堂亲的名字和姓氏是什么？</Select.Option>
-    //           <Select.Option value="14">您最喜欢的毛绒动物或玩具的名字是什么？</Select.Option>
-    //           <Select.Option value="15">您的父母在哪个城市或镇相遇？</Select.Option>
-    //           <Select.Option value="16">您最喜欢的老师的姓氏是什么？</Select.Option>
-    //           <Select.Option value="17">您最近的兄弟姐妹住在哪个城市？</Select.Option>
-    //           <Select.Option value="18">您最年幼的兄弟姐妹的生日月份和年份？（例如：1900年1月）</Select.Option>
-    //           <Select.Option value="19">您的第一份工作在哪个城市或镇？</Select.Option>
-    //           <Select.Option value="20">您的第一个男朋友或女朋友叫什么名字？</Select.Option>
-    //         </Select>
-    //       </QuestionItem>
+    {
+      title: '开始',
+      description: '基本信息',
+      content: (
+        <>
+          <QuestionItem
+            question="请选择一个安全问题"
+            name="securityQuestion"
+          >
+            <Select placeholder="选择安全问题" style={{ width: '100%' }}>
+              <Select.Option value="1">您母亲的母亲的名字是什么？</Select.Option>
+              <Select.Option value="2">您父亲的父亲的名字是什么？</Select.Option>
+              <Select.Option value="3">您外祖母的娘家姓是什么？</Select.Option>
+              <Select.Option value="4">您小时候家人怎么称呼您？</Select.Option>
+              <Select.Option value="5">您在哪个城市遇到您的配偶/伴侣？</Select.Option>
+              <Select.Option value="6">您最好的童年朋友叫什么名字？</Select.Option>
+              <Select.Option value="7">您8岁时住在哪条街？</Select.Option>
+              <Select.Option value="8">您最年长的兄弟姐妹的生日月份和年份？（例如：1900年1月）</Select.Option>
+              <Select.Option value="9">您最小的孩子的中间名是什么？</Select.Option>
+              <Select.Option value="10">您最年长的兄弟姐妹的中间名是什么？</Select.Option>
+              <Select.Option value="11">您11岁时就读的学校是什么？</Select.Option>
+              <Select.Option value="12">您小时候的家庭电话号码是什么？</Select.Option>
+              <Select.Option value="13">您最年长的表亲/堂亲的名字和姓氏是什么？</Select.Option>
+              <Select.Option value="14">您最喜欢的毛绒动物或玩具的名字是什么？</Select.Option>
+              <Select.Option value="15">您的父母在哪个城市或镇相遇？</Select.Option>
+              <Select.Option value="16">您最喜欢的老师的姓氏是什么？</Select.Option>
+              <Select.Option value="17">您最近的兄弟姐妹住在哪个城市？</Select.Option>
+              <Select.Option value="18">您最年幼的兄弟姐妹的生日月份和年份？（例如：1900年1月）</Select.Option>
+              <Select.Option value="19">您的第一份工作在哪个城市或镇？</Select.Option>
+              <Select.Option value="20">您的第一个男朋友或女朋友叫什么名字？</Select.Option>
+            </Select>
+          </QuestionItem>
           
-    //       <QuestionItem
-    //         question="您的回答(英文)"
-    //         name="securityAnswer"
-    //       >
-    //         <Input placeholder="请输入您的安全问题答案" />
-    //       </QuestionItem>
+          <QuestionItem
+            question="您的回答(英文)"
+            name="securityAnswer"
+          >
+            <Input placeholder="请输入您的安全问题答案" />
+          </QuestionItem>
           
-    //       <Title level={5}>提示</Title>
-    //       <p>为了保护您的个人信息安全，请记住您的安全问题和答案。如果您需要恢复您的申请，将需要提供此信息。</p>
+          <Title level={5}>提示</Title>
+          <p>为了保护您的个人信息安全，请记住您的安全问题和答案。如果您需要恢复您的申请，将需要提供此信息。</p>
 
-    //       <Divider />
+          <Divider />
 
-    //       <Title level={4}>申请地点</Title>
-    //       <QuestionItem
-    //         question="您计划在哪个使领馆申请签证？"
-    //         name="location"
-    //       >
-    //         <Select placeholder="选择申请地点">
-    //           <Select.Option value="beijing">美国驻北京大使馆</Select.Option>
-    //           <Select.Option value="shanghai">美国驻上海领事馆</Select.Option>
-    //           <Select.Option value="guangzhou">美国驻广州领事馆</Select.Option>
-    //           <Select.Option value="shenyang">美国驻沈阳领事馆</Select.Option>
-    //           <Select.Option value="wuhan">美国驻武汉领事馆</Select.Option>
-    //         </Select>
-    //       </QuestionItem>
-    //     </>
-    //   ),
-    // },
-    // {
-    //   title: '个人信息 I',
-    //   content: (
-    //     <>
-    //       <QuestionItem
-    //         question="姓（拼音，与护照一致）"
-    //         name="surname"
-    //         explanation="输入您护照上列出的所有姓氏。如果只有一个，请输入这一个。"
-    //       >
-    //         <Input placeholder="例如：ZHANG" />
-    //       </QuestionItem>
+          <Title level={4}>申请地点</Title>
+          <QuestionItem
+            question="您计划在哪个使领馆申请签证？"
+            name="location"
+          >
+            <Select placeholder="选择申请地点">
+              <Select.Option value="beijing">美国驻北京大使馆</Select.Option>
+              <Select.Option value="shanghai">美国驻上海领事馆</Select.Option>
+              <Select.Option value="guangzhou">美国驻广州领事馆</Select.Option>
+              <Select.Option value="shenyang">美国驻沈阳领事馆</Select.Option>
+              <Select.Option value="wuhan">美国驻武汉领事馆</Select.Option>
+            </Select>
+          </QuestionItem>
+        </>
+      ),
+    },
+    {
+      title: '个人信息 I',
+      content: (
+        <>
+          <QuestionItem
+            question="姓（拼音，与护照一致）"
+            name="surname"
+            explanation="输入您护照上列出的所有姓氏。如果只有一个，请输入这一个。"
+          >
+            <Input placeholder="例如：ZHANG" />
+          </QuestionItem>
 
-    //       <QuestionItem
-    //         question="名（拼音，与护照一致）"
-    //         name="givenName"
-    //         explanation="如果您的护照上不包括名字信息，请在名字栏内输入'FNU'。"
-    //       >
-    //         <Input placeholder="例如：SAN" />
-    //       </QuestionItem>
+          <QuestionItem
+            question="名（拼音，与护照一致）"
+            name="givenName"
+            explanation="如果您的护照上不包括名字信息，请在名字栏内输入'FNU'。"
+          >
+            <Input placeholder="例如：SAN" />
+          </QuestionItem>
 
-    //       <QuestionItem
-    //         question="全名（本地语言书写）"
-    //         name="fullNameNative"
-    //         explanation="请用中文填写您的全名。如不适用/技术不可用，请勾选下方的复选框。"
-    //         hasNaCheckbox={true}
-    //         naCheckboxName="fullNameNative_na"
-    //       >
-    //         <Input placeholder="请用中文填写您的全名" />
-    //       </QuestionItem>
+          <QuestionItem
+            question="全名（本地语言书写）"
+            name="fullNameNative"
+            explanation="请用中文填写您的全名。如不适用/技术不可用，请勾选下方的复选框。"
+            hasNaCheckbox={true}
+            naCheckboxName="fullNameNative_na"
+          >
+            <Input placeholder="请用中文填写您的全名" />
+          </QuestionItem>
           
-    //       <QuestionItem
-    //         question="您是否曾使用其他姓名？（包括曾用名、英文名、别名等）"
-    //         name="hasOtherNames"
-    //         explanation="其它姓名包括您的婚前用名, 宗教用名、职业用名; 或任何为人所知的其它名字；或在过去为别人所知的其它名字。"
-    //       >
-    //         <Radio.Group>
-    //           <Radio value='Y'>是</Radio>
-    //           <Radio value='N'>否</Radio>
-    //         </Radio.Group>
-    //       </QuestionItem>
+          <QuestionItem
+            question="您是否曾使用其他姓名？（包括曾用名、英文名、别名等）"
+            name="hasOtherNames"
+            explanation="其它姓名包括您的婚前用名, 宗教用名、职业用名; 或任何为人所知的其它名字；或在过去为别人所知的其它名字。"
+          >
+            <Radio.Group>
+              <Radio value='Y'>是</Radio>
+              <Radio value='N'>否</Radio>
+            </Radio.Group>
+          </QuestionItem>
 
-    //       <QuestionItem
-    //         question="您是否有代表您姓名的电码？"
-    //         name="hasTelecode"
-    //         explanation="电码由4位数字组成，代表着一些非罗马字母拼写而成的名字的字体。"
-    //       >
-    //         <Radio.Group>
-    //           <Radio value='Y'>是</Radio>
-    //           <Radio value='N'>否</Radio>
-    //         </Radio.Group>
-    //       </QuestionItem>
+          <QuestionItem
+            question="您是否有代表您姓名的电码？"
+            name="hasTelecode"
+            explanation="电码由4位数字组成，代表着一些非罗马字母拼写而成的名字的字体。"
+          >
+            <Radio.Group>
+              <Radio value='Y'>是</Radio>
+              <Radio value='N'>否</Radio>
+            </Radio.Group>
+          </QuestionItem>
           
-    //       <Divider />
+          <Divider />
           
-    //       <QuestionItem
-    //         question="性别"
-    //         name="gender"
-    //         explanation="请选择您的性别，必须与护照上的信息一致。"
-    //       >
-    //         <Select placeholder="选择一个">
-    //           <Select.Option value="M">男</Select.Option>
-    //           <Select.Option value="F">女</Select.Option>
-    //         </Select>
-    //       </QuestionItem>
+          <QuestionItem
+            question="性别"
+            name="gender"
+            explanation="请选择您的性别，必须与护照上的信息一致。"
+          >
+            <Select placeholder="选择一个">
+              <Select.Option value="M">男</Select.Option>
+              <Select.Option value="F">女</Select.Option>
+            </Select>
+          </QuestionItem>
 
-    //       <QuestionItem
-    //         question="婚姻状况"
-    //         name="maritalStatus"
-    //         explanation="请选择您目前的婚姻状况。"
-    //       >
-    //         <Select placeholder="选择一个">
-    //         <Select.Option value="M">已婚</Select.Option>
-    //           <Select.Option value="C">普通法婚姻</Select.Option>
-    //           <Select.Option value="P">民事结合/同居伴侣关系</Select.Option>
-    //           <Select.Option value="S">未婚</Select.Option>
-    //           <Select.Option value="W">丧偶</Select.Option>
-    //           <Select.Option value="D">离异</Select.Option>
-    //           <Select.Option value="L">合法分居</Select.Option>
-    //           <Select.Option value="O">其他</Select.Option>
-    //         </Select>
-    //       </QuestionItem>
-    //       <Divider />
+          <QuestionItem
+            question="婚姻状况"
+            name="maritalStatus"
+            explanation="请选择您目前的婚姻状况。"
+          >
+            <Select placeholder="选择一个">
+            <Select.Option value="M">已婚</Select.Option>
+              <Select.Option value="C">普通法婚姻</Select.Option>
+              <Select.Option value="P">民事结合/同居伴侣关系</Select.Option>
+              <Select.Option value="S">未婚</Select.Option>
+              <Select.Option value="W">丧偶</Select.Option>
+              <Select.Option value="D">离异</Select.Option>
+              <Select.Option value="L">合法分居</Select.Option>
+              <Select.Option value="O">其他</Select.Option>
+            </Select>
+          </QuestionItem>
+          <Divider />
 
-    //       <h4 style={{ marginBottom: '10px', marginTop: '20px' }}>
-    //         <span>出生日期与出生地</span>
-    //       </h4>
+          <h4 style={{ marginBottom: '10px', marginTop: '20px' }}>
+            <span>出生日期与出生地</span>
+          </h4>
         
-    //       <div className="field-group callout" style={highlightedBlockStyle}>
+          <div className="field-group callout" style={highlightedBlockStyle}>
   
-    //         <QuestionItem
-    //           question="日期"
-    //           name="dateOfBirth"
-    //           explanation="若不知道具体日期或月份，请按护照所示填写。"
-    //         >
-    //           <div style={dateBlockStyle}>
-    //             <Form.Item 
-    //               name="dobDay" 
-    //               noStyle
-    //               rules={[{ required: true, message: '请选择日期' }]}
-    //             >
-    //               <Select options={dayOptions} style={{ width: 70 }} placeholder="Day" />
-    //             </Form.Item>
+            <QuestionItem
+              question="日期"
+              name="dateOfBirth"
+              explanation="若不知道具体日期或月份，请按护照所示填写。"
+            >
+              <div style={dateBlockStyle}>
+                <Form.Item 
+                  name="dobDay" 
+                  noStyle
+                  rules={[{ required: true, message: '请选择日期' }]}
+                >
+                  <Select options={dayOptions} style={{ width: 70 }} placeholder="Day" />
+                </Form.Item>
 
-    //             <Form.Item 
-    //               name="dobMonth" 
-    //               noStyle
-    //               rules={[{ required: true, message: '请选择月份' }]}
-    //             >
-    //               <Select options={monthOptions} style={{ width: 80 }} placeholder="Month" />
-    //             </Form.Item>
+                <Form.Item 
+                  name="dobMonth" 
+                  noStyle
+                  rules={[{ required: true, message: '请选择月份' }]}
+                >
+                  <Select options={monthOptions} style={{ width: 80 }} placeholder="Month" />
+                </Form.Item>
 
-    //             <Form.Item 
-    //               name="dobYear" 
-    //               noStyle
-    //               rules={[
-    //                 { required: true, message: '请输入年份' },
-    //                 { pattern: /^\d{4}$/, message: '请输入4位数年份' }
-    //               ]}
-    //             >
-    //               <Input placeholder="Year" style={{ width: '60px' }} maxLength={4} />
-    //             </Form.Item>
+                <Form.Item 
+                  name="dobYear" 
+                  noStyle
+                  rules={[
+                    { required: true, message: '请输入年份' },
+                    { pattern: /^\d{4}$/, message: '请输入4位数年份' }
+                  ]}
+                >
+                  <Input placeholder="Year" style={{ width: '60px' }} maxLength={4} />
+                </Form.Item>
 
-    //             <div style={{ marginLeft: '8px', fontSize: '12px', color: '#666' }}>
-    //               (格式: DD-MMM-YYYY)
-    //             </div>
-    //           </div>
-    //         </QuestionItem>
+                <div style={{ marginLeft: '8px', fontSize: '12px', color: '#666' }}>
+                  (格式: DD-MMM-YYYY)
+                </div>
+              </div>
+            </QuestionItem>
 
-    //         <QuestionItem
-    //           question="城市"
-    //           name="birthCity"
-    //         >
-    //           <Input placeholder="例如：北京" />
-    //         </QuestionItem>
+            <QuestionItem
+              question="城市"
+              name="birthCity"
+            >
+              <Input placeholder="例如：北京" />
+            </QuestionItem>
 
-    //         <QuestionItem
-    //           question="州/省"
-    //           name="birthState"
-    //           hasNaCheckbox={true}
-    //           naCheckboxName="birthState_na"
-    //         >
-    //           <Input placeholder="例如：北京市" />
-    //         </QuestionItem>
+            <QuestionItem
+              question="州/省"
+              name="birthState"
+              hasNaCheckbox={true}
+              naCheckboxName="birthState_na"
+            >
+              <Input placeholder="例如：北京市" />
+            </QuestionItem>
 
-    //         <QuestionItem
-    //           question="国家/地区"
-    //           name="birthCountry"
-    //           explanation="请选择您出生地的现用国家/地区名称。"
-    //         >
-    //           <Select options={countryOptions} placeholder="- 选择一个 -" />
-    //         </QuestionItem>
-    //       </div>
-    //     </>
-    //   ),
-    // },
-    // {
-    //   title: '个人信息 II',
-    //   content: (
-    //     <>
-    //       <QuestionItem
-    //         question="所属国家/地区（国籍）"
-    //         name="nationality"
-    //         explanation="请选择您目前的国籍。"
-    //       >
-    //         <Select options={countryOptions} style={{ width: '100%' }} placeholder="- 选择一个 -" />
-    //       </QuestionItem>
+            <QuestionItem
+              question="国家/地区"
+              name="birthCountry"
+              explanation="请选择您出生地的现用国家/地区名称。"
+            >
+              <Select options={countryOptions} placeholder="- 选择一个 -" />
+            </QuestionItem>
+          </div>
+        </>
+      ),
+    },
+    {
+      title: '个人信息 II',
+      content: (
+        <>
+          <QuestionItem
+            question="所属国家/地区（国籍）"
+            name="nationality"
+            explanation="请选择您目前的国籍。"
+          >
+            <Select options={countryOptions} style={{ width: '100%' }} placeholder="- 选择一个 -" />
+          </QuestionItem>
           
-    //       <QuestionItem
-    //         question="您是否持有或曾经持有上述国籍以外的其他国籍？"
-    //         name="hasOtherNationality"
-    //         explanation="如果您持有或曾经持有多重国籍，请选择'是'。"
-    //       >
-    //         <Radio.Group>
-    //           <Radio value="Y">是</Radio>
-    //           <Radio value="N">否</Radio>
-    //         </Radio.Group>
-    //       </QuestionItem>
+          <QuestionItem
+            question="您是否持有或曾经持有上述国籍以外的其他国籍？"
+            name="hasOtherNationality"
+            explanation="如果您持有或曾经持有多重国籍，请选择'是'。"
+          >
+            <Radio.Group>
+              <Radio value="Y">是</Radio>
+              <Radio value="N">否</Radio>
+            </Radio.Group>
+          </QuestionItem>
           
-    //       <QuestionItem
-    //         question="您是否是所示原籍国/地区（国籍）以外的其他国家/地区的永久居民？"
-    //         name="isPermResOtherCountry"
-    //         explanation="永久居民是指已被一个国家/地区合法授予在该国家/地区无限期生活和工作许可的任何个人。"
-    //       >
-    //         <Radio.Group>
-    //           <Radio value="Y">是</Radio>
-    //           <Radio value="N">否</Radio>
-    //         </Radio.Group>
-    //       </QuestionItem>
+          <QuestionItem
+            question="您是否是所示原籍国/地区（国籍）以外的其他国家/地区的永久居民？"
+            name="isPermResOtherCountry"
+            explanation="永久居民是指已被一个国家/地区合法授予在该国家/地区无限期生活和工作许可的任何个人。"
+          >
+            <Radio.Group>
+              <Radio value="Y">是</Radio>
+              <Radio value="N">否</Radio>
+            </Radio.Group>
+          </QuestionItem>
           
-    //       <Divider />
+          <Divider />
           
-    //       <QuestionItem
-    //         question="身份证件号码"
-    //         name="nationalIdNumber"
-    //         hasNaCheckbox={true}
-    //         naCheckboxName="nationalIdNumber_na"
-    //         explanation="您的身份证号码是您的政府给予的一个独一无二的号码。美国政府为其就业的或者付税的都提供一个号码，就业的为'社会安全号'，付税的为'税号'，这些号码都是独一无二的。"
-    //       >
-    //         <Input placeholder="请输入您的身份证号码" />
-    //       </QuestionItem>
+          <QuestionItem
+            question="身份证件号码"
+            name="nationalIdNumber"
+            hasNaCheckbox={true}
+            naCheckboxName="nationalIdNumber_na"
+            explanation="您的身份证号码是您的政府给予的一个独一无二的号码。美国政府为其就业的或者付税的都提供一个号码，就业的为'社会安全号'，付税的为'税号'，这些号码都是独一无二的。"
+          >
+            <Input placeholder="请输入您的身份证号码" />
+          </QuestionItem>
           
-    //       <QuestionItem
-    //         question="美国社会安全号"
-    //         name="usSSN"
-    //         hasNaCheckbox={true}
-    //         naCheckboxName="usSSN_na"
-    //       >
-    //         <Form.Item noStyle shouldUpdate={(prevValues, currentValues) => 
-    //           prevValues.usSSN_na !== currentValues.usSSN_na
-    //         }>
-    //           {({ getFieldValue }) => {
-    //             const isDisabled = getFieldValue('usSSN_na') === true;
+          <QuestionItem
+            question="美国社会安全号"
+            name="usSSN"
+            hasNaCheckbox={true}
+            naCheckboxName="usSSN_na"
+          >
+            <Form.Item noStyle shouldUpdate={(prevValues, currentValues) => 
+              prevValues.usSSN_na !== currentValues.usSSN_na
+            }>
+              {({ getFieldValue }) => {
+                const isDisabled = getFieldValue('usSSN_na') === true;
                 
-    //             return (
-    //               <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-    //                 <Form.Item name={['usSSN', 'part1']} noStyle>
-    //                   <Input 
-    //                     style={{ width: '60px' }} 
-    //                     maxLength={3} 
-    //                     placeholder="XXX" 
-    //                     disabled={isDisabled}
-    //                   />
-    //                 </Form.Item>
-    //                 <span>-</span>
-    //                 <Form.Item name={['usSSN', 'part2']} noStyle>
-    //                   <Input 
-    //                     style={{ width: '50px' }} 
-    //                     maxLength={2} 
-    //                     placeholder="XX" 
-    //                     disabled={isDisabled}
-    //                   />
-    //                 </Form.Item>
-    //                 <span>-</span>
-    //                 <Form.Item name={['usSSN', 'part3']} noStyle>
-    //                   <Input 
-    //                     style={{ width: '70px' }} 
-    //                     maxLength={4} 
-    //                     placeholder="XXXX" 
-    //                     disabled={isDisabled}
-    //                   />
-    //                 </Form.Item>
-    //               </div>
-    //             );
-    //           }}
-    //         </Form.Item>
-    //       </QuestionItem>
+                return (
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                    <Form.Item name={['usSSN', 'part1']} noStyle>
+                      <Input 
+                        style={{ width: '60px' }} 
+                        maxLength={3} 
+                        placeholder="XXX" 
+                        disabled={isDisabled}
+                      />
+                    </Form.Item>
+                    <span>-</span>
+                    <Form.Item name={['usSSN', 'part2']} noStyle>
+                      <Input 
+                        style={{ width: '50px' }} 
+                        maxLength={2} 
+                        placeholder="XX" 
+                        disabled={isDisabled}
+                      />
+                    </Form.Item>
+                    <span>-</span>
+                    <Form.Item name={['usSSN', 'part3']} noStyle>
+                      <Input 
+                        style={{ width: '70px' }} 
+                        maxLength={4} 
+                        placeholder="XXXX" 
+                        disabled={isDisabled}
+                      />
+                    </Form.Item>
+                  </div>
+                );
+              }}
+            </Form.Item>
+          </QuestionItem>
           
-    //       <QuestionItem
-    //         question="美国纳税人身份号码"
-    //         name="usTaxId"
-    //         hasNaCheckbox={true}
-    //         naCheckboxName="usTaxId_na"
-    //       >
-    //         <Input placeholder="请输入您的美国纳税人身份号码" />
-    //       </QuestionItem>
+          <QuestionItem
+            question="美国纳税人身份号码"
+            name="usTaxId"
+            hasNaCheckbox={true}
+            naCheckboxName="usTaxId_na"
+          >
+            <Input placeholder="请输入您的美国纳税人身份号码" />
+          </QuestionItem>
           
-    //     </>
-    //   ),
-    // },
+        </>
+      ),
+    },
     // {
     //   title: '旅行信息',
     //   description: '行程安排',

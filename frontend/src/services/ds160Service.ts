@@ -1,16 +1,6 @@
 // import axios from 'axios';
 import api from './api';
 
-// Define the API URL directly in this file to avoid import issues
-// This is for production
-// const API_ENDPOINT = process.env.REACT_APP_SERVER_API_URL || 'http://localhost:5000';
-// const API_URL = `${API_ENDPOINT}/api`;
-
-// Use relative URLs with proxy instead of absolute URLs
-// const API_ENDPOINT = 'http://localhost:5000';
-// const API_URL = `${API_ENDPOINT}/api`;
-// const API_URL = '/api';  // This will be proxied to http://localhost:5000/api
-
 export interface DS160Form {
   _id?: string;              // Internal database ID
   application_id: string;    // User-facing form identifier
