@@ -24,6 +24,81 @@ const DS160ReviewPage: React.FC<DS160ReviewPageProps> = ({ form, onSubmit, onEdi
   const renderSection = (title: string, sectionData: any, editStep: number) => {
     if (!sectionData) return null;
     
+    // Filter out entries that should be hidden based on conditional logic
+    const filteredEntries = Object.entries(sectionData).filter(([key, value]: [string, any]) => {
+      // Skip internal fields or empty values
+      if (key.startsWith('_') || value === undefined || value === null || value === '') {
+        return false;
+      }
+      
+      // Skip "N/A" values for conditional fields
+      if (value === 'N/A') {
+        // Check parent condition fields to determine if this field should be shown
+        
+        // Previous US Travel conditional fields
+        if (sectionData.hasBeenToUS === '否' && 
+            ['previousTripsCount', 'previousTripsDetails', 'hasUSDriverLicense', 'driverLicenseDetails'].includes(key)) {
+          return false;
+        }
+        
+        // Previous US Visa conditional fields
+        if (sectionData.previousUsVisa === '否' && 
+            ['lastVisaDate', 'lastVisaNumber', 'sameTypeVisa', 'sameCountry', 'tenPrinted', 
+             'visaLostStolen', 'visaLostYear', 'visaLostExplanation', 'visaCancelled', 'visaCancelledExplanation'].includes(key)) {
+          return false;
+        }
+        
+        // Travel Info - Payer fields
+        if (sectionData.whoIsPaying === '本人' && 
+            ['payerName', 'payerRelationship', 'payerAddress', 'payerContact'].includes(key)) {
+          return false;
+        }
+        
+        // Visa Lost/Stolen conditional fields
+        if (sectionData.visaLostStolen === '否' && 
+            ['visaLostYear', 'visaLostExplanation'].includes(key)) {
+          return false;
+        }
+        
+        // Visa Cancelled conditional fields
+        if (sectionData.visaCancelled === '否' && 
+            ['visaCancelledExplanation'].includes(key)) {
+          return false;
+        }
+        
+        // Visa Refused conditional fields
+        if (sectionData.visaRefused === '否' && 
+            ['visaRefusedExplanation'].includes(key)) {
+          return false;
+        }
+        
+        // Immigrant Petition conditional fields
+        if (sectionData.immigrantPetition === '否' && 
+            ['immigrantPetitionExplanation'].includes(key)) {
+          return false;
+        }
+        
+        // Travel Companions conditional fields
+        if (sectionData.hasCompanions === '否' && 
+            ['groupTravel', 'groupName', 'companionsCount', 'companionsDetails'].includes(key)) {
+          return false;
+        }
+        
+        // Group Travel conditional fields
+        if (sectionData.groupTravel === '否' && 
+            ['groupName'].includes(key)) {
+          return false;
+        }
+      }
+      
+      return true;
+    });
+    
+    // If there are no entries to display after filtering, return null
+    if (filteredEntries.length === 0) {
+      return null;
+    }
+    
     return (
       <Card 
         title={
@@ -35,12 +110,7 @@ const DS160ReviewPage: React.FC<DS160ReviewPageProps> = ({ form, onSubmit, onEdi
         style={{ marginBottom: 16 }}
       >
         <Descriptions column={1} bordered>
-          {Object.entries(sectionData).map(([key, value]: [string, any]) => {
-            // Skip internal fields or empty values
-            if (key.startsWith('_') || value === undefined || value === null || value === '') {
-              return null;
-            }
-            
+          {filteredEntries.map(([key, value]: [string, any]) => {
             // Format the label
             const label = key
               .replace(/([A-Z])/g, ' $1')
@@ -132,6 +202,71 @@ const DS160ReviewPage: React.FC<DS160ReviewPageProps> = ({ form, onSubmit, onEdi
     travelFunder: formData.whoIsPaying || formData.travelFunder || 'N/A',
   };
 
+  const travelCompanions = {
+    hasCompanions: formData.hasCompanions === 'Y' ? '是' : formData.hasCompanions === 'N' ? '否' : 'N/A',
+    groupTravel: formData.hasCompanions === 'Y' ? 
+      (formData.groupTravel === 'Y' ? '是' : formData.groupTravel === 'N' ? '否' : 'N/A') : 'N/A',
+    groupName: formData.hasCompanions === 'Y' && formData.groupTravel === 'Y' ? 
+      formData.groupName || 'N/A' : 'N/A',
+    companionsCount: formData.hasCompanions === 'Y' && formData.groupTravel === 'N' ? 
+      formData.companions?.length || 0 : 'N/A',
+    companionsDetails: formData.hasCompanions === 'Y' && formData.groupTravel === 'N' && formData.companions?.length > 0 ? 
+      formData.companions?.map((companion: any, index: number) => 
+        `同行人 ${index + 1}: ${companion.surname || ''} ${companion.givenName || ''}, 关系: ${
+          companion.relationship === 'S' ? '配偶' : 
+          companion.relationship === 'C' ? '子女' : 
+          companion.relationship === 'P' ? '父母' : 
+          companion.relationship === 'R' ? '其他亲属' : 
+          companion.relationship === 'F' ? '朋友' : 
+          companion.relationship === 'B' ? '商业伙伴' : 
+          companion.relationship === 'O' ? '其他' : 'N/A'
+        }`
+      )?.join('; ') || 'N/A' : 'N/A',
+  };
+
+  const previousTravel = {
+    hasBeenToUS: formData.hasBeenToUS === 'Y' ? '是' : formData.hasBeenToUS === 'N' ? '否' : 'N/A',
+    previousTripsCount: formData.hasBeenToUS === 'Y' ? formData.previousTrips?.length || 0 : 'N/A',
+    previousTripsDetails: formData.hasBeenToUS === 'Y' && formData.previousTrips?.length > 0 ? 
+      formData.previousTrips?.map((trip: any, index: number) => 
+        `旅行 ${index + 1}: ${formatDate(trip.arrivalDay, trip.arrivalMonth, trip.arrivalYear)} - ${formatDate(trip.departureDay, trip.departureMonth, trip.departureYear)}, 停留天数: ${trip.stayDuration || 'N/A'}`
+      )?.join('; ') || 'N/A' : 'N/A',
+    hasUSDriverLicense: formData.hasBeenToUS === 'Y' ? 
+      (formData.hasUSDriverLicense === 'Y' ? '是' : formData.hasUSDriverLicense === 'N' ? '否' : 'N/A') : 'N/A',
+    driverLicenseDetails: formData.hasBeenToUS === 'Y' && formData.hasUSDriverLicense === 'Y' && Array.isArray(formData.driverLicenses) && formData.driverLicenses.length > 0 ? 
+      formData.driverLicenses.map((license: any, index: number) => 
+        `驾照 ${index + 1}: ${license?.licenseNumber || 'N/A'}, 州: ${license?.driver_license_issue_state || 'N/A'}`
+      )?.join('; ') || 'N/A' : 'N/A',
+    previousUsVisa: formData.previousUsVisa === 'Y' ? '是' : formData.previousUsVisa === 'N' ? '否' : 'N/A',
+    lastVisaDate: formData.previousUsVisa === 'Y' ? 
+      formatDate(
+        formData['lastVisaDay'] || formData.lastVisaDay, 
+        formData['lastVisaMonth'] || formData.lastVisaMonth, 
+        formData['lastVisaYear'] || formData.lastVisaYear
+      ) : 'N/A',
+    lastVisaNumber: formData.previousUsVisa === 'Y' ? formData.lastVisaNumber || 'N/A' : 'N/A',
+    sameTypeVisa: formData.previousUsVisa === 'Y' ? 
+      (formData.sameTypeVisa === 'Y' ? '是' : formData.sameTypeVisa === 'N' ? '否' : 'N/A') : 'N/A',
+    sameCountry: formData.previousUsVisa === 'Y' ? 
+      (formData.sameCountry === 'Y' ? '是' : formData.sameCountry === 'N' ? '否' : 'N/A') : 'N/A',
+    tenPrinted: formData.previousUsVisa === 'Y' ? 
+      (formData.tenPrinted === 'Y' ? '是' : formData.tenPrinted === 'N' ? '否' : 'N/A') : 'N/A',
+    visaLostStolen: formData.previousUsVisa === 'Y' ? 
+      (formData.visaLostStolen === 'Y' ? '是' : formData.visaLostStolen === 'N' ? '否' : 'N/A') : 'N/A',
+    visaLostYear: formData.previousUsVisa === 'Y' && formData.visaLostStolen === 'Y' ? 
+      formData.visaLostYear || 'N/A' : 'N/A',
+    visaLostExplanation: formData.previousUsVisa === 'Y' && formData.visaLostStolen === 'Y' ? 
+      formData.visaLostExplanation || 'N/A' : 'N/A',
+    visaCancelled: formData.previousUsVisa === 'Y' ? 
+      (formData.visaCancelled === 'Y' ? '是' : formData.visaCancelled === 'N' ? '否' : 'N/A') : 'N/A',
+    visaCancelledExplanation: formData.previousUsVisa === 'Y' && formData.visaCancelled === 'Y' ? 
+      formData.visaCancelledExplanation || 'N/A' : 'N/A',
+    visaRefused: formData.visaRefused === 'Y' ? '是' : formData.visaRefused === 'N' ? '否' : 'N/A',
+    visaRefusedExplanation: formData.visaRefused === 'Y' ? formData.visaRefusedExplanation || 'N/A' : 'N/A',
+    immigrantPetition: formData.immigrantPetition === 'Y' ? '是' : formData.immigrantPetition === 'N' ? '否' : 'N/A',
+    immigrantPetitionExplanation: formData.immigrantPetition === 'Y' ? formData.immigrantPetitionExplanation || 'N/A' : 'N/A',
+  };
+
   const addressHistory = {
     currentAddress: formData.currentAddress,
     currentCity: formData.currentCity,
@@ -190,28 +325,37 @@ const DS160ReviewPage: React.FC<DS160ReviewPageProps> = ({ form, onSubmit, onEdi
       
       <Row gutter={[16, 16]}>
         <Col span={24}>
-          {renderSection('个人信息', personalInfo, 0)}
+          {renderSection('个人信息 I', personalInfo, 0)}
         </Col>
         <Col span={24}>
-          {renderSection('旅行信息', travelInfo, 1)}
+          {renderSection('个人信息 II', {}, 1)}
         </Col>
         <Col span={24}>
-          {renderSection('地址历史', addressHistory, 2)}
+          {renderSection('旅行信息', travelInfo, 2)}
         </Col>
         <Col span={24}>
-          {renderSection('教育历史', educationHistory, 3)}
+          {renderSection('同行人', travelCompanions, 3)}
         </Col>
         <Col span={24}>
-          {renderSection('工作历史', workHistory, 4)}
+          {renderSection('以前的旅行', previousTravel, 4)}
         </Col>
         <Col span={24}>
-          {renderSection('家庭信息', familyInfo, 5)}
+          {renderSection('地址历史', addressHistory, 1)}
         </Col>
         <Col span={24}>
-          {renderSection('安全背景', securityInfo, 6)}
+          {renderSection('教育历史', educationHistory, 1)}
         </Col>
         <Col span={24}>
-          {renderSection('护照信息', passportInfo, 7)}
+          {renderSection('工作历史', workHistory, 1)}
+        </Col>
+        <Col span={24}>
+          {renderSection('家庭信息', familyInfo, 1)}
+        </Col>
+        <Col span={24}>
+          {renderSection('安全背景', securityInfo, 1)}
+        </Col>
+        <Col span={24}>
+          {renderSection('护照信息', passportInfo, 0)}
         </Col>
       </Row>
       
