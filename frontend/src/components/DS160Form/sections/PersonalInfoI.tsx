@@ -75,7 +75,7 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
         </div>
       </fieldset>
 
-      {/* Second section - Other names */}
+      {/* Second section - Other names & Telecode */}
       <fieldset className="question-section">
         <div className="question-row">
           <div className="question-column">
@@ -130,10 +130,7 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
             <p>其它姓名包括您的婚前用名, 宗教用名、职业用名; 或任何为人所知的其它名字；或在过去为别人所知的其它名字。</p>
           </div>
         </div>
-      </fieldset>
-      
-      {/* Third section - Telecode */}
-      <fieldset className="question-section">
+
         <div className="question-row">
           <div className="question-column">
             <QuestionItem
@@ -177,7 +174,7 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
         </div>
       </fieldset>
 
-      {/* Fourth section - Gender and Marital Status */}
+      {/* Third section - Gender and Marital Status */}
       <fieldset className="question-section">
         <div className="question-row">
           <div className="question-column">
@@ -224,7 +221,7 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
         </div>
       </fieldset>
 
-      {/* Fifth section - Birth Date and Place */}
+      {/* Fourth section - Birth Date and Place */}
       <fieldset className="question-section">
         <h4 style={{ marginBottom: '10px' }}>
           <span>出生日期与出生地</span>
