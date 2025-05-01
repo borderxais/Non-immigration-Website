@@ -14,6 +14,7 @@ interface PersonalInfoIProps {
 const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
   const [hasOtherNames, setHasOtherNames] = useState<boolean>(false);
   const [hasTelecode, setHasTelecode] = useState<boolean>(false);
+  const [maritalStatus, setMaritalStatus] = useState<string>('');
 
   const handleOtherNamesChange = (e: any) => {
     setHasOtherNames(e.target.value);
@@ -21,6 +22,11 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
 
   const handleTelecodeChange = (e: any) => {
     setHasTelecode(e.target.value);
+  };
+
+  const handleMaritalStatusChange = (value: string) => {
+    setMaritalStatus(value);
+    form.setFieldsValue({ maritalStatus: value });
   };
 
   return (
@@ -201,7 +207,11 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
               question="婚姻状况"
               name="maritalStatus"
             >
-              <Select placeholder="选择一个" style={{ width: '98%' }}>
+              <Select 
+                placeholder="选择一个" 
+                style={{ width: '98%' }} 
+                onChange={handleMaritalStatusChange}
+              >
                 <Select.Option value="">- 请选择一个 -</Select.Option>
                 <Select.Option value="M">已婚</Select.Option>
                 <Select.Option value="C">普通法婚姻</Select.Option>
@@ -213,6 +223,26 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
                 <Select.Option value="O">其他</Select.Option>
               </Select>
             </QuestionItem>
+
+            {maritalStatus === 'O' && (
+              <>
+                <h4 style={{ marginBottom: '16px', fontWeight: 'normal' }}>请提供以下信息：</h4>
+                <div className="highlighted-block">
+                  <Form.Item
+                    name="otherMaritalStatus"
+                    label="请说明您的具体婚姻状况"
+                    rules={[{ required: true, message: '请说明您的具体婚姻状况' }]}
+                  >
+                    <Input.TextArea 
+                      style={{ width: '95%' }} 
+                      maxLength={500} 
+                      autoSize={{ minRows: 3, maxRows: 6 }}
+                      placeholder="请详细说明您的婚姻状况"
+                    />
+                  </Form.Item>
+                </div>
+              </>
+            )}
           </div>
           <div className="explanation-column">
             <h4 className="help-header">帮助：婚姻状况</h4>
