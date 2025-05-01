@@ -6,10 +6,10 @@ import { useAuth } from '../../contexts/AuthContext';
 import ApplicationIdDisplay from '../ApplicationIdDisplay';
 import PersonalInfoI from './sections/PersonalInfoI';
 import PersonalInfoII from './sections/PersonalInfoII';
-// import TravelInfo from './sections/TravelInfo';
-// import PreviousTravel from './sections/PreviousTravel';
+import TravelInfo from './sections/TravelInfo';
+import PreviousTravel from './sections/PreviousTravel';
 // import SecurityBackground from './sections/SecurityBackground';
-// import TravelCompanions from './sections/TravelCompanions';
+import TravelCompanions from './sections/TravelCompanions';
 // import WorkHistory from './sections/WorkHistory';
 import DS160ReviewPage from './sections/DS160ReviewPage';
 import ds160Service from '../../services/ds160Service';
@@ -39,21 +39,21 @@ const formSections: FormSection[] = [
     title: '个人信息 II',
     component: PersonalInfoII
   },
-  // {
-  //   key: 'travelInfo',
-  //   title: '旅行信息',
-  //   component: TravelInfo
-  // },
-  // {
-  //   key: 'travelCompanions',
-  //   title: '同行人',
-  //   component: TravelCompanions
-  // },
-  // {
-  //   key: 'previousTravel',
-  //   title: '以前的旅行',
-  //   component: PreviousTravel
-  // },
+  {
+    key: 'travelInfo',
+    title: '旅行信息',
+    component: TravelInfo
+  },
+  {
+    key: 'travelCompanions',
+    title: '同行人',
+    component: TravelCompanions
+  },
+  {
+    key: 'previousTravel',
+    title: '以前的旅行',
+    component: PreviousTravel
+  },
   // {
   //   key: 'workHistory',
   //   title: '工作经历',
@@ -295,9 +295,14 @@ const DS160Form: React.FC = () => {
             <Steps 
               current={currentStep} 
               direction="vertical"
+              className="ds160-steps"
               items={formSectionsRef.current.map((section, index) => ({
                 title: section.title,
+                status: completedSteps.includes(index) 
+                  ? 'finish' 
+                  : (index === currentStep ? 'process' : 'wait'),
                 disabled: !completedSteps.includes(index) && index !== currentStep,
+                className: index === currentStep ? 'current-step' : '',
               }))}
               onChange={(current) => {
                 if (completedSteps.includes(current) || current === currentStep) {
