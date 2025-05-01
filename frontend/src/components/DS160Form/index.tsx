@@ -295,9 +295,14 @@ const DS160Form: React.FC = () => {
             <Steps 
               current={currentStep} 
               direction="vertical"
+              className="ds160-steps"
               items={formSectionsRef.current.map((section, index) => ({
                 title: section.title,
+                status: completedSteps.includes(index) 
+                  ? 'finish' 
+                  : (index === currentStep ? 'process' : 'wait'),
                 disabled: !completedSteps.includes(index) && index !== currentStep,
+                className: index === currentStep ? 'current-step' : '',
               }))}
               onChange={(current) => {
                 if (completedSteps.includes(current) || current === currentStep) {

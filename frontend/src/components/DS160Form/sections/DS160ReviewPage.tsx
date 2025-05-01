@@ -24,8 +24,23 @@ const DS160ReviewPage: React.FC<DS160ReviewPageProps> = ({ form, onSubmit, onEdi
   const renderSection = (title: string, sectionData: any, editStep: number) => {
     if (!sectionData) return null;
     
+    // Pre-process the data to remove irrelevant fields before filtering
+    let processedData = { ...sectionData };
+    
+    // Handle special cases for conditional fields
+    if (title === '旅行信息') {
+      // If user is paying for themselves, remove all payer-related fields
+      if (processedData.whoIsPaying === '本人') {
+        delete processedData.payerName;
+        delete processedData.payerRelationship;
+        delete processedData.payerAddress;
+        delete processedData.payerContact;
+        delete processedData.principalApplicantInfo;
+      }
+    }
+    
     // Filter out entries that should be hidden based on conditional logic
-    const filteredEntries = Object.entries(sectionData).filter(([key, value]: [string, any]) => {
+    const filteredEntries = Object.entries(processedData).filter(([key, value]: [string, any]) => {
       // Skip internal fields or empty values
       if (key.startsWith('_') || value === undefined || value === null || value === '') {
         return false;
@@ -49,8 +64,8 @@ const DS160ReviewPage: React.FC<DS160ReviewPageProps> = ({ form, onSubmit, onEdi
         }
         
         // Travel Info - Payer fields
-        if (sectionData.whoIsPaying === '本人' && 
-            ['payerName', 'payerRelationship', 'payerAddress', 'payerContact'].includes(key)) {
+        if ((sectionData.whoIsPaying === '本人' || !sectionData.whoIsPaying) && 
+            ['payerName', 'payerRelationship', 'payerAddress', 'payerContact', 'principalApplicantInfo'].includes(key)) {
           return false;
         }
         
@@ -140,7 +155,7 @@ const DS160ReviewPage: React.FC<DS160ReviewPageProps> = ({ form, onSubmit, onEdi
   };
 
   // Extract sections from formData
-  const personalInfo = {
+  const personalInfoI = {
     surname: formData.surname,
     givenName: formData.givenName,
     fullNameNative: formData.fullNameNative,
@@ -150,6 +165,17 @@ const DS160ReviewPage: React.FC<DS160ReviewPageProps> = ({ form, onSubmit, onEdi
     birthCity: formData.birthCity,
     birthState: formData.birthState,
     birthCountry: formData.birthCountry,
+  };
+
+  const personalInfoII = {
+    nationality: formData.nationality,
+    hasOtherNationality: formData.hasOtherNationality === 'Y' ? '是' : formData.hasOtherNationality === 'N' ? '否' : 'N/A',
+    otherNationality: formData.hasOtherNationality === 'Y' ? formData.otherNationality : 'N/A',
+    isPermResOtherCountry: formData.isPermResOtherCountry === 'Y' ? '是' : formData.isPermResOtherCountry === 'N' ? '否' : 'N/A',
+    permResCountry: formData.isPermResOtherCountry === 'Y' ? formData.permResCountry : 'N/A',
+    nationalIdNumber: formData.nationalIdNumber_na ? 'N/A' : formData.nationalIdNumber,
+    usSSN: formData.usSSN_na ? 'N/A' : (formData.usSSN ? `${formData.usSSN.part1 || ''}-${formData.usSSN.part2 || ''}-${formData.usSSN.part3 || ''}` : 'N/A'),
+    usTaxId: formData.usTaxId_na ? 'N/A' : formData.usTaxId,
   };
 
   const travelInfo = {
@@ -325,10 +351,10 @@ const DS160ReviewPage: React.FC<DS160ReviewPageProps> = ({ form, onSubmit, onEdi
       
       <Row gutter={[16, 16]}>
         <Col span={24}>
-          {renderSection('个人信息 I', personalInfo, 0)}
+          {renderSection('个人信息 I', personalInfoI, 0)}
         </Col>
         <Col span={24}>
-          {renderSection('个人信息 II', {}, 1)}
+          {renderSection('个人信息 II', personalInfoII, 1)}
         </Col>
         <Col span={24}>
           {renderSection('旅行信息', travelInfo, 2)}

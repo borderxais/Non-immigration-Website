@@ -40,9 +40,6 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
       setVisaLostStolen(form.getFieldValue('visaLostStolen'));
       setVisaCancelled(form.getFieldValue('visaCancelled'));
     };
-
-    // Register a listener for form values change
-    const unsubscribe = form.getFieldsValue;
     
     // Initial update
     updateFromForm();
