@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Radio, Input, Select, Form } from 'antd';
 import QuestionItem from '../common/QuestionItem';
 import RepeatableFormItem from '../common/RepeatableFormItem';
@@ -10,17 +10,54 @@ interface TravelCompanionsProps {
 }
 
 const TravelCompanions: React.FC<TravelCompanionsProps> = ({ form }) => {
-  const [hasCompanions, setHasCompanions] = useState<string | null>(null);
-  const [groupTravel, setGroupTravel] = useState<string | null>(null);
+  const [hasCompanions, setHasCompanions] = useState<string | null>(form.getFieldValue('hasCompanions') || null);
+  const [groupTravel, setGroupTravel] = useState<string | null>(form.getFieldValue('groupTravel') || null);
+
+  // Initialize state from form values when component mounts
+  useEffect(() => {
+    const formHasCompanions = form.getFieldValue('hasCompanions');
+    const formGroupTravel = form.getFieldValue('groupTravel');
+    
+    if (formHasCompanions) setHasCompanions(formHasCompanions);
+    if (formGroupTravel) setGroupTravel(formGroupTravel);
+  }, [form]);
+
+  // Clear companions data when groupTravel changes to 'Y'
+  useEffect(() => {
+    if (groupTravel === 'Y') {
+      form.setFieldsValue({ companions: undefined });
+    } else if (groupTravel === 'N') {
+      // Clear group name when individual companions are selected
+      form.setFieldsValue({ groupName: undefined });
+    }
+  }, [groupTravel, form]);
 
   const handleCompanionsChange = (e: any) => {
     setHasCompanions(e.target.value);
     form.setFieldsValue({ hasCompanions: e.target.value });
+    
+    // If no companions, clear both group travel and companions data
+    if (e.target.value === 'N') {
+      setGroupTravel(null);
+      form.setFieldsValue({ 
+        groupTravel: undefined,
+        groupName: undefined,
+        companions: undefined 
+      });
+    }
   };
 
   const handleGroupTravelChange = (e: any) => {
     setGroupTravel(e.target.value);
     form.setFieldsValue({ groupTravel: e.target.value });
+    
+    // If group travel is selected, clear any existing companions data
+    if (e.target.value === 'Y') {
+      form.setFieldsValue({ companions: undefined });
+    } else if (e.target.value === 'N') {
+      // If individual companions are selected, clear group name
+      form.setFieldsValue({ groupName: undefined });
+    }
   };
 
   return (
@@ -32,7 +69,7 @@ const TravelCompanions: React.FC<TravelCompanionsProps> = ({ form }) => {
               question="您是否有同行人？"
               name="hasCompanions"
             >
-              <Radio.Group onChange={handleCompanionsChange}>
+              <Radio.Group onChange={handleCompanionsChange} value={hasCompanions}>
                 <Radio value="Y">是</Radio>
                 <Radio value="N">否</Radio>
               </Radio.Group>
@@ -52,7 +89,7 @@ const TravelCompanions: React.FC<TravelCompanionsProps> = ({ form }) => {
                   question="您是否作为一个团队或者组织的成员去旅行？"
                   name="groupTravel"
                 >
-                  <Radio.Group onChange={handleGroupTravelChange}>
+                  <Radio.Group onChange={handleGroupTravelChange} value={groupTravel}>
                     <Radio value="Y">是</Radio>
                     <Radio value="N">否</Radio>
                   </Radio.Group>
@@ -119,14 +156,13 @@ const TravelCompanions: React.FC<TravelCompanionsProps> = ({ form }) => {
                           rules={[{ required: true, message: '请选择与同行人的关系' }]}
                         >
                           <Select style={{ width: '95%' }} placeholder="- 选择一个 -">
-                            <Select.Option value="spouse">配偶</Select.Option>
-                            <Select.Option value="child">子女</Select.Option>
-                            <Select.Option value="parent">父母</Select.Option>
-                            <Select.Option value="sibling">兄弟姐妹</Select.Option>
-                            <Select.Option value="relative">其他亲属</Select.Option>
-                            <Select.Option value="friend">朋友</Select.Option>
-                            <Select.Option value="business">商业伙伴</Select.Option>
-                            <Select.Option value="other">其他</Select.Option>
+                            <Select.Option value="S">配偶</Select.Option>
+                            <Select.Option value="C">子女</Select.Option>
+                            <Select.Option value="P">父母</Select.Option>
+                            <Select.Option value="R">其他亲属</Select.Option>
+                            <Select.Option value="F">朋友</Select.Option>
+                            <Select.Option value="B">商业伙伴</Select.Option>
+                            <Select.Option value="O">其他</Select.Option>
                           </Select>
                         </Form.Item>
                       </>

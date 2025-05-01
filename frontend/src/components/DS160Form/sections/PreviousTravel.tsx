@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Input, Radio, Select } from 'antd';
 import { FormInstance } from 'antd/lib/form';
 import QuestionItem from '../common/QuestionItem';
@@ -15,11 +15,49 @@ interface PreviousTravelProps {
 }
 
 const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
-  const [hasBeenToUS, setHasBeenToUS] = useState<string | null>(null);
-  const [hadUSVisa, setHadUSVisa] = useState<string | null>(null);
-  const [visaRefused, setVisaRefused] = useState<string | null>(null);
-  const [immigrantPetition, setImmigrantPetition] = useState<string | null>(null);
-  const [hasUSDriverLicense, setHasUSDriverLicense] = useState<string | null>(null);
+  const [hasBeenToUS, setHasBeenToUS] = useState<string | null>(form.getFieldValue('hasBeenToUS') || null);
+  const [hadUSVisa, setHadUSVisa] = useState<string | null>(form.getFieldValue('previousUsVisa') || null);
+  const [visaRefused, setVisaRefused] = useState<string | null>(form.getFieldValue('visaRefused') || null);
+  const [immigrantPetition, setImmigrantPetition] = useState<string | null>(form.getFieldValue('immigrantPetition') || null);
+  const [hasUSDriverLicense, setHasUSDriverLicense] = useState<string | null>(form.getFieldValue('hasUSDriverLicense') || null);
+  const [sameTypeVisa, setSameTypeVisa] = useState<string | null>(form.getFieldValue('sameTypeVisa') || null);
+  const [sameCountry, setSameCountry] = useState<string | null>(form.getFieldValue('sameCountry') || null);
+  const [tenPrinted, setTenPrinted] = useState<string | null>(form.getFieldValue('tenPrinted') || null);
+  const [visaLostStolen, setVisaLostStolen] = useState<string | null>(form.getFieldValue('visaLostStolen') || null);
+  const [visaCancelled, setVisaCancelled] = useState<string | null>(form.getFieldValue('visaCancelled') || null);
+
+  // Update state when form values change
+  useEffect(() => {
+    const updateFromForm = () => {
+      setHasBeenToUS(form.getFieldValue('hasBeenToUS'));
+      setHadUSVisa(form.getFieldValue('previousUsVisa'));
+      setVisaRefused(form.getFieldValue('visaRefused'));
+      setImmigrantPetition(form.getFieldValue('immigrantPetition'));
+      setHasUSDriverLicense(form.getFieldValue('hasUSDriverLicense'));
+      setSameTypeVisa(form.getFieldValue('sameTypeVisa'));
+      setSameCountry(form.getFieldValue('sameCountry'));
+      setTenPrinted(form.getFieldValue('tenPrinted'));
+      setVisaLostStolen(form.getFieldValue('visaLostStolen'));
+      setVisaCancelled(form.getFieldValue('visaCancelled'));
+    };
+
+    // Register a listener for form values change
+    const unsubscribe = form.getFieldsValue;
+    
+    // Initial update
+    updateFromForm();
+    
+    // Listen for form field changes
+    const formValues = form.getFieldsValue();
+    form.setFields(Object.keys(formValues).map(name => ({
+      name,
+      touched: false,
+    })));
+
+    return () => {
+      // No cleanup needed for this implementation
+    };
+  }, [form]);
 
   const handleHasBeenToUSChange = (e: any) => {
     setHasBeenToUS(e.target.value);
@@ -44,6 +82,31 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
   const handleUSDriverLicenseChange = (e: any) => {
     setHasUSDriverLicense(e.target.value);
     form.setFieldsValue({ hasUSDriverLicense: e.target.value });
+  };
+
+  const handleSameTypeVisaChange = (e: any) => {
+    setSameTypeVisa(e.target.value);
+    form.setFieldsValue({ sameTypeVisa: e.target.value });
+  };
+
+  const handleSameCountryChange = (e: any) => {
+    setSameCountry(e.target.value);
+    form.setFieldsValue({ sameCountry: e.target.value });
+  };
+
+  const handleTenPrintedChange = (e: any) => {
+    setTenPrinted(e.target.value);
+    form.setFieldsValue({ tenPrinted: e.target.value });
+  };
+
+  const handleVisaLostStolenChange = (e: any) => {
+    setVisaLostStolen(e.target.value);
+    form.setFieldsValue({ visaLostStolen: e.target.value });
+  };
+
+  const handleVisaCancelledChange = (e: any) => {
+    setVisaCancelled(e.target.value);
+    form.setFieldsValue({ visaCancelled: e.target.value });
   };
 
   return (
@@ -75,7 +138,7 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
             <div className="highlighted-block">
               <h4 style={{ marginBottom: '16px', fontWeight: 'normal' }}>请提供以下信息：</h4>
               <RepeatableFormItem
-                name="previousVisits"
+                name="previousTrips"
                 addButtonText="增加另一次访问"
                 removeButtonText="移走"
               >
@@ -85,23 +148,23 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
                       question="到达日期"
                     >
                       <DateInput
-                        dayName={`previousVisits.${field.name}.arrivalDay`}
-                        monthName={`previousVisits.${field.name}.arrivalMonth`}
-                        yearName={`previousVisits.${field.name}.arrivalYear`}
+                        dayName={[field.name, 'arrivalDate', 'day']}
+                        monthName={[field.name, 'arrivalDate', 'month']}
+                        yearName={[field.name, 'arrivalDate', 'year']}
                         required={true}
                       />
                     </QuestionItem>
 
                     <QuestionItem
                       question="停留时间"
-                      name={`previousVisits.${field.name}.stayLength`}
+                      name={[field.name, 'stayDuration']}
                     >
                       <Input style={{ width: '95%' }} maxLength={3} />
                     </QuestionItem>
 
                     <QuestionItem
                       question="时间单位"
-                      name={`previousVisits.${field.name}.stayUnit`}
+                      name={[field.name, 'stayUnit']}
                     >
                       <Select options={losUnitOptions} style={{ width: '95%' }} />
                     </QuestionItem>
@@ -142,20 +205,20 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
                     <>
                       <QuestionItem
                         question="驾照号码"
-                        name="licenseNumber"
+                        name={[field.name, 'licenseNumber']}
                         hasNaCheckbox={true}
-                        naCheckboxName="licenseNumber_na"
+                        naCheckboxName={[field.name, 'licenseNumber_na']}
                       >
                         <Input 
                           style={{ width: '95%' }} 
                           maxLength={20}
-                          disabled={form.getFieldValue(`licenseNumber_na`)}
+                          disabled={form.getFieldValue(['driverLicenses', field.name, 'licenseNumber_na'])}
                         />
                       </QuestionItem>
 
                       <QuestionItem
                         question="发证州"
-                        name="driver_license_issue_state"
+                        name={[field.name, 'driver_license_issue_state']}
                       >
                         <Select options={usStateOptions} style={{ width: '95%' }} />
                       </QuestionItem>
@@ -198,9 +261,10 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
                   name="lastVisaIssueDate"
                 >
                   <DateInput 
-                    dayName="lastVisaDay"
-                    monthName="lastVisaMonth"
-                    yearName="lastVisaYear"
+                    dayName={["lastVisaIssueDate", "day"]}
+                    monthName={["lastVisaIssueDate", "month"]}
+                    yearName={["lastVisaIssueDate", "year"]}
+                    required={true}
                   />
                 </QuestionItem>
               </div>
@@ -221,6 +285,146 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
                 <p>请提供您最近一次美国签证的签发日期和签证号码。</p>
               </div>
             </div>
+
+            <div className="question-row">
+              <div className="question-column">
+                <QuestionItem
+                  question="您是否申请相同类型的签证？"
+                  name="sameTypeVisa"
+                >
+                  <Radio.Group onChange={handleSameTypeVisaChange} value={sameTypeVisa}>
+                    <Radio value="Y">是 (Yes)</Radio>
+                    <Radio value="N">否 (No)</Radio>
+                  </Radio.Group>
+                </QuestionItem>
+              </div>
+              <div className="explanation-column">
+                <h4 className="help-header">帮助：签证类型</h4>
+                <p>如果您此次申请的签证类型与上次获得的签证类型相同，请选择"是"。</p>
+              </div>
+            </div>
+
+            <div className="question-row">
+              <div className="question-column">
+                <QuestionItem
+                  question="您是否在签发上述签证的同一国家或地点申请，并且该国家或地点是您的主要居住地？"
+                  name="sameCountry"
+                >
+                  <Radio.Group onChange={handleSameCountryChange} value={sameCountry}>
+                    <Radio value="Y">是 (Yes)</Radio>
+                    <Radio value="N">否 (No)</Radio>
+                  </Radio.Group>
+                </QuestionItem>
+              </div>
+              <div className="explanation-column">
+                <h4 className="help-header">帮助：申请地点</h4>
+                <p>如果您此次申请的地点与上次获得签证的地点相同，并且该地点是您的主要居住地，请选择"是"。</p>
+              </div>
+            </div>
+
+            <div className="question-row">
+              <div className="question-column">
+                <QuestionItem
+                  question="您是否曾经提供过十指指纹？"
+                  name="tenPrinted"
+                >
+                  <Radio.Group onChange={handleTenPrintedChange} value={tenPrinted}>
+                    <Radio value="Y">是 (Yes)</Radio>
+                    <Radio value="N">否 (No)</Radio>
+                  </Radio.Group>
+                </QuestionItem>
+              </div>
+              <div className="explanation-column">
+                <h4 className="help-header">帮助：十指指纹</h4>
+                <p>如果您在之前的签证申请或入境美国时提供过十指指纹（而不仅仅是两个手指的指纹），请选择"是"。</p>
+              </div>
+            </div>
+
+            <div className="question-row">
+              <div className="question-column">
+                <QuestionItem
+                  question="您的美国签证是否曾经丢失或被盗？"
+                  name="visaLostStolen"
+                >
+                  <Radio.Group onChange={handleVisaLostStolenChange} value={visaLostStolen}>
+                    <Radio value="Y">是 (Yes)</Radio>
+                    <Radio value="N">否 (No)</Radio>
+                  </Radio.Group>
+                </QuestionItem>
+              </div>
+              <div className="explanation-column">
+                <h4 className="help-header">帮助：签证丢失</h4>
+                <p>如果您的美国签证曾经丢失或被盗，请选择"是"。</p>
+              </div>
+            </div>
+
+            {visaLostStolen === 'Y' && (
+              <>
+                <div className="question-row">
+                  <div className="question-column">
+                    <QuestionItem
+                      question="签证丢失或被盗的年份"
+                      name="visaLostYear"
+                    >
+                      <Input style={{ width: '98%' }} placeholder="例如：2020" />
+                    </QuestionItem>
+                  </div>
+                  <div className="explanation-column">
+                    {/* Empty explanation column to maintain layout */}
+                  </div>
+                </div>
+
+                <div className="question-row">
+                  <div className="question-column">
+                    <QuestionItem
+                      question="请说明签证丢失或被盗的情况"
+                      name="visaLostExplanation"
+                    >
+                      <TextArea rows={4} style={{ width: '98%' }} />
+                    </QuestionItem>
+                  </div>
+                  <div className="explanation-column">
+                    <h4 className="help-header">帮助：说明</h4>
+                    <p>请简要说明您的签证是如何丢失或被盗的。</p>
+                  </div>
+                </div>
+              </>
+            )}
+
+            <div className="question-row">
+              <div className="question-column">
+                <QuestionItem
+                  question="您的美国签证是否曾经被取消或撤销？"
+                  name="visaCancelled"
+                >
+                  <Radio.Group onChange={handleVisaCancelledChange} value={visaCancelled}>
+                    <Radio value="Y">是 (Yes)</Radio>
+                    <Radio value="N">否 (No)</Radio>
+                  </Radio.Group>
+                </QuestionItem>
+              </div>
+              <div className="explanation-column">
+                <h4 className="help-header">帮助：签证取消</h4>
+                <p>如果您的美国签证曾经被取消或撤销，请选择"是"。</p>
+              </div>
+            </div>
+
+            {visaCancelled === 'Y' && (
+              <div className="question-row">
+                <div className="question-column">
+                  <QuestionItem
+                    question="请说明签证被取消或撤销的情况"
+                    name="visaCancelledExplanation"
+                  >
+                    <TextArea rows={4} style={{ width: '98%' }} />
+                  </QuestionItem>
+                </div>
+                <div className="explanation-column">
+                  <h4 className="help-header">帮助：说明</h4>
+                  <p>请简要说明您的签证被取消或撤销的原因和情况。</p>
+                </div>
+              </div>
+            )}
           </div>
         </fieldset>
       )}

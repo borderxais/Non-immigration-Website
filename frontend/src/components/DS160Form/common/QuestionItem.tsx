@@ -6,11 +6,11 @@ const { Text } = Typography;
 interface QuestionItemProps {
   number?: string;
   question: string;
-  name?: string;
+  name?: string | (string | number)[];
   required?: boolean;
   children: React.ReactNode;
   hasNaCheckbox?: boolean;
-  naCheckboxName?: string;
+  naCheckboxName?: string | (string | number)[];
 }
 
 const QuestionItem: React.FC<QuestionItemProps> = ({ 
@@ -26,36 +26,42 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
   const form = Form.useFormInstance();
   
   // Use the form instance to get the current value of the NA checkbox
-  const naCheckboxFieldName = naCheckboxName || (name ? `${name}_na` : undefined);
+  const naCheckboxFieldName = naCheckboxName || (name ? (typeof name === 'string' ? `${name}_na` : [...name, '_na']) : undefined);
   // Always call Form.useWatch unconditionally, but with a fallback value if the field name is undefined
   const naCheckboxValue = Form.useWatch(naCheckboxFieldName || 'non_existent_field', form);
   const isNaChecked = naCheckboxFieldName ? naCheckboxValue : false;
+  
   // Handle NA checkbox change
   const handleNaCheckboxChange = (e: any) => {
     const checked = e.target.checked;
     
     // If the checkbox is checked, clear the related field value
     if (checked && name) {
-      // Determine the field name to clear based on the component structure
-      const fieldToClear: { [key: string]: undefined } = {};
-      
-      // If it's a simple field, just clear that field
-      fieldToClear[name] = undefined;
-      
-      // Special handling for complex fields like date fields that might have day/month/year components
-      if (name.includes('.')) {
-        const baseName = name.split('.')[0];
+      // For array field names, we need to use form.setFields instead of constructing an object
+      if (Array.isArray(name)) {
+        form.setFieldValue(name, undefined);
+      } else {
+        // Determine the field name to clear based on the component structure
+        const fieldToClear: { [key: string]: undefined } = {};
         
-        // Look for possible date components (common patterns in your form)
-        if (name.endsWith('Date')) {
-          fieldToClear[`${baseName}.expirationDay`] = undefined;
-          fieldToClear[`${baseName}.expirationMonth`] = undefined;
-          fieldToClear[`${baseName}.expirationYear`] = undefined;
+        // If it's a simple field, just clear that field
+        fieldToClear[name] = undefined;
+        
+        // Special handling for complex fields like date fields that might have day/month/year components
+        if (name.includes('.')) {
+          const baseName = name.split('.')[0];
+          
+          // Look for possible date components (common patterns in your form)
+          if (name.endsWith('Date')) {
+            fieldToClear[`${baseName}.expirationDay`] = undefined;
+            fieldToClear[`${baseName}.expirationMonth`] = undefined;
+            fieldToClear[`${baseName}.expirationYear`] = undefined;
+          }
         }
+        
+        // Set the field values to undefined
+        form.setFieldsValue(fieldToClear);
       }
-      
-      // Set the field values to undefined
-      form.setFieldsValue(fieldToClear);
     }
   };
   
