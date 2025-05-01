@@ -53,3 +53,21 @@
   padding: 16px;
   margin-bottom: 16px;
 }
+
+/* Custom styles for the steps component - focus on the circle indicator */
+.ds160-steps .ant-steps-item-icon {
+  transition: all 0.3s;
+}
+
+.ds160-steps .current-step .ant-steps-item-icon {
+  border: 1px solid #1890ff;
+  box-shadow: 0 0 0 3px rgba(24, 144, 255, 0.2);
+}
+
+.ds160-steps .ant-steps-item-title {
+  font-weight: 500;
+}
+
+.ds160-steps .current-step .ant-steps-item-title {
+  font-weight: 600;
+}
