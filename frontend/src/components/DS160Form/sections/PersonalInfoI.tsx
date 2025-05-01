@@ -104,28 +104,33 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
                     addButtonText="增加另一个" 
                     removeButtonText="移走"
                   >
-                    {(field: FormListFieldData) => (
-                      <>
-                        <Form.Item
-                          {...field}
-                          name={[field.name, 'surname']}
-                          label="曾用姓氏"
-                          rules={[{ required: true, message: '请输入曾用姓氏' }]}
-                          style={{ marginBottom: '16px' }}
-                        >
-                          <Input style={{ width: '95%' }} maxLength={33} />
-                        </Form.Item>
-                        
-                        <Form.Item
-                          {...field}
-                          name={[field.name, 'givenName']}
-                          label="曾用名字"
-                          rules={[{ required: true, message: '请输入曾用名字' }]}
-                        >
-                          <Input style={{ width: '95%' }} maxLength={33} />
-                        </Form.Item>
-                      </>
-                    )}
+                    {(field: FormListFieldData) => {
+                      const { key, ...restField } = field;
+                      return (
+                        <>
+                          <Form.Item
+                            key={key}
+                            {...restField}
+                            name={[field.name, 'surname']}
+                            label="曾用姓氏"
+                            rules={[{ required: true, message: '请输入曾用姓氏' }]}
+                            style={{ marginBottom: '16px' }}
+                          >
+                            <Input style={{ width: '95%' }} maxLength={33} />
+                          </Form.Item>
+                          
+                          <Form.Item
+                            key={`${key}-given`}
+                            {...restField}
+                            name={[field.name, 'givenName']}
+                            label="曾用名字"
+                            rules={[{ required: true, message: '请输入曾用名字' }]}
+                          >
+                            <Input style={{ width: '95%' }} maxLength={33} />
+                          </Form.Item>
+                        </>
+                      );
+                    }}
                   </RepeatableFormItem>
                 </div>
               </>
