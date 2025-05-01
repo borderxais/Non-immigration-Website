@@ -12,13 +12,39 @@ interface PersonalInfoIIProps {
 const PersonalInfoII: React.FC<PersonalInfoIIProps> = ({ form }) => {
   const [hasOtherNationality, setHasOtherNationality] = useState<boolean>(false);
   const [isPermResOtherCountry, setIsPermResOtherCountry] = useState<boolean>(false);
+  const [hasOtherPassport, setHasOtherPassport] = useState<boolean>(false);
 
   const handleOtherNationalityChange = (e: any) => {
     setHasOtherNationality(e.target.value === 'Y');
+    if (e.target.value === 'N') {
+      setHasOtherPassport(false);
+      // Reset other nationality and passport related fields
+      form.setFieldsValue({
+        otherNationality: undefined,
+        hasOtherPassport: undefined,
+        otherPassportNumber: undefined
+      });
+    }
+  };
+
+  const handleOtherPassportChange = (e: any) => {
+    setHasOtherPassport(e.target.value === 'Y');
+    if (e.target.value === 'N') {
+      // Reset passport number when selecting No
+      form.setFieldsValue({
+        otherPassportNumber: undefined
+      });
+    }
   };
 
   const handlePermResChange = (e: any) => {
     setIsPermResOtherCountry(e.target.value === 'Y');
+    if (e.target.value === 'N') {
+      // Reset permanent residence related fields
+      form.setFieldsValue({
+        permResCountry: undefined
+      });
+    }
   };
 
   return (
@@ -66,6 +92,39 @@ const PersonalInfoII: React.FC<PersonalInfoIIProps> = ({ form }) => {
                       </QuestionItem>
                     </div>
                   </div>
+
+                  <div className="question-row">
+                    <div className="question-column">
+                      <QuestionItem
+                        question="您是否持有上述其他国家/地区（国籍）的护照？"
+                        name="hasOtherPassport"
+                      >
+                        <Radio.Group onChange={handleOtherPassportChange}>
+                          <Radio value="Y">是</Radio>
+                          <Radio value="N">否</Radio>
+                        </Radio.Group>
+                      </QuestionItem>
+
+                      {hasOtherPassport && (
+                        <>
+                          <h4 style={{ marginBottom: '16px', fontWeight: 'normal' }}>请提供以下信息：</h4>
+                          <div className="highlighted-block">
+                            <Form.Item
+                              name="otherPassportNumber"
+                              label="护照号码"
+                              rules={[{ required: true, message: '请输入护照号码' }]}
+                            >
+                              <Input 
+                                style={{ width: '95%' }} 
+                                maxLength={20}
+                                placeholder="请输入护照号码"
+                              />
+                            </Form.Item>
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  </div>
                 </div>
               </>
             )}
@@ -98,7 +157,7 @@ const PersonalInfoII: React.FC<PersonalInfoIIProps> = ({ form }) => {
                   <div className="question-row">
                     <div className="question-column">
                       <QuestionItem
-                        question="永久居留国家/地区"
+                        question="其他永久居留国家/地区"
                         name="permResCountry"
                       >
                         <Select options={countryOptions} style={{ width: '98%' }} placeholder="- 选择一个 -" />
