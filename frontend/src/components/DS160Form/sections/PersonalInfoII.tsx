@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import { Form, Select, Radio, Input } from 'antd';
 import { FormInstance } from 'antd/lib/form';
 import QuestionItem from '../common/QuestionItem';
+import RepeatableFormItem from '../common/RepeatableFormItem';
 import { countryOptions } from '../utils/formOptions';
+import { FormListFieldData } from 'antd/lib/form/FormList';
 import '../ds160Form.css';
 
 interface PersonalInfoIIProps {
@@ -20,9 +22,7 @@ const PersonalInfoII: React.FC<PersonalInfoIIProps> = ({ form }) => {
       setHasOtherPassport(false);
       // Reset other nationality and passport related fields
       form.setFieldsValue({
-        otherNationality: undefined,
-        hasOtherPassport: undefined,
-        otherPassportNumber: undefined
+        otherNationalities: undefined
       });
     }
   };
@@ -42,7 +42,7 @@ const PersonalInfoII: React.FC<PersonalInfoIIProps> = ({ form }) => {
     if (e.target.value === 'N') {
       // Reset permanent residence related fields
       form.setFieldsValue({
-        permResCountry: undefined
+        permanentResidences: undefined
       });
     }
   };
@@ -82,49 +82,66 @@ const PersonalInfoII: React.FC<PersonalInfoIIProps> = ({ form }) => {
               <>
                 <h4 style={{ marginBottom: '16px', fontWeight: 'normal' }}>请提供以下信息：</h4>
                 <div className="highlighted-block">
-                  <div className="question-row">
-                    <div className="question-column">
-                      <QuestionItem
-                        question="其他国籍"
-                        name="otherNationality"
-                      >
-                        <Select options={countryOptions} style={{ width: '98%' }} placeholder="- 选择一个 -" />
-                      </QuestionItem>
-                    </div>
-                  </div>
-
-                  <div className="question-row">
-                    <div className="question-column">
-                      <QuestionItem
-                        question="您是否持有上述其他国家/地区（国籍）的护照？"
-                        name="hasOtherPassport"
-                      >
-                        <Radio.Group onChange={handleOtherPassportChange}>
-                          <Radio value="Y">是</Radio>
-                          <Radio value="N">否</Radio>
-                        </Radio.Group>
-                      </QuestionItem>
-
-                      {hasOtherPassport && (
+                  <RepeatableFormItem
+                    name="otherNationalities"
+                    addButtonText="增加另一个"
+                    removeButtonText="移除"
+                  >
+                    {(field: FormListFieldData) => {
+                      const { key, ...restField } = field;
+                      return (
                         <>
-                          <h4 style={{ marginBottom: '16px', fontWeight: 'normal' }}>请提供以下信息：</h4>
-                          <div className="highlighted-block">
-                            <Form.Item
-                              name="otherPassportNumber"
-                              label="护照号码"
-                              rules={[{ required: true, message: '请输入护照号码' }]}
-                            >
-                              <Input 
-                                style={{ width: '95%' }} 
-                                maxLength={20}
-                                placeholder="请输入护照号码"
-                              />
-                            </Form.Item>
-                          </div>
+                          <Form.Item
+                            key={key}
+                            {...restField}
+                            name={[field.name, 'country']}
+                            label="其他国籍"
+                            rules={[{ required: true, message: '请选择其他国籍' }]}
+                            style={{ marginBottom: '16px' }}
+                          >
+                            <Select options={countryOptions} style={{ width: '95%' }} placeholder="- 选择一个 -" />
+                          </Form.Item>
+
+                          <Form.Item
+                            key={`${key}-passport`}
+                            {...restField}
+                            name={[field.name, 'hasPassport']}
+                            label="是否持有该国护照"
+                            rules={[{ required: true, message: '请选择是否持有护照' }]}
+                          >
+                            <Radio.Group>
+                              <Radio value="Y">是</Radio>
+                              <Radio value="N">否</Radio>
+                            </Radio.Group>
+                          </Form.Item>
+
+                          <Form.Item
+                            noStyle
+                            shouldUpdate={(prevValues, currentValues) => {
+                              const prev = prevValues?.otherNationalities?.[field.name]?.hasPassport;
+                              const curr = currentValues?.otherNationalities?.[field.name]?.hasPassport;
+                              return prev !== curr;
+                            }}
+                          >
+                            {({ getFieldValue }) => {
+                              const hasPassport = getFieldValue(['otherNationalities', field.name, 'hasPassport']);
+                              return hasPassport === 'Y' ? (
+                                <Form.Item
+                                  key={`${key}-passportNumber`}
+                                  {...restField}
+                                  name={[field.name, 'passportNumber']}
+                                  label="护照号码"
+                                  rules={[{ required: true, message: '请输入护照号码' }]}
+                                >
+                                  <Input style={{ width: '95%' }} maxLength={20} placeholder="请输入护照号码" />
+                                </Form.Item>
+                              ) : null;
+                            }}
+                          </Form.Item>
                         </>
-                      )}
-                    </div>
-                  </div>
+                      );
+                    }}
+                  </RepeatableFormItem>
                 </div>
               </>
             )}
@@ -154,16 +171,26 @@ const PersonalInfoII: React.FC<PersonalInfoIIProps> = ({ form }) => {
               <>
                 <h4 style={{ marginBottom: '16px', fontWeight: 'normal' }}>请提供以下信息：</h4>
                 <div className="highlighted-block">
-                  <div className="question-row">
-                    <div className="question-column">
-                      <QuestionItem
-                        question="其他永久居留国家/地区"
-                        name="permResCountry"
-                      >
-                        <Select options={countryOptions} style={{ width: '98%' }} placeholder="- 选择一个 -" />
-                      </QuestionItem>
-                    </div>
-                  </div>
+                  <RepeatableFormItem
+                    name="permanentResidences"
+                    addButtonText="增加另一个"
+                    removeButtonText="移除"
+                  >
+                    {(field: FormListFieldData) => {
+                      const { key, ...restField } = field;
+                      return (
+                        <Form.Item
+                          key={key}
+                          {...restField}
+                          name={[field.name, 'country']}
+                          label="永久居留国家/地区"
+                          rules={[{ required: true, message: '请选择永久居留国家/地区' }]}
+                        >
+                          <Select options={countryOptions} style={{ width: '95%' }} placeholder="- 选择一个 -" />
+                        </Form.Item>
+                      );
+                    }}
+                  </RepeatableFormItem>
                 </div>
               </>
             )}
