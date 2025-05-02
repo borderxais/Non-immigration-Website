@@ -47,7 +47,7 @@ const RepeatableFormItem: React.FC<RepeatableFormItemProps> = ({
             {fields.map((field) => (
               <React.Fragment key={field.key}>
                 {/* Content block */}
-                <div className="field-group callout wadd" style={{ marginBottom: '8px', padding: '16px', border: '1px dashed #d9d9d9', borderRadius: '8px' }}>
+                <div className="highlighted-block" style={{ marginBottom: '8px', padding: '16px', border: '1px dashed #d9d9d9', borderRadius: '8px' }}>
                   {children(field)}
                 </div>
                 

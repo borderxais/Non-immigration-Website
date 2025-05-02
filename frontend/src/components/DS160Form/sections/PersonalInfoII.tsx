@@ -81,7 +81,7 @@ const PersonalInfoII: React.FC<PersonalInfoIIProps> = ({ form }) => {
             {hasOtherNationality && (
               <>
                 <h4 style={{ marginBottom: '16px', fontWeight: 'normal' }}>请提供以下信息：</h4>
-                <div className="highlighted-block">
+                <div>
                   <RepeatableFormItem
                     name="otherNationalities"
                     addButtonText="增加另一个"
@@ -170,7 +170,7 @@ const PersonalInfoII: React.FC<PersonalInfoIIProps> = ({ form }) => {
             {isPermResOtherCountry && (
               <>
                 <h4 style={{ marginBottom: '16px', fontWeight: 'normal' }}>请提供以下信息：</h4>
-                <div className="highlighted-block">
+                <div>
                   <RepeatableFormItem
                     name="permanentResidences"
                     addButtonText="增加另一个"
