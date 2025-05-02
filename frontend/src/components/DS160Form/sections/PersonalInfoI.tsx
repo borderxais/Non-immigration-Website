@@ -17,16 +17,33 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
   const [maritalStatus, setMaritalStatus] = useState<string>('');
 
   const handleOtherNamesChange = (e: any) => {
-    setHasOtherNames(e.target.value);
+    setHasOtherNames(e.target.value === 'Y');
+    if (e.target.value === 'N') {
+      // Reset all other names fields when selecting No
+      form.setFieldsValue({
+        otherNames: undefined
+      });
+    }
   };
 
   const handleTelecodeChange = (e: any) => {
-    setHasTelecode(e.target.value);
+    setHasTelecode(e.target.value === 'Y');
+    if (e.target.value === 'N') {
+      // Reset telecode fields when selecting No
+      form.setFieldsValue({
+        telecode: undefined
+      });
+    }
   };
 
   const handleMaritalStatusChange = (value: string) => {
     setMaritalStatus(value);
-    form.setFieldsValue({ maritalStatus: value });
+    // Reset other marital status field if not selecting "Other"
+    if (value !== 'O') {  // O for Other
+      form.setFieldsValue({
+        otherMaritalStatus: undefined  // This matches the Form.Item name="otherMaritalStatus"
+      });
+    }
   };
 
   return (
@@ -90,8 +107,8 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
               name="hasOtherNames"
             >
               <Radio.Group onChange={handleOtherNamesChange}>
-                <Radio value={true}>是</Radio>
-                <Radio value={false}>否</Radio>
+                <Radio value="Y">是</Radio>
+                <Radio value="N">否</Radio>
               </Radio.Group>
             </QuestionItem>
             
@@ -149,8 +166,8 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
               name="hasTelecode"
             >
               <Radio.Group onChange={handleTelecodeChange}>
-                <Radio value={true}>是</Radio>
-                <Radio value={false}>否</Radio>
+                <Radio value="Y">是</Radio>
+                <Radio value="N">否</Radio>
               </Radio.Group>
             </QuestionItem>
             
