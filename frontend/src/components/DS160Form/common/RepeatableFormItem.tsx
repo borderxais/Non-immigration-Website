@@ -45,11 +45,14 @@ const RepeatableFormItem: React.FC<RepeatableFormItemProps> = ({
         return (
           <div className="repeatable-form-container">
             {fields.map((field) => (
-              <div key={field.key} className="field-group callout wadd" style={{ marginBottom: '16px', padding: '16px', border: '1px dashed #d9d9d9', borderRadius: '8px' }}>
-                {children(field)}
+              <React.Fragment key={field.key}>
+                {/* Content block */}
+                <div className="field-group callout wadd" style={{ marginBottom: '8px', padding: '16px', border: '1px dashed #d9d9d9', borderRadius: '8px' }}>
+                  {children(field)}
+                </div>
                 
-                {/* Buttons for each entry */}
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '8px' }}>
+                {/* Buttons right below this content block */}
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '16px' }}>
                   <Button
                     type="link"
                     onClick={() => add()}
@@ -63,11 +66,12 @@ const RepeatableFormItem: React.FC<RepeatableFormItemProps> = ({
                     onClick={() => fields.length > 1 && remove(field.name)}
                     icon={<MinusCircleOutlined />}
                     disabled={fields.length <= 1}
+                    danger
                   >
                     {removeButtonText}
                   </Button>
                 </div>
-              </div>
+              </React.Fragment>
             ))}
           </div>
         );
