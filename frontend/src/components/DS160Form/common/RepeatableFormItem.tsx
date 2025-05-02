@@ -52,7 +52,7 @@ const RepeatableFormItem: React.FC<RepeatableFormItemProps> = ({
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '8px' }}>
                   <Button
                     type="link"
-                    onClick={() => add({ id: Date.now() })}
+                    onClick={() => add()}
                     icon={<PlusOutlined />}
                   >
                     {addButtonText}
