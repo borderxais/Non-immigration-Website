@@ -115,7 +115,7 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
             {hasOtherNames && (
               <>
                 <h4 style={{ marginBottom: '16px', fontWeight: 'normal' }}>请提供以下信息：</h4>
-                <div className="highlighted-block">
+                <div>
                   <RepeatableFormItem 
                     name="otherNames" 
                     addButtonText="增加另一个" 
