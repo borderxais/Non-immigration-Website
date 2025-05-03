@@ -400,61 +400,100 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
             </div>
           )}
 
-          {/* Add Principal Applicant Information block for H4 visa */}
-          {specificPurpose && specificPurpose.includes('H4') && (
+          {/* Principal Applicant Information blocks for different visa types */}
+          {specificPurpose && isDependentSelection(specificPurpose) && (
             <>
               <h4 style={{ marginBottom: '16px', fontWeight: 'normal' }}>主申请人信息</h4>
-              <div className="highlighted-block">
-                <div className="question-row">
-                  <div className="question-column">
-                    <QuestionItem
-                      question="主申请人姓氏"
-                      name="principalApplicantSurname"
-                      required
-                    >
-                      <Input style={{ width: '99%' }} placeholder="请输入主申请人姓氏" />
-                    </QuestionItem>
-                  </div>
-                  <div className="explanation-column">
-                    <h4 className="help-header">帮助：主申请人姓氏</h4>
-                    <p>请输入持有签证的主申请人的姓氏（与护照一致）</p>
+              <div className="question-row">
+                <div className="question-column">
+                  <div className="block-inside-highlight">
+                    {/* A Visa Principal Applicant Info */}
+                    {visaClass === 'A' && (
+                      <>
+                        <div className="question-row">
+                          <div className="question-column">
+                            <QuestionItem
+                              question="Surnames"
+                              name="principalApplicantSurname"
+                              required
+                            >
+                              <Input 
+                                style={{ width: '95%' }} 
+                                maxLength={33}
+                              />
+                            </QuestionItem>
+                          </div>
+                        </div>
+
+                        <div className="question-row">
+                          <div className="question-column">
+                            <QuestionItem
+                              question="Given Names"
+                              name="principalApplicantGivenName"
+                              required
+                            >
+                              <Input 
+                                style={{ width: '95%' }} 
+                                maxLength={33}
+                              />
+                            </QuestionItem>
+                          </div>
+                        </div>
+                      </>
+                    )}
+
+                    {/* H Visa Principal Applicant Info */}
+                    {visaClass === 'H' && (
+                      <>
+                        <div className="question-row">
+                          <div className="question-column">
+                            <QuestionItem
+                              question="主申请人姓氏"
+                              name="principalApplicantSurname"
+                              required
+                            >
+                              <Input style={{ width: '99%' }} placeholder="请输入主申请人姓氏" />
+                            </QuestionItem>
+                          </div>
+                        </div>
+
+                        <div className="question-row">
+                          <div className="question-column">
+                            <QuestionItem
+                              question="主申请人名字"
+                              name="principalApplicantGivenName"
+                              required
+                            >
+                              <Input style={{ width: '99%' }} placeholder="请输入主申请人名字" />
+                            </QuestionItem>
+                          </div>
+                        </div>
+
+                        {specificPurpose.includes('H4') && (
+                          <div className="question-row">
+                            <div className="question-column">
+                              <QuestionItem
+                                question="申请收据/申请号码"
+                                name="applicationReceiptNumber"
+                                required
+                              >
+                                <Input 
+                                  style={{ width: '99%' }} 
+                                  placeholder="例如: ABC1234567890" 
+                                  maxLength={13}
+                                />
+                              </QuestionItem>
+                            </div>
+                          </div>
+                        )}
+                      </>
+                    )}
+
+                    {/* Add other visa types here as needed */}
                   </div>
                 </div>
-
-                <div className="question-row">
-                  <div className="question-column">
-                    <QuestionItem
-                      question="主申请人名字"
-                      name="principalApplicantGivenName"
-                      required
-                    >
-                      <Input style={{ width: '99%' }} placeholder="请输入主申请人名字" />
-                    </QuestionItem>
-                  </div>
-                  <div className="explanation-column">
-                    <h4 className="help-header">帮助：主申请人名字</h4>
-                    <p>请输入持有签证的主申请人的名字（与护照一致）</p>
-                  </div>
-                </div>
-
-                <div className="question-row">
-                  <div className="question-column">
-                    <QuestionItem
-                      question="申请收据/申请号码"
-                      name="applicationReceiptNumber"
-                      required
-                    >
-                      <Input 
-                        style={{ width: '99%' }} 
-                        placeholder="例如: ABC1234567890" 
-                        maxLength={13}
-                      />
-                    </QuestionItem>
-                  </div>
-                  <div className="explanation-column">
-                    <h4 className="help-header">帮助：申请收据/申请号码</h4>
-                    <p>请输入主申请人的申请收据号码或申请号码。这通常是由USCIS提供的，格式为三个字母后跟10个数字。</p>
-                  </div>
+                <div className="explanation-column">
+                  {/* Empty explanation column */}
                 </div>
               </div>
             </>
