@@ -17,7 +17,6 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
   const [hasSpecificPlans, setHasSpecificPlans] = useState<string | null>(form.getFieldValue('hasSpecificPlans') || null);
   const [whoIsPaying, setWhoIsPaying] = useState<string | null>(form.getFieldValue('whoIsPaying') || null);
   const [isSameAddress, setIsSameAddress] = useState<string | null>(form.getFieldValue('isSameAddress') || null);
-  const [showMissionInfo, setShowMissionInfo] = useState(false);
 
   // Initialize state from form values when component mounts
   useEffect(() => {
@@ -329,7 +328,6 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
     const shouldShowMission = travelPurposes.some((purpose: any) => 
       purpose?.visaClass === 'A' && purpose?.specificPurpose && !isDependentSelection(purpose?.specificPurpose)
     );
-    setShowMissionInfo(shouldShowMission);
     
     // Reset mission fields if no longer needed
     if (!shouldShowMission) {
@@ -365,9 +363,12 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                       name={[field.name, 'visaClass']}
                     >
                       <Select 
-                        placeholder="- 选择一个 -" 
+                        placeholder="- 请选择一个 -" 
                         style={{ width: '95%' }}
-                        onChange={(value) => handleVisaClassChange(value, field.name)}
+                        onChange={(value) => {
+                          handleVisaClassChange(value, field.name);
+                          setVisaClass(value);
+                        }}
                         options={[
                           { value: '', label: '- 请选择一个 -' },
                           { value: 'A', label: '外国政府官员 (A)' },
@@ -409,9 +410,12 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                         name={[field.name, 'specificPurpose']}
                       >
                         <Select 
-                          placeholder="- 选择一个 -" 
+                          placeholder="- 请选择一个 -" 
                           style={{ width: '95%' }}
-                          onChange={(value) => handleSpecificPurposeChange(value, field.name)}
+                          onChange={(value) => {
+                            handleSpecificPurposeChange(value, field.name);
+                            setSpecificPurpose(value);
+                          }}
                           options={[
                             { value: '', label: '- 请选择一个 -' },
                             ...getSpecificOptions(form.getFieldValue(['travelPurposes', field.name, 'visaClass']))
@@ -765,7 +769,7 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
       </fieldset>
 
       {/* Mission Information Section */}
-      {showMissionInfo && (
+      {visaClass === 'A' && specificPurpose && !isDependentSelection(specificPurpose) && (
         <fieldset className="question-section">
           <h4 style={{ marginBottom: '16px', fontWeight: 'normal' }}>使团信息</h4>
           <div className="highlighted-block">
@@ -921,7 +925,7 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
             >
               <Select 
                 className="select-input" 
-                placeholder="- 选择一个 -"
+                placeholder="- 请选择一个 -"
                 onChange={handleWhoIsPayingChange}
                 options={[
                   { value: '', label: '- 请选择一个 -' },
@@ -1016,7 +1020,7 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                       >
                         <Select 
                           className="select-input" 
-                          placeholder="- 选择一个 -"
+                          placeholder="- 请选择一个 -"
                           options={[
                             { value: '', label: '- 请选择一个 -' },
                             { value: 'C', label: '子女' },
@@ -1133,11 +1137,7 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                             question="国家/地区"
                             name="payerCountry"
                           >
-                            <Select 
-                              className="select-input" 
-                              placeholder="- 选择一个 -"
-                              options={countryOptions}
-                            />
+                            <Select options={countryOptions} placeholder="- 请选择一个 -" style={{ width: '98%' }} />
                           </QuestionItem>
                         </div>
                         <div className="explanation-column">
@@ -1286,11 +1286,7 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                             question="国家/地区"
                             name="companyCountry"
                           >
-                            <Select 
-                              className="select-input" 
-                              placeholder="- 选择一个 -"
-                              options={countryOptions}
-                            />
+                            <Select options={countryOptions} placeholder="- 请选择一个 -" style={{ width: '98%' }} />
                           </QuestionItem>
                         </div>
                       </div>

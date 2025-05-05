@@ -4,7 +4,7 @@ import { FormInstance } from 'antd';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import ApplicationIdDisplay from '../ApplicationIdDisplay';
-import PersonalInfoI from './sections/PersonalInfoI';
+// import PersonalInfoI from './sections/PersonalInfoI';
 // import PersonalInfoII from './sections/PersonalInfoII';
 import TravelInfo from './sections/TravelInfo';
 import PreviousTravel from './sections/PreviousTravel';
@@ -29,11 +29,11 @@ interface FormSection {
 
 // Define the form sections and their titles
 const formSections: FormSection[] = [
-  {
-    key: 'personalInfo1',
-    title: '个人信息 I',
-    component: PersonalInfoI
-  },
+  // {
+  //   key: 'personalInfo1',
+  //   title: '个人信息 I',
+  //   component: PersonalInfoI
+  // },
   // {
   //   key: 'personalInfo2',
   //   title: '个人信息 II',
