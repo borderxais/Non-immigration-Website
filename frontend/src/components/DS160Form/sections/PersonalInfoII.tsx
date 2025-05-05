@@ -14,12 +14,12 @@ interface PersonalInfoIIProps {
 const PersonalInfoII: React.FC<PersonalInfoIIProps> = ({ form }) => {
   const [hasOtherNationality, setHasOtherNationality] = useState<boolean>(false);
   const [isPermResOtherCountry, setIsPermResOtherCountry] = useState<boolean>(false);
-  const [hasOtherPassport, setHasOtherPassport] = useState<boolean>(false);
+  const [hasOtherPassports, setHasOtherPassports] = useState<{ [key: number]: boolean }>({});
 
   const handleOtherNationalityChange = (e: any) => {
     setHasOtherNationality(e.target.value === 'Y');
     if (e.target.value === 'N') {
-      setHasOtherPassport(false);
+      setHasOtherPassports({});
       // Reset other nationality and passport related fields
       form.setFieldsValue({
         otherNationalities: undefined
@@ -27,12 +27,19 @@ const PersonalInfoII: React.FC<PersonalInfoIIProps> = ({ form }) => {
     }
   };
 
-  const handleOtherPassportChange = (e: any) => {
-    setHasOtherPassport(e.target.value === 'Y');
+  const handleOtherPassportChange = (fieldIndex: number) => (e: any) => {
+    setHasOtherPassports(prev => ({
+      ...prev,
+      [fieldIndex]: e.target.value === 'Y'
+    }));
     if (e.target.value === 'N') {
-      // Reset passport number when selecting No
+      const currentNationalities = form.getFieldValue('otherNationalities') || [];
+      currentNationalities[fieldIndex] = {
+        ...currentNationalities[fieldIndex],
+        passportNumber: undefined
+      };
       form.setFieldsValue({
-        otherPassportNumber: undefined
+        otherNationalities: currentNationalities
       });
     }
   };
@@ -109,35 +116,23 @@ const PersonalInfoII: React.FC<PersonalInfoIIProps> = ({ form }) => {
                             label="是否持有该国护照"
                             rules={[{ required: true, message: '请选择是否持有护照' }]}
                           >
-                            <Radio.Group>
+                            <Radio.Group onChange={handleOtherPassportChange(field.name)}>
                               <Radio value="Y">是</Radio>
                               <Radio value="N">否</Radio>
                             </Radio.Group>
                           </Form.Item>
 
-                          <Form.Item
-                            noStyle
-                            shouldUpdate={(prevValues, currentValues) => {
-                              const prev = prevValues?.otherNationalities?.[field.name]?.hasPassport;
-                              const curr = currentValues?.otherNationalities?.[field.name]?.hasPassport;
-                              return prev !== curr;
-                            }}
-                          >
-                            {({ getFieldValue }) => {
-                              const hasPassport = getFieldValue(['otherNationalities', field.name, 'hasPassport']);
-                              return hasPassport === 'Y' ? (
-                                <Form.Item
-                                  key={`${key}-passportNumber`}
-                                  {...restField}
-                                  name={[field.name, 'passportNumber']}
-                                  label="护照号码"
-                                  rules={[{ required: true, message: '请输入护照号码' }]}
-                                >
-                                  <Input style={{ width: '95%' }} maxLength={20} placeholder="请输入护照号码" />
-                                </Form.Item>
-                              ) : null;
-                            }}
-                          </Form.Item>
+                          {hasOtherPassports[field.name] && (
+                            <Form.Item
+                              key={`${key}-passportNumber`}
+                              {...restField}
+                              name={[field.name, 'passportNumber']}
+                              label="护照号码"
+                              rules={[{ required: true, message: '请输入护照号码' }]}
+                            >
+                              <Input style={{ width: '95%' }} maxLength={20} placeholder="请输入护照号码" />
+                            </Form.Item>
+                          )}
                         </>
                       );
                     }}

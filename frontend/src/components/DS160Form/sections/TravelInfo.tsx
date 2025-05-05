@@ -35,10 +35,14 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
   // Handle visa class change
   const handleVisaClassChange = (value: string) => {
     setVisaClass(value);
+    setSpecificPurpose(null);  // Reset the state with null instead of undefined
+    // Reset all dependent fields when visa class changes
     form.setFieldsValue({ 
-      specificPurpose: undefined, 
+      specificPurpose: undefined,
+      selectedPurpose: undefined,
       principalApplicantSurname: undefined, 
-      principalApplicantGivenName: undefined 
+      principalApplicantGivenName: undefined,
+      applicationReceiptNumber: undefined
     });
     setTimeout(() => form.validateFields(['specificPurpose']), 100);
   };
@@ -47,14 +51,13 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
   // Handle specific purpose change
   const handleSpecificPurposeChange = (value: string) => {
     setSpecificPurpose(value);
-    form.setFieldsValue({ selectedPurpose: value });
-
-    if (!isDependentSelection(value)) {
-      form.setFieldsValue({
-        principalApplicantSurname: undefined,
-        principalApplicantGivenName: undefined
-      });
-    }
+    // Reset all fields in the scrollable window
+    form.setFieldsValue({ 
+      selectedPurpose: value,
+      principalApplicantSurname: undefined,
+      principalApplicantGivenName: undefined,
+      applicationReceiptNumber: undefined
+    });
     form.validateFields(['principalApplicantSurname', 'principalApplicantGivenName']);
   };
 
