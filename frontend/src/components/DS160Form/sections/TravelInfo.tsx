@@ -35,50 +35,34 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
 
   // Handle visa class change
   const handleVisaClassChange = (value: string, fieldName: number) => {
-    // Reset all dependent fields when visa class changes
-    const resetFields = {
+    // Reset visa class and its dependent field (specific purpose)
+    form.setFieldsValue({
       [`travelPurposes.${fieldName}.visaClass`]: value,
-      [`travelPurposes.${fieldName}.specificPurpose`]: undefined,
-      [`travelPurposes.${fieldName}.applicationReceiptNumber`]: undefined,
-      [`travelPurposes.${fieldName}.applicationReceiptNumber_na`]: undefined,
-      [`travelPurposes.${fieldName}.principalApplicantSurname`]: undefined,
-      [`travelPurposes.${fieldName}.principalApplicantGivenName`]: undefined
-    };
-
-    form.setFieldsValue(resetFields);
-    
-    // Reset mission info if no A visa types remain
-    const travelPurposes = form.getFieldValue('travelPurposes') || [];
-    const hasAVisaType = travelPurposes.some((purpose: any, index: number) => 
-      (index === fieldName ? value : purpose?.visaClass) === 'A' && 
-      (!purpose?.specificPurpose || !isDependentSelection(purpose?.specificPurpose))
-    );
-    
-    if (!hasAVisaType) {
-      form.setFieldsValue({
-        missionName: undefined,
-        missionAddressLine1: undefined,
-        missionAddressLine2: undefined,
-        missionCity: undefined,
-        missionState: undefined,
-        missionZipCode: undefined,
-        missionPhoneNumber: undefined
-      });
-    }
+      [`travelPurposes.${fieldName}.specificPurpose`]: undefined
+    });
+    setVisaClass(value);
+    setSpecificPurpose(null);
   };
 
   // Handle specific purpose change
   const handleSpecificPurposeChange = (value: string, fieldName: number) => {
-    // Reset dependent fields when specific purpose changes
-    const resetFields = {
+    // Reset specific purpose and its dependent fields
+    form.setFieldsValue({
       [`travelPurposes.${fieldName}.specificPurpose`]: value,
       [`travelPurposes.${fieldName}.applicationReceiptNumber`]: undefined,
       [`travelPurposes.${fieldName}.applicationReceiptNumber_na`]: undefined,
       [`travelPurposes.${fieldName}.principalApplicantSurname`]: undefined,
-      [`travelPurposes.${fieldName}.principalApplicantGivenName`]: undefined
-    };
-
-    form.setFieldsValue(resetFields);
+      [`travelPurposes.${fieldName}.principalApplicantGivenName`]: undefined,
+      // Clear mission info fields
+      sponsoringMission: undefined,
+      contactSurname: undefined,
+      contactGivenName: undefined,
+      contactOrganization: undefined,
+      contactPhone: undefined,
+      contactEmail: undefined,
+      contactRelationship: undefined
+    });
+    setSpecificPurpose(value);
   };
 
   // Handle specific plans change
@@ -322,27 +306,6 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
     }
   };
 
-  // Update mission info visibility whenever travel purposes change
-  useEffect(() => {
-    const travelPurposes = form.getFieldValue('travelPurposes') || [];
-    const shouldShowMission = travelPurposes.some((purpose: any) => 
-      purpose?.visaClass === 'A' && purpose?.specificPurpose && !isDependentSelection(purpose?.specificPurpose)
-    );
-    
-    // Reset mission fields if no longer needed
-    if (!shouldShowMission) {
-      form.setFieldsValue({
-        missionName: undefined,
-        missionAddressLine1: undefined,
-        missionAddressLine2: undefined,
-        missionCity: undefined,
-        missionState: undefined,
-        missionZipCode: undefined,
-        missionPhoneNumber: undefined
-      });
-    }
-  }, [form.getFieldValue('travelPurposes')]);
-
   return (
     <div className="travel-info-section">
       {/* Travel Purpose Section */}
@@ -368,6 +331,10 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                         onChange={(value) => {
                           handleVisaClassChange(value, field.name);
                           setVisaClass(value);
+                          setSpecificPurpose(null);
+                          form.setFieldsValue({
+                            [`travelPurposes.${field.name}.specificPurpose`]: undefined
+                          });
                         }}
                         options={[
                           { value: '', label: '- 请选择一个 -' },
