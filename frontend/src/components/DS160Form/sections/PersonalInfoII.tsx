@@ -64,7 +64,14 @@ const PersonalInfoII: React.FC<PersonalInfoIIProps> = ({ form }) => {
               question="所属国家/地区（国籍）"
               name="nationality"
             >
-              <Select options={countryOptions} style={{ width: '98%' }} placeholder="- 选择一个 -" />
+              <Select style={{ width: '98%' }} placeholder="- 选择一个 -">
+                <Select.Option value="">- 请选择一个 -</Select.Option>
+                {countryOptions.map(option => (
+                  <Select.Option key={option.value} value={option.value}>
+                    {option.label}
+                  </Select.Option>
+                ))}
+              </Select>
             </QuestionItem>
           </div>
           <div className="explanation-column">
@@ -106,7 +113,7 @@ const PersonalInfoII: React.FC<PersonalInfoIIProps> = ({ form }) => {
                             rules={[{ required: true, message: '请选择其他国籍' }]}
                             style={{ marginBottom: '16px' }}
                           >
-                            <Select options={countryOptions} style={{ width: '95%' }} placeholder="- 选择一个 -" />
+                           <Select options={countryOptions} placeholder="- 选择一个 -" style={{ width: '98%' }} />
                           </Form.Item>
 
                           <Form.Item
@@ -181,7 +188,14 @@ const PersonalInfoII: React.FC<PersonalInfoIIProps> = ({ form }) => {
                           label="永久居留国家/地区"
                           rules={[{ required: true, message: '请选择永久居留国家/地区' }]}
                         >
-                          <Select options={countryOptions} style={{ width: '95%' }} placeholder="- 选择一个 -" />
+                          <Select style={{ width: '95%' }} placeholder="- 选择一个 -">
+                            <Select.Option value="">- 请选择一个 -</Select.Option>
+                            {countryOptions.map(option => (
+                              <Select.Option key={option.value} value={option.value}>
+                                {option.label}
+                              </Select.Option>
+                            ))}
+                          </Select>
                         </Form.Item>
                       );
                     }}

@@ -210,11 +210,15 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
               question="性别"
               name="gender"
             >
-              <Select placeholder="选择一个" style={{ width: '98%' }}>
-                <Select.Option value="">- 请选择一个 -</Select.Option>
-                <Select.Option value="M">男</Select.Option>
-                <Select.Option value="F">女</Select.Option>
-              </Select>
+              <Select 
+                placeholder="- 请选择一个 -" 
+                style={{ width: '98%' }}
+                options={[
+                  { value: '', label: '- 请选择一个 -' },
+                  { value: 'M', label: '男' },
+                  { value: 'F', label: '女' }
+                ]}
+              />
             </QuestionItem>
           </div>
           <div className="explanation-column">
@@ -230,20 +234,21 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
               name="maritalStatus"
             >
               <Select 
-                placeholder="选择一个" 
+                placeholder="- 请选择一个 -" 
                 style={{ width: '98%' }} 
                 onChange={handleMaritalStatusChange}
-              >
-                <Select.Option value="">- 请选择一个 -</Select.Option>
-                <Select.Option value="M">已婚</Select.Option>
-                <Select.Option value="C">普通法婚姻</Select.Option>
-                <Select.Option value="P">民事结合/同居伴侣关系</Select.Option>
-                <Select.Option value="S">未婚</Select.Option>
-                <Select.Option value="W">丧偶</Select.Option>
-                <Select.Option value="D">离异</Select.Option>
-                <Select.Option value="L">合法分居</Select.Option>
-                <Select.Option value="O">其他</Select.Option>
-              </Select>
+                options={[
+                  { value: '', label: '- 请选择一个 -' },
+                  { value: 'M', label: '已婚' },
+                  { value: 'C', label: '普通法婚姻' },
+                  { value: 'P', label: '民事结合/同居伴侣关系' },
+                  { value: 'S', label: '未婚' },
+                  { value: 'W', label: '丧偶' },
+                  { value: 'D', label: '离异' },
+                  { value: 'L', label: '合法分居' },
+                  { value: 'O', label: '其他' }
+                ]}
+              />
             </QuestionItem>
 
             {maritalStatus === 'O' && (
@@ -333,7 +338,7 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
                 question="国家/地区"
                 name="birthCountry"
               >
-                <Select options={countryOptions} placeholder="- 选择一个 -" style={{ width: '98%' }} />
+                <Select options={countryOptions} placeholder="- 请选择一个 -" style={{ width: '98%' }} />
               </QuestionItem>
             </div>
             <div className="explanation-column">

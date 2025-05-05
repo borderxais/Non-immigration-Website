@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Input, Select, Radio } from 'antd';
+import type { FormListFieldData } from 'antd/es/form/FormList';
 import QuestionItem from '../common/QuestionItem';
 import DateInput from '../common/DateInput';
 import RepeatableFormItem from '../common/RepeatableFormItem';
@@ -16,6 +17,7 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
   const [hasSpecificPlans, setHasSpecificPlans] = useState<string | null>(form.getFieldValue('hasSpecificPlans') || null);
   const [whoIsPaying, setWhoIsPaying] = useState<string | null>(form.getFieldValue('whoIsPaying') || null);
   const [isSameAddress, setIsSameAddress] = useState<string | null>(form.getFieldValue('isSameAddress') || null);
+  const [showMissionInfo, setShowMissionInfo] = useState(false);
 
   // Initialize state from form values when component mounts
   useEffect(() => {
@@ -33,32 +35,51 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
   }, [form]);
 
   // Handle visa class change
-  const handleVisaClassChange = (value: string) => {
-    setVisaClass(value);
-    setSpecificPurpose(null);  // Reset the state with null instead of undefined
+  const handleVisaClassChange = (value: string, fieldName: number) => {
     // Reset all dependent fields when visa class changes
-    form.setFieldsValue({ 
-      specificPurpose: undefined,
-      selectedPurpose: undefined,
-      principalApplicantSurname: undefined, 
-      principalApplicantGivenName: undefined,
-      applicationReceiptNumber: undefined
-    });
-    setTimeout(() => form.validateFields(['specificPurpose']), 100);
+    const resetFields = {
+      [`travelPurposes.${fieldName}.visaClass`]: value,
+      [`travelPurposes.${fieldName}.specificPurpose`]: undefined,
+      [`travelPurposes.${fieldName}.applicationReceiptNumber`]: undefined,
+      [`travelPurposes.${fieldName}.applicationReceiptNumber_na`]: undefined,
+      [`travelPurposes.${fieldName}.principalApplicantSurname`]: undefined,
+      [`travelPurposes.${fieldName}.principalApplicantGivenName`]: undefined
+    };
+
+    form.setFieldsValue(resetFields);
+    
+    // Reset mission info if no A visa types remain
+    const travelPurposes = form.getFieldValue('travelPurposes') || [];
+    const hasAVisaType = travelPurposes.some((purpose: any, index: number) => 
+      (index === fieldName ? value : purpose?.visaClass) === 'A' && 
+      (!purpose?.specificPurpose || !isDependentSelection(purpose?.specificPurpose))
+    );
+    
+    if (!hasAVisaType) {
+      form.setFieldsValue({
+        missionName: undefined,
+        missionAddressLine1: undefined,
+        missionAddressLine2: undefined,
+        missionCity: undefined,
+        missionState: undefined,
+        missionZipCode: undefined,
+        missionPhoneNumber: undefined
+      });
+    }
   };
 
-
   // Handle specific purpose change
-  const handleSpecificPurposeChange = (value: string) => {
-    setSpecificPurpose(value);
-    // Reset all fields in the scrollable window
-    form.setFieldsValue({ 
-      selectedPurpose: value,
-      principalApplicantSurname: undefined,
-      principalApplicantGivenName: undefined,
-      applicationReceiptNumber: undefined
-    });
-    form.validateFields(['principalApplicantSurname', 'principalApplicantGivenName']);
+  const handleSpecificPurposeChange = (value: string, fieldName: number) => {
+    // Reset dependent fields when specific purpose changes
+    const resetFields = {
+      [`travelPurposes.${fieldName}.specificPurpose`]: value,
+      [`travelPurposes.${fieldName}.applicationReceiptNumber`]: undefined,
+      [`travelPurposes.${fieldName}.applicationReceiptNumber_na`]: undefined,
+      [`travelPurposes.${fieldName}.principalApplicantSurname`]: undefined,
+      [`travelPurposes.${fieldName}.principalApplicantGivenName`]: undefined
+    };
+
+    form.setFieldsValue(resetFields);
   };
 
   // Handle specific plans change
@@ -86,7 +107,7 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
   };
 
   // Get specific options based on visa class
-  const getSpecificOptions = () => {
+  const getSpecificOptions = (visaClass: string) => {
     switch(visaClass) {
       case 'A':
         return [
@@ -302,205 +323,175 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
     }
   };
 
+  // Update mission info visibility whenever travel purposes change
+  useEffect(() => {
+    const travelPurposes = form.getFieldValue('travelPurposes') || [];
+    const shouldShowMission = travelPurposes.some((purpose: any) => 
+      purpose?.visaClass === 'A' && purpose?.specificPurpose && !isDependentSelection(purpose?.specificPurpose)
+    );
+    setShowMissionInfo(shouldShowMission);
+    
+    // Reset mission fields if no longer needed
+    if (!shouldShowMission) {
+      form.setFieldsValue({
+        missionName: undefined,
+        missionAddressLine1: undefined,
+        missionAddressLine2: undefined,
+        missionCity: undefined,
+        missionState: undefined,
+        missionZipCode: undefined,
+        missionPhoneNumber: undefined
+      });
+    }
+  }, [form.getFieldValue('travelPurposes')]);
+
   return (
     <div className="travel-info-section">
       {/* Travel Purpose Section */}
       <fieldset className="question-section">
-        <h4 style={{ marginBottom: '16px', fontWeight: 'normal' }}>提供以下信息：</h4>
-        <div className="highlighted-block">
-          <div className="question-row">
-            <div className="question-column">
-              <QuestionItem
-                question="赴美访问目的"
-                name="visaClass"
-              >
-                <Select 
-                  placeholder="请选择签证类别" 
-                  style={{ width: '99%' }}
-                  onChange={handleVisaClassChange}
-                >
-                  <Select.Option value="A">外国政府官员 (A)</Select.Option>
-                  <Select.Option value="B">临时商务或旅游访客 (B)</Select.Option>
-                  <Select.Option value="C">过境外国人 (C)</Select.Option>
-                  <Select.Option value="CNMI">CNMI 工作者或投资者 (CW/E2C)</Select.Option>
-                  <Select.Option value="D">机组人员 (D)</Select.Option>
-                  <Select.Option value="E">条约贸易商或投资者 (E)</Select.Option>
-                  <Select.Option value="F">学术或语言学生 (F)</Select.Option>
-                  <Select.Option value="G">国际组织代表/雇员 (G)</Select.Option>
-                  <Select.Option value="H">临时工作者 (H)</Select.Option>
-                  <Select.Option value="I">外国媒体代表 (I)</Select.Option>
-                  <Select.Option value="J">交流访问学者 (J)</Select.Option>
-                  <Select.Option value="K">美国公民的未婚夫(妻)或配偶 (K)</Select.Option>
-                  <Select.Option value="L">公司内部调动人员 (L)</Select.Option>
-                  <Select.Option value="M">职业/非学术学生 (M)</Select.Option>
-                  <Select.Option value="N">其他 (N)</Select.Option>
-                  <Select.Option value="NATO">北约工作人员 (NATO)</Select.Option>
-                  <Select.Option value="O">具有特殊能力的外国人 (O)</Select.Option>
-                  <Select.Option value="P">国际知名外国人 (P)</Select.Option>
-                  <Select.Option value="Q">文化交流访问者 (Q)</Select.Option>
-                  <Select.Option value="R">宗教工作者 (R)</Select.Option>
-                  <Select.Option value="S">信息提供者或证人 (S)</Select.Option>
-                  <Select.Option value="T">人口贩运受害者 (T)</Select.Option>
-                  <Select.Option value="TD/TN">北美自由贸易协定专业人士 (TD/TN)</Select.Option>
-                  <Select.Option value="U">犯罪活动受害者 (U)</Select.Option>
-                  <Select.Option value="PAROLE-BEN">假释受益人 (PARCIS)</Select.Option>
-                </Select>
-              </QuestionItem>
-            </div>
-            <div className="explanation-column">
-              <h4 className="help-header">帮助：赴美目的</h4>
-              <p>请选择与您赴美目的最相符的签证类别。</p>
-            </div>
-          </div>
-
-          {visaClass && (
-            <div className="question-row">
-              <div className="question-column">
-                <QuestionItem
-                  question="具体说明"
-                  name="specificPurpose"
-                >
-                  <Select 
-                    placeholder="请选择一个"
-                    style={{ width: '99%' }}
-                    onChange={handleSpecificPurposeChange}
-                  >
-                    {getSpecificOptions().map(option => (
-                      <Select.Option key={option.value} value={option.value}>
-                        {option.label}
-                      </Select.Option>
-                    ))}
-                  </Select>
-                </QuestionItem>
-              </div>
-              <div className="explanation-column">
-                {/* Empty explanation column to maintain layout */}
-              </div>
-            </div>
-          )}
-
-          {/* Add Application Receipt/Petition Number field for H-type visas (except H1B1) */}
-          {specificPurpose && specificPurpose.startsWith('H') && 
-           !specificPurpose.includes('H1B1') && 
-           !specificPurpose.includes('H4') && (
-            <div className="question-row">
-              <div className="question-column">
-                <QuestionItem
-                  question="申请收据/申请号码"
-                  name="applicationReceiptNumber"
-                >
-                  <Input 
-                    style={{ width: '99%' }} 
-                    placeholder="例如: ABC1234567890" 
-                    maxLength={13}
-                  />
-                </QuestionItem>
-              </div>
-              <div className="explanation-column">
-                <h4 className="help-header">帮助：申请收据/申请号码</h4>
-                <p>请输入您的H类签证申请收据号码或申请号码。这通常是由USCIS提供的，格式为三个字母后跟10个数字。</p>
-              </div>
-            </div>
-          )}
-
-          {/* Principal Applicant Information blocks for different visa types */}
-          {specificPurpose && isDependentSelection(specificPurpose) && (
-            <>
-              <h4 style={{ marginBottom: '16px', fontWeight: 'normal' }}>主申请人信息</h4>
-              <div className="question-row">
-                <div className="question-column">
-                  <div className="block-inside-highlight">
-                    {/* A Visa Principal Applicant Info */}
-                    {visaClass === 'A' && (
-                      <>
-                        <div className="question-row">
-                          <div className="question-column">
-                            <QuestionItem
-                              question="Surnames"
-                              name="principalApplicantSurname"
-                              required
-                            >
-                              <Input 
-                                style={{ width: '95%' }} 
-                                maxLength={33}
-                              />
-                            </QuestionItem>
-                          </div>
-                        </div>
-
-                        <div className="question-row">
-                          <div className="question-column">
-                            <QuestionItem
-                              question="Given Names"
-                              name="principalApplicantGivenName"
-                              required
-                            >
-                              <Input 
-                                style={{ width: '95%' }} 
-                                maxLength={33}
-                              />
-                            </QuestionItem>
-                          </div>
-                        </div>
-                      </>
-                    )}
-
-                    {/* H Visa Principal Applicant Info */}
-                    {visaClass === 'H' && (
-                      <>
-                        <div className="question-row">
-                          <div className="question-column">
-                            <QuestionItem
-                              question="主申请人姓氏"
-                              name="principalApplicantSurname"
-                              required
-                            >
-                              <Input style={{ width: '99%' }} placeholder="请输入主申请人姓氏" />
-                            </QuestionItem>
-                          </div>
-                        </div>
-
-                        <div className="question-row">
-                          <div className="question-column">
-                            <QuestionItem
-                              question="主申请人名字"
-                              name="principalApplicantGivenName"
-                              required
-                            >
-                              <Input style={{ width: '99%' }} placeholder="请输入主申请人名字" />
-                            </QuestionItem>
-                          </div>
-                        </div>
-
-                        {specificPurpose.includes('H4') && (
-                          <div className="question-row">
-                            <div className="question-column">
-                              <QuestionItem
-                                question="申请收据/申请号码"
-                                name="applicationReceiptNumber"
-                                required
-                              >
-                                <Input 
-                                  style={{ width: '99%' }} 
-                                  placeholder="例如: ABC1234567890" 
-                                  maxLength={13}
-                                />
-                              </QuestionItem>
-                            </div>
-                          </div>
-                        )}
-                      </>
-                    )}
-
-                    {/* Add other visa types here as needed */}
+        <h4 style={{ marginBottom: '16px', fontWeight: 'normal' }}>请提供以下信息：</h4>
+        <div>
+          <RepeatableFormItem
+            name="travelPurposes"
+            addButtonText="增加另一个目的"
+            removeButtonText="移走"
+          >
+            {(field: FormListFieldData) => (
+              <div className="highlighted-block">
+                <div className="question-row">
+                  <div className="question-column">
+                    <QuestionItem
+                      question="赴美访问目的"
+                      name={[field.name, 'visaClass']}
+                    >
+                      <Select 
+                        placeholder="- 选择一个 -" 
+                        style={{ width: '95%' }}
+                        onChange={(value) => handleVisaClassChange(value, field.name)}
+                        options={[
+                          { value: '', label: '- 请选择一个 -' },
+                          { value: 'A', label: '外国政府官员 (A)' },
+                          { value: 'B', label: '临时商务或旅游访客 (B)' },
+                          { value: 'C', label: '过境外国人 (C)' },
+                          { value: 'CNMI', label: 'CNMI 工作者或投资者 (CW/E2C)' },
+                          { value: 'D', label: '机组人员 (D)' },
+                          { value: 'E', label: '条约贸易商或投资者 (E)' },
+                          { value: 'F', label: '学术或语言学生 (F)' },
+                          { value: 'G', label: '国际组织代表/雇员 (G)' },
+                          { value: 'H', label: '临时工作者 (H)' },
+                          { value: 'I', label: '外国媒体代表 (I)' },
+                          { value: 'J', label: '交流访问学者 (J)' },
+                          { value: 'K', label: '美国公民的未婚夫(妻)或配偶 (K)' },
+                          { value: 'L', label: '公司内部调动人员 (L)' },
+                          { value: 'M', label: '职业/非学术学生 (M)' },
+                          { value: 'N', label: '其他 (N)' },
+                          { value: 'NATO', label: '北约工作人员 (NATO)' },
+                          { value: 'O', label: '具有特殊能力的外国人 (O)' },
+                          { value: 'P', label: '国际知名外国人 (P)' },
+                          { value: 'Q', label: '文化交流访问者 (Q)' },
+                          { value: 'R', label: '宗教工作者 (R)' },
+                          { value: 'S', label: '信息提供者或证人 (S)' }
+                        ]}
+                      />
+                    </QuestionItem>
+                  </div>
+                  <div className="explanation-column">
+                    <h4 className="help-header">帮助：赴美目的</h4>
+                    <p>请选择与您赴美目的最相符的签证类别。</p>
                   </div>
                 </div>
-                <div className="explanation-column">
-                  {/* Empty explanation column */}
-                </div>
+
+                {form.getFieldValue(['travelPurposes', field.name, 'visaClass']) && (
+                  <div className="question-row">
+                    <div className="question-column">
+                      <QuestionItem
+                        question="具体目的"
+                        name={[field.name, 'specificPurpose']}
+                      >
+                        <Select 
+                          placeholder="- 选择一个 -" 
+                          style={{ width: '95%' }}
+                          onChange={(value) => handleSpecificPurposeChange(value, field.name)}
+                          options={[
+                            { value: '', label: '- 请选择一个 -' },
+                            ...getSpecificOptions(form.getFieldValue(['travelPurposes', field.name, 'visaClass']))
+                          ]}
+                        />
+                      </QuestionItem>
+                    </div>
+                    <div className="explanation-column">
+                      {/* Empty explanation column to maintain layout */}
+                    </div>
+                  </div>
+                )}
+
+                {/* Add Application Receipt/Petition Number field for H-type visas (except H1B1) */}
+                {form.getFieldValue(['travelPurposes', field.name, 'specificPurpose']) && 
+                 form.getFieldValue(['travelPurposes', field.name, 'specificPurpose']).startsWith('H') && 
+                 !form.getFieldValue(['travelPurposes', field.name, 'specificPurpose']).includes('H1B1') && 
+                 !form.getFieldValue(['travelPurposes', field.name, 'specificPurpose']).includes('H4') && (
+                  <div className="question-row">
+                    <div className="question-column">
+                      <QuestionItem
+                        question="申请收据/申请号码"
+                        name={[field.name, 'applicationReceiptNumber']}
+                        hasNaCheckbox={form.getFieldValue(['travelPurposes', field.name, 'specificPurpose']).includes('H2')}
+                      >
+                        <Input 
+                          style={{ width: '95%' }} 
+                          placeholder="例如: ABC1234567890" 
+                          maxLength={13}
+                        />
+                      </QuestionItem>
+                    </div>
+                    <div className="explanation-column">
+                      <h4 className="help-header">帮助：申请收据/申请号码</h4>
+                      <p>请输入您的H类签证申请收据号码或申请号码。这通常是由USCIS提供的，格式为三个字母后跟10个数字。如果您是H2A或H2B签证申请人且没有申请号码，请选择"不适用"。</p>
+                    </div>
+                  </div>
+                )}
+
+                {/* Principal Applicant Information blocks for different visa types */}
+                {form.getFieldValue(['travelPurposes', field.name, 'specificPurpose']) && 
+                 isDependentSelection(form.getFieldValue(['travelPurposes', field.name, 'specificPurpose'])) && (
+                  <>
+                    <div className="question-row">
+                      <div className="question-column">
+                        <h4 style={{ marginBottom: '16px', fontWeight: 'normal' }}>主申请人信息</h4>
+                        <div className="block-inside-highlight">
+                          <QuestionItem
+                            question="Surnames"
+                            name={[field.name, 'principalApplicantSurname']}
+                            required
+                          >
+                            <Input 
+                              style={{ width: '95%' }} 
+                              maxLength={33}
+                            />
+                          </QuestionItem>
+
+                          <QuestionItem
+                            question="Given Names"
+                            name={[field.name, 'principalApplicantGivenName']}
+                            required
+                          >
+                            <Input 
+                              style={{ width: '95%' }} 
+                              maxLength={33}
+                            />
+                          </QuestionItem>
+                        </div>
+                      </div>
+                      <div className="explanation-column">
+                        <h4 className="help-header">帮助：主申请人信息</h4>
+                        <p>请提供主申请人的姓名信息。</p>
+                      </div>
+                    </div>
+                  </>
+                )}
               </div>
-            </>
-          )}
+            )}
+          </RepeatableFormItem>
         </div>
       </fieldset>
 
@@ -518,12 +509,7 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
               </Radio.Group>
             </QuestionItem>
           </div>
-          <div className="explanation-column">
-            <h4 className="help-header">帮助：旅行计划</h4>
-            <p>如果您已确定行程，请选择'是'；如果尚未确定，请选择'否'并提供预计的信息。</p>
-          </div>
         </div>
-      
 
         {/* Specific Travel Plans Section */}
         {hasSpecificPlans === 'Y' && (
@@ -582,7 +568,7 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
 
               <div className="question-row">
                 <div className="question-column">
-                <QuestionItem
+                  <QuestionItem
                     question="离开美国日期"
                     // name="departureUSDate"
                   >
@@ -666,8 +652,10 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
         {/* Approximate Travel Plans Section */}
         {hasSpecificPlans === 'N' && (
           <fieldset className="question-section">
-            <div className="question-row">
-              <div className="question-column">
+            <h4 style={{ marginBottom: '16px', fontWeight: 'normal' }}>请提供您预计的旅行信息</h4>
+            <div className="highlighted-block">
+              <div className="question-row">
+                <div className="question-column">
                   <QuestionItem
                     question="计划到达日期"
                   >
@@ -677,126 +665,162 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                       yearName="intendedDateOfArrival.arrivalYear"
                     />
                   </QuestionItem>
+                </div>
+                <div className="explanation-column">
+                  <h4 className="help-header">帮助：计划到达日期</h4>
+                  <p>请提供您计划入境美国的日期。如果您还不确定，请提供一个预计日期。</p>
+                </div>
               </div>
-              <div className="explanation-column">
-                <h4 className="help-header">帮助：计划到达日期</h4>
-                <p>请提供您计划入境美国的日期。如果您还不确定，请提供一个预计日期。</p>
-              </div>
-            </div>
 
-            <div className="question-row">
-              <div className="question-column">
-                <QuestionItem
-                  question="计划在美停留时间"
-                  name="intendedLengthOfStay"
-                >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <Form.Item name="stayDuration" noStyle rules={[{ required: true, message: '请输入停留时间' }]}>
-                      <Input style={{ width: '80px' }} maxLength={3} placeholder="数量" />
-                    </Form.Item>
-                    
-                    <Form.Item name="stayDurationType" noStyle rules={[{ required: true, message: '请选择单位' }]}>
-                      <Select options={losUnitOptions} style={{ width: '120px' }} placeholder="单位" />
-                    </Form.Item>
-                  </div>
-                </QuestionItem>
+              <div className="question-row">
+                <div className="question-column">
+                  <QuestionItem
+                    question="计划在美停留时间"
+                    name="intendedLengthOfStay"
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <Form.Item name="stayDuration" noStyle rules={[{ required: true, message: '请输入停留时间' }]}>
+                        <Input style={{ width: '80px' }} maxLength={3} placeholder="数量" />
+                      </Form.Item>
+                      
+                      <Form.Item name="stayDurationType" noStyle rules={[{ required: true, message: '请选择单位' }]}>
+                        <Select options={losUnitOptions} style={{ width: '120px' }}>
+                          <Select.Option value="">- 请选择一个 -</Select.Option>
+                          {losUnitOptions.map(option => (
+                            <Select.Option key={option.value} value={option.value}>
+                              {option.label}
+                            </Select.Option>
+                          ))}
+                        </Select>
+                      </Form.Item>
+                    </div>
+                  </QuestionItem>
+                </div>
+                <div className="explanation-column">
+                  <h4 className="help-header">帮助：停留时间</h4>
+                  <p>请输入您计划在美国停留的时间长度和单位。</p>
+                </div>
               </div>
-              <div className="explanation-column">
-                <h4 className="help-header">帮助：停留时间</h4>
-                <p>请输入您计划在美国停留的时间长度和单位。</p>
-              </div>
-            </div>
 
-            <div className="question-row">
-              <div className="question-column">
-                <QuestionItem
-                  question="在美住址"
-                  name="addressWhereYouWillStay"
-                >
-                  <div className="highlighted-block">
-                    <QuestionItem
-                      question="街道地址 (第1行)"
-                      name="streetAddress1"
-                    >
-                      <Input style={{ width: '99%' }} maxLength={40} />
-                    </QuestionItem>
-                    
-                    <QuestionItem
-                      question="街道地址 (第2行)"
-                      name="streetAddress2"
-                      required={false}
-                    >
-                      <Input style={{ width: '99%' }} maxLength={40} />
-                    </QuestionItem>
-                    
-                    <QuestionItem
-                      question="城市"
-                      name="city"
-                    >
-                      <Input style={{ width: '99%' }} maxLength={20} />
-                    </QuestionItem>
-                    
-                    <QuestionItem
-                      question="州"
-                      name="state"
-                      hasNaCheckbox={true}
-                      naCheckboxName="state_na"
-                    >
-                      <Select style={{ width: '99%' }} placeholder="- 选择州 -">
-                        {usStateOptions.map(option => (
-                          <Select.Option key={option.value} value={option.value}>{option.label}</Select.Option>
-                        ))}
-                      </Select>
-                    </QuestionItem>
-                    
-                    <QuestionItem
-                      question="邮政编码"
-                      name="zipCode"
-                      hasNaCheckbox={true}
-                      naCheckboxName="zipCode_na"
-                    >
-                      <Input style={{ width: '99%' }} maxLength={10} />
-                    </QuestionItem>
-                  </div>
-                </QuestionItem>
-              </div>
-              <div className="explanation-column">
-                <h4 className="help-header">帮助：在美住址</h4>
-                <p>请提供您在美国期间的详细住址，如酒店名称和地址、朋友或亲戚的住址等。</p>
+              <div className="question-row">
+                <div className="question-column">
+                  <QuestionItem
+                    question="在美住址"
+                    name="addressWhereYouWillStay"
+                  >
+                    <div className="block-inside-highlight">
+                      <QuestionItem
+                        question="街道地址 (第1行)"
+                        name="streetAddress1"
+                      >
+                        <Input style={{ width: '99%' }} maxLength={40} />
+                      </QuestionItem>
+                      
+                      <QuestionItem
+                        question="街道地址 (第2行)"
+                        name="streetAddress2"
+                        required={false}
+                      >
+                        <Input style={{ width: '99%' }} maxLength={40} />
+                      </QuestionItem>
+                      
+                      <QuestionItem
+                        question="城市"
+                        name="city"
+                      >
+                        <Input style={{ width: '99%' }} maxLength={20} />
+                      </QuestionItem>
+                      
+                      <QuestionItem
+                        question="州"
+                        name="state"
+                      >
+                        <Select style={{ width: '99%' }} options={usStateOptions}>
+                          <Select.Option value="">- 请选择一个 -</Select.Option>
+                          {usStateOptions.map(option => (
+                            <Select.Option key={option.value} value={option.value}>
+                              {option.label}
+                            </Select.Option>
+                          ))}
+                        </Select>
+                      </QuestionItem>
+                      
+                      <QuestionItem
+                        question="邮政编码"
+                        name="zipCode"
+                      >
+                        <Input style={{ width: '99%' }} maxLength={10} />
+                      </QuestionItem>
+                    </div>
+                  </QuestionItem>
+                </div>
+                <div className="explanation-column">
+                  <h4 className="help-header">帮助：在美住址</h4>
+                  <p>请提供您在美国期间的详细住址，如酒店名称和地址、朋友或亲戚的住址等。</p>
+                </div>
               </div>
             </div>
           </fieldset>
         )}
       </fieldset>
 
-        
-      {/* Mission Information Section for A-type visas */}
-      {visaClass === 'A' && specificPurpose && !isDependentSelection(specificPurpose) && (
+      {/* Mission Information Section */}
+      {showMissionInfo && (
         <fieldset className="question-section">
           <h4 style={{ marginBottom: '16px', fontWeight: 'normal' }}>使团信息</h4>
           <div className="highlighted-block">
             <div className="question-row">
               <div className="question-column">
                 <QuestionItem
-                  question="使团名称"
-                  name="missionName"
+                  question="赞助使团/组织"
+                  name="sponsoringMission"
                 >
-                  <Input style={{ width: '99%' }} maxLength={40} />
+                  <Input style={{ width: '99%' }} placeholder="请输入赞助使团/组织名称" maxLength={40} />
                 </QuestionItem>
               </div>
               <div className="explanation-column">
-                <h4 className="help-header">帮助：使团名称</h4>
-                <p>请输入您所属使团的完整名称（英文）</p>
+                <h4 className="help-header">帮助：赞助使团/组织</h4>
+                <p>请输入赞助您此次访问的使团或组织的名称（英文）</p>
               </div>
             </div>
 
             <div className="question-row">
               <div className="question-column">
                 <QuestionItem
-                  question="使团地址（第1行）"
-                  name="missionAddress1"
+                  question="联络人姓氏"
+                  name="contactSurname"
                 >
-                  <Input style={{ width: '99%' }} maxLength={40} placeholder="街道地址" />
+                  <Input style={{ width: '99%' }} placeholder="请输入联络人姓氏" maxLength={33} />
+                </QuestionItem>
+              </div>
+              <div className="explanation-column">
+                <h4 className="help-header">帮助：联络人姓氏</h4>
+                <p>请输入使团联络人的姓氏（英文）</p>
+              </div>
+            </div>
+
+            <div className="question-row">
+              <div className="question-column">
+                <QuestionItem
+                  question="联络人名字"
+                  name="contactGivenName"
+                >
+                  <Input style={{ width: '99%' }} placeholder="请输入联络人名字" maxLength={33} />
+                </QuestionItem>
+              </div>
+              <div className="explanation-column">
+                <h4 className="help-header">帮助：联络人名字</h4>
+                <p>请输入使团联络人的名字（英文）</p>
+              </div>
+            </div>
+
+            <div className="question-row">
+              <div className="question-column">
+                <QuestionItem
+                  question="美国地址（第一行）"
+                  name="missionAddressLine1"
+                >
+                  <Input style={{ width: '99%' }} placeholder="请输入地址第一行" maxLength={40} />
                 </QuestionItem>
               </div>
               <div className="explanation-column">
@@ -808,11 +832,11 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
             <div className="question-row">
               <div className="question-column">
                 <QuestionItem
-                  question="使团地址（第2行）"
-                  name="missionAddress2"
+                  question="美国地址（第二行）"
+                  name="missionAddressLine2"
                   required={false}
                 >
-                  <Input style={{ width: '99%' }} maxLength={40} placeholder="公寓号，套房号等（如有）" />
+                  <Input style={{ width: '99%' }} placeholder="请输入地址第二行（可选）" maxLength={40} />
                 </QuestionItem>
               </div>
               <div className="explanation-column">
@@ -826,7 +850,7 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                   question="城市"
                   name="missionCity"
                 >
-                  <Input style={{ width: '99%' }} maxLength={40} />
+                  <Input style={{ width: '99%' }} placeholder="请输入城市名称" maxLength={20} />
                 </QuestionItem>
               </div>
               <div className="explanation-column">
@@ -839,12 +863,13 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                 <QuestionItem
                   question="州"
                   name="missionState"
-                  hasNaCheckbox={true}
-                  naCheckboxName="missionState_na"
                 >
-                  <Select style={{ width: '99%' }} placeholder="- 选择州 -">
+                  <Select style={{ width: '99%' }} options={usStateOptions}>
+                    <Select.Option value="">- 请选择一个 -</Select.Option>
                     {usStateOptions.map(option => (
-                      <Select.Option key={option.value} value={option.value}>{option.label}</Select.Option>
+                      <Select.Option key={option.value} value={option.value}>
+                        {option.label}
+                      </Select.Option>
                     ))}
                   </Select>
                 </QuestionItem>
@@ -859,10 +884,8 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                 <QuestionItem
                   question="邮政编码"
                   name="missionZipCode"
-                  hasNaCheckbox={true}
-                  naCheckboxName="missionZipCode_na"
                 >
-                  <Input style={{ width: '99%' }} maxLength={10} />
+                  <Input style={{ width: '99%' }} placeholder="例如：12345 或 12345-1234" maxLength={10} />
                 </QuestionItem>
               </div>
               <div className="explanation-column">
@@ -873,60 +896,15 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
             <div className="question-row">
               <div className="question-column">
                 <QuestionItem
-                  question="使团电话"
-                  name="missionPhone"
+                  question="电话号码"
+                  name="missionPhoneNumber"
                 >
-                  <Input style={{ width: '99%' }} maxLength={20} placeholder="例如：+1-202-555-0123" />
+                  <Input style={{ width: '99%' }} placeholder="例如：5555555555" maxLength={15} />
                 </QuestionItem>
               </div>
               <div className="explanation-column">
-                <h4 className="help-header">帮助：使团电话</h4>
-                <p>请输入使团的联系电话，包括国家代码和区号</p>
-              </div>
-            </div>
-
-            <div className="question-row">
-              <div className="question-column">
-                <QuestionItem
-                  question="主管姓名（英文）"
-                  name="supervisorName"
-                >
-                  <Input style={{ width: '99%' }} maxLength={40} placeholder="例如：JOHN SMITH" />
-                </QuestionItem>
-              </div>
-              <div className="explanation-column">
-                <h4 className="help-header">帮助：主管姓名</h4>
-                <p>请输入您在使团的直接主管姓名（英文）</p>
-              </div>
-            </div>
-
-            <div className="question-row">
-              <div className="question-column">
-                <QuestionItem
-                  question="主管职务（英文）"
-                  name="supervisorTitle"
-                >
-                  <Input style={{ width: '99%' }} maxLength={40} placeholder="例如：DIRECTOR OF MISSION" />
-                </QuestionItem>
-              </div>
-              <div className="explanation-column">
-                <h4 className="help-header">帮助：主管职务</h4>
-                <p>请输入您主管在使团中的职务（英文）</p>
-              </div>
-            </div>
-
-            <div className="question-row">
-              <div className="question-column">
-                <QuestionItem
-                  question="您的职务（英文）"
-                  name="applicantTitle"
-                >
-                  <Input style={{ width: '99%' }} maxLength={40} placeholder="例如：DIPLOMATIC OFFICER" />
-                </QuestionItem>
-              </div>
-              <div className="explanation-column">
-                <h4 className="help-header">帮助：您的职务</h4>
-                <p>请输入您在使团中的职务（英文）</p>
+                <h4 className="help-header">帮助：电话号码</h4>
+                <p>请输入使团的联系电话，包括区号</p>
               </div>
             </div>
           </div>
@@ -943,16 +921,18 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
             >
               <Select 
                 className="select-input" 
-                placeholder="- 请选择一个 -"
+                placeholder="- 选择一个 -"
                 onChange={handleWhoIsPayingChange}
-              >
-                <Select.Option value="S">本人</Select.Option>
-                <Select.Option value="H">美国申请人</Select.Option>
-                <Select.Option value="O">其他个人</Select.Option>
-                <Select.Option value="P">当前雇主</Select.Option>
-                <Select.Option value="U">美国雇主</Select.Option>
-                <Select.Option value="C">其他公司/组织</Select.Option>
-              </Select>
+                options={[
+                  { value: '', label: '- 请选择一个 -' },
+                  { value: 'S', label: '本人' },
+                  { value: 'H', label: '美国申请人' },
+                  { value: 'O', label: '其他个人' },
+                  { value: 'P', label: '当前雇主' },
+                  { value: 'U', label: '美国雇主' },
+                  { value: 'C', label: '其他公司/组织' }
+                ]}
+              />
             </QuestionItem>
           </div>
           <div className="explanation-column">
@@ -1015,8 +995,6 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                       <QuestionItem
                         question="电子邮件地址"
                         name="payerEmail"
-                        hasNaCheckbox={true}
-                        naCheckboxName="payerEmail_na"
                       >
                         <Input 
                           placeholder="例如：example@email.com" 
@@ -1026,7 +1004,7 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                     </div>
                     <div className="explanation-column">
                       <h4 className="help-header">帮助：电子邮件</h4>
-                      <p>请输入付款人的电子邮件地址，如不适用请勾选</p>
+                      <p>请输入付款人的电子邮件地址</p>
                     </div>
                   </div>
 
@@ -1036,14 +1014,19 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                         question="与您的关系"
                         name="payerRelationship"
                       >
-                        <Select className="select-input" placeholder="- 请选择一个 -">
-                          <Select.Option value="C">子女</Select.Option>
-                          <Select.Option value="P">父母</Select.Option>
-                          <Select.Option value="S">配偶</Select.Option>
-                          <Select.Option value="R">其他亲属</Select.Option>
-                          <Select.Option value="F">朋友</Select.Option>
-                          <Select.Option value="O">其他</Select.Option>
-                        </Select>
+                        <Select 
+                          className="select-input" 
+                          placeholder="- 选择一个 -"
+                          options={[
+                            { value: '', label: '- 请选择一个 -' },
+                            { value: 'C', label: '子女' },
+                            { value: 'P', label: '父母' },
+                            { value: 'S', label: '配偶' },
+                            { value: 'R', label: '其他亲属' },
+                            { value: 'F', label: '朋友' },
+                            { value: 'O', label: '其他' }
+                          ]}
+                        />
                       </QuestionItem>
                     </div>
                     <div className="explanation-column">
@@ -1121,8 +1104,6 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                           <QuestionItem
                             question="州/省"
                             name="payerStateProvince"
-                            hasNaCheckbox={true}
-                            naCheckboxName="payerStateProvince_na"
                           >
                             <Input maxLength={20} />
                           </QuestionItem>
@@ -1137,8 +1118,6 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                           <QuestionItem
                             question="邮政编码"
                             name="payerPostalZIPCode"
-                            hasNaCheckbox={true}
-                            naCheckboxName="payerPostalZIPCode_na"
                           >
                             <Input maxLength={10} />
                           </QuestionItem>
@@ -1154,7 +1133,11 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                             question="国家/地区"
                             name="payerCountry"
                           >
-                            <Select className="select-input" options={countryOptions} placeholder="- 选择一个 -" />
+                            <Select 
+                              className="select-input" 
+                              placeholder="- 选择一个 -"
+                              options={countryOptions}
+                            />
                           </QuestionItem>
                         </div>
                         <div className="explanation-column">
@@ -1205,8 +1188,6 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                   <QuestionItem
                     question="电子邮件地址"
                     name="companyEmail"
-                    hasNaCheckbox={true}
-                    naCheckboxName="companyEmail_na"
                   >
                     <Input 
                       placeholder="例如：example@email.com" 
@@ -1216,7 +1197,7 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                 </div>
                 <div className="explanation-column">
                   <h4 className="help-header">帮助：电子邮件</h4>
-                  <p>请输入公司或组织的电子邮件地址，如不适用请勾选</p>
+                  <p>请输入公司或组织的电子邮件地址</p>
                 </div>
               </div>
 
@@ -1282,8 +1263,6 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                           <QuestionItem
                             question="州/省"
                             name="companyStateProvince"
-                            hasNaCheckbox={true}
-                            naCheckboxName="companyStateProvince_na"
                           >
                             <Input maxLength={20} />
                           </QuestionItem>
@@ -1295,8 +1274,6 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                           <QuestionItem
                             question="邮政编码"
                             name="companyPostalZIPCode"
-                            hasNaCheckbox={true}
-                            naCheckboxName="companyPostalZIPCode_na"
                           >
                             <Input maxLength={10} />
                           </QuestionItem>
@@ -1309,7 +1286,11 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                             question="国家/地区"
                             name="companyCountry"
                           >
-                            <Select className="select-input" options={countryOptions} placeholder="- 选择一个 -" />
+                            <Select 
+                              className="select-input" 
+                              placeholder="- 选择一个 -"
+                              options={countryOptions}
+                            />
                           </QuestionItem>
                         </div>
                       </div>
@@ -1321,7 +1302,6 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
           </>
         )}
       </fieldset>
-
     </div>
   );
 };
