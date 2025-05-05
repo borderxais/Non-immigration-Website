@@ -72,3 +72,10 @@
 .ds160-steps .current-step .ant-steps-item-title {
   font-weight: 600;
 }
+
+/* Button container in repeatable form items */
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}

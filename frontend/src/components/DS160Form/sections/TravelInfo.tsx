@@ -640,6 +640,7 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                       name="visitLocations"
                       addButtonText="增加另一个"
                       removeButtonText="移走"
+                      blockStyle="white"
                     >
                       {(field) => (
                         <Form.Item
@@ -770,7 +771,7 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
 
         
       {/* Mission Information Section for A-type visas */}
-      {visaClass === 'A' && (
+      {visaClass === 'A' && specificPurpose && !isDependentSelection(specificPurpose) && (
         <fieldset className="question-section">
           <h4 style={{ marginBottom: '16px', fontWeight: 'normal' }}>使团信息</h4>
           <div className="highlighted-block">

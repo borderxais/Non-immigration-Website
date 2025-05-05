@@ -8,13 +8,15 @@ interface RepeatableFormItemProps {
   children: (field: FormListFieldData) => React.ReactNode;
   addButtonText?: string;
   removeButtonText?: string;
+  blockStyle?: 'highlighted' | 'white';
 }
 
 const RepeatableFormItem: React.FC<RepeatableFormItemProps> = ({
   name,
   children,
   addButtonText = "添加另一个",
-  removeButtonText = "移除"
+  removeButtonText = "移除",
+  blockStyle = 'highlighted'
 }) => {
   // Create a reference to store the Form.List's add function
   const addFieldRef = useRef<any>(null);
@@ -47,12 +49,12 @@ const RepeatableFormItem: React.FC<RepeatableFormItemProps> = ({
             {fields.map((field) => (
               <React.Fragment key={field.key}>
                 {/* Content block */}
-                <div className="highlighted-block" style={{ marginBottom: '8px', padding: '16px', border: '1px dashed #d9d9d9', borderRadius: '8px' }}>
+                <div className={blockStyle === 'highlighted' ? "highlighted-block" : "block-inside-highlight"}>
                   {children(field)}
                 </div>
                 
                 {/* Buttons right below this content block */}
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '16px' }}>
+                <div className="button-container">
                   <Button
                     type="link"
                     onClick={() => add()}
