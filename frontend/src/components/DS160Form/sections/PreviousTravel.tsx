@@ -82,6 +82,7 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
       "lastVisaIssueDate.month": undefined,
       "lastVisaIssueDate.year": undefined,
       lastVisaNumber: undefined,
+      lastVisaNumber_na: undefined,
       sameTypeVisa: undefined,
       sameCountry: undefined,
       tenPrinted: undefined,
@@ -163,8 +164,8 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
     form.setFieldsValue({
       visaLostStolen: value,
       // Reset fields that appear when visaLostStolen is 'Y'
-      lostStolenExplanation: undefined,
-      lostStolenYear: undefined
+      visaLostYear: undefined,
+      visaLostExplanation: undefined
     });
     setVisaLostStolen(value);
   };
@@ -175,7 +176,7 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
     form.setFieldsValue({
       visaCancelled: value,
       // Reset fields that appear when visaCancelled is 'Y'
-      cancellationExplanation: undefined
+      visaCancelledExplanation: undefined
     });
     setVisaCancelled(value);
   };
@@ -520,7 +521,6 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
       {visaRefused === 'Y' && (
         <fieldset className="question-section">
           <div className="highlighted-block">
-            <div className="question-column" style={{ width: '100%' }}>
               <div className="question-row">
                 <div className="question-column">
                   <QuestionItem
@@ -530,6 +530,8 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
                     <TextArea rows={4} style={{ width: '98%' }} />
                   </QuestionItem>
                 </div>
+                <div className="explanation-column">
+                {/* Empty explanation column to maintain layout */}
               </div>
             </div>
           </div>
@@ -559,16 +561,17 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
       {immigrantPetition === 'Y' && (
         <fieldset className="question-section">
           <div className="highlighted-block">
-            <div className="question-column" style={{ width: '100%' }}>
-              <div className="question-row">
-                <div className="question-column">
-                  <QuestionItem
-                    question="请提供申请人信息"
-                    name="petitionerInfo"
+            <div className="question-row">
+              <div className="question-column">
+                <QuestionItem
+                  question="请提供申请人信息"
+                  name="petitionerInfo"
                   >
                     <TextArea rows={4} style={{ width: '98%' }} />
                   </QuestionItem>
-                </div>
+              </div>
+              <div className="explanation-column">
+              {/* Empty explanation column to maintain layout */}
               </div>
             </div>
           </div>
