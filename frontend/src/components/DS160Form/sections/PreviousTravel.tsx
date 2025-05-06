@@ -57,53 +57,127 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
   }, [form]);
 
   const handleHasBeenToUSChange = (e: any) => {
-    setHasBeenToUS(e.target.value);
-    form.setFieldsValue({ hasBeenToUS: e.target.value });
+    const value = e.target.value;
+    // Reset all dependent fields
+    form.setFieldsValue({
+      hasBeenToUS: value,
+      // Reset fields that appear when hasBeenToUS is 'Y'
+      previousTrips: [],
+      hasUSDriverLicense: undefined,
+      driverLicenses: []
+    });
+    setHasBeenToUS(value);
+    // Reset dependent state variables
+    setHasUSDriverLicense(null);
   };
 
   const handleHadUSVisaChange = (e: any) => {
-    setHadUSVisa(e.target.value);
-    form.setFieldsValue({ previousUsVisa: e.target.value });
+    const value = e.target.value;
+    // Reset all dependent fields
+    form.setFieldsValue({
+      previousUsVisa: value,
+      // Reset fields that appear when previousUsVisa is 'Y'
+      lastVisaIssueDate: undefined,
+      "lastVisaIssueDate.day": undefined,
+      "lastVisaIssueDate.month": undefined,
+      "lastVisaIssueDate.year": undefined,
+      lastVisaNumber: undefined,
+      sameTypeVisa: undefined,
+      sameCountry: undefined,
+      tenPrinted: undefined,
+      visaLostStolen: undefined,
+      visaCancelled: undefined
+    });
+    setHadUSVisa(value);
+    // Reset dependent state variables
+    setSameTypeVisa(null);
+    setSameCountry(null);
+    setTenPrinted(null);
+    setVisaLostStolen(null);
+    setVisaCancelled(null);
   };
 
   const handleVisaRefusedChange = (e: any) => {
-    setVisaRefused(e.target.value);
-    form.setFieldsValue({ visaRefused: e.target.value });
+    const value = e.target.value;
+    // Reset all dependent fields
+    form.setFieldsValue({
+      visaRefused: value,
+      // Reset fields that appear when visaRefused is 'Y'
+      refusalDetails: undefined
+    });
+    setVisaRefused(value);
   };
 
   const handleImmigrantPetitionChange = (e: any) => {
-    setImmigrantPetition(e.target.value);
-    form.setFieldsValue({ immigrantPetition: e.target.value });
+    const value = e.target.value;
+    // Reset all dependent fields
+    form.setFieldsValue({
+      immigrantPetition: value,
+      // Reset fields that appear when immigrantPetition is 'Y'
+      petitionerInfo: undefined
+    });
+    setImmigrantPetition(value);
   };
 
   const handleUSDriverLicenseChange = (e: any) => {
-    setHasUSDriverLicense(e.target.value);
-    form.setFieldsValue({ hasUSDriverLicense: e.target.value });
+    const value = e.target.value;
+    // Reset all dependent fields
+    form.setFieldsValue({
+      hasUSDriverLicense: value,
+      // Reset fields that appear when hasUSDriverLicense is 'Y'
+      driverLicenses: []
+    });
+    setHasUSDriverLicense(value);
   };
 
   const handleSameTypeVisaChange = (e: any) => {
-    setSameTypeVisa(e.target.value);
-    form.setFieldsValue({ sameTypeVisa: e.target.value });
+    const value = e.target.value;
+    // Reset all dependent fields
+    form.setFieldsValue({
+      sameTypeVisa: value
+    });
+    setSameTypeVisa(value);
   };
 
   const handleSameCountryChange = (e: any) => {
-    setSameCountry(e.target.value);
-    form.setFieldsValue({ sameCountry: e.target.value });
+    const value = e.target.value;
+    // Reset all dependent fields
+    form.setFieldsValue({
+      sameCountry: value
+    });
+    setSameCountry(value);
   };
 
   const handleTenPrintedChange = (e: any) => {
-    setTenPrinted(e.target.value);
-    form.setFieldsValue({ tenPrinted: e.target.value });
+    const value = e.target.value;
+    // Reset all dependent fields
+    form.setFieldsValue({
+      tenPrinted: value
+    });
+    setTenPrinted(value);
   };
 
   const handleVisaLostStolenChange = (e: any) => {
-    setVisaLostStolen(e.target.value);
-    form.setFieldsValue({ visaLostStolen: e.target.value });
+    const value = e.target.value;
+    // Reset all dependent fields
+    form.setFieldsValue({
+      visaLostStolen: value,
+      // Reset fields that appear when visaLostStolen is 'Y'
+      lostStolenExplanation: undefined,
+      lostStolenYear: undefined
+    });
+    setVisaLostStolen(value);
   };
 
   const handleVisaCancelledChange = (e: any) => {
-    setVisaCancelled(e.target.value);
-    form.setFieldsValue({ visaCancelled: e.target.value });
+    const value = e.target.value;
+    // Reset all dependent fields
+    form.setFieldsValue({
+      visaCancelled: value,
+      // Reset fields that appear when visaCancelled is 'Y'
+      cancellationExplanation: undefined
+    });
+    setVisaCancelled(value);
   };
 
   return (
