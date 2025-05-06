@@ -44,7 +44,8 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
           applicationReceiptNumber: undefined,
           applicationReceiptNumber_na: undefined,
           principalApplicantSurname: undefined,
-          principalApplicantGivenName: undefined
+          principalApplicantGivenName: undefined,
+          principalApplicantReceiptNumber: undefined
         }
       },
       sponsoringMission: undefined,
@@ -71,7 +72,8 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
           applicationReceiptNumber: undefined,
           applicationReceiptNumber_na: undefined,
           principalApplicantSurname: undefined,
-          principalApplicantGivenName: undefined
+          principalApplicantGivenName: undefined,
+          principalApplicantReceiptNumber: undefined
         }
       },
       sponsoringMission: undefined,
@@ -506,31 +508,50 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                         <h4 style={{ marginBottom: '16px', fontWeight: 'normal' }}>主申请人信息</h4>
                         <div className="block-inside-highlight">
                           <QuestionItem
-                            question="主申请人姓"
+                            question="主申请人姓氏"
                             name={[field.name, 'principalApplicantSurname']}
                             required
                           >
                             <Input 
                               style={{ width: '95%' }} 
                               maxLength={33}
+                              placeholder="例如：ZHANG"
                             />
                           </QuestionItem>
 
                           <QuestionItem
-                            question="主申请人名"
+                            question="主申请人名字"
                             name={[field.name, 'principalApplicantGivenName']}
                             required
                           >
                             <Input 
                               style={{ width: '95%' }} 
                               maxLength={33}
+                              placeholder="例如：WEI"
                             />
                           </QuestionItem>
+                          
+                          {/* Add Application Receipt/Petition Number field for H4 dependents */}
+                          {form.getFieldValue(['travelPurposes', field.name, 'specificPurpose']) && 
+                           (form.getFieldValue(['travelPurposes', field.name, 'specificPurpose']) === 'H4-CH' || 
+                            form.getFieldValue(['travelPurposes', field.name, 'specificPurpose']) === 'H4-SP') && (
+                            <QuestionItem
+                              question="申请收据/申请号码"
+                              name={[field.name, 'principalApplicantReceiptNumber']}
+                              required
+                            >
+                              <Input 
+                                style={{ width: '95%' }} 
+                                placeholder="例如: ABC1234567890" 
+                                maxLength={13}
+                              />
+                            </QuestionItem>
+                          )}
                         </div>
                       </div>
                       <div className="explanation-column">
                         <h4 className="help-header">帮助：主申请人信息</h4>
-                        <p>请提供主申请人的姓名信息。</p>
+                        <p>请提供主申请人的姓名信息。如果您是H4签证申请人，还需要提供主申请人的申请收据/申请号码。</p>
                       </div>
                     </div>
                   </>
