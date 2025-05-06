@@ -27,9 +27,11 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
   
   // Use the form instance to get the current value of the NA checkbox
   const naCheckboxFieldName = naCheckboxName || (name ? (typeof name === 'string' ? `${name}_na` : [...name, '_na']) : undefined);
-  // Always call Form.useWatch unconditionally, but with a fallback value if the field name is undefined
-  const naCheckboxValue = Form.useWatch(naCheckboxFieldName || 'non_existent_field', form);
-  const isNaChecked = naCheckboxFieldName ? naCheckboxValue : false;
+  
+  // Use state to track the checkbox value instead of useWatch
+  const [isNaChecked, setIsNaChecked] = React.useState<boolean>(
+    naCheckboxFieldName ? Boolean(form.getFieldValue(naCheckboxFieldName)) : false
+  );
   
   // Handle NA checkbox change
   const handleNaCheckboxChange = (e: any) => {
@@ -63,6 +65,7 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
         form.setFieldsValue(fieldToClear);
       }
     }
+    setIsNaChecked(checked);
   };
   
   // Modify the rules to respect the NA checkbox state

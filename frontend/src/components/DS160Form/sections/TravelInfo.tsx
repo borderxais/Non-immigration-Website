@@ -483,7 +483,9 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                       <QuestionItem
                         question="申请收据/申请号码"
                         name={[field.name, 'applicationReceiptNumber']}
-                        hasNaCheckbox={form.getFieldValue(['travelPurposes', field.name, 'specificPurpose']).includes('H2')}
+                        hasNaCheckbox={Boolean(form.getFieldValue(['travelPurposes', field.name, 'specificPurpose']) && 
+                                       form.getFieldValue(['travelPurposes', field.name, 'specificPurpose']).includes('H2'))}
+                        naCheckboxName={[field.name, 'applicationReceiptNumber_na']}
                       >
                         <Input 
                           style={{ width: '95%' }} 
