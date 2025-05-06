@@ -175,22 +175,35 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
               <>
                 <h4 style={{ marginBottom: '16px', fontWeight: 'normal' }}>请提供以下信息：</h4>
                 <div className="highlighted-block">
-                  <Form.Item
-                    name={['telecode', 'surname']}
-                    label="姓氏的电码"
-                    rules={[{ required: true, message: '请输入姓氏的电码' }]}
-                    style={{ marginBottom: '16px' }}
-                  >
-                    <Input style={{ width: '95%' }} maxLength={20} />
-                  </Form.Item>
-                  
-                  <Form.Item
-                    name={['telecode', 'givenName']}
-                    label="名字的电码"
-                    rules={[{ required: true, message: '请输入名字的电码' }]}
-                  >
-                    <Input style={{ width: '95%' }} maxLength={20} />
-                  </Form.Item>
+                  <div className="question-row">
+                    <div className="question-column">
+                      <QuestionItem
+                        question="姓氏的电码"
+                        name={['telecode', 'surname']}
+                      >
+                        <Input style={{ width: '95%' }} maxLength={20} />
+                      </QuestionItem>
+                    </div>
+                    <div className="explanation-column">
+                      <h4 className="help-header">帮助：姓氏电码</h4>
+                      <p>请输入您姓氏的电码。</p>
+                    </div>
+                  </div>
+
+                  <div className="question-row">
+                    <div className="question-column">
+                      <QuestionItem
+                        question="名字的电码"
+                        name={['telecode', 'givenName']}
+                      >
+                        <Input style={{ width: '95%' }} maxLength={20} />
+                      </QuestionItem>
+                    </div>
+                    <div className="explanation-column">
+                      <h4 className="help-header">帮助：名字电码</h4>
+                      <p>请输入您名字的电码。</p>
+                    </div>
+                  </div>
                 </div>
               </>
             )}
@@ -255,18 +268,20 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
               <>
                 <h4 style={{ marginBottom: '16px', fontWeight: 'normal' }}>请提供以下信息：</h4>
                 <div className="highlighted-block">
-                  <Form.Item
-                    name="otherMaritalStatus"
-                    label="请说明您的具体婚姻状况"
-                    rules={[{ required: true, message: '请说明您的具体婚姻状况' }]}
-                  >
-                    <Input.TextArea 
-                      style={{ width: '95%' }} 
-                      maxLength={500} 
-                      autoSize={{ minRows: 3, maxRows: 6 }}
-                      placeholder="请详细说明您的婚姻状况"
-                    />
-                  </Form.Item>
+                  <div className="question-row">
+                    <div className="question-column">
+                      <QuestionItem
+                        question="请说明您的具体婚姻状况"
+                        name="otherMaritalStatus"
+                      >
+                        <Input.TextArea 
+                          style={{ width: '95%' }} 
+                          maxLength={500} 
+                          autoSize={{ minRows: 3, maxRows: 6 }}
+                        />
+                      </QuestionItem>
+                    </div>
+                  </div>
                 </div>
               </>
             )}

@@ -77,7 +77,7 @@ const TravelCompanions: React.FC<TravelCompanionsProps> = ({ form }) => {
           </div>
           <div className="explanation-column">
             <h4 className="help-header">帮助：同行人</h4>
-            <p>请选择是否有人与您一同旅行</p>
+            <p>如果您与家人一起旅行，或作为组织旅游团、表演团体或运动队的一部分旅行，请回答"是"。如果您与同一雇主的其他员工一起出差，则无需列出这些人员。</p>
           </div>
         </div>
 
