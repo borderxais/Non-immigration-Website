@@ -35,10 +35,25 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
 
   // Handle visa class change
   const handleVisaClassChange = (value: string, fieldName: number) => {
-    // Reset visa class and its dependent field (specific purpose)
+    // First clear all dependent fields
     form.setFieldsValue({
-      [`travelPurposes.${fieldName}.visaClass`]: value,
-      [`travelPurposes.${fieldName}.specificPurpose`]: undefined
+      travelPurposes: {
+        [fieldName]: {
+          visaClass: value,
+          specificPurpose: undefined,
+          applicationReceiptNumber: undefined,
+          applicationReceiptNumber_na: undefined,
+          principalApplicantSurname: undefined,
+          principalApplicantGivenName: undefined
+        }
+      },
+      sponsoringMission: undefined,
+      contactSurname: undefined,
+      contactGivenName: undefined,
+      contactOrganization: undefined,
+      contactPhone: undefined,
+      contactEmail: undefined,
+      contactRelationship: undefined
     });
     setVisaClass(value);
     setSpecificPurpose(null);
@@ -46,14 +61,17 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
 
   // Handle specific purpose change
   const handleSpecificPurposeChange = (value: string, fieldName: number) => {
-    // Reset specific purpose and its dependent fields
+    // First clear all dependent fields
     form.setFieldsValue({
-      [`travelPurposes.${fieldName}.specificPurpose`]: value,
-      [`travelPurposes.${fieldName}.applicationReceiptNumber`]: undefined,
-      [`travelPurposes.${fieldName}.applicationReceiptNumber_na`]: undefined,
-      [`travelPurposes.${fieldName}.principalApplicantSurname`]: undefined,
-      [`travelPurposes.${fieldName}.principalApplicantGivenName`]: undefined,
-      // Clear mission info fields
+      travelPurposes: {
+        [fieldName]: {
+          specificPurpose: value,
+          applicationReceiptNumber: undefined,
+          applicationReceiptNumber_na: undefined,
+          principalApplicantSurname: undefined,
+          principalApplicantGivenName: undefined
+        }
+      },
       sponsoringMission: undefined,
       contactSurname: undefined,
       contactGivenName: undefined,
@@ -67,26 +85,89 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
 
   // Handle specific plans change
   const handleSpecificPlansChange = (e: any) => {
-    setHasSpecificPlans(e.target.value);
-    form.setFieldsValue({ hasSpecificPlans: e.target.value });
+    const value = e.target.value;
+    // First clear all dependent fields
+    form.setFieldsValue({
+      hasSpecificPlans: value,
+      // Reset all fields that are conditionally rendered based on hasSpecificPlans
+      // selected 'Yes' for specific plans
+      'intendedDateOfArrival.arrivalDay': undefined,
+      'intendedDateOfArrival.arrivalMonth': undefined,
+      'intendedDateOfArrival.arrivalYear': undefined,
+      arrivalFlight: undefined,
+      arrivalCity: undefined,
+      "departureUSDate.departureDay": undefined,
+      "departureUSDate.departureMonth": undefined,
+      "departureUSDate.departureYear": undefined,
+      departureFlight: undefined,
+      departureCity: undefined,
+      visitLocations: [], // Reset repeatable form item to empty array
+      // selected 'No' for specific plans
+      "arrivalUSDate.arrivalDay": undefined,
+      "arrivalUSDate.arrivalMonth": undefined,
+      "arrivalUSDate.arrivalYear": undefined,
+      stayDuration: undefined,
+      stayDurationType: undefined,
+      streetAddress1: undefined,
+      streetAddress2: undefined,
+      city: undefined,
+      state: undefined,
+      zipCode: undefined
+    });
+    setHasSpecificPlans(value);
   };
 
   // Handle who is paying change
   const handleWhoIsPayingChange = (value: string) => {
+    // First clear all dependent fields
+    form.setFieldsValue({
+      whoIsPaying: value,
+      // Reset all fields that are conditionally rendered based on whoIsPaying
+      // Fields for "其他个人" (O)
+      payerSurname: undefined,
+      payerGivenName: undefined,
+      payerPhone: undefined,
+      payerEmail: undefined,
+      payerRelationship: undefined,
+      isSameAddress: undefined,
+      payerAddress1: undefined,
+      payerAddress2: undefined,
+      payerCity: undefined,
+      payerState: undefined,
+      payerZipCode: undefined,
+      payerCountry: undefined,
+      // Fields for "其他公司/组织" (C)
+      companyName: undefined,
+      companyPhone: undefined,
+      companyEmail: undefined,
+      companyRelation: undefined,
+      companyAddress: undefined,
+      companyStreetAddress1: undefined,
+      companyStreetAddress2: undefined,
+      companyCity: undefined,
+      companyStateProvince: undefined,
+      companyPostalZIPCode: undefined,
+      companyCountry: undefined
+    });
     setWhoIsPaying(value);
-    form.setFieldsValue({ whoIsPaying: value });
-    
-    // Reset the isSameAddress value when changing who is paying
-    if (value !== 'O') {
-      setIsSameAddress(null);
-      form.setFieldsValue({ isSameAddress: null });
-    }
+    setIsSameAddress(null);
   };
 
   // Handle same address change
   const handleSameAddressChange = (e: any) => {
-    setIsSameAddress(e.target.value);
-    form.setFieldsValue({ isSameAddress: e.target.value });
+    const value = e.target.value;
+    // First clear all dependent fields
+    form.setFieldsValue({
+      isSameAddress: value,
+      // Reset all fields that are conditionally rendered based on isSameAddress
+      payerAddress1: undefined,
+      payerAddress2: undefined,
+      payerCity: undefined,
+      payerState: undefined,
+      payerZipCode: undefined,
+      payerCountry: undefined
+    });
+    setIsSameAddress(value);
   };
 
   // Get specific options based on visa class
@@ -328,14 +409,7 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                       <Select 
                         placeholder="- 请选择一个 -" 
                         style={{ width: '95%' }}
-                        onChange={(value) => {
-                          handleVisaClassChange(value, field.name);
-                          setVisaClass(value);
-                          setSpecificPurpose(null);
-                          form.setFieldsValue({
-                            [`travelPurposes.${field.name}.specificPurpose`]: undefined
-                          });
-                        }}
+                        onChange={(value) => handleVisaClassChange(value, field.name)}
                         options={[
                           { value: '', label: '- 请选择一个 -' },
                           { value: 'A', label: '外国政府官员 (A)' },
@@ -379,10 +453,7 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                         <Select 
                           placeholder="- 请选择一个 -" 
                           style={{ width: '95%' }}
-                          onChange={(value) => {
-                            handleSpecificPurposeChange(value, field.name);
-                            setSpecificPurpose(value);
-                          }}
+                          onChange={(value) => handleSpecificPurposeChange(value, field.name)}
                           options={[
                             { value: '', label: '- 请选择一个 -' },
                             ...getSpecificOptions(form.getFieldValue(['travelPurposes', field.name, 'visaClass']))
@@ -431,7 +502,7 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                         <h4 style={{ marginBottom: '16px', fontWeight: 'normal' }}>主申请人信息</h4>
                         <div className="block-inside-highlight">
                           <QuestionItem
-                            question="Surnames"
+                            question="主申请人姓"
                             name={[field.name, 'principalApplicantSurname']}
                             required
                           >
@@ -442,7 +513,7 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                           </QuestionItem>
 
                           <QuestionItem
-                            question="Given Names"
+                            question="主申请人名"
                             name={[field.name, 'principalApplicantGivenName']}
                             required
                           >
@@ -655,14 +726,11 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                       </Form.Item>
                       
                       <Form.Item name="stayDurationType" noStyle rules={[{ required: true, message: '请选择单位' }]}>
-                        <Select options={losUnitOptions} style={{ width: '120px' }}>
-                          <Select.Option value="">- 请选择一个 -</Select.Option>
-                          {losUnitOptions.map(option => (
-                            <Select.Option key={option.value} value={option.value}>
-                              {option.label}
-                            </Select.Option>
-                          ))}
-                        </Select>
+                        <Select 
+                          options={losUnitOptions} 
+                          style={{ width: '120px' }}
+                          placeholder="- 请选择一个 -"
+                        />
                       </Form.Item>
                     </div>
                   </QuestionItem>
@@ -1026,89 +1094,90 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
 
                   {isSameAddress === 'N' && (
                     <>
-                      <div className="question-row">
-                        <div className="question-column">
-                          <QuestionItem
-                            question="付款人地址（第1行）"
-                            name="payerAddress1"
-                          >
-                            <Input maxLength={40} placeholder="例如：123 MAIN STREET" />
-                          </QuestionItem>
+                      <div className="block-inside-highlight">
+                        <div className="question-row">
+                          <div className="question-column">
+                            <QuestionItem
+                              question="付款人地址（第1行）"
+                              name="payerAddress1"
+                            >
+                              <Input maxLength={40} placeholder="例如：123 MAIN STREET" />
+                            </QuestionItem>
+                          </div>
+                          <div className="explanation-column">
+                            {/* Empty explanation column to maintain layout */}
+                          </div>
                         </div>
-                        <div className="explanation-column">
-                          <h4 className="help-header">帮助：付款人地址</h4>
-                          <p>请输入付款人的详细地址（英文）</p>
-                        </div>
-                      </div>
 
-                      <div className="question-row">
-                        <div className="question-column">
-                          <QuestionItem
-                            question="付款人地址（第2行）"
-                            name="payerAddress2"
-                            required={false}
-                          >
-                            <Input maxLength={40} placeholder="例如：公寓号，套房号等（如有）" />
-                          </QuestionItem>
+                        <div className="question-row">
+                          <div className="question-column">
+                            <QuestionItem
+                              question="付款人地址（第2行）"
+                              name="payerAddress2"
+                              required={false}
+                            >
+                              <Input maxLength={40} placeholder="例如：公寓号，套房号等（如有）" />
+                            </QuestionItem>
+                          </div>
+                          <div className="explanation-column">
+                            {/* Empty explanation column to maintain layout */}
+                          </div>
                         </div>
-                        <div className="explanation-column">
-                          {/* Empty explanation column to maintain layout */}
-                        </div>
-                      </div>
 
-                      <div className="question-row">
-                        <div className="question-column">
-                          <QuestionItem
-                            question="城市"
-                            name="payerCity"
-                          >
-                            <Input maxLength={20} />
-                          </QuestionItem>
+                        <div className="question-row">
+                          <div className="question-column">
+                            <QuestionItem
+                              question="城市"
+                              name="payerCity"
+                            >
+                              <Input maxLength={20} />
+                            </QuestionItem>
+                          </div>
+                          <div className="explanation-column">
+                            {/* Empty explanation column to maintain layout */}
+                          </div>
                         </div>
-                        <div className="explanation-column">
-                          {/* Empty explanation column to maintain layout */}
-                        </div>
-                      </div>
 
-                      <div className="question-row">
-                        <div className="question-column">
-                          <QuestionItem
-                            question="州/省"
-                            name="payerStateProvince"
-                          >
-                            <Input maxLength={20} />
-                          </QuestionItem>
+                        <div className="question-row">
+                          <div className="question-column">
+                            <QuestionItem
+                              question="州/省"
+                              name="payerStateProvince"
+                            >
+                              <Input maxLength={20} />
+                            </QuestionItem>
+                          </div>
+                          <div className="explanation-column">
+                            {/* Empty explanation column to maintain layout */}
+                          </div>
                         </div>
-                        <div className="explanation-column">
-                          {/* Empty explanation column to maintain layout */}
-                        </div>
-                      </div>
 
-                      <div className="question-row">
-                        <div className="question-column">
-                          <QuestionItem
-                            question="邮政编码"
-                            name="payerPostalZIPCode"
-                          >
-                            <Input maxLength={10} />
-                          </QuestionItem>
+                        <div className="question-row">
+                          <div className="question-column">
+                            <QuestionItem
+                              question="邮政编码"
+                              name="payerPostalZIPCode"
+                            >
+                              <Input maxLength={10} />
+                            </QuestionItem>
+                          </div>
+                          <div className="explanation-column">
+                            {/* Empty explanation column to maintain layout */}
+                          </div>
                         </div>
-                        <div className="explanation-column">
-                          {/* Empty explanation column to maintain layout */}
-                        </div>
-                      </div>
 
-                      <div className="question-row">
-                        <div className="question-column">
-                          <QuestionItem
-                            question="国家/地区"
-                            name="payerCountry"
-                          >
-                            <Select options={countryOptions} placeholder="- 请选择一个 -" style={{ width: '98%' }} />
-                          </QuestionItem>
-                        </div>
-                        <div className="explanation-column">
-                          {/* Empty explanation column to maintain layout */}
+                        <div className="question-row">
+                          <div className="question-column">
+                            <QuestionItem
+                              question="国家/地区"
+                              name="payerCountry"
+                            >
+                              <Select options={countryOptions} placeholder="- 请选择一个 -" style={{ width: '98%' }} />
+                            </QuestionItem>
+                          </div>
+                          <div className="explanation-column">
+                            {/* Empty explanation column to maintain layout */}
+                          </div>
                         </div>
                       </div>
                     </>
@@ -1177,6 +1246,9 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                     <Input />
                   </QuestionItem>
                 </div>
+                <div className="explanation-column">
+                </div>
+                
               </div>
 
               <div className="question-row">
@@ -1212,6 +1284,8 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                             <span className="optional-label">*可选</span>
                           </QuestionItem>
                         </div>
+                        <div className="explanation-column">
+                        </div>
                       </div>
 
                       <div className="question-row">
@@ -1222,6 +1296,8 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                           >
                             <Input maxLength={20} />
                           </QuestionItem>
+                        </div>
+                        <div className="explanation-column">
                         </div>
                       </div>
 
@@ -1234,6 +1310,8 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                             <Input maxLength={20} />
                           </QuestionItem>
                         </div>
+                        <div className="explanation-column">
+                        </div>
                       </div>
 
                       <div className="question-row">
@@ -1245,6 +1323,8 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                             <Input maxLength={10} />
                           </QuestionItem>
                         </div>
+                        <div className="explanation-column">
+                        </div>
                       </div>
 
                       <div className="question-row">
@@ -1255,6 +1335,8 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                           >
                             <Select options={countryOptions} placeholder="- 请选择一个 -" style={{ width: '98%' }} />
                           </QuestionItem>
+                        </div>
+                        <div className="explanation-column">
                         </div>
                       </div>
                     </div>

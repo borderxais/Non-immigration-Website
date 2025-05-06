@@ -102,73 +102,78 @@ const TravelCompanions: React.FC<TravelCompanionsProps> = ({ form }) => {
             </div>
 
             {groupTravel === 'Y' ? (
-              <div className="highlighted-block">
+              <>
+                <h4 style={{ marginBottom: '16px', fontWeight: 'normal' }}>请输入您所属团队或组织的名称</h4>
                 <div className="question-row">
                   <div className="question-column">
-                    <QuestionItem
-                      question="团队或组织名称"
-                      name="groupName"
-                    >
-                      <Input style={{ width: '99%' }} maxLength={40} placeholder="请输入团队或组织名称" />
-                    </QuestionItem>
+                    <div className="highlighted-block">
+                      <QuestionItem
+                        question="团队或组织名称"
+                        name="groupName"
+                      >
+                        <Input style={{ width: '99%' }} maxLength={40} placeholder="请输入团队或组织名称" />
+                      </QuestionItem>
+                    </div>
                   </div>
                   <div className="explanation-column">
-                    <h4 className="help-header">帮助：团队名称</h4>
-                    <p>请输入您所属团队或组织的名称</p>
                   </div>
-                </div>
               </div>
+              </>
             ) : groupTravel === 'N' && (
               <>
                 <h4 style={{ marginBottom: '16px', fontWeight: 'normal' }}>请提供同行人信息：</h4>
-                <div className="highlighted-block">
-                  <RepeatableFormItem
-                    name="companions"
-                    addButtonText="增加另一个同行人"
-                    removeButtonText="移走"
-                  >
-                    {(field: FormListFieldData) => (
-                      <>
-                        <Form.Item
-                          {...field}
-                          name={[field.name, 'surname']}
-                          label="姓氏"
-                          rules={[{ required: true, message: '请输入同行人姓氏' }]}
-                          style={{ marginBottom: '16px' }}
-                        >
-                          <Input style={{ width: '95%' }} maxLength={33} placeholder="例如：ZHANG" />
-                        </Form.Item>
+                <div className="question-row">
+                  <div className="question-column">
+                    <RepeatableFormItem
+                      name="companions"
+                      addButtonText="增加另一个"
+                      removeButtonText="移走"
+                    >
+                      {(field: FormListFieldData) => (
+                        <>
+                          <Form.Item
+                            {...field}
+                            name={[field.name, 'surname']}
+                            label="姓氏"
+                            rules={[{ required: true, message: '请输入同行人姓氏' }]}
+                            style={{ marginBottom: '16px' }}
+                          >
+                            <Input style={{ width: '95%' }} maxLength={33} placeholder="例如：ZHANG" />
+                          </Form.Item>
 
-                        <Form.Item
-                          {...field}
-                          name={[field.name, 'givenName']}
-                          label="名字"
-                          rules={[{ required: true, message: '请输入同行人名字' }]}
-                          style={{ marginBottom: '16px' }}
-                        >
-                          <Input style={{ width: '95%' }} maxLength={33} placeholder="例如：SAN" />
-                        </Form.Item>
+                          <Form.Item
+                            {...field}
+                            name={[field.name, 'givenName']}
+                            label="名字"
+                            rules={[{ required: true, message: '请输入同行人名字' }]}
+                            style={{ marginBottom: '16px' }}
+                          >
+                            <Input style={{ width: '95%' }} maxLength={33} placeholder="例如：SAN" />
+                          </Form.Item>
 
-                        <Form.Item
-                          {...field}
-                          name={[field.name, 'relationship']}
-                          label="关系"
-                          rules={[{ required: true, message: '请选择与同行人的关系' }]}
-                        >
-                          <Select style={{ width: '95%' }} placeholder="- 选择一个 -">
-                            <Select.Option value="S">配偶</Select.Option>
-                            <Select.Option value="C">子女</Select.Option>
-                            <Select.Option value="P">父母</Select.Option>
-                            <Select.Option value="R">其他亲属</Select.Option>
-                            <Select.Option value="F">朋友</Select.Option>
-                            <Select.Option value="B">商业伙伴</Select.Option>
-                            <Select.Option value="O">其他</Select.Option>
-                          </Select>
-                        </Form.Item>
-                      </>
-                    )}
-                  </RepeatableFormItem>
-                </div>
+                          <Form.Item
+                            {...field}
+                            name={[field.name, 'relationship']}
+                            label="关系"
+                            rules={[{ required: true, message: '请选择与同行人的关系' }]}
+                          >
+                            <Select style={{ width: '95%' }} placeholder="- 选择一个 -">
+                              <Select.Option value="S">配偶</Select.Option>
+                              <Select.Option value="C">子女</Select.Option>
+                              <Select.Option value="P">父母</Select.Option>
+                              <Select.Option value="R">其他亲属</Select.Option>
+                              <Select.Option value="F">朋友</Select.Option>
+                              <Select.Option value="B">商业伙伴</Select.Option>
+                              <Select.Option value="O">其他</Select.Option>
+                            </Select>
+                          </Form.Item>
+                        </>
+                      )}
+                    </RepeatableFormItem>
+                  </div>
+                  <div className="explanation-column">
+                  </div>
+                </div>    
               </>
             )}
           </>
