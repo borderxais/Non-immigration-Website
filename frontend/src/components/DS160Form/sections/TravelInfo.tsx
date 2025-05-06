@@ -50,10 +50,12 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
       sponsoringMission: undefined,
       contactSurname: undefined,
       contactGivenName: undefined,
-      contactOrganization: undefined,
-      contactPhone: undefined,
-      contactEmail: undefined,
-      contactRelationship: undefined
+      missionAddressLine1: undefined,
+      missionAddressLine2: undefined,
+      missionCity: undefined,
+      missionState: undefined,
+      missionZipCode: undefined,
+      missionPhoneNumber: undefined
     });
     setVisaClass(value);
     setSpecificPurpose(null);
@@ -75,10 +77,12 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
       sponsoringMission: undefined,
       contactSurname: undefined,
       contactGivenName: undefined,
-      contactOrganization: undefined,
-      contactPhone: undefined,
-      contactEmail: undefined,
-      contactRelationship: undefined
+      missionAddressLine1: undefined,
+      missionAddressLine2: undefined,
+      missionCity: undefined,
+      missionState: undefined,
+      missionZipCode: undefined,
+      missionPhoneNumber: undefined
     });
     setSpecificPurpose(value);
   };
@@ -488,7 +492,7 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                     </div>
                     <div className="explanation-column">
                       <h4 className="help-header">帮助：申请收据/申请号码</h4>
-                      <p>请输入您的H类签证申请收据号码或申请号码。这通常是由USCIS提供的，格式为三个字母后跟10个数字。如果您是H2A或H2B签证申请人且没有申请号码，请选择"不适用"。</p>
+                      <p>您的申请收据/申请号码是在您向美国国土安全部的美国公民及移民服务局（USCIS）的服务中心提交申请后由USCIS提供给您的。申请收据/申请号码由13个字符组成，前三个字符是字母。</p>
                     </div>
                   </div>
                 )}
@@ -787,6 +791,7 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                       <QuestionItem
                         question="邮政编码"
                         name="zipCode"
+                        required={false}
                       >
                         <Input style={{ width: '99%' }} maxLength={10} />
                       </QuestionItem>
@@ -903,13 +908,8 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                   question="州"
                   name="missionState"
                 >
-                  <Select style={{ width: '99%' }} options={usStateOptions}>
+                  <Select style={{ width: '99%' }} options={usStateOptions} placeholder="- 请选择一个 -">
                     <Select.Option value="">- 请选择一个 -</Select.Option>
-                    {usStateOptions.map(option => (
-                      <Select.Option key={option.value} value={option.value}>
-                        {option.label}
-                      </Select.Option>
-                    ))}
                   </Select>
                 </QuestionItem>
               </div>
