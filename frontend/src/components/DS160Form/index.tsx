@@ -9,9 +9,8 @@ import ApplicationIdDisplay from '../ApplicationIdDisplay';
 // import TravelInfo from './sections/TravelInfo';
 // import TravelCompanions from './sections/TravelCompanions';
 // import PreviousTravel from './sections/PreviousTravel';
-import AddressAndPhone from './sections/AddressAndPhone';
-
-// import WorkHistory from './sections/WorkHistory';
+// import AddressAndPhone from './sections/AddressAndPhone';
+import Passport from './sections/Passport';
 import DS160ReviewPage from './sections/DS160ReviewPage';
 import ds160Service from '../../services/ds160Service';
 import './ds160Form.css';
@@ -55,10 +54,15 @@ const formSections: FormSection[] = [
   //   title: '以前的旅行',
   //   component: PreviousTravel
   // },
+  // {
+  //   key: 'addressAndPhone',
+  //   title: '地址和电话',
+  //   component: AddressAndPhone as unknown as React.FC<SectionProps>
+  // },
   {
-    key: 'addressAndPhone',
-    title: '地址和电话',
-    component: AddressAndPhone as unknown as React.FC<SectionProps>
+    key: 'passport',
+    title: '护照信息',
+    component: Passport as unknown as React.FC<SectionProps>
   },
   {
     key: 'review',
