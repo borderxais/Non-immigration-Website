@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { Input, Select, Radio, Form, Space } from 'antd';
+import { Input, Select, Radio } from 'antd';
 import QuestionItem from '../common/QuestionItem';
 import { countryOptions } from '../utils/formOptions';
 import '../ds160Form.css';
 import RepeatableFormItem from '../common/RepeatableFormItem';
 import { FormListFieldData } from 'antd/lib/form/FormList';
 
-const { TextArea } = Input;
+// const { TextArea } = Input;
 
 interface AddressAndPhoneProps {
   form: any;
@@ -56,41 +56,6 @@ const AddressAndPhone: React.FC<AddressAndPhoneProps> = ({ form }) => {
     }
   };
 
-  // Handle email radio change
-  const handleEmailChange = (e: any) => {
-    setHasEmail(e.target.value);
-    if (e.target.value === 'N') {
-      // Clear email field
-      form.setFieldsValue({
-        email: undefined,
-        email_na: undefined
-      });
-    }
-  };
-
-  // Handle phone radio change
-  const handlePhoneChange = (e: any) => {
-    setHasPhone(e.target.value);
-    if (e.target.value === 'N') {
-      // Clear phone fields
-      form.setFieldsValue({
-        primaryPhone: undefined,
-        primaryPhone_na: undefined
-      });
-    }
-  };
-
-  // Handle work phone radio change
-  const handleWorkPhoneChange = (e: any) => {
-    setHasWorkPhone(e.target.value);
-    if (e.target.value === 'N') {
-      // Clear work phone fields
-      form.setFieldsValue({
-        workPhone: undefined,
-        workPhone_na: undefined
-      });
-    }
-  };
 
   return (
     <div className="address-phone-section">
