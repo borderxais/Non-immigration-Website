@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Input, Select, Radio } from 'antd';
+import { Input, Select, Radio, Form, Button } from 'antd';
 import QuestionItem from '../common/QuestionItem';
 import { countryOptions } from '../utils/formOptions';
 import '../ds160Form.css';
@@ -14,6 +14,8 @@ const AddressAndPhone: React.FC<AddressAndPhoneProps> = ({ form }) => {
   const [isMailingAddressSameAsHome, setIsMailingAddressSameAsHome] = useState<string | null>(null);
   const [hasOtherEmailAddresses, setHasOtherEmailAddresses] = useState<string | null>(null);
   const [hasOtherPhoneNumbers, setHasOtherPhoneNumbers] = useState<string | null>(null);
+  const [hasSocialMedia, setHasSocialMedia] = useState<string | null>(null);
+  const [hasOtherSocialMedia, setHasOtherSocialMedia] = useState<string | null>(null);
 
   // Handle mailing address same as home address change
   const handleSameAddressChange = (e: any) => {
@@ -55,6 +57,26 @@ const AddressAndPhone: React.FC<AddressAndPhoneProps> = ({ form }) => {
       otherEmails: undefined
     });
     setHasOtherEmailAddresses(value);
+  };
+
+  // Handle social media change
+  const handleSocialMediaChange = (e: any) => {
+    const value = e.target.value;
+    form.setFieldsValue({ 
+      hasSocialMedia: value,
+      socialMediaPlatform: undefined
+    });
+    setHasSocialMedia(value);
+  };
+
+  // Handle other social media change
+  const handleOtherSocialMediaChange = (e: any) => {
+    const value = e.target.value;
+    form.setFieldsValue({ 
+      hasOtherSocialMedia: value,
+      otherSocialMediaPlatform: undefined
+    });
+    setHasOtherSocialMedia(value);
   };
 
   return (
@@ -402,6 +424,146 @@ const AddressAndPhone: React.FC<AddressAndPhoneProps> = ({ form }) => {
             </div>
           </div>
         )}
+      </fieldset>
+
+      {/* Social Media Section */}
+      <fieldset className="question-section">
+        <div className="question-row">
+          <div className="question-column">
+            <h3 className="section-header">
+              <span>社交媒体</span>
+            </h3>         
+            <h4>
+              <span>从下面的列表中选择您在过去五年中使用过的每个社交媒体平台。在平台名称旁边的空格中，输入您在该平台上使用的用户名或昵称。请不要提供您的密码。如果在使用了多个社交平台或在一个平台上使用了多个用户名或昵称，请点击"添加另一个"按钮分别列出每个平台。如果您在过去五年内没有使用任何列出的社交媒体平台，请选择"无"。
+              </span>
+            </h4>
+            <RepeatableFormItem
+                name="socialMediaPlatform"
+                addButtonText="增加另一个"
+                removeButtonText="移除"
+              >
+                {(field: FormListFieldData) => (
+                  <>
+                    <Form.Item
+                      {...field}
+                      name={[field.name, 'platform']}
+                      label="社交媒体平台"
+                      rules={[{ required: true, message: '请选择社交媒体平台' }]}
+                      style={{ marginBottom: '16px' }}
+                    >
+                      <Select style={{ width: '99%' }} placeholder="- 请选择一个 -">
+                        <Select.Option value="SONE">- 请选择一个 -</Select.Option>
+                        <Select.Option value="ASKF">ASK.FM</Select.Option>
+                        <Select.Option value="DUBN">DOUBAN</Select.Option>
+                        <Select.Option value="FCBK">FACEBOOK</Select.Option>
+                        <Select.Option value="FLKR">FLICKR</Select.Option>
+                        <Select.Option value="GOGL">GOOGLE+</Select.Option>
+                        <Select.Option value="INST">INSTAGRAM</Select.Option>
+                        <Select.Option value="LINK">LINKEDIN</Select.Option>
+                        <Select.Option value="MYSP">MYSPACE</Select.Option>
+                        <Select.Option value="PTST">PINTEREST</Select.Option>
+                        <Select.Option value="QZNE">QZONE (QQ)</Select.Option>
+                        <Select.Option value="RDDT">REDDIT</Select.Option>
+                        <Select.Option value="SWBO">SINA WEIBO</Select.Option>
+                        <Select.Option value="TWBO">TENCENT WEIBO</Select.Option>
+                        <Select.Option value="TUMB">TUMBLR</Select.Option>
+                        <Select.Option value="TWIT">TWITTER</Select.Option>
+                        <Select.Option value="TWOO">TWOO</Select.Option>
+                        <Select.Option value="VINE">VINE</Select.Option>
+                        <Select.Option value="VKON">VKONTAKTE (VK)</Select.Option>
+                        <Select.Option value="YUKU">YOUKU</Select.Option>
+                        <Select.Option value="YTUB">YOUTUBE</Select.Option>
+                        <Select.Option value="NONE">NONE</Select.Option>
+                      </Select>
+                    </Form.Item>
+                    
+                    <Form.Item
+                      shouldUpdate={(prevValues, currentValues) => {
+                        // This will trigger a re-render when the platform value changes
+                        return prevValues?.socialMediaPlatform?.[field.name]?.platform !== 
+                              currentValues?.socialMediaPlatforms?.[field.name]?.platform;
+                      }}
+                    >
+                      {({ getFieldValue }) => {
+                        const platformValue = getFieldValue(['socialMediaPlatform', field.name, 'platform']);
+                        const isDisabled = platformValue === 'NONE';
+                        
+                        return (
+                          <Form.Item
+                            {...field}
+                            name={[field.name, 'identifier']}
+                            label="用户名/标识符"
+                            rules={[{ required: !isDisabled, message: '请输入用户名或标识符' }]}
+                            style={{ marginBottom: '16px' }}
+                          >
+                            <Input 
+                              style={{ 
+                                width: '99%',
+                                backgroundColor: isDisabled ? 'LightGrey' : 'white'
+                              }} 
+                              disabled={isDisabled}
+                              placeholder="例如：username123" 
+                            />
+                          </Form.Item>
+                        );
+                      }}
+                    </Form.Item>
+                  </>
+                )}
+              </RepeatableFormItem>
+          </div>
+          <div className="explanation-column">
+            <h4 className="help-header">帮助：社交媒体</h4>
+            <p>输入与您在线状态相关的信息，包括您用于协作、共享信息和与他人在线互动的提供商/平台、应用程序和网站类型信息。列举出与您的社交媒体相关联的用户名、昵称、网名或其他标识符。（您无需列举那些在一个商业或其他组织中为多个用户设计的帐户名称。）</p>
+          </div>
+        </div>
+
+        <div className="question-row">
+          <div className="question-column">
+            <QuestionItem
+              question="您是否希望提供有关您在过去五年内用于创建或共享内容（照片、视频、状态更新等）的任何其他网站或应用程序上的状态的信息？"
+              name="hasOtherSocialMedia"
+            >
+              <Radio.Group onChange={handleOtherSocialMediaChange}>
+                <Radio value="Y">是 (Yes)</Radio>
+                <Radio value="N">否 (No)</Radio>
+              </Radio.Group>
+            </QuestionItem>
+            
+            {hasOtherSocialMedia === 'Y' && (
+              <div>
+                <p>请提供您想要列出的每个社交媒体平台的名称和相关的唯一社交媒体标识符（用户名或账号）。这不包括在个人对个人的消息服务上的私人消息，例如WhatsApp。</p>
+                <RepeatableFormItem
+                  name="otherSocialMediaPlatform"
+                  addButtonText="增加另一个"
+                  removeButtonText="移除"
+                >
+                  {(field: FormListFieldData) => (
+                    <>
+                      <QuestionItem
+                        question="其他社交媒体平台"
+                        name={[field.name, 'otherPlatform']}
+                      >
+                        <Input style={{ width: '95%' }} maxLength={50} />
+                      </QuestionItem>
+
+                      <QuestionItem
+                        question="其他社交媒体平台的用户名/标识符"
+                        name={[field.name, 'otherIdentifier']}
+                      >
+                        <Input style={{ width: '95%' }} maxLength={50} />
+                      </QuestionItem>
+                    </>
+                  )}
+                </RepeatableFormItem>
+              </div>
+            )}
+          </div>
+          <div className="explanation-column">
+            {/* Empty explanation column to maintain layout */}
+          </div>
+        </div>
+
       </fieldset>
     </div>
   );
