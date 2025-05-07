@@ -18,43 +18,23 @@ const AddressAndPhone: React.FC<AddressAndPhoneProps> = ({ form }) => {
   // Handle mailing address same as home address change
   const handleSameAddressChange = (e: any) => {
     const value = e.target.value;
-    setIsMailingAddressSameAsHome(value);
-    form.setFieldsValue({ isMailingAddressSame: value });
     
-    if (value === 'Y') {
-      const homeValues = form.getFieldsValue([
-        'homeAddressStreet1',
-        'homeAddressStreet2',
-        'homeAddressCity',
-        'homeAddressState',
-        'homeAddressState_na',
-        'homeAddressZipCode',
-        'homeAddressZipCode_na',
-        'homeAddressCountry'
-      ]);
-      
-      form.setFieldsValue({
-        mailingAddressStreet1: homeValues.homeAddressStreet1,
-        mailingAddressStreet2: homeValues.homeAddressStreet2,
-        mailingAddressCity: homeValues.homeAddressCity,
-        mailingAddressState: homeValues.homeAddressState,
-        mailingAddressState_na: homeValues.homeAddressState_na,
-        mailingAddressZipCode: homeValues.homeAddressZipCode,
-        mailingAddressZipCode_na: homeValues.homeAddressZipCode_na,
-        mailingAddressCountry: homeValues.homeAddressCountry
-      });
-    } else {
-      form.setFieldsValue({
-        mailingAddressStreet1: undefined,
-        mailingAddressStreet2: undefined,
-        mailingAddressCity: undefined,
-        mailingAddressState: undefined,
-        mailingAddressState_na: undefined,
-        mailingAddressZipCode: undefined,
-        mailingAddressZipCode_na: undefined,
-        mailingAddressCountry: undefined
-      });
-    }
+    // Update form values first
+    form.setFieldsValue({ 
+      isMailingAddressSame: value,
+      // Always reset mailing address fields when value changes
+      mailingAddressStreet1: undefined,
+      mailingAddressStreet2: undefined,
+      mailingAddressCity: undefined,
+      mailingAddressState: undefined,
+      mailingAddressState_na: undefined,
+      mailingAddressZipCode: undefined,
+      mailingAddressZipCode_na: undefined,
+      mailingAddressCountry: undefined
+    });
+    
+    // Update state after form values
+    setIsMailingAddressSameAsHome(value);
   };
 
   // Handle other phone numbers change

@@ -4,11 +4,11 @@ import { FormInstance } from 'antd';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import ApplicationIdDisplay from '../ApplicationIdDisplay';
-import PersonalInfoI from './sections/PersonalInfoI';
-import PersonalInfoII from './sections/PersonalInfoII';
-import TravelInfo from './sections/TravelInfo';
-import TravelCompanions from './sections/TravelCompanions';
-import PreviousTravel from './sections/PreviousTravel';
+// import PersonalInfoI from './sections/PersonalInfoI';
+// import PersonalInfoII from './sections/PersonalInfoII';
+// import TravelInfo from './sections/TravelInfo';
+// import TravelCompanions from './sections/TravelCompanions';
+// import PreviousTravel from './sections/PreviousTravel';
 import AddressAndPhone from './sections/AddressAndPhone';
 
 // import WorkHistory from './sections/WorkHistory';
@@ -30,31 +30,31 @@ interface FormSection {
 
 // Define the form sections and their titles
 const formSections: FormSection[] = [
-  {
-    key: 'personalInfo1',
-    title: '个人信息 I',
-    component: PersonalInfoI
-  },
-  {
-    key: 'personalInfo2',
-    title: '个人信息 II',
-    component: PersonalInfoII
-  },
-  {
-    key: 'travelInfo',
-    title: '旅行信息',
-    component: TravelInfo
-  },
-  {
-    key: 'travelCompanions',
-    title: '同行人',
-    component: TravelCompanions
-  },
-  {
-    key: 'previousTravel',
-    title: '以前的旅行',
-    component: PreviousTravel
-  },
+  // {
+  //   key: 'personalInfo1',
+  //   title: '个人信息 I',
+  //   component: PersonalInfoI
+  // },
+  // {
+  //   key: 'personalInfo2',
+  //   title: '个人信息 II',
+  //   component: PersonalInfoII
+  // },
+  // {
+  //   key: 'travelInfo',
+  //   title: '旅行信息',
+  //   component: TravelInfo
+  // },
+  // {
+  //   key: 'travelCompanions',
+  //   title: '同行人',
+  //   component: TravelCompanions
+  // },
+  // {
+  //   key: 'previousTravel',
+  //   title: '以前的旅行',
+  //   component: PreviousTravel
+  // },
   {
     key: 'addressAndPhone',
     title: '地址和电话',
