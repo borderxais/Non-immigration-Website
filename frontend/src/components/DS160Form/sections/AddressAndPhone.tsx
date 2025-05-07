@@ -16,7 +16,7 @@ const AddressAndPhone: React.FC<AddressAndPhoneProps> = ({ form }) => {
   const [sameMailingAddress, setSameMailingAddress] = useState<boolean>(true);
   const [hasEmail, setHasEmail] = useState<string>('Y');
   const [hasPhone, setHasPhone] = useState<string>('Y');
-  const [hasWorkPhone, setHasWorkPhone] = useState<string>('Y');
+//   const [hasWorkPhone, setHasWorkPhone] = useState<string>('Y');
 
   // Handle mailing address same as home address change
   const handleSameAddressChange = (e: any) => {
