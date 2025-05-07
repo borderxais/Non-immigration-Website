@@ -486,6 +486,7 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                         hasNaCheckbox={Boolean(form.getFieldValue(['travelPurposes', field.name, 'specificPurpose']) && 
                                        form.getFieldValue(['travelPurposes', field.name, 'specificPurpose']).includes('H2'))}
                         naCheckboxName={[field.name, 'applicationReceiptNumber_na']}
+                        key={`receipt-${form.getFieldValue(['travelPurposes', field.name, 'specificPurpose']) || 'default'}`}
                       >
                         <Input 
                           style={{ width: '95%' }} 

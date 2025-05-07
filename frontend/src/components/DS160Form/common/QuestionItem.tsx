@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Input, Select, DatePicker, Radio, Space, Checkbox, Row, Col, Typography } from 'antd';
+import { Form, Input, Select, DatePicker, Radio, Space, Checkbox, Row, Col, Typography, Flex } from 'antd';
 
 const { Text } = Typography;
 
@@ -11,6 +11,7 @@ interface QuestionItemProps {
   children: React.ReactNode;
   hasNaCheckbox?: boolean;
   naCheckboxName?: string | (string | number)[];
+  inlineCheckbox?: boolean; // New prop to control checkbox layout
 }
 
 const QuestionItem: React.FC<QuestionItemProps> = ({ 
@@ -20,7 +21,8 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
   required = true, 
   children, 
   hasNaCheckbox = false, 
-  naCheckboxName 
+  naCheckboxName,
+  inlineCheckbox = false // Default to false for backward compatibility
 }) => {
   // Use the form instance from the parent component
   const form = Form.useFormInstance();
@@ -140,6 +142,27 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
     return children;
   };
   
+  // Render the NA checkbox
+  const renderNaCheckbox = () => {
+    if (hasNaCheckbox && naCheckboxFieldName) {
+      return (
+        <Form.Item 
+          name={naCheckboxFieldName} 
+          valuePropName="checked"
+          style={{ 
+            marginBottom: 0, 
+            marginTop: inlineCheckbox ? 0 : 8, 
+            textAlign: inlineCheckbox ? 'left' : 'right',
+            marginLeft: inlineCheckbox ? 16 : 0
+          }}
+        >
+          <Checkbox onChange={handleNaCheckboxChange}>不适用/技术无法提供</Checkbox>
+        </Form.Item>
+      );
+    }
+    return null;
+  };
+  
   return (
     <Row gutter={24} style={{ marginBottom: 24 }}>
       <Col span={24}>
@@ -147,27 +170,42 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
           <Text strong>
             {number ? `${number}. ` : ''}{question}{required && <span style={{ color: '#ff4d4f', marginLeft: '4px' }}>*</span>}
           </Text>
-          {name ? (
-            <Form.Item 
-              name={name} 
-              rules={fieldRules}
-              style={{ marginBottom: 0 }}
-            >
-              {renderDisableableInput()}
-            </Form.Item>
-          ) : (
-            // If no name is provided, render children directly without Form.Item
-            renderDisableableInput()
-          )}
           
-          {hasNaCheckbox && naCheckboxFieldName && (
-            <Form.Item 
-              name={naCheckboxFieldName} 
-              valuePropName="checked"
-              style={{ marginBottom: 0, marginTop: 8, textAlign: 'right' }}
-            >
-              <Checkbox onChange={handleNaCheckboxChange}>不适用/技术无法提供</Checkbox>
-            </Form.Item>
+          {inlineCheckbox && hasNaCheckbox ? (
+            // Inline layout with checkbox in the same row
+            <Flex align="center" style={{ width: '100%' }}>
+              {name ? (
+                <Form.Item 
+                  name={name} 
+                  rules={fieldRules}
+                  style={{ marginBottom: 0, flex: 1 }}
+                >
+                  {renderDisableableInput()}
+                </Form.Item>
+              ) : (
+                // If no name is provided, render children directly without Form.Item
+                renderDisableableInput()
+              )}
+              {renderNaCheckbox()}
+            </Flex>
+          ) : (
+            // Standard vertical layout
+            <>
+              {name ? (
+                <Form.Item 
+                  name={name} 
+                  rules={fieldRules}
+                  style={{ marginBottom: 0 }}
+                >
+                  {renderDisableableInput()}
+                </Form.Item>
+              ) : (
+                // If no name is provided, render children directly without Form.Item
+                renderDisableableInput()
+              )}
+              
+              {!inlineCheckbox && renderNaCheckbox()}
+            </>
           )}
         </Space>
       </Col>

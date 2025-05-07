@@ -361,6 +361,7 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
                       name="lastVisaNumber"
                       hasNaCheckbox={true}
                       naCheckboxName="lastVisaNumber_na"
+                      inlineCheckbox={true}
                     >
                       <Input style={{ width: '98%' }} />
                     </QuestionItem>
