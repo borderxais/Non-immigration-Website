@@ -121,7 +121,7 @@ const DateInput: React.FC<DateInputProps> = ({
       </Form.Item>
 
       <div style={{ marginLeft: '8px', fontSize: '12px', color: '#666' }}>
-        (格式: DD-MMM-YYYY)
+        (格式: DD-MM-YYYY)
       </div>
     </div>
   );

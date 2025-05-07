@@ -156,7 +156,7 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
             marginLeft: inlineCheckbox ? 16 : 0
           }}
         >
-          <Checkbox onChange={handleNaCheckboxChange}>不适用/技术无法提供</Checkbox>
+          <Checkbox onChange={handleNaCheckboxChange}>不适用/无法提供</Checkbox>
         </Form.Item>
       );
     }
