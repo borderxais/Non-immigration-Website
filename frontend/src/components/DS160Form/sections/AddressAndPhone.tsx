@@ -14,7 +14,6 @@ const AddressAndPhone: React.FC<AddressAndPhoneProps> = ({ form }) => {
   const [isMailingAddressSameAsHome, setIsMailingAddressSameAsHome] = useState<string | null>(null);
   const [hasOtherEmailAddresses, setHasOtherEmailAddresses] = useState<string | null>(null);
   const [hasOtherPhoneNumbers, setHasOtherPhoneNumbers] = useState<string | null>(null);
-  const [hasSocialMedia, setHasSocialMedia] = useState<string | null>(null);
   const [hasOtherSocialMedia, setHasOtherSocialMedia] = useState<string | null>(null);
 
   // Handle mailing address same as home address change
@@ -59,16 +58,6 @@ const AddressAndPhone: React.FC<AddressAndPhoneProps> = ({ form }) => {
     setHasOtherEmailAddresses(value);
   };
 
-  // Handle social media change
-  const handleSocialMediaChange = (e: any) => {
-    const value = e.target.value;
-    form.setFieldsValue({ 
-      hasSocialMedia: value,
-      socialMediaPlatform: undefined
-    });
-    setHasSocialMedia(value);
-  };
-
   // Handle other social media change
   const handleOtherSocialMediaChange = (e: any) => {
     const value = e.target.value;
@@ -77,6 +66,21 @@ const AddressAndPhone: React.FC<AddressAndPhoneProps> = ({ form }) => {
       otherSocialMediaPlatform: undefined
     });
     setHasOtherSocialMedia(value);
+  };
+
+  // Handle social media platform change
+  const handleSocialMediaPlatformChange = (value: string, option: any, index: number) => {
+    // Reset the identifier field when platform changes
+    form.setFieldsValue({
+      [`socialMediaPlatform`]: {
+        ...form.getFieldValue('socialMediaPlatform'),
+        [index]: {
+          ...form.getFieldValue(['socialMediaPlatform', index]),
+          platform: value,
+          identifier: undefined
+        }
+      }
+    });
   };
 
   return (
@@ -451,7 +455,11 @@ const AddressAndPhone: React.FC<AddressAndPhoneProps> = ({ form }) => {
                       rules={[{ required: true, message: '请选择社交媒体平台' }]}
                       style={{ marginBottom: '16px' }}
                     >
-                      <Select style={{ width: '99%' }} placeholder="- 请选择一个 -">
+                      <Select 
+                        style={{ width: '99%' }} 
+                        placeholder="- 请选择一个 -"
+                        onChange={(value, option) => handleSocialMediaPlatformChange(value, option, field.name)}
+                      >
                         <Select.Option value="SONE">- 请选择一个 -</Select.Option>
                         <Select.Option value="ASKF">ASK.FM</Select.Option>
                         <Select.Option value="DUBN">DOUBAN</Select.Option>
