@@ -69,7 +69,7 @@ const AddressAndPhone: React.FC<AddressAndPhoneProps> = ({ form }) => {
   };
 
   // Handle social media platform change
-  const handleSocialMediaPlatformChange = (value: string, option: any, index: number) => {
+  const handleSocialMediaPlatformChange = (value: string, index: number) => {
     // Reset the identifier field when platform changes
     form.setFieldsValue({
       [`socialMediaPlatform`]: {
@@ -458,30 +458,30 @@ const AddressAndPhone: React.FC<AddressAndPhoneProps> = ({ form }) => {
                       <Select 
                         style={{ width: '99%' }} 
                         placeholder="- 请选择一个 -"
-                        onChange={(value, option) => handleSocialMediaPlatformChange(value, option, field.name)}
+                        onChange={(value) => handleSocialMediaPlatformChange(value, field.name)}
                       >
                         <Select.Option value="SONE">- 请选择一个 -</Select.Option>
                         <Select.Option value="ASKF">ASK.FM</Select.Option>
-                        <Select.Option value="DUBN">DOUBAN</Select.Option>
-                        <Select.Option value="FCBK">FACEBOOK</Select.Option>
-                        <Select.Option value="FLKR">FLICKR</Select.Option>
-                        <Select.Option value="GOGL">GOOGLE+</Select.Option>
-                        <Select.Option value="INST">INSTAGRAM</Select.Option>
-                        <Select.Option value="LINK">LINKEDIN</Select.Option>
-                        <Select.Option value="MYSP">MYSPACE</Select.Option>
-                        <Select.Option value="PTST">PINTEREST</Select.Option>
-                        <Select.Option value="QZNE">QZONE (QQ)</Select.Option>
-                        <Select.Option value="RDDT">REDDIT</Select.Option>
-                        <Select.Option value="SWBO">SINA WEIBO</Select.Option>
-                        <Select.Option value="TWBO">TENCENT WEIBO</Select.Option>
-                        <Select.Option value="TUMB">TUMBLR</Select.Option>
-                        <Select.Option value="TWIT">TWITTER</Select.Option>
-                        <Select.Option value="TWOO">TWOO</Select.Option>
-                        <Select.Option value="VINE">VINE</Select.Option>
-                        <Select.Option value="VKON">VKONTAKTE (VK)</Select.Option>
-                        <Select.Option value="YUKU">YOUKU</Select.Option>
-                        <Select.Option value="YTUB">YOUTUBE</Select.Option>
-                        <Select.Option value="NONE">NONE</Select.Option>
+                        <Select.Option value="DUBN">豆瓣 (DOUBAN)</Select.Option>
+                        <Select.Option value="FCBK">脸书 (FACEBOOK)</Select.Option>
+                        <Select.Option value="FLKR">Flickr</Select.Option>
+                        <Select.Option value="GOGL">谷歌+ (GOOGLE+)</Select.Option>
+                        <Select.Option value="INST">Instagram</Select.Option>
+                        <Select.Option value="LINK">领英 (LINKEDIN)</Select.Option>
+                        <Select.Option value="MYSP">MySpace</Select.Option>
+                        <Select.Option value="PTST">Pinterest</Select.Option>
+                        <Select.Option value="QZNE">QQ空间 (QZONE)</Select.Option>
+                        <Select.Option value="RDDT">Reddit</Select.Option>
+                        <Select.Option value="SWBO">新浪微博 (SINA WEIBO)</Select.Option>
+                        <Select.Option value="TWBO">腾讯微博 (TENCENT WEIBO)</Select.Option>
+                        <Select.Option value="TUMB">Tumblr</Select.Option>
+                        <Select.Option value="TWIT">推特 (TWITTER)</Select.Option>
+                        <Select.Option value="TWOO">Twoo</Select.Option>
+                        <Select.Option value="VINE">Vine</Select.Option>
+                        <Select.Option value="VKON">VK (VKONTAKTE)</Select.Option>
+                        <Select.Option value="YUKU">优酷 (YOUKU)</Select.Option>
+                        <Select.Option value="YTUB">油管 (YOUTUBE)</Select.Option>
+                        <Select.Option value="NONE">无 (NONE)</Select.Option>
                       </Select>
                     </Form.Item>
                     
