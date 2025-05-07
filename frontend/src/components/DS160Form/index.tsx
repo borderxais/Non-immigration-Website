@@ -8,8 +8,8 @@ import ApplicationIdDisplay from '../ApplicationIdDisplay';
 // import PersonalInfoII from './sections/PersonalInfoII';
 // import TravelInfo from './sections/TravelInfo';
 // import TravelCompanions from './sections/TravelCompanions';
-import PreviousTravel from './sections/PreviousTravel';
-import SecurityBackground from './sections/SecurityBackground';
+// import PreviousTravel from './sections/PreviousTravel';
+import AddressAndPhone from './sections/AddressAndPhone';
 
 // import WorkHistory from './sections/WorkHistory';
 import DS160ReviewPage from './sections/DS160ReviewPage';
@@ -50,20 +50,15 @@ const formSections: FormSection[] = [
   //   title: '同行人',
   //   component: TravelCompanions
   // },
-  {
-    key: 'previousTravel',
-    title: '以前的旅行',
-    component: PreviousTravel
-  },
   // {
-  //   key: 'workHistory',
-  //   title: '工作经历',
-  //   component: WorkHistory
+  //   key: 'previousTravel',
+  //   title: '以前的旅行',
+  //   component: PreviousTravel
   // },
   {
-    key: 'securityBackground',
-    title: '安全背景',
-    component: SecurityBackground
+    key: 'addressAndPhone',
+    title: '地址和电话',
+    component: AddressAndPhone as unknown as React.FC<SectionProps>
   },
   {
     key: 'review',
