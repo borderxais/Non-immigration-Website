@@ -6,30 +6,30 @@ import '../ds160Form.css';
 import RepeatableFormItem from '../common/RepeatableFormItem';
 import { FormListFieldData } from 'antd/lib/form/FormList';
 
-// const { TextArea } = Input;
-
 interface AddressAndPhoneProps {
   form: any;
 }
 
 const AddressAndPhone: React.FC<AddressAndPhoneProps> = ({ form }) => {
-  const [sameMailingAddress, setSameMailingAddress] = useState<boolean>(true);
-  const [hasEmail, setHasEmail] = useState<string>('Y');
-  const [hasPhone, setHasPhone] = useState<string>('Y');
-//   const [hasWorkPhone, setHasWorkPhone] = useState<string>('Y');
+  const [isMailingAddressSameAsHome, setIsMailingAddressSameAsHome] = useState<string | null>(null);
+  const [hasOtherEmailAddresses, setHasOtherEmailAddresses] = useState<string | null>(null);
+  const [hasOtherPhoneNumbers, setHasOtherPhoneNumbers] = useState<string | null>(null);
 
   // Handle mailing address same as home address change
   const handleSameAddressChange = (e: any) => {
     const value = e.target.value;
-    setSameMailingAddress(value === 'Y');
+    setIsMailingAddressSameAsHome(value);
+    form.setFieldsValue({ isMailingAddressSame: value });
+    
     if (value === 'Y') {
-      // Copy home address fields to mailing address fields
       const homeValues = form.getFieldsValue([
         'homeAddressStreet1',
         'homeAddressStreet2',
         'homeAddressCity',
         'homeAddressState',
+        'homeAddressState_na',
         'homeAddressZipCode',
+        'homeAddressZipCode_na',
         'homeAddressCountry'
       ]);
       
@@ -38,11 +38,12 @@ const AddressAndPhone: React.FC<AddressAndPhoneProps> = ({ form }) => {
         mailingAddressStreet2: homeValues.homeAddressStreet2,
         mailingAddressCity: homeValues.homeAddressCity,
         mailingAddressState: homeValues.homeAddressState,
+        mailingAddressState_na: homeValues.homeAddressState_na,
         mailingAddressZipCode: homeValues.homeAddressZipCode,
+        mailingAddressZipCode_na: homeValues.homeAddressZipCode_na,
         mailingAddressCountry: homeValues.homeAddressCountry
       });
     } else {
-      // Clear mailing address fields
       form.setFieldsValue({
         mailingAddressStreet1: undefined,
         mailingAddressStreet2: undefined,
@@ -56,6 +57,25 @@ const AddressAndPhone: React.FC<AddressAndPhoneProps> = ({ form }) => {
     }
   };
 
+  // Handle other phone numbers change
+  const handleOtherPhoneNumbersChange = (e: any) => {
+    const value = e.target.value;
+    form.setFieldsValue({ 
+      hasOtherPhones: value,
+      otherPhones: undefined
+    });
+    setHasOtherPhoneNumbers(value);
+  };
+
+  // Handle other email addresses change
+  const handleOtherEmailAddressesChange = (e: any) => {
+    const value = e.target.value;
+    form.setFieldsValue({ 
+      hasOtherEmails: value,
+      otherEmails: undefined
+    });
+    setHasOtherEmailAddresses(value);
+  };
 
   return (
     <div className="address-phone-section">
@@ -76,7 +96,7 @@ const AddressAndPhone: React.FC<AddressAndPhoneProps> = ({ form }) => {
               question="街道地址（第一行）"
               name="homeAddressStreet1"
             >
-              <Input style={{ width: '99%' }} placeholder="例如：123 Main Street" />
+              <Input style={{ width: '99%' }} placeholder="" />
             </QuestionItem>
           </div>
           <div className="explanation-column">
@@ -90,7 +110,7 @@ const AddressAndPhone: React.FC<AddressAndPhoneProps> = ({ form }) => {
               name="homeAddressStreet2"
               required={false}
             >
-              <Input style={{ width: '99%' }} placeholder="例如：Apt 4B" />
+              <Input style={{ width: '99%' }}/>
             </QuestionItem>
           </div>
           <div className="explanation-column">
@@ -103,7 +123,7 @@ const AddressAndPhone: React.FC<AddressAndPhoneProps> = ({ form }) => {
               question="城市"
               name="homeAddressCity"
             >
-              <Input style={{ width: '99%' }} placeholder="例如：Beijing" />
+              <Input style={{ width: '99%' }}/>
             </QuestionItem>
           </div>
           <div className="explanation-column">
@@ -120,7 +140,7 @@ const AddressAndPhone: React.FC<AddressAndPhoneProps> = ({ form }) => {
               naCheckboxName="homeAddressState_na"
               inlineCheckbox={true}
             >
-              <Input style={{ width: '90%' }} placeholder="例如：Hebei" />
+              <Input style={{ width: '90%' }}/>
             </QuestionItem>
           </div>
           <div className="explanation-column">
@@ -137,7 +157,7 @@ const AddressAndPhone: React.FC<AddressAndPhoneProps> = ({ form }) => {
               naCheckboxName="homeAddressZipCode_na"
               inlineCheckbox={true}
             >
-              <Input style={{ width: '80%' }} placeholder="例如：100001" />
+              <Input style={{ width: '80%' }}/>
             </QuestionItem>
           </div>
           <div className="explanation-column">
@@ -153,7 +173,7 @@ const AddressAndPhone: React.FC<AddressAndPhoneProps> = ({ form }) => {
             >
               <Select 
                 options={countryOptions} 
-                placeholder="- 选择一个 -" 
+                placeholder="- 请选择一个 -" 
                 style={{ width: '99%' }}
               />
             </QuestionItem>
@@ -174,8 +194,8 @@ const AddressAndPhone: React.FC<AddressAndPhoneProps> = ({ form }) => {
               name="isMailingAddressSame"
             >
               <Radio.Group onChange={handleSameAddressChange}>
-                <Radio value="Y">是 (Yes)</Radio>
-                <Radio value="N">否 (No)</Radio>
+                <Radio value="Y">是</Radio>
+                <Radio value="N">否</Radio>
               </Radio.Group>
             </QuestionItem>
           </div>
@@ -185,7 +205,7 @@ const AddressAndPhone: React.FC<AddressAndPhoneProps> = ({ form }) => {
           </div>
         </div>
 
-        {!sameMailingAddress && (
+        {isMailingAddressSameAsHome === 'N' && (
           <>
             <fieldset className="question-section">
                 <h4 style={{ marginLeft: '14px' }}>请提供你的邮寄地址:</h4>
@@ -196,7 +216,7 @@ const AddressAndPhone: React.FC<AddressAndPhoneProps> = ({ form }) => {
                                 question="街道地址（第一行）"
                                 name="mailingAddressStreet1"
                                 >
-                                <Input style={{ width: '99%' }} placeholder="例如：123 Main Street" />
+                                <Input style={{ width: '99%' }}/>
                             </QuestionItem>
 
                             <QuestionItem
@@ -204,14 +224,14 @@ const AddressAndPhone: React.FC<AddressAndPhoneProps> = ({ form }) => {
                                 name="mailingAddressStreet2"
                                 required={false}
                                 >
-                                <Input style={{ width: '99%' }} placeholder="例如：Apt 4B" />
+                                <Input style={{ width: '99%' }}/>
                             </QuestionItem>
 
                             <QuestionItem
                                 question="城市"
                                 name="mailingAddressCity"
                                 >
-                                <Input style={{ width: '99%' }} placeholder="例如：Beijing" />
+                                <Input style={{ width: '99%' }}/>
                                 </QuestionItem>
 
                             <QuestionItem
@@ -221,7 +241,7 @@ const AddressAndPhone: React.FC<AddressAndPhoneProps> = ({ form }) => {
                                 naCheckboxName="mailingAddressState_na"
                                 inlineCheckbox={true}
                                 >
-                            <Input style={{ width: '90%' }} placeholder="例如：Hebei" />
+                            <Input style={{ width: '90%' }}/>
                             </QuestionItem>
 
                             <QuestionItem
@@ -231,7 +251,7 @@ const AddressAndPhone: React.FC<AddressAndPhoneProps> = ({ form }) => {
                                 naCheckboxName="mailingAddressZipCode_na"
                                 inlineCheckbox={true}
                                 >
-                                <Input style={{ width: '80%' }} placeholder="例如：100001" />
+                                <Input style={{ width: '80%' }}/>
                             </QuestionItem>
 
                             <QuestionItem
@@ -240,7 +260,7 @@ const AddressAndPhone: React.FC<AddressAndPhoneProps> = ({ form }) => {
                                 >
                                 <Select 
                                     options={countryOptions} 
-                                    placeholder="- 选择一个 -" 
+                                    placeholder="- 请选择一个 -" 
                                     style={{ width: '99%' }}
                                 />
                             </QuestionItem>
@@ -300,12 +320,9 @@ const AddressAndPhone: React.FC<AddressAndPhoneProps> = ({ form }) => {
               question="您是否在过去5年中使用过其他的电话号码？"
               name="hasOtherPhones"
             >
-              <Radio.Group onChange={(e) => {
-                form.setFieldsValue({ hasOtherPhones: e.target.value });
-                setHasPhone(e.target.value);
-              }}>
-                <Radio value="Y">是 (Yes)</Radio>
-                <Radio value="N">否 (No)</Radio>
+              <Radio.Group onChange={handleOtherPhoneNumbersChange}>
+                <Radio value="Y">是</Radio>
+                <Radio value="N">否</Radio>
               </Radio.Group>
             </QuestionItem>
           </div>
@@ -314,7 +331,7 @@ const AddressAndPhone: React.FC<AddressAndPhoneProps> = ({ form }) => {
           </div>
         </div>
 
-        {hasPhone === 'Y' && (
+        {hasOtherPhoneNumbers === 'Y' && (
           <div className="question-row">
             <div className="question-column">
               <RepeatableFormItem
@@ -345,7 +362,6 @@ const AddressAndPhone: React.FC<AddressAndPhoneProps> = ({ form }) => {
           <div className="question-column">
             <h3 className="section-header">
               <span>电子邮件</span>
-              <span> (Email)</span>
             </h3>
             
             <div className="highlighted-block">
@@ -372,12 +388,9 @@ const AddressAndPhone: React.FC<AddressAndPhoneProps> = ({ form }) => {
               question="您是否在过去5年中使用过其他的电子邮件地址？"
               name="hasOtherEmails"
             >
-              <Radio.Group onChange={(e) => {
-                form.setFieldsValue({ hasOtherEmails: e.target.value });
-                setHasEmail(e.target.value);
-              }}>
-                <Radio value="Y">是 (Yes)</Radio>
-                <Radio value="N">否 (No)</Radio>
+              <Radio.Group onChange={handleOtherEmailAddressesChange}>
+                <Radio value="Y">是</Radio>
+                <Radio value="N">否</Radio>
               </Radio.Group>
             </QuestionItem>
           </div>
@@ -386,7 +399,7 @@ const AddressAndPhone: React.FC<AddressAndPhoneProps> = ({ form }) => {
           </div>
         </div>
 
-        {hasEmail === 'Y' && (
+        {hasOtherEmailAddresses === 'Y' && (
           <div className="question-row">
             <div className="question-column">
               <RepeatableFormItem
@@ -394,10 +407,10 @@ const AddressAndPhone: React.FC<AddressAndPhoneProps> = ({ form }) => {
                 addButtonText="增加另一个"
                 removeButtonText="移除"
               >
-                {(field) => (
+                {(field: FormListFieldData) => (
                   <QuestionItem
                     question="电子邮件地址"
-                    name="emailAddress"
+                    name={[field.name,"emailAddress"]}
                   >
                     <Input style={{ width: '95%' }} maxLength={50} placeholder="例如：example@email.com" />
                   </QuestionItem>
