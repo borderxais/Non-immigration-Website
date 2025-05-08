@@ -10,6 +10,7 @@ interface USContactProps {
 const USContact: React.FC<USContactProps> = ({ form }) => {
   // 使用 Form.useWatch 监听表单值变化，确保状态与表单同步
   const watchNameNotKnown = Form.useWatch('usPocNameNotKnown', form);
+  const watchOrgNotKnown = Form.useWatch('usPocOrganizationNotKnown', form);
   
   // 基于表单值设置本地状态
   const [relationship, setRelationship] = useState<string>('');
@@ -24,6 +25,18 @@ const USContact: React.FC<USContactProps> = ({ form }) => {
       });
     }
   }, [watchNameNotKnown, form]);
+  
+  // 监听组织复选框变化
+  useEffect(() => {
+    if (watchOrgNotKnown) {
+      // 如果姓名复选框也被选中，取消选中它
+      if (watchNameNotKnown) {
+        form.setFieldsValue({
+          usPocNameNotKnown: false
+        });
+      }
+    }
+  }, [watchOrgNotKnown, watchNameNotKnown, form]);
 
   // 处理关系选择变化
   const handleRelationshipChange = (value: string) => {
@@ -43,40 +56,51 @@ const USContact: React.FC<USContactProps> = ({ form }) => {
         <div className="question-row">       
           <div className="question-column">
             <div className="highlighted-block">
-              <h4><span>联系人</span></h4>
-              <div className="block-inside-highlight">
-                <QuestionItem
-                  question="姓氏"
-                  name="usPocSurname"
-                >
+              <div style={{ marginBottom: '24px' }}>
+                <div style={{ marginBottom: '8px' }}>
+                  <span style={{ fontWeight: 'bold' }}>姓氏</span>
+                  <span style={{ color: '#ff4d4f', marginLeft: '4px' }}>*</span>
+                </div>
+                <Form.Item name="usPocSurname">
                   <Input 
                     style={{ width: '99%' }} 
                     maxLength={33} 
-                    disabled={watchNameNotKnown === true}
-                    placeholder={watchNameNotKnown === true ? '' : '请输入姓氏'}
+                    disabled={!!watchNameNotKnown}
+                    placeholder={!!watchNameNotKnown ? '' : '请输入姓氏'}
                   />
-                </QuestionItem>
-
-                <QuestionItem
-                  question="名字"
-                  name="usPocGivenName"
-                >
-                  <Input 
-                    style={{ width: '99%' }} 
-                    maxLength={33} 
-                    disabled={watchNameNotKnown === true}
-                    placeholder={watchNameNotKnown === true ? '' : '请输入名字'}
-                  />
-                </QuestionItem>
+                </Form.Item>
               </div>
-              
+
+              <div style={{ marginBottom: '24px' }}>
+                <div style={{ marginBottom: '8px' }}>
+                  <span style={{ fontWeight: 'bold' }}>名字</span>
+                  <span style={{ color: '#ff4d4f', marginLeft: '4px' }}>*</span>
+                </div>
+                <Form.Item name="usPocGivenName">
+                  <Input 
+                    style={{ width: '99%' }} 
+                    maxLength={33} 
+                    disabled={!!watchNameNotKnown}
+                    placeholder={!!watchNameNotKnown ? '' : '请输入名字'}
+                  />
+                </Form.Item>
+              </div>
               <div style={{ textAlign: 'right', marginTop: '8px', marginBottom: '16px' }}>
                 <Form.Item 
                   name="usPocNameNotKnown" 
                   valuePropName="checked"
                   style={{ marginBottom: 0 }}
                 >
-                  <Checkbox>
+                  <Checkbox onChange={(e) => {
+                    if (e.target.checked) {
+                      // When checkbox is checked, clear the fields and uncheck the other checkbox
+                      form.setFieldsValue({
+                        usPocSurname: undefined,
+                        usPocGivenName: undefined,
+                        usPocOrganizationNotKnown: false
+                      });
+                    }
+                  }}>
                     不适用/无法提供
                   </Checkbox>
                 </Form.Item>
@@ -85,11 +109,29 @@ const USContact: React.FC<USContactProps> = ({ form }) => {
               <QuestionItem
                 question="组织名称"
                 name="usPocOrganization"
-                hasNaCheckbox={true}
-                naCheckboxName="usPocOrganizationNotKnown"
+                hasNaCheckbox={false}
               >
                 <Input style={{ width: '99%' }} maxLength={33} />
               </QuestionItem>
+              
+              <div style={{ textAlign: 'right', marginTop: '8px', marginBottom: '16px' }}>
+                <Form.Item 
+                  name="usPocOrganizationNotKnown" 
+                  valuePropName="checked"
+                  style={{ marginBottom: 0 }}
+                >
+                  <Checkbox onChange={(e) => {
+                    if (e.target.checked) {
+                      // When organization checkbox is checked, uncheck the name checkbox
+                      form.setFieldsValue({
+                        usPocNameNotKnown: false
+                      });
+                    }
+                  }}>
+                    不适用/无法提供
+                  </Checkbox>
+                </Form.Item>
+              </div>
             </div>        
           </div>
           <div className="explanation-column"></div>
