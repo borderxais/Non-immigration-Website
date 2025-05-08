@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Input, Select, Radio, DatePicker, Checkbox, Button, Space, Divider } from 'antd';
+import { Form, Input, Select, Radio, Checkbox, Button, Space, Divider } from 'antd';
 import QuestionItem from '../common/QuestionItem';
+import DateInput from '../common/DateInput';
 import { relationshipOptions, usStatusOptions } from '../utils/formOptions';
 
 interface FamilyInfoProps {
@@ -112,21 +113,19 @@ const FamilyInfo: React.FC<FamilyInfoProps> = ({ form }) => {
               <div style={{ marginBottom: '24px' }}>
                 <QuestionItem
                   question="出生日期"
-                  name="fatherDob"
+                  name="fatherDobGroup"
                   required={true}
                   hasNaCheckbox={true}
                   naCheckboxName="fatherDobNotKnown"
+                  inlineCheckbox={true}
                 >
-                  <DatePicker 
-                    style={{ width: '100%' }} 
-                    format="DD-MMM-YYYY"
+                  <DateInput
+                    dayName="fatherDobDay"
+                    monthName="fatherDobMonth"
+                    yearName="fatherDobYear"
                     disabled={!!watchFatherDobNotKnown}
-                    placeholder={!!watchFatherDobNotKnown ? '' : '请选择日期'}
                   />
                 </QuestionItem>
-                <div className="hint">
-                  <span>(格式：DD-MMM-YYYY)</span>
-                </div>
               </div>
               
               <div style={{ marginBottom: '24px' }}>
@@ -217,21 +216,19 @@ const FamilyInfo: React.FC<FamilyInfoProps> = ({ form }) => {
               <div style={{ marginBottom: '24px' }}>
                 <QuestionItem
                   question="出生日期"
-                  name="motherDob"
+                  name="motherDobGroup"
                   required={true}
                   hasNaCheckbox={true}
                   naCheckboxName="motherDobNotKnown"
+                  inlineCheckbox={true}
                 >
-                  <DatePicker 
-                    style={{ width: '100%' }} 
-                    format="DD-MMM-YYYY"
+                  <DateInput
+                    dayName="motherDobDay"
+                    monthName="motherDobMonth"
+                    yearName="motherDobYear"
                     disabled={!!watchMotherDobNotKnown}
-                    placeholder={!!watchMotherDobNotKnown ? '' : '请选择日期'}
                   />
                 </QuestionItem>
-                <div className="hint">
-                  <span>(格式：DD-MMM-YYYY)</span>
-                </div>
               </div>
               
               <div style={{ marginBottom: '24px' }}>
