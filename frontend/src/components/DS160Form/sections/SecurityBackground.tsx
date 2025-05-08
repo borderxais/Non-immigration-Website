@@ -33,14 +33,14 @@ const SecurityBackground: React.FC<SecurityBackgroundProps> = ({ form }) => {
   return (
     <div className="ds160-section">
       <h2>安全和背景: 第一部分</h2>
-      <div>
+      <div style={{ marginBottom: '30px' }}>
       <p className="section-description">
         注意：请提供以下安全与背景信息。对于所有要求解释的问题，请提供完整、准确的信息。对于那些属于法律特定范畴内不许入境的人员，我们不能颁发签证（提前获得豁免的申请人除外）。下列情况有适用于您的吗？如果您回答"是"，这并不意味着您就无资格获得签证，但是您可能需要与签证官员进行面谈。
       </p>
       </div>
 
       {/* Communicable Disease Section */}
-      <fieldset className="question-section" style={{ marginTop: '30px' }}>
+      <fieldset className="question-section">
         <div className="question-row">
           <div className="question-column">
             <QuestionItem
@@ -96,66 +96,37 @@ const SecurityBackground: React.FC<SecurityBackgroundProps> = ({ form }) => {
 
             {hasDisorder === 'Y' && (
                 <>
-            <h4>请提供以下信息：</h4>
-            <div className="highlighted-block">
-              <div className="question-row">
-                <div className="question-column">
-                  <Form.Item
-                    name="disorderExplanation"
-                    noStyle
-                  >
-                    <TextArea 
-                      style={{ width: '99%' }} 
-                      rows={4} 
-                      maxLength={4000}
-                      placeholder="请详细说明您的情况"
-                    />
-                  </Form.Item>
-                </div>
-                <div className="explanation-column">
-                  {/* Empty explanation column to maintain layout */}
-                </div>
-              </div>
-            </div>
-          </>
-        )}
+                    <h4>解释说明</h4>
+                    <div className="highlighted-block">
+                    <div className="question-row">
+                        <div className="question-column">
+                        <Form.Item
+                            name="disorderExplanation"
+                            noStyle
+                        >
+                            <TextArea 
+                            style={{ width: '99%' }} 
+                            rows={4} 
+                            maxLength={4000}
+                            placeholder="请详细说明您的情况"
+                            />
+                        </Form.Item>
+                        </div>
+                    </div>
+                    </div>
+                </>
+            )}
           </div>
           <div className="explanation-column"></div>
         </div>
-
-        {hasDisorder === 'Y' && (
-          <>
-            <h4 style={{ marginBottom: '16px', fontWeight: 'normal' }}>请提供以下信息：</h4>
-            <div className="highlighted-block">
-              <div className="question-row">
-                <div className="question-column">
-                  <Form.Item
-                    name="disorderExplanation"
-                    noStyle
-                  >
-                    <TextArea 
-                      style={{ width: '99%' }} 
-                      rows={4} 
-                      maxLength={4000}
-                      placeholder="请详细说明您的情况"
-                    />
-                  </Form.Item>
-                </div>
-                <div className="explanation-column">
-                  {/* Empty explanation column to maintain layout */}
-                </div>
-              </div>
-            </div>
-          </>
-        )}
       </fieldset>
 
-      {/* Drug Abuse Section */}
+      {/* Drug User Section */}
       <fieldset className="question-section">
         <div className="question-row">
           <div className="question-column">
             <QuestionItem
-              question="您是否或曾经滥用药物并上瘾？"
+              question="您是否是或曾经是药物滥用者或药物成瘾者？"
               name="isDrugUser"
             >
               <Radio.Group onChange={handleDrugUserChange}>
@@ -163,35 +134,32 @@ const SecurityBackground: React.FC<SecurityBackgroundProps> = ({ form }) => {
                 <Radio value="N">否 (No)</Radio>
               </Radio.Group>
             </QuestionItem>
+
+            {isDrugUser === 'Y' && (
+                <>
+                    <h4>解释说明</h4>
+                    <div className="highlighted-block">
+                    <div className="question-row">
+                        <div className="question-column">
+                        <Form.Item
+                            name="drugUserExplanation"
+                            noStyle
+                        >
+                            <TextArea 
+                            style={{ width: '99%' }} 
+                            rows={4} 
+                            maxLength={4000}
+                            placeholder="请详细说明您的情况"
+                            />
+                        </Form.Item>
+                        </div>
+                    </div>
+                    </div>
+                </>
+            )}
           </div>
           <div className="explanation-column"></div>
         </div>
-
-        {isDrugUser === 'Y' && (
-          <>
-            <h4 style={{ marginBottom: '16px', fontWeight: 'normal' }}>请提供以下信息：</h4>
-            <div className="highlighted-block">
-              <div className="question-row">
-                <div className="question-column">
-                  <Form.Item
-                    name="drugUserExplanation"
-                    noStyle
-                  >
-                    <TextArea 
-                      style={{ width: '99%' }} 
-                      rows={4} 
-                      maxLength={4000}
-                      placeholder="请详细说明您的情况"
-                    />
-                  </Form.Item>
-                </div>
-                <div className="explanation-column">
-                  {/* Empty explanation column to maintain layout */}
-                </div>
-              </div>
-            </div>
-          </>
-        )}
       </fieldset>
     </div>
   );
