@@ -54,27 +54,29 @@ const SecurityBackground: React.FC<SecurityBackgroundProps> = ({ form }) => {
             </QuestionItem>
 
             {hasDisease === 'Y' && (
-                <>
-                    <h4>解释说明</h4>
+              <>
+                <h4>解释说明</h4>
+                <div className="question-row">
+                  <div className="question-column">
                     <div className="highlighted-block">
-                    <div className="question-row">
-                        <div className="question-column">
-                        <Form.Item
-                            name="diseaseExplanation"
-                            noStyle
-                        >
-                            <TextArea 
-                            style={{ width: '99%' }} 
-                            rows={4} 
-                            maxLength={4000}
-                            placeholder="请详细说明您的情况"
-                            />
-                        </Form.Item>
-                        </div>
+                      <Form.Item
+                          name="diseaseExplanation"
+                          noStyle
+                      >
+                          <TextArea 
+                          style={{ width: '99%' }} 
+                          rows={4} 
+                          maxLength={4000}
+                          placeholder="请详细说明您的情况"
+                          />
+                      </Form.Item>
                     </div>
-                    </div>
-                </>
+                  </div>
+                </div>
+              </>
             )}
+          </div>
+          <div className="explanation-column">
           </div>
         </div>
       </fieldset>
@@ -94,28 +96,29 @@ const SecurityBackground: React.FC<SecurityBackgroundProps> = ({ form }) => {
             </QuestionItem>
 
             {hasDisorder === 'Y' && (
-                <>
-                    <h4>解释说明</h4>
-                    <div className="highlighted-block">
-                    <div className="question-row">
-                        <div className="question-column">
-                        <Form.Item
-                            name="disorderExplanation"
-                            noStyle
-                        >
-                            <TextArea 
-                            style={{ width: '99%' }} 
-                            rows={4} 
-                            maxLength={4000}
-                            placeholder="请详细说明您的情况"
-                            />
-                        </Form.Item>
-                        </div>
+              <>
+                <h4>解释说明</h4>
+                <div className="highlighted-block">
+                  <div className="question-row">
+                    <div className="question-column">
+                      <Form.Item
+                        name="disorderExplanation"
+                        noStyle
+                      >
+                        <TextArea 
+                        style={{ width: '99%' }} 
+                        rows={4} 
+                        maxLength={4000}
+                        placeholder="请详细说明您的情况"
+                        />
+                      </Form.Item>
                     </div>
-                    </div>
-                </>
+                  </div>
+                </div>
+              </>
             )}
           </div>
+          <div className="explanation-column"></div>
         </div>
       </fieldset>
 
@@ -134,28 +137,29 @@ const SecurityBackground: React.FC<SecurityBackgroundProps> = ({ form }) => {
             </QuestionItem>
 
             {isDrugUser === 'Y' && (
-                <>
-                    <h4>解释说明</h4>
-                    <div className="highlighted-block">
-                    <div className="question-row">
-                        <div className="question-column">
-                        <Form.Item
-                            name="drugUserExplanation"
-                            noStyle
-                        >
-                            <TextArea 
-                            style={{ width: '99%' }} 
-                            rows={4} 
-                            maxLength={4000}
-                            placeholder="请详细说明您的情况"
-                            />
-                        </Form.Item>
-                        </div>
-                    </div>
-                    </div>
-                </>
+              <>
+                <h4>解释说明</h4>
+                <div className="highlighted-block">
+                  <div className="question-row">
+                    <div className="question-column">
+                      <Form.Item
+                        name="drugUserExplanation"
+                        noStyle
+                    >
+                        <TextArea 
+                        style={{ width: '99%' }} 
+                        rows={4} 
+                        maxLength={4000}
+                        placeholder="请详细说明您的情况"
+                        />
+                      </Form.Item>
+                    </div>  
+                  </div>
+                </div>
+              </>
             )}
           </div>
+          <div className="explanation-column"></div>
         </div>
       </fieldset>
     </div>

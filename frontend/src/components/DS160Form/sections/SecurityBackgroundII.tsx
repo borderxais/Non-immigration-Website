@@ -80,9 +80,9 @@ const SecurityBackgroundII: React.FC<SecurityBackgroundIIProps> = ({ form }) => 
             {hasArrest === 'Y' && (
               <>
                 <h4>解释说明</h4>
-                <div className="highlighted-block">
-                  <div className="question-row">
-                    <div className="question-column">
+                <div className="question-row">
+                  <div className="question-column">
+                    <div className="highlighted-block">
                       <Form.Item
                         name="arrestExplanation"
                         noStyle
@@ -95,17 +95,12 @@ const SecurityBackgroundII: React.FC<SecurityBackgroundIIProps> = ({ form }) => 
                         />
                       </Form.Item>
                     </div>
-                    <div className="explanation-column">
-                      {/* Empty explanation column to maintain layout */}
-                    </div>
                   </div>
                 </div>
               </>
             )}
           </div>
           <div className="explanation-column">
-            <h4 className="help-header">帮助：逮捕或定罪</h4>
-            <p>即使您后来获得赦免、特赦或其他类似的宽恕，也需要回答此问题。</p>
           </div>
         </div>
       </fieldset>
@@ -127,9 +122,9 @@ const SecurityBackgroundII: React.FC<SecurityBackgroundIIProps> = ({ form }) => 
             {hasControlledSubstances === 'Y' && (
               <>
                 <h4>解释说明</h4>
-                <div className="highlighted-block">
-                  <div className="question-row">
-                    <div className="question-column">
+                <div className="question-row">
+                  <div className="question-column">
+                    <div className="highlighted-block">
                       <Form.Item
                         name="controlledSubstancesExplanation"
                         noStyle
@@ -142,17 +137,12 @@ const SecurityBackgroundII: React.FC<SecurityBackgroundIIProps> = ({ form }) => 
                         />
                       </Form.Item>
                     </div>
-                    <div className="explanation-column">
-                      {/* Empty explanation column to maintain layout */}
-                    </div>
                   </div>
                 </div>
               </>
             )}
           </div>
           <div className="explanation-column">
-            <h4 className="help-header">帮助：管制物质</h4>
-            <p>管制物质包括非法药物和未经处方使用的处方药。</p>
           </div>
         </div>
       </fieldset>
@@ -174,9 +164,9 @@ const SecurityBackgroundII: React.FC<SecurityBackgroundIIProps> = ({ form }) => 
             {hasProstitution === 'Y' && (
               <>
                 <h4>解释说明</h4>
-                <div className="highlighted-block">
-                  <div className="question-row">
-                    <div className="question-column">
+                <div className="question-row">
+                  <div className="question-column">
+                    <div className="highlighted-block">
                       <Form.Item
                         name="prostitutionExplanation"
                         noStyle
@@ -189,18 +179,12 @@ const SecurityBackgroundII: React.FC<SecurityBackgroundIIProps> = ({ form }) => 
                         />
                       </Form.Item>
                     </div>
-                    <div className="explanation-column">
-                      {/* Empty explanation column to maintain layout */}
-                    </div>
                   </div>
                 </div>
               </>
             )}
           </div>
-          <div className="explanation-column">
-            <h4 className="help-header">帮助：卖淫</h4>
-            <p>这包括参与卖淫活动或为卖淫提供中介服务。</p>
-          </div>
+          <div className="explanation-column"></div>
         </div>
       </fieldset>
 
@@ -221,9 +205,9 @@ const SecurityBackgroundII: React.FC<SecurityBackgroundIIProps> = ({ form }) => 
             {hasMoneyLaundering === 'Y' && (
               <>
                 <h4>解释说明</h4>
-                <div className="highlighted-block">
-                  <div className="question-row">
-                    <div className="question-column">
+                <div className="question-row">
+                  <div className="question-column">
+                    <div className="highlighted-block">
                       <Form.Item
                         name="moneyLaunderingExplanation"
                         noStyle
@@ -236,17 +220,12 @@ const SecurityBackgroundII: React.FC<SecurityBackgroundIIProps> = ({ form }) => 
                         />
                       </Form.Item>
                     </div>
-                    <div className="explanation-column">
-                      {/* Empty explanation column to maintain layout */}
-                    </div>
                   </div>
                 </div>
               </>
             )}
           </div>
           <div className="explanation-column">
-            <h4 className="help-header">帮助：洗钱</h4>
-            <p>洗钱是指将非法获得的资金转换为看似合法的资金的过程。</p>
           </div>
         </div>
       </fieldset>
@@ -268,9 +247,9 @@ const SecurityBackgroundII: React.FC<SecurityBackgroundIIProps> = ({ form }) => 
             {hasHumanTrafficking === 'Y' && (
               <>
                 <h4>解释说明</h4>
-                <div className="highlighted-block">
-                  <div className="question-row">
-                    <div className="question-column">
+                <div className="question-row">
+                  <div className="question-column">
+                    <div className="highlighted-block">
                       <Form.Item
                         name="humanTraffickingExplanation"
                         noStyle
@@ -283,17 +262,12 @@ const SecurityBackgroundII: React.FC<SecurityBackgroundIIProps> = ({ form }) => 
                         />
                       </Form.Item>
                     </div>
-                    <div className="explanation-column">
-                      {/* Empty explanation column to maintain layout */}
-                    </div>
                   </div>
                 </div>
               </>
             )}
           </div>
           <div className="explanation-column">
-            <h4 className="help-header">帮助：人口贩运</h4>
-            <p>人口贩运包括强迫劳动、性贩运和其他形式的现代奴役。</p>
           </div>
         </div>
       </fieldset>
@@ -315,9 +289,9 @@ const SecurityBackgroundII: React.FC<SecurityBackgroundIIProps> = ({ form }) => 
             {hasAssistedTrafficking === 'Y' && (
               <>
                 <h4>解释说明</h4>
-                <div className="highlighted-block">
-                  <div className="question-row">
-                    <div className="question-column">
+                <div className="question-row">
+                  <div className="question-column">
+                    <div className="highlighted-block">
                       <Form.Item
                         name="assistedTraffickingExplanation"
                         noStyle
@@ -330,17 +304,12 @@ const SecurityBackgroundII: React.FC<SecurityBackgroundIIProps> = ({ form }) => 
                         />
                       </Form.Item>
                     </div>
-                    <div className="explanation-column">
-                      {/* Empty explanation column to maintain layout */}
-                    </div>
                   </div>
                 </div>
               </>
             )}
           </div>
           <div className="explanation-column">
-            <h4 className="help-header">帮助：协助人口贩运</h4>
-            <p>这包括任何形式的援助或支持人口贩运活动。</p>
           </div>
         </div>
       </fieldset>
@@ -362,9 +331,9 @@ const SecurityBackgroundII: React.FC<SecurityBackgroundIIProps> = ({ form }) => 
             {hasTraffickingRelated === 'Y' && (
               <>
                 <h4>解释说明</h4>
-                <div className="highlighted-block">
-                  <div className="question-row">
-                    <div className="question-column">
+                <div className="question-row">
+                  <div className="question-column">
+                    <div className="highlighted-block">
                       <Form.Item
                         name="traffickingRelatedExplanation"
                         noStyle
@@ -377,17 +346,12 @@ const SecurityBackgroundII: React.FC<SecurityBackgroundIIProps> = ({ form }) => 
                         />
                       </Form.Item>
                     </div>
-                    <div className="explanation-column">
-                      {/* Empty explanation column to maintain layout */}
-                    </div>
                   </div>
                 </div>
               </>
             )}
           </div>
           <div className="explanation-column">
-            <h4 className="help-header">帮助：人口贩运相关</h4>
-            <p>这包括作为家庭成员从人口贩运活动中获益的情况。</p>
           </div>
         </div>
       </fieldset>

@@ -12,7 +12,11 @@ import ApplicationIdDisplay from '../ApplicationIdDisplay';
 // import AddressAndPhone from './sections/AddressAndPhone';
 // import Passport from './sections/Passport';
 // import USContact from './sections/USContact';
-import SecurityBackgroundI from './sections/SecurityBackgroundI';
+// import SecurityBackgroundI from './sections/SecurityBackgroundI';
+// import SecurityBackgroundII from './sections/SecurityBackgroundII';
+// import SecurityBackgroundIII from './sections/SecurityBackgroundIII';
+// import SecurityBackgroundIV from './sections/SecurityBackgroundIV';
+import SecurityBackgroundV from './sections/SecurityBackgroundV';
 import DS160ReviewPage from './sections/DS160ReviewPage';
 
 import ds160Service from '../../services/ds160Service';
@@ -72,10 +76,30 @@ const formSections: FormSection[] = [
   //   title: '美国联系人',
   //   component: USContact as unknown as React.FC<SectionProps>
   // },
+  // {
+  //   key: 'securityBackground',
+  //   title: '安全和背景: 第一部分',
+  //   component: SecurityBackgroundI
+  // },
+  // {
+  //   key: 'securityBackground2',
+  //   title: '安全和背景: 第二部分',
+  //   component: SecurityBackgroundII
+  // },
+  // {
+  //   key: 'securityBackground3',
+  //   title: '安全和背景: 第三部分',
+  //   component: SecurityBackgroundIII
+  // },
+  // {
+  //   key: 'securityBackground4',
+  //   title: '安全和背景: 第四部分',
+  //   component: SecurityBackgroundIV
+  // },
   {
-    key: 'securityBackground',
-    title: '安全和背景: 第一部分',
-    component: SecurityBackgroundI
+    key: 'securityBackground5',
+    title: '安全和背景: 第五部分',
+    component: SecurityBackgroundV
   },
   {
     key: 'review',
