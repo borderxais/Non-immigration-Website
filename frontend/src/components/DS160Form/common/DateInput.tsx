@@ -77,50 +77,52 @@ const DateInput: React.FC<DateInputProps> = ({
   };
 
   return (
-    <div style={dateBlockStyle}>
-      <Form.Item 
-        name={dayName} 
-        noStyle
-        rules={required ? [{ required: true, message: '请选择日期' }] : []}
-      >
-        <Select 
-          options={dayOptions} 
-          style={{ width: 70 }} 
-          placeholder="日" 
-          disabled={disabled}
-        />
-      </Form.Item>
+    <div>
+      <div style={dateBlockStyle}>
+        <Form.Item 
+          name={dayName} 
+          noStyle
+          rules={required ? [{ required: true, message: '请选择日期' }] : []}
+        >
+          <Select 
+            options={dayOptions} 
+            style={{ width: 70 }} 
+            placeholder="日" 
+            disabled={disabled}
+          />
+        </Form.Item>
 
-      <Form.Item 
-        name={monthName} 
-        noStyle
-        rules={required ? [{ required: true, message: '请选择月份' }] : []}
-      >
-        <Select 
-          options={monthOptions} 
-          style={{ width: 80 }} 
-          placeholder="月" 
-          disabled={disabled}
-        />
-      </Form.Item>
+        <Form.Item 
+          name={monthName} 
+          noStyle
+          rules={required ? [{ required: true, message: '请选择月份' }] : []}
+        >
+          <Select 
+            options={monthOptions} 
+            style={{ width: 80 }} 
+            placeholder="月" 
+            disabled={disabled}
+          />
+        </Form.Item>
 
-      <Form.Item 
-        name={yearName} 
-        noStyle
-        rules={required ? [
-          { required: true, message: '请输入年份' },
-          { pattern: /^\d{4}$/, message: '请输入4位数年份' }
-        ] : []}
-      >
-        <Input 
-          placeholder="年" 
-          style={{ width: '60px' }} 
-          maxLength={4} 
-          disabled={disabled}
-        />
-      </Form.Item>
-
-      <div style={{ marginLeft: '8px', fontSize: '12px', color: '#666' }}>
+        <Form.Item 
+          name={yearName} 
+          noStyle
+          rules={required ? [
+            { required: true, message: '请输入年份' },
+            { pattern: /^\d{4}$/, message: '请输入4位数年份' }
+          ] : []}
+        >
+          <Input 
+            placeholder="年" 
+            style={{ width: '60px' }} 
+            maxLength={4} 
+            disabled={disabled}
+          />
+        </Form.Item>
+      </div>
+      
+      <div style={{ fontSize: '12px', color: '#666', marginTop: '4px' }}>
         (格式: DD-MM-YYYY)
       </div>
     </div>
