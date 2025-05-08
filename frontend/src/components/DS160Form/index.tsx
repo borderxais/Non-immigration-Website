@@ -12,7 +12,7 @@ import ApplicationIdDisplay from '../ApplicationIdDisplay';
 // import AddressAndPhone from './sections/AddressAndPhone';
 // import Passport from './sections/Passport';
 // import USContact from './sections/USContact';
-import SecurityBackground from './sections/SecurityBackground';
+import SecurityBackgroundI from './sections/SecurityBackgroundI';
 import DS160ReviewPage from './sections/DS160ReviewPage';
 
 import ds160Service from '../../services/ds160Service';
@@ -60,7 +60,7 @@ const formSections: FormSection[] = [
   // {
   //   key: 'addressAndPhone',
   //   title: '地址和电话',
-  //   component: AddressAndPhone as unknown as React.FC<SectionProps>
+  //   component: AddressAndPhone
   // },
   // {
   //   key: 'passport',
@@ -75,7 +75,7 @@ const formSections: FormSection[] = [
   {
     key: 'securityBackground',
     title: '安全和背景: 第一部分',
-    component: SecurityBackground as unknown as React.FC<SectionProps>
+    component: SecurityBackgroundI
   },
   {
     key: 'review',

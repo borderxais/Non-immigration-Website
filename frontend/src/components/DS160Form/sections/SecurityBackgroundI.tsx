@@ -76,7 +76,6 @@ const SecurityBackground: React.FC<SecurityBackgroundProps> = ({ form }) => {
                 </>
             )}
           </div>
-        <div className="explanation-column"></div>
         </div>
       </fieldset>
 
@@ -117,7 +116,6 @@ const SecurityBackground: React.FC<SecurityBackgroundProps> = ({ form }) => {
                 </>
             )}
           </div>
-          <div className="explanation-column"></div>
         </div>
       </fieldset>
 
@@ -158,7 +156,6 @@ const SecurityBackground: React.FC<SecurityBackgroundProps> = ({ form }) => {
                 </>
             )}
           </div>
-          <div className="explanation-column"></div>
         </div>
       </fieldset>
     </div>
