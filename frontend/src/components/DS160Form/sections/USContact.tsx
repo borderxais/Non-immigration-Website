@@ -169,9 +169,7 @@ const USContact: React.FC<USContactProps> = ({ form }) => {
               </Select>
             </QuestionItem>
           </div>
-          <div className="explanation-column">
-            {/* Empty explanation column to maintain layout */}
-          </div>
+          <div className="explanation-column"></div>
         </div>
 
         {/* Address and Phone Section - Only show when relationship has a value */}
@@ -247,7 +245,6 @@ const USContact: React.FC<USContactProps> = ({ form }) => {
                 </div>
               </div>
               <div className="explanation-column"></div>
-            
             </div>
           </fieldset>
         )}

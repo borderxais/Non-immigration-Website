@@ -97,9 +97,6 @@ const FamilyInfo: React.FC<FamilyInfoProps> = ({ form }) => {
                     placeholder={!!watchFatherSurnameNotKnown ? '' : '请输入父亲姓氏'}
                   />
                 </QuestionItem>
-                <div className="hint">
-                  <span>(例如：Hernandez Garcia)</span>
-                </div>
               </div>
               
               <div style={{ marginBottom: '24px' }}>
@@ -117,59 +114,59 @@ const FamilyInfo: React.FC<FamilyInfoProps> = ({ form }) => {
                     placeholder={!!watchFatherGivenNameNotKnown ? '' : '请输入父亲名字'}
                   />
                 </QuestionItem>
-                <div className="hint">
-                  <span>(例如：Juan Miguel)</span>
-                </div>
               </div>
               
-              <div style={{ marginBottom: '24px' }}>
-                <QuestionItem
-                  question="出生日期"
-                  name="fatherDobGroup"
-                  required={true}
-                  hasNaCheckbox={true}
-                  naCheckboxName="fatherDobNotKnown"
-                  inlineCheckbox={true}
-                >
-                  <DateInput
-                    dayName="fatherDobDay"
-                    monthName="fatherDobMonth"
-                    yearName="fatherDobYear"
-                    disabled={!!watchFatherDobNotKnown}
-                  />
-                </QuestionItem>
-              </div>
-              
-              <div style={{ marginBottom: '24px' }}>
-                <QuestionItem
-                  question="您的父亲是否在美国？"
-                  name="fatherInUs"
-                  required={true}
-                >
-                  <Radio.Group onChange={handleFatherInUsChange}>
-                    <Radio value="Y">是</Radio>
-                    <Radio value="N">否</Radio>
-                  </Radio.Group>
-                </QuestionItem>
-                
-                {watchFatherInUs === 'Y' && (
-                  <div style={{ marginTop: '16px' }}>
+              {/* Only show these fields if at least one name field is known */}
+              {!(watchFatherSurnameNotKnown && watchFatherGivenNameNotKnown) && (
+                <div>
+                  <div style={{ marginBottom: '24px' }}>
                     <QuestionItem
-                      question="父亲的身份"
-                      name="fatherStatus"
+                      question="出生日期"
+                      name="fatherDobGroup"
+                      required={true}
+                      hasNaCheckbox={true}
+                      naCheckboxName="fatherDobNotKnown"
+                      inlineCheckbox={true}
+                    >
+                      <DateInput
+                        dayName="fatherDobDay"
+                        monthName="fatherDobMonth"
+                        yearName="fatherDobYear"
+                        disabled={!!watchFatherDobNotKnown}
+                      />
+                    </QuestionItem>
+
+                    <QuestionItem
+                      question="您的父亲是否在美国？"
+                      name="fatherInUs"
                       required={true}
                     >
-                      <Select style={{ width: '100%' }}>
-                        {usStatusOptions.map(option => (
-                          <Select.Option key={option.value} value={option.value}>
-                            {option.label}
-                          </Select.Option>
-                        ))}
-                      </Select>
+                      <Radio.Group onChange={handleFatherInUsChange}>
+                        <Radio value="Y">是</Radio>
+                        <Radio value="N">否</Radio>
+                      </Radio.Group>
                     </QuestionItem>
+                    
+                    {watchFatherInUs === 'Y' && (
+                      <div style={{ marginTop: '16px' }}>
+                        <QuestionItem
+                          question="父亲的身份"
+                          name="fatherStatus"
+                          required={true}
+                        >
+                          <Select style={{ width: '100%' }}>
+                            {usStatusOptions.map(option => (
+                              <Select.Option key={option.value} value={option.value}>
+                                {option.label}
+                              </Select.Option>
+                            ))}
+                          </Select>
+                        </QuestionItem>
+                      </div>
+                    )}
                   </div>
-                )}
-              </div>
+                </div>
+              )}
             </div>
           </div>
           <div className="explanation-column"></div>
@@ -200,9 +197,6 @@ const FamilyInfo: React.FC<FamilyInfoProps> = ({ form }) => {
                     placeholder={!!watchMotherSurnameNotKnown ? '' : '请输入母亲姓氏'}
                   />
                 </QuestionItem>
-                <div className="hint">
-                  <span>(例如：Hernandez Garcia)</span>
-                </div>
               </div>
               
               <div style={{ marginBottom: '24px' }}>
@@ -220,59 +214,61 @@ const FamilyInfo: React.FC<FamilyInfoProps> = ({ form }) => {
                     placeholder={!!watchMotherGivenNameNotKnown ? '' : '请输入母亲名字'}
                   />
                 </QuestionItem>
-                <div className="hint">
-                  <span>(例如：Juanita Miguel)</span>
-                </div>
               </div>
               
-              <div style={{ marginBottom: '24px' }}>
-                <QuestionItem
-                  question="出生日期"
-                  name="motherDobGroup"
-                  required={true}
-                  hasNaCheckbox={true}
-                  naCheckboxName="motherDobNotKnown"
-                  inlineCheckbox={true}
-                >
-                  <DateInput
-                    dayName="motherDobDay"
-                    monthName="motherDobMonth"
-                    yearName="motherDobYear"
-                    disabled={!!watchMotherDobNotKnown}
-                  />
-                </QuestionItem>
-              </div>
-              
-              <div style={{ marginBottom: '24px' }}>
-                <QuestionItem
-                  question="您的母亲是否在美国？"
-                  name="motherInUs"
-                  required={true}
-                >
-                  <Radio.Group onChange={handleMotherInUsChange}>
-                    <Radio value="Y">是</Radio>
-                    <Radio value="N">否</Radio>
-                  </Radio.Group>
-                </QuestionItem>
-                
-                {watchMotherInUs === 'Y' && (
-                  <div style={{ marginTop: '16px' }}>
+              {/* Only show these fields if at least one name field is known */}
+              {!(watchMotherSurnameNotKnown && watchMotherGivenNameNotKnown) && (
+                <div>
+                  <div style={{ marginBottom: '24px' }}>
                     <QuestionItem
-                      question="母亲的身份"
-                      name="motherStatus"
+                      question="出生日期"
+                      name="motherDobGroup"
                       required={true}
+                      hasNaCheckbox={true}
+                      naCheckboxName="motherDobNotKnown"
+                      inlineCheckbox={true}
                     >
-                      <Select style={{ width: '100%' }}>
-                        {usStatusOptions.map(option => (
-                          <Select.Option key={option.value} value={option.value}>
-                            {option.label}
-                          </Select.Option>
-                        ))}
-                      </Select>
+                      <DateInput
+                        dayName="motherDobDay"
+                        monthName="motherDobMonth"
+                        yearName="motherDobYear"
+                        disabled={!!watchMotherDobNotKnown}
+                      />
                     </QuestionItem>
                   </div>
-                )}
-              </div>
+                  
+                  <div>
+                    <QuestionItem
+                      question="您的母亲是否在美国？"
+                      name="motherInUs"
+                      required={true}
+                    >
+                      <Radio.Group onChange={handleMotherInUsChange}>
+                        <Radio value="Y">是</Radio>
+                        <Radio value="N">否</Radio>
+                      </Radio.Group>
+                    </QuestionItem>
+                    
+                    {watchMotherInUs === 'Y' && (
+                      <div style={{ marginTop: '16px' }}>
+                        <QuestionItem
+                          question="母亲的身份"
+                          name="motherStatus"
+                          required={true}
+                        >
+                          <Select style={{ width: '100%' }}>
+                            {usStatusOptions.map(option => (
+                              <Select.Option key={option.value} value={option.value}>
+                                {option.label}
+                              </Select.Option>
+                            ))}
+                          </Select>
+                        </QuestionItem>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
           <div className="explanation-column"></div>
@@ -309,7 +305,7 @@ const FamilyInfo: React.FC<FamilyInfoProps> = ({ form }) => {
                           name={[field.name, 'surname']}
                           required={true}
                         >
-                          <Input style={{ width: '95%' }} placeholder="例如：FERNANDEZ GARCIA" />
+                          <Input style={{ width: '95%' }}/>
                         </QuestionItem>
                       </div>
                       
@@ -319,7 +315,7 @@ const FamilyInfo: React.FC<FamilyInfoProps> = ({ form }) => {
                           name={[field.name, 'givenName']}
                           required={true}
                         >
-                          <Input style={{ width: '95%' }} placeholder="例如：JUAN CARLOS" />
+                          <Input style={{ width: '95%' }}/>
                         </QuestionItem>
                       </div>
                       
@@ -372,9 +368,8 @@ const FamilyInfo: React.FC<FamilyInfoProps> = ({ form }) => {
             )}
           </div>
           <div className="explanation-column">
-            <div className="help-text">
-              直系亲属包括配偶、子女、兄弟姐妹等。
-            </div>
+            <h4 className="help-header">帮助：直系亲属</h4>
+            <p>直系亲属包括配偶、子女、兄弟姐妹等。</p>
           </div>
         </div>
       </fieldset>
