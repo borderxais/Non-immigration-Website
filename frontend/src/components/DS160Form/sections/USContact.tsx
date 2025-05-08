@@ -1,31 +1,31 @@
-import React, { useState } from 'react';
-import { Form, Input, Radio, Select, Checkbox } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Form, Input, Select, Checkbox } from 'antd';
 import QuestionItem from '../common/QuestionItem';
 import { usStateOptions } from '../utils/formOptions';
 
 interface USContactProps {
     form: any;
 }
+
 const USContact: React.FC<USContactProps> = ({ form }) => {
-  // State for conditional rendering if needed
-  const [nameNotKnown, setNameNotKnown] = useState<boolean>(false);
+  // 使用 Form.useWatch 监听表单值变化，确保状态与表单同步
+  const watchNameNotKnown = Form.useWatch('usPocNameNotKnown', form);
+  
+  // 基于表单值设置本地状态
   const [relationship, setRelationship] = useState<string>('');
 
-  // Handle checkbox change for "Do Not Know" name
-  const handleNameNotKnownChange = (e: any) => {
-    const checked = e.target.checked;
-    setNameNotKnown(checked);
-    
-    // Clear name fields if checkbox is checked
-    if (checked) {
+  // 监听复选框值变化并执行字段清除
+  useEffect(() => {
+    if (watchNameNotKnown) {
+      // 当复选框被选中时，清除相关字段
       form.setFieldsValue({
         usPocSurname: undefined,
         usPocGivenName: undefined
       });
     }
-  };
+  }, [watchNameNotKnown, form]);
 
-  // Handle relationship selection change
+  // 处理关系选择变化
   const handleRelationshipChange = (value: string) => {
     setRelationship(value);
   };
@@ -33,7 +33,6 @@ const USContact: React.FC<USContactProps> = ({ form }) => {
   return (
     <div className="ds160-section">
       <h2>美国联系人信息</h2>
-
 
       {/* Contact Person Section */}
       <fieldset className="question-section">
@@ -50,44 +49,24 @@ const USContact: React.FC<USContactProps> = ({ form }) => {
                   question="姓氏"
                   name="usPocSurname"
                 >
-                  <Form.Item noStyle shouldUpdate={(prevValues, currentValues) => 
-                    prevValues.usPocNameNotKnown !== currentValues.usPocNameNotKnown
-                  }>
-                    {({ getFieldValue }) => {
-                      const isDisabled = getFieldValue('usPocNameNotKnown') === true;
-                      
-                      return (
-                        <Input 
-                          style={{ width: '99%' }} 
-                          maxLength={33} 
-                          disabled={isDisabled}
-                          placeholder={isDisabled ? '' : '请输入姓氏'}
-                        />
-                      );
-                    }}
-                  </Form.Item>
+                  <Input 
+                    style={{ width: '99%' }} 
+                    maxLength={33} 
+                    disabled={watchNameNotKnown === true}
+                    placeholder={watchNameNotKnown === true ? '' : '请输入姓氏'}
+                  />
                 </QuestionItem>
 
                 <QuestionItem
                   question="名字"
                   name="usPocGivenName"
                 >
-                  <Form.Item noStyle shouldUpdate={(prevValues, currentValues) => 
-                    prevValues.usPocNameNotKnown !== currentValues.usPocNameNotKnown
-                  }>
-                    {({ getFieldValue }) => {
-                      const isDisabled = getFieldValue('usPocNameNotKnown') === true;
-                      
-                      return (
-                        <Input 
-                          style={{ width: '99%' }} 
-                          maxLength={33} 
-                          disabled={isDisabled}
-                          placeholder={isDisabled ? '' : '请输入名字'}
-                        />
-                      );
-                    }}
-                  </Form.Item>
+                  <Input 
+                    style={{ width: '99%' }} 
+                    maxLength={33} 
+                    disabled={watchNameNotKnown === true}
+                    placeholder={watchNameNotKnown === true ? '' : '请输入名字'}
+                  />
                 </QuestionItem>
               </div>
               
@@ -97,7 +76,7 @@ const USContact: React.FC<USContactProps> = ({ form }) => {
                   valuePropName="checked"
                   style={{ marginBottom: 0 }}
                 >
-                  <Checkbox onChange={handleNameNotKnownChange}>
+                  <Checkbox>
                     不适用/无法提供
                   </Checkbox>
                 </Form.Item>
@@ -115,7 +94,6 @@ const USContact: React.FC<USContactProps> = ({ form }) => {
           </div>
           <div className="explanation-column"></div>
         </div>
-
       </fieldset>
 
       <fieldset className="question-section">
@@ -140,7 +118,6 @@ const USContact: React.FC<USContactProps> = ({ form }) => {
                 <Select.Option value="O">其他</Select.Option>
               </Select>
             </QuestionItem>
-            
           </div>
           <div className="explanation-column">
             {/* Empty explanation column to maintain layout */}
