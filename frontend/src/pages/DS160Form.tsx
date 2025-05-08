@@ -3642,8 +3642,8 @@ const DS160Form: React.FC = () => {
             </QuestionItem>
           </div>
         </div>
-      </div>
-    </>
+          </div>  
+        </>
   ),
     },
     {

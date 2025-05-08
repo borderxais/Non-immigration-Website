@@ -11,8 +11,9 @@ import ApplicationIdDisplay from '../ApplicationIdDisplay';
 // import PreviousTravel from './sections/PreviousTravel';
 // import AddressAndPhone from './sections/AddressAndPhone';
 // import Passport from './sections/Passport';
-
+import USContact from './sections/USContact';
 import DS160ReviewPage from './sections/DS160ReviewPage';
+
 import ds160Service from '../../services/ds160Service';
 import './ds160Form.css';
 
@@ -65,6 +66,11 @@ const formSections: FormSection[] = [
   //   title: '护照信息',
   //   component: Passport as unknown as React.FC<SectionProps>
   // },
+  {
+    key: 'usContact',
+    title: '美国联系人',
+    component: USContact as unknown as React.FC<SectionProps>
+  },
   {
     key: 'review',
     title: '审核提交',

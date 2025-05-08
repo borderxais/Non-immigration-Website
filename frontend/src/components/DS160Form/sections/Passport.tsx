@@ -85,9 +85,9 @@ const Passport: React.FC<PassportProps> = ({ form }) => {
             </QuestionItem>
           </div>
           <div className="explanation-column">
-            <h4 className="help-header">帮助：护照本编号</h4>
+            <h4 className="help-header">帮助：护照簿号码</h4>
             <p>
-              护照本编号通常被称为库存控制号码。您的护照上可能有也可能没有护照本编号。
+            护照簿号码通常被称为库存控制号码。您的护照上可能有也可能没有护照簿号码。护照簿号码在您护照上的位置可能因发行护照的国家而异。如果您无法确定您的护照是否包含护照簿号码，请联系您的护照发行机构。
             </p>
           </div>
         </div>
