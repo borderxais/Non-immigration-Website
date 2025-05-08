@@ -12,6 +12,7 @@ interface QuestionItemProps {
   hasNaCheckbox?: boolean;
   naCheckboxName?: string | (string | number)[];
   inlineCheckbox?: boolean; // New prop to control checkbox layout
+  parentFieldName?: string; // New prop to specify parent field name for RepeatableFormItem
 }
 
 const QuestionItem: React.FC<QuestionItemProps> = ({ 
@@ -22,7 +23,8 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
   children, 
   hasNaCheckbox = false, 
   naCheckboxName,
-  inlineCheckbox = false // Default to false for backward compatibility
+  inlineCheckbox = false, // Default to false for backward compatibility
+  parentFieldName // Parent field name for RepeatableFormItem
 }) => {
   // Use the form instance from the parent component
   const form = Form.useFormInstance();
@@ -41,32 +43,21 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
     
     // If the checkbox is checked, clear the related field value
     if (checked && name) {
-      // For array field names, we need to use form.setFields instead of constructing an object
-      if (Array.isArray(name)) {
-        form.setFieldValue(name, undefined);
-      } else {
-        // Determine the field name to clear based on the component structure
-        const fieldToClear: { [key: string]: undefined } = {};
-        
-        // If it's a simple field, just clear that field
-        fieldToClear[name] = undefined;
-        
-        // Special handling for complex fields like date fields that might have day/month/year components
-        if (name.includes('.')) {
-          const baseName = name.split('.')[0];
-          
-          // Look for possible date components (common patterns in your form)
-          if (name.endsWith('Date')) {
-            fieldToClear[`${baseName}.expirationDay`] = undefined;
-            fieldToClear[`${baseName}.expirationMonth`] = undefined;
-            fieldToClear[`${baseName}.expirationYear`] = undefined;
-          }
-        }
-        
-        // Set the field values to undefined
-        form.setFieldsValue(fieldToClear);
-      }
+      // Construct the full field path including parent field name if provided
+      const fullFieldPath = parentFieldName && Array.isArray(name) 
+        ? [parentFieldName, ...name] 
+        : name;
+      
+      // Clear the field value
+      form.setFieldValue(fullFieldPath, undefined);
+      
+      // Force a re-render to update the UI
+      setTimeout(() => {
+        form.validateFields([fullFieldPath].flat());
+      }, 0);
     }
+    
+    // Update the state
     setIsNaChecked(checked);
   };
   

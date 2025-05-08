@@ -281,6 +281,7 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
                               name={[field.name, 'licenseNumber']}
                               hasNaCheckbox={true}
                               naCheckboxName={[field.name, 'licenseNumber_na']}
+                              parentFieldName="driverLicenses"
                             >
                               <Input 
                                 style={{ width: '95%' }} 
@@ -292,6 +293,7 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
                             <QuestionItem
                               question="发证州"
                               name={[field.name, 'driver_license_issue_state']}
+                              parentFieldName="driverLicenses"
                             >
                               <Select options={usStateOptions} style={{ width: '95%' }} placeholder="- 请选择一个 -"/>
                             </QuestionItem>
