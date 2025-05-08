@@ -86,7 +86,7 @@ const DateInput: React.FC<DateInputProps> = ({
         <Select 
           options={dayOptions} 
           style={{ width: 70 }} 
-          placeholder="Day" 
+          placeholder="日" 
           disabled={disabled}
         />
       </Form.Item>
@@ -99,7 +99,7 @@ const DateInput: React.FC<DateInputProps> = ({
         <Select 
           options={monthOptions} 
           style={{ width: 80 }} 
-          placeholder="Month" 
+          placeholder="月" 
           disabled={disabled}
         />
       </Form.Item>
@@ -113,7 +113,7 @@ const DateInput: React.FC<DateInputProps> = ({
         ] : []}
       >
         <Input 
-          placeholder="Year" 
+          placeholder="年" 
           style={{ width: '60px' }} 
           maxLength={4} 
           disabled={disabled}

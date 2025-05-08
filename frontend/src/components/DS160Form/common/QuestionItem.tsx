@@ -51,9 +51,31 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
       // Clear the field value
       form.setFieldValue(fullFieldPath, undefined);
       
+      // Special handling for DateInput components
+      // Check if any children are DateInput components
+      React.Children.forEach(children, (child) => {
+        if (React.isValidElement(child)) {
+          // Check if this is a DateInput component by looking for dayName, monthName, and yearName props
+          const childProps = child.props as any;
+          if (childProps && childProps.dayName && childProps.monthName && childProps.yearName) {
+            // This is a DateInput component
+            // Clear the day, month, and year fields
+            form.setFieldsValue({
+              [childProps.dayName]: undefined,
+              [childProps.monthName]: undefined,
+              [childProps.yearName]: undefined
+            });
+          }
+        }
+      });
+      
       // Force a re-render to update the UI
       setTimeout(() => {
-        form.validateFields([fullFieldPath].flat());
+        if (Array.isArray(fullFieldPath)) {
+          form.validateFields([fullFieldPath].flat());
+        } else {
+          form.validateFields([fullFieldPath]);
+        }
       }, 0);
     }
     
@@ -117,6 +139,17 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
           }}
         />
       );
+    }
+    
+    // For DateInput components (our custom component)
+    const childProps = children.props as any;
+    if (childProps && childProps.dayName && childProps.monthName && childProps.yearName) {
+      // This is likely our DateInput component
+      // Clone the element with the disabled prop
+      return React.cloneElement(children, {
+        ...childProps,
+        disabled: isNaChecked
+      });
     }
     
     // For Radio.Group components

@@ -225,6 +225,10 @@ const Passport: React.FC<PassportProps> = ({ form }) => {
                     <QuestionItem
                         question="护照号码"
                         name={[field.name, 'passportNumber']}
+                        hasNaCheckbox={true}
+                        naCheckboxName={[field.name, 'passportNumber_na']}
+                        inlineCheckbox={true}
+                        parentFieldName="lostPassports"
                     >
                         <Input style={{ width: '95%' }} maxLength={20} />
                     </QuestionItem>
