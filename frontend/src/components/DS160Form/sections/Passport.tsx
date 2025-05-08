@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Input, Select, Radio } from 'antd';
+import { Input, Select, Radio, Form } from 'antd';
 import QuestionItem from '../common/QuestionItem';
 import { countryOptions } from '../utils/formOptions';
 import '../ds160Form.css';
@@ -15,6 +15,7 @@ interface PassportProps {
 
 const Passport: React.FC<PassportProps> = ({ form }) => {
   const [hasLostPassport, setHasLostPassport] = useState<string | null>(null);
+  const [passportType, setPassportType] = useState<string>('');
 
   // Handle lost passport change
   const handleLostPassportChange = (e: any) => {
@@ -24,6 +25,10 @@ const Passport: React.FC<PassportProps> = ({ form }) => {
       lostPassports: undefined
     });
     setHasLostPassport(value);
+  };
+
+  const handlePassportTypeChange = (value: string) => {
+    setPassportType(value);
   };
 
   return (
@@ -41,7 +46,12 @@ const Passport: React.FC<PassportProps> = ({ form }) => {
               question="护照/旅行证件种类"
               name="passportType"
             >
-              <Select placeholder="- 请选择一个 -" style={{ width: '99%' }}>
+              <Select 
+                placeholder="- 请选择一个 -" 
+                style={{ width: '99%' }}
+                onChange={handlePassportTypeChange}
+              >
+                <Select.Option value="">- 请选择一个 -</Select.Option>
                 <Select.Option value="R">普通护照 (REGULAR)</Select.Option>
                 <Select.Option value="O">公务护照 (OFFICIAL)</Select.Option>
                 <Select.Option value="D">外交护照 (DIPLOMATIC)</Select.Option>
@@ -49,6 +59,29 @@ const Passport: React.FC<PassportProps> = ({ form }) => {
                 <Select.Option value="T">其他 (OTHER)</Select.Option>
               </Select>
             </QuestionItem>
+
+            {passportType === 'T' && (
+              <>
+                <h4>解释说明</h4>
+                <div className="question-row">
+                  <div className="question-column">
+                    <div className="highlighted-block">
+                      <Form.Item
+                        name="passportTypeExplanation"
+                        noStyle
+                      >
+                        <TextArea 
+                          style={{ width: '99%' }} 
+                          rows={4} 
+                          maxLength={4000}
+                          placeholder="请详细说明您的护照/旅行证件种类"
+                        />
+                      </Form.Item>
+                    </div>
+                  </div>
+                </div>
+              </>
+            )}
           </div>
           <div className="explanation-column">
             {/* Empty explanation column to maintain layout */}
@@ -256,20 +289,25 @@ const Passport: React.FC<PassportProps> = ({ form }) => {
                     </div>
                 </div>
                 
-                <div className="question-row">
-                    <div className="question-column">
-                    <QuestionItem
-                        question="护照遗失/被盗说明"
-                        name={[field.name, 'explanation']}
+                <h4>解释说明</h4>
+                <div className="question-row">                
+                  <div className="question-column">
+                    <Form.Item
+                      name={[field.name, 'explanation']}
+                      noStyle
                     >
-                        <TextArea rows={4} style={{ width: '95%' }} />
-                    </QuestionItem>
-                    </div>
-                    <div className="explanation-column">
-                    {/* Empty explanation column to maintain layout */}
-                    </div>
+                      <TextArea 
+                        style={{ width: '99%' }} 
+                        rows={4} 
+                        maxLength={4000}
+                        placeholder="请详细说明您的情况"
+                      />
+                    </Form.Item>
+              
+                  </div>
+                  <div className="explanation-column"></div>
                 </div>
-                </>
+              </>
             )}
             </RepeatableFormItem>
           </>

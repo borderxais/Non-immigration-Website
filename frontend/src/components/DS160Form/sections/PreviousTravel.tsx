@@ -466,26 +466,34 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
                         <Radio value="N">否 (No)</Radio>
                       </Radio.Group>
                     </QuestionItem>
+
+                    {visaCancelled === 'Y' && (
+                      <>
+                        <h4>解释说明</h4>
+                        <div className="question-row">
+                          <div className="question-column">
+                            <div className="block-inside-highlight">
+                              <Form.Item
+                                name="visaCancelledExplanation"
+                                noStyle
+                              >
+                                <TextArea 
+                                  style={{ width: '99%' }} 
+                                  rows={4} 
+                                  maxLength={4000}
+                                  placeholder="请详细说明您的情况"
+                                />
+                              </Form.Item>
+                            </div>
+                          </div>
+                        </div>
+                      </>
+                    )}
+
                   </div>
                 </div>
 
-                {visaCancelled === 'Y' && (
-                  <>
-                    <h4>请回答以下问题：</h4>
-                    <div className="block-inside-highlight">
-                      <div className="question-row">
-                        <div className="question-column">
-                          <QuestionItem
-                            question="请说明签证被取消或撤销的情况"
-                            name="visaCancelledExplanation"
-                          >
-                            <TextArea rows={4} style={{ width: '98%' }} />
-                          </QuestionItem>
-                        </div>
-                      </div>
-                    </div>
-                  </>
-                )}
+
                 </div>
                 <div className="explanation-column">
                   <h4 className="help-header">帮助：签证号码</h4>
@@ -514,32 +522,38 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
                 <Radio value="N">否 (No)</Radio>
               </Radio.Group>
             </QuestionItem>
+
+            {visaRefused === 'Y' && (
+              <>
+                <h4>解释说明</h4>
+                <div className="question-row">
+                  <div className="question-column">
+                    <div className="highlighted-block">
+                      <Form.Item
+                        name="refusalDetails"
+                        noStyle
+                      >
+                        <TextArea 
+                          style={{ width: '99%' }} 
+                          rows={4} 
+                          maxLength={4000}
+                          placeholder="请详细说明您的情况"
+                        />
+                      </Form.Item>
+                    </div>
+                  </div>
+                </div>
+              </>
+            )}
           </div>
+
           <div className="explanation-column">
             {/* Empty explanation column to maintain layout */}
           </div>
         </div>
       </fieldset>
 
-      {visaRefused === 'Y' && (
-        <fieldset className="question-section">
-          <div className="highlighted-block">
-              <div className="question-row">
-                <div className="question-column">
-                  <QuestionItem
-                    question="请说明被拒绝签证或入境的原因及日期"
-                    name="refusalDetails"
-                  >
-                    <TextArea rows={4} style={{ width: '98%' }} />
-                  </QuestionItem>
-                </div>
-                <div className="explanation-column">
-                {/* Empty explanation column to maintain layout */}
-              </div>
-            </div>
-          </div>
-        </fieldset>
-      )}
+
 
       {/* Immigrant Petition Question */}
       <fieldset className="question-section">
@@ -554,32 +568,38 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
                 <Radio value="N">否 (No)</Radio>
               </Radio.Group>
             </QuestionItem>
+
+            {immigrantPetition === 'Y' && (
+              <>
+                <h4>解释说明</h4>
+                <div className="question-row">
+                  <div className="question-column">
+                    <div className="highlighted-block">
+                      <Form.Item
+                        name="petitionerInfo"
+                        noStyle
+                      >
+                        <TextArea 
+                          style={{ width: '99%' }} 
+                          rows={4} 
+                          maxLength={4000}
+                          placeholder="请详细说明您的情况"
+                        />
+                      </Form.Item>
+                    </div>
+                  </div>
+                </div>
+              </>
+            )}
           </div>
+
           <div className="explanation-column">
             {/* Empty explanation column to maintain layout */}
           </div>
         </div>
       </fieldset>
 
-      {immigrantPetition === 'Y' && (
-        <fieldset className="question-section">
-          <div className="highlighted-block">
-            <div className="question-row">
-              <div className="question-column">
-                <QuestionItem
-                  question="请提供申请人信息"
-                  name="petitionerInfo"
-                  >
-                    <TextArea rows={4} style={{ width: '98%' }} />
-                  </QuestionItem>
-              </div>
-              <div className="explanation-column">
-              {/* Empty explanation column to maintain layout */}
-              </div>
-            </div>
-          </div>
-        </fieldset>
-      )}
+
     </>
   );
 };

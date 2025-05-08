@@ -989,7 +989,6 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                 options={[
                   { value: '', label: '- 请选择一个 -' },
                   { value: 'S', label: '本人' },
-                  { value: 'H', label: '美国申请人' },
                   { value: 'O', label: '其他个人' },
                   { value: 'P', label: '当前雇主' },
                   { value: 'U', label: '美国雇主' },
@@ -1058,6 +1057,9 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                       <QuestionItem
                         question="电子邮件地址"
                         name="payerEmail"
+                        hasNaCheckbox={true}
+                        naCheckboxName="payerEmail_na"
+                        inlineCheckbox={true}
                       >
                         <Input 
                           placeholder="例如：example@email.com" 
@@ -1167,6 +1169,9 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                             <QuestionItem
                               question="州/省"
                               name="payerStateProvince"
+                              hasNaCheckbox={true}
+                              naCheckboxName="payerStateProvince_na"
+                              inlineCheckbox={true}
                             >
                               <Input maxLength={20} />
                             </QuestionItem>
@@ -1181,7 +1186,10 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                             <QuestionItem
                               question="邮政编码"
                               name="payerPostalZIPCode"
-                            >
+                              hasNaCheckbox={true}
+                              naCheckboxName="payerPostalZIPCode_na"
+                              inlineCheckbox={true}
+                                >
                               <Input maxLength={10} />
                             </QuestionItem>
                           </div>
@@ -1330,6 +1338,9 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                           <QuestionItem
                             question="州/省"
                             name="companyStateProvince"
+                            hasNaCheckbox={true}
+                            naCheckboxName="companyStateProvince_na"
+                            inlineCheckbox={true}
                           >
                             <Input maxLength={20} />
                           </QuestionItem>
@@ -1343,6 +1354,9 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                           <QuestionItem
                             question="邮政编码"
                             name="companyPostalZIPCode"
+                            hasNaCheckbox={true}
+                            naCheckboxName="companyPostalZIPCode_na"
+                            inlineCheckbox={true}
                           >
                             <Input maxLength={10} />
                           </QuestionItem>

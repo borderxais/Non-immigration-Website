@@ -184,10 +184,6 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
                         <Input style={{ width: '95%' }} maxLength={20} />
                       </QuestionItem>
                     </div>
-                    <div className="explanation-column">
-                      <h4 className="help-header">帮助：姓氏电码</h4>
-                      <p>请输入您姓氏的电码。</p>
-                    </div>
                   </div>
 
                   <div className="question-row">
@@ -198,10 +194,6 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
                       >
                         <Input style={{ width: '95%' }} maxLength={20} />
                       </QuestionItem>
-                    </div>
-                    <div className="explanation-column">
-                      <h4 className="help-header">帮助：名字电码</h4>
-                      <p>请输入您名字的电码。</p>
                     </div>
                   </div>
                 </div>
