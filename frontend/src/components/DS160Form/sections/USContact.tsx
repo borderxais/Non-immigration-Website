@@ -33,24 +33,19 @@ const USContact: React.FC<USContactProps> = ({ form }) => {
   return (
     <div className="ds160-section">
       <h2>美国联系人信息</h2>
-      <p className="section-description">
-        请提供您在美国的联系人信息。如果您没有特定的联系人，请提供您计划访问的地点信息。
-      </p>
+
 
       {/* Contact Person Section */}
       <fieldset className="question-section">
         <h4 style={{ marginBottom: '10px' }}>
           <span>在美国的联系人或组织</span>
         </h4>
-        
-        <div className="highlighted-block">
-          <h4 style={{ marginBottom: '16px' }}>
-            <span>联系人</span>
-          </h4>
-          
-          <div className="highlighted-block" style={{ backgroundColor: '#f9f9f9' }}>
-            <div className="question-row">
-              <div className="question-column">
+
+        <div className="question-row">       
+          <div className="question-column">
+            <div className="highlighted-block">
+              <h4><span>联系人</span></h4>
+              <div className="block-inside-highlight">
                 <QuestionItem
                   question="姓氏"
                   name="usPocSurname"
@@ -61,17 +56,7 @@ const USContact: React.FC<USContactProps> = ({ form }) => {
                     disabled={nameNotKnown}
                   />
                 </QuestionItem>
-              </div>
-              <div className="explanation-column">
-                <h4 className="help-header">帮助：美国联系人</h4>
-                <p>
-                  您的美国联络人可以是任何在美国的个人。他/她认识您，如有需要，并可以证明您的身份。如果您在美国没有认识的人，您可以输入您此行将要访问的商店、公司或者组织的名称。
-                </p>
-              </div>
-            </div>
-            
-            <div className="question-row">
-              <div className="question-column">
+
                 <QuestionItem
                   question="名字"
                   name="usPocGivenName"
@@ -83,29 +68,7 @@ const USContact: React.FC<USContactProps> = ({ form }) => {
                   />
                 </QuestionItem>
               </div>
-              <div className="explanation-column">
-                {/* Empty explanation column to maintain layout */}
-              </div>
-            </div>
-            
-            <div className="question-row">
-              <div className="question-column" style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                <Form.Item 
-                  name="usPocNameNotKnown" 
-                  valuePropName="checked"
-                  style={{ marginTop: '8px', marginBottom: '16px' }}
-                >
-                  <Checkbox onChange={handleNameNotKnownChange}>不知道 (Do Not Know)</Checkbox>
-                </Form.Item>
-              </div>
-              <div className="explanation-column">
-                {/* Empty explanation column to maintain layout */}
-              </div>
-            </div>
-          </div>
-          
-          <div className="question-row">
-            <div className="question-column">
+
               <QuestionItem
                 question="组织名称"
                 name="usPocOrganization"
@@ -114,14 +77,10 @@ const USContact: React.FC<USContactProps> = ({ form }) => {
               >
                 <Input style={{ width: '99%' }} maxLength={33} />
               </QuestionItem>
-            </div>
-            <div className="explanation-column">
-              {/* Empty explanation column to maintain layout */}
-            </div>
+            </div>        
           </div>
-          
+          <div className="explanation-column"></div>
         </div>
-
       </fieldset>
 
       <fieldset className="question-section">
