@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Input, Select, Radio, Form, Checkbox } from 'antd';
+import { Input, Select, Radio } from 'antd';
 import QuestionItem from '../common/QuestionItem';
 import { countryOptions } from '../utils/formOptions';
 import '../ds160Form.css';

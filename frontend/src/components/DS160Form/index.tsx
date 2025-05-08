@@ -10,7 +10,8 @@ import ApplicationIdDisplay from '../ApplicationIdDisplay';
 // import TravelCompanions from './sections/TravelCompanions';
 // import PreviousTravel from './sections/PreviousTravel';
 // import AddressAndPhone from './sections/AddressAndPhone';
-import Passport from './sections/Passport';
+// import Passport from './sections/Passport';
+
 import DS160ReviewPage from './sections/DS160ReviewPage';
 import ds160Service from '../../services/ds160Service';
 import './ds160Form.css';
@@ -59,11 +60,11 @@ const formSections: FormSection[] = [
   //   title: '地址和电话',
   //   component: AddressAndPhone as unknown as React.FC<SectionProps>
   // },
-  {
-    key: 'passport',
-    title: '护照信息',
-    component: Passport as unknown as React.FC<SectionProps>
-  },
+  // {
+  //   key: 'passport',
+  //   title: '护照信息',
+  //   component: Passport as unknown as React.FC<SectionProps>
+  // },
   {
     key: 'review',
     title: '审核提交',
