@@ -106,13 +106,20 @@ const USContact: React.FC<USContactProps> = ({ form }) => {
                 </Form.Item>
               </div>
 
-              <QuestionItem
-                question="组织名称"
-                name="usPocOrganization"
-                hasNaCheckbox={false}
-              >
-                <Input style={{ width: '99%' }} maxLength={33} />
-              </QuestionItem>
+              <div style={{ marginBottom: '24px' }}>
+                <div style={{ marginBottom: '8px' }}>
+                  <span style={{ fontWeight: 'bold' }}>组织名称</span>
+                  <span style={{ color: '#ff4d4f', marginLeft: '4px' }}>*</span>
+                </div>
+                <Form.Item name="usPocOrganization">
+                  <Input 
+                    style={{ width: '99%' }} 
+                    maxLength={33} 
+                    disabled={!!watchOrgNotKnown}
+                    placeholder={!!watchOrgNotKnown ? '' : '请输入组织名称'}
+                  />
+                </Form.Item>
+              </div>
               
               <div style={{ textAlign: 'right', marginTop: '8px', marginBottom: '16px' }}>
                 <Form.Item 
@@ -124,7 +131,8 @@ const USContact: React.FC<USContactProps> = ({ form }) => {
                     if (e.target.checked) {
                       // When organization checkbox is checked, uncheck the name checkbox
                       form.setFieldsValue({
-                        usPocNameNotKnown: false
+                        usPocNameNotKnown: false,
+                        usPocOrganization: undefined
                       });
                     }
                   }}>

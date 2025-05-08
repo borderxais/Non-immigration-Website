@@ -11,12 +11,13 @@ import ApplicationIdDisplay from '../ApplicationIdDisplay';
 // import PreviousTravel from './sections/PreviousTravel';
 // import AddressAndPhone from './sections/AddressAndPhone';
 // import Passport from './sections/Passport';
-import USContact from './sections/USContact';
+// import USContact from './sections/USContact';
+import FamilyInfo from './sections/FamilyInfo';
 // import SecurityBackgroundI from './sections/SecurityBackgroundI';
 // import SecurityBackgroundII from './sections/SecurityBackgroundII';
 // import SecurityBackgroundIII from './sections/SecurityBackgroundIII';
 // import SecurityBackgroundIV from './sections/SecurityBackgroundIV';
-import SecurityBackgroundV from './sections/SecurityBackgroundV';
+// import SecurityBackgroundV from './sections/SecurityBackgroundV';
 import DS160ReviewPage from './sections/DS160ReviewPage';
 
 import ds160Service from '../../services/ds160Service';
@@ -71,10 +72,15 @@ const formSections: FormSection[] = [
   //   title: '护照信息',
   //   component: Passport as unknown as React.FC<SectionProps>
   // },
+  // {
+  //   key: 'usContact',
+  //   title: '美国联系人',
+  //   component: USContact as unknown as React.FC<SectionProps>
+  // },
   {
-    key: 'usContact',
-    title: '美国联系人',
-    component: USContact as unknown as React.FC<SectionProps>
+    key: 'familyInfo',
+    title: '家庭信息：亲属',
+    component: FamilyInfo as unknown as React.FC<SectionProps>
   },
   // {
   //   key: 'securityBackground',
@@ -96,11 +102,11 @@ const formSections: FormSection[] = [
   //   title: '安全和背景: 第四部分',
   //   component: SecurityBackgroundIV
   // },
-  {
-    key: 'securityBackground5',
-    title: '安全和背景: 第五部分',
-    component: SecurityBackgroundV
-  },
+  // {
+  //   key: 'securityBackground5',
+  //   title: '安全和背景: 第五部分',
+  //   component: SecurityBackgroundV
+  // },
   {
     key: 'review',
     title: '审核提交',

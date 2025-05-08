@@ -111,6 +111,24 @@ export const countryOptions = [
   // ... more countries can be added
 ];
 
+// US status options for relatives
+export const usStatusOptions = [
+  { value: '', label: '- 请选择一个 -' },
+  { value: 'S', label: '美国公民' },
+  { value: 'C', label: '美国合法永久居民 (LPR)' },
+  { value: 'P', label: '非移民' },
+  { value: 'O', label: '其他/不知道' }
+];
+
+// Relationship options for relatives
+export const relationshipOptions = [
+  { value: '', label: '- 请选择一个 -' },
+  { value: 'S', label: '配偶' },
+  { value: 'F', label: '未婚夫/未婚妻' },
+  { value: 'C', label: '子女' },
+  { value: 'B', label: '兄弟姐妹' }
+];
+
 // Length of stay unit options
 export const losUnitOptions = [
   { value: '', label: '-请选择一个-' },
