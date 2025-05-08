@@ -1,34 +1,27 @@
 import React, { useState } from 'react';
-import { Input, Radio, Select } from 'antd';
+import { Form, Input, Radio, Select, Checkbox } from 'antd';
 import QuestionItem from '../common/QuestionItem';
-import { countryOptions, usStateOptions } from '../utils/formOptions';
-import RepeatableFormItem from '../common/RepeatableFormItem';
-
+import { usStateOptions } from '../utils/formOptions';
 
 interface USContactProps {
     form: any;
-  }
-  
+}
 const USContact: React.FC<USContactProps> = ({ form }) => {
-  // State for conditional rendering
-  const [knowsPersonInUS, setKnowsPersonInUS] = useState<string | null>(null);
-  const [hasUSCompany, setHasUSCompany] = useState<string | null>(null);
-  const [hasSchoolInUS, setHasSchoolInUS] = useState<string | null>(null);
+  // State for conditional rendering if needed
+  const [nameNotKnown, setNameNotKnown] = useState<boolean>(false);
 
-  // Handle radio button changes
-  const handleKnowsPersonChange = (e: any) => {
-    setKnowsPersonInUS(e.target.value);
-    form.setFieldsValue({ knowsPersonInUS: e.target.value });
-  };
-
-  const handleHasUSCompanyChange = (e: any) => {
-    setHasUSCompany(e.target.value);
-    form.setFieldsValue({ hasUSCompany: e.target.value });
-  };
-
-  const handleHasSchoolChange = (e: any) => {
-    setHasSchoolInUS(e.target.value);
-    form.setFieldsValue({ hasSchoolInUS: e.target.value });
+  // Handle checkbox change for "Do Not Know" name
+  const handleNameNotKnownChange = (e: any) => {
+    const checked = e.target.checked;
+    setNameNotKnown(checked);
+    
+    // Clear name fields if checkbox is checked
+    if (checked) {
+      form.setFieldsValue({
+        usPocSurname: undefined,
+        usPocGivenName: undefined
+      });
+    }
   };
 
   return (
@@ -38,548 +31,239 @@ const USContact: React.FC<USContactProps> = ({ form }) => {
         请提供您在美国的联系人信息。如果您没有特定的联系人，请提供您计划访问的地点信息。
       </p>
 
-      {/* Person in US Section */}
+      {/* Contact Person Section */}
       <fieldset className="question-section">
-        <div className="question-row">
-          <div className="question-column">
-            <QuestionItem
-              question="您在美国认识的人"
-              name="knowsPersonInUS"
-            >
-              <Radio.Group onChange={handleKnowsPersonChange}>
-                <Radio value="Y">是 (Yes)</Radio>
-                <Radio value="N">否 (No)</Radio>
-              </Radio.Group>
-            </QuestionItem>
+        <h4 style={{ marginBottom: '10px' }}>
+          <span>在美国的联系人或组织</span>
+        </h4>
+        
+        <div className="highlighted-block">
+          <h4 style={{ marginBottom: '16px' }}>
+            <span>联系人</span>
+          </h4>
+          
+          <div className="highlighted-block" style={{ backgroundColor: '#f9f9f9' }}>
+            <div className="question-row">
+              <div className="question-column">
+                <QuestionItem
+                  question="姓氏"
+                  name="usPocSurname"
+                >
+                  <Input 
+                    style={{ width: '99%' }} 
+                    maxLength={33} 
+                    disabled={nameNotKnown}
+                  />
+                </QuestionItem>
+              </div>
+              <div className="explanation-column">
+                <h4 className="help-header">帮助：美国联系人</h4>
+                <p>
+                  您的美国联络人可以是任何在美国的个人。他/她认识您，如有需要，并可以证明您的身份。如果您在美国没有认识的人，您可以输入您此行将要访问的商店、公司或者组织的名称。
+                </p>
+              </div>
+            </div>
+            
+            <div className="question-row">
+              <div className="question-column">
+                <QuestionItem
+                  question="名字"
+                  name="usPocGivenName"
+                >
+                  <Input 
+                    style={{ width: '99%' }} 
+                    maxLength={33} 
+                    disabled={nameNotKnown}
+                  />
+                </QuestionItem>
+              </div>
+              <div className="explanation-column">
+                {/* Empty explanation column to maintain layout */}
+              </div>
+            </div>
+            
+            <div className="question-row">
+              <div className="question-column" style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                <Form.Item 
+                  name="usPocNameNotKnown" 
+                  valuePropName="checked"
+                  style={{ marginTop: '8px', marginBottom: '16px' }}
+                >
+                  <Checkbox onChange={handleNameNotKnownChange}>不知道 (Do Not Know)</Checkbox>
+                </Form.Item>
+              </div>
+              <div className="explanation-column">
+                {/* Empty explanation column to maintain layout */}
+              </div>
+            </div>
           </div>
-          <div className="explanation-column">
-            <h4 className="help-header">帮助：美国联系人</h4>
-            <p>
-              如果您在美国有认识的人（亲戚、朋友等），请选择"是"并提供详细信息。
-            </p>
+          
+          <div className="question-row">
+            <div className="question-column">
+              <QuestionItem
+                question="组织名称"
+                name="usPocOrganization"
+                hasNaCheckbox={true}
+                naCheckboxName="usPocOrganizationNotKnown"
+              >
+                <Input style={{ width: '99%' }} maxLength={33} />
+              </QuestionItem>
+            </div>
+            <div className="explanation-column">
+              {/* Empty explanation column to maintain layout */}
+            </div>
+          </div>
+          
+          <div className="question-row">
+            <div className="question-column">
+              <QuestionItem
+                question="与您的关系"
+                name="usPocRelationship"
+              >
+                <Select placeholder="- 请选择一个 -" style={{ width: '99%' }}>
+                  <Select.Option value="R">亲属 (RELATIVE)</Select.Option>
+                  <Select.Option value="S">配偶 (SPOUSE)</Select.Option>
+                  <Select.Option value="C">朋友 (FRIEND)</Select.Option>
+                  <Select.Option value="B">商业伙伴 (BUSINESS ASSOCIATE)</Select.Option>
+                  <Select.Option value="P">雇主 (EMPLOYER)</Select.Option>
+                  <Select.Option value="H">学校官员 (SCHOOL OFFICIAL)</Select.Option>
+                  <Select.Option value="O">其他 (OTHER)</Select.Option>
+                </Select>
+              </QuestionItem>
+            </div>
+            <div className="explanation-column">
+              {/* Empty explanation column to maintain layout */}
+            </div>
           </div>
         </div>
-
-        {knowsPersonInUS === 'Y' && (
-          <>
-            <h4 style={{ marginBottom: '16px', fontWeight: 'normal' }}>请提供以下信息：</h4>
-            <div className="highlighted-block">
-              <RepeatableFormItem
-                name="usContacts"
-                addButtonText="增加另一个联系人"
-                removeButtonText="移走"
-              >
-                {(field) => (
-                  <>
-                    <div className="question-row">
-                      <div className="question-column">
-                        <QuestionItem
-                          question="姓氏"
-                          name="surname"
-                          parentFieldName="usContacts"
-                        >
-                          <Input 
-                            style={{ width: '95%' }} 
-                            placeholder="例如：SMITH" 
-                            maxLength={50}
-                          />
-                        </QuestionItem>
-                      </div>
-                      <div className="explanation-column">
-                        {/* Empty explanation column to maintain layout */}
-                      </div>
-                    </div>
-
-                    <div className="question-row">
-                      <div className="question-column">
-                        <QuestionItem
-                          question="名字"
-                          name="givenName"
-                          parentFieldName="usContacts"
-                        >
-                          <Input 
-                            style={{ width: '95%' }} 
-                            placeholder="例如：JOHN" 
-                            maxLength={50}
-                          />
-                        </QuestionItem>
-                      </div>
-                      <div className="explanation-column">
-                        {/* Empty explanation column to maintain layout */}
-                      </div>
-                    </div>
-
-                    <div className="question-row">
-                      <div className="question-column">
-                        <QuestionItem
-                          question="与您的关系"
-                          name="relationship"
-                          parentFieldName="usContacts"
-                        >
-                          <Select
-                            style={{ width: '95%' }}
-                            placeholder="- 请选择一个 -"
-                            options={[
-                              { value: 'SPOUSE', label: '配偶' },
-                              { value: 'CHILD', label: '子女' },
-                              { value: 'PARENT', label: '父母' },
-                              { value: 'RELATIVE', label: '其他亲属' },
-                              { value: 'FRIEND', label: '朋友' },
-                              { value: 'BUSINESS_ASSOCIATE', label: '商业伙伴' },
-                              { value: 'SCHOOL_OFFICIAL', label: '学校官员' },
-                              { value: 'OTHER', label: '其他' }
-                            ]}
-                          />
-                        </QuestionItem>
-                      </div>
-                      <div className="explanation-column">
-                        {/* Empty explanation column to maintain layout */}
-                      </div>
-                    </div>
-
-                    <div className="question-row">
-                      <div className="question-column">
-                        <QuestionItem
-                          question="联系人地址"
-                          name="address"
-                          parentFieldName="usContacts"
-                        >
-                          <Input 
-                            style={{ width: '95%' }} 
-                            placeholder="例如：123 MAIN STREET" 
-                            maxLength={100}
-                          />
-                        </QuestionItem>
-                      </div>
-                      <div className="explanation-column">
-                        {/* Empty explanation column to maintain layout */}
-                      </div>
-                    </div>
-
-                    <div className="question-row">
-                      <div className="question-column">
-                        <QuestionItem
-                          question="城市"
-                          name="city"
-                          parentFieldName="usContacts"
-                        >
-                          <Input 
-                            style={{ width: '95%' }} 
-                            placeholder="例如：NEW YORK" 
-                            maxLength={50}
-                          />
-                        </QuestionItem>
-                      </div>
-                      <div className="explanation-column">
-                        {/* Empty explanation column to maintain layout */}
-                      </div>
-                    </div>
-
-                    <div className="question-row">
-                      <div className="question-column">
-                        <QuestionItem
-                          question="州"
-                          name="state"
-                          parentFieldName="usContacts"
-                        >
-                          <Select 
-                            options={usStateOptions} 
-                            style={{ width: '95%' }} 
-                            placeholder="- 请选择一个 -"
-                          />
-                        </QuestionItem>
-                      </div>
-                      <div className="explanation-column">
-                        {/* Empty explanation column to maintain layout */}
-                      </div>
-                    </div>
-
-                    <div className="question-row">
-                      <div className="question-column">
-                        <QuestionItem
-                          question="邮编"
-                          name="zipCode"
-                          parentFieldName="usContacts"
-                          hasNaCheckbox={true}
-                          naCheckboxName="zipCode_na"
-                        >
-                          <Input 
-                            style={{ width: '95%' }} 
-                            placeholder="例如：10001" 
-                            maxLength={10}
-                          />
-                        </QuestionItem>
-                      </div>
-                      <div className="explanation-column">
-                        {/* Empty explanation column to maintain layout */}
-                      </div>
-                    </div>
-
-                    <div className="question-row">
-                      <div className="question-column">
-                        <QuestionItem
-                          question="电话号码"
-                          name="phoneNumber"
-                          parentFieldName="usContacts"
-                          hasNaCheckbox={true}
-                          naCheckboxName="phoneNumber_na"
-                        >
-                          <Input 
-                            style={{ width: '95%' }} 
-                            placeholder="例如：5555555555" 
-                            maxLength={15}
-                          />
-                        </QuestionItem>
-                      </div>
-                      <div className="explanation-column">
-                        {/* Empty explanation column to maintain layout */}
-                      </div>
-                    </div>
-
-                    <div className="question-row">
-                      <div className="question-column">
-                        <QuestionItem
-                          question="电子邮件地址"
-                          name="email"
-                          parentFieldName="usContacts"
-                          hasNaCheckbox={true}
-                          naCheckboxName="email_na"
-                        >
-                          <Input 
-                            style={{ width: '95%' }} 
-                            placeholder="例如：example@email.com" 
-                            maxLength={50}
-                          />
-                        </QuestionItem>
-                      </div>
-                      <div className="explanation-column">
-                        {/* Empty explanation column to maintain layout */}
-                      </div>
-                    </div>
-                  </>
-                )}
-              </RepeatableFormItem>
-            </div>
-          </>
-        )}
       </fieldset>
 
-      {/* US Company/Organization Section */}
+      {/* Address and Phone Section */}
       <fieldset className="question-section">
-        <div className="question-row">
-          <div className="question-column">
-            <QuestionItem
-              question="您在美国有联系的公司或组织"
-              name="hasUSCompany"
-            >
-              <Radio.Group onChange={handleHasUSCompanyChange}>
-                <Radio value="Y">是 (Yes)</Radio>
-                <Radio value="N">否 (No)</Radio>
-              </Radio.Group>
-            </QuestionItem>
+        <h4 style={{ marginBottom: '10px' }}>
+          <span>联系人地址和电话号码</span>
+          <span> (Address and Phone Number of Point of Contact)</span>
+        </h4>
+        
+        <div className="highlighted-block">
+          <div className="question-row">
+            <div className="question-column">
+              <QuestionItem
+                question="美国街道地址（第一行）"
+                name="usPocAddressLine1"
+              >
+                <Input style={{ width: '99%' }} maxLength={40} />
+              </QuestionItem>
+            </div>
+            <div className="explanation-column">
+              {/* Empty explanation column to maintain layout */}
+            </div>
           </div>
-          <div className="explanation-column">
-            <h4 className="help-header">帮助：美国公司或组织</h4>
-            <p>
-              如果您在美国有联系的公司、组织或学校，请选择"是"并提供详细信息。
-            </p>
+          
+          <div className="question-row">
+            <div className="question-column">
+              <QuestionItem
+                question="美国街道地址（第二行）"
+                name="usPocAddressLine2"
+                required={false}
+              >
+                <Input style={{ width: '99%' }} maxLength={40} />
+                <span className="optional-label">*选填</span>
+              </QuestionItem>
+            </div>
+            <div className="explanation-column">
+              {/* Empty explanation column to maintain layout */}
+            </div>
+          </div>
+          
+          <div className="question-row">
+            <div className="question-column">
+              <QuestionItem
+                question="城市"
+                name="usPocCity"
+              >
+                <Input style={{ width: '99%' }} maxLength={20} />
+              </QuestionItem>
+            </div>
+            <div className="explanation-column">
+              {/* Empty explanation column to maintain layout */}
+            </div>
+          </div>
+          
+          <div className="question-row">
+            <div className="question-column">
+              <QuestionItem
+                question="州"
+                name="usPocState"
+              >
+                <Select 
+                  options={usStateOptions} 
+                  style={{ width: '99%' }} 
+                  placeholder="- 请选择一个 -" 
+                />
+              </QuestionItem>
+            </div>
+            <div className="explanation-column">
+              {/* Empty explanation column to maintain layout */}
+            </div>
+          </div>
+          
+          <div className="question-row">
+            <div className="question-column">
+              <QuestionItem
+                question="邮政编码"
+                name="usPocZipCode"
+                required={false}
+                hasNaCheckbox={true}
+                naCheckboxName="usPocZipCode_na"
+              >
+                <Input style={{ width: '99%' }} maxLength={10} placeholder="例如：55555 或 55555-5555" />
+              </QuestionItem>
+            </div>
+            <div className="explanation-column">
+              {/* Empty explanation column to maintain layout */}
+            </div>
+          </div>
+          
+          <div className="question-row">
+            <div className="question-column">
+              <QuestionItem
+                question="电话号码"
+                name="usPocPhone"
+                required={false}
+                hasNaCheckbox={true}
+                naCheckboxName="usPocPhone_na"
+              >
+                <Input style={{ width: '99%' }} maxLength={15} minLength={5} placeholder="例如：5555555555" />
+              </QuestionItem>
+            </div>
+            <div className="explanation-column">
+              {/* Empty explanation column to maintain layout */}
+            </div>
+          </div>
+          
+          <div className="question-row">
+            <div className="question-column">
+              <QuestionItem
+                question="电子邮件地址"
+                name="usPocEmail"
+                required={false}
+                hasNaCheckbox={true}
+                naCheckboxName="usPocEmail_na"
+              >
+                <Input 
+                  style={{ width: '99%' }} 
+                  maxLength={50} 
+                  placeholder="例如：emailaddress@example.com"
+                />
+              </QuestionItem>
+            </div>
+            <div className="explanation-column">
+              {/* Empty explanation column to maintain layout */}
+            </div>
           </div>
         </div>
-
-        {hasUSCompany === 'Y' && (
-          <>
-            <h4 style={{ marginBottom: '16px', fontWeight: 'normal' }}>请提供以下信息：</h4>
-            <div className="highlighted-block">
-              <RepeatableFormItem
-                name="usCompanies"
-                addButtonText="增加另一个公司/组织"
-                removeButtonText="移走"
-              >
-                {(field) => (
-                  <>
-                    <div className="question-row">
-                      <div className="question-column">
-                        <QuestionItem
-                          question="公司/组织名称"
-                          name="name"
-                          parentFieldName="usCompanies"
-                        >
-                          <Input 
-                            style={{ width: '95%' }} 
-                            placeholder="例如：ACME CORPORATION" 
-                            maxLength={100}
-                          />
-                        </QuestionItem>
-                      </div>
-                      <div className="explanation-column">
-                        {/* Empty explanation column to maintain layout */}
-                      </div>
-                    </div>
-
-                    <div className="question-row">
-                      <div className="question-column">
-                        <QuestionItem
-                          question="公司/组织地址"
-                          name="address"
-                          parentFieldName="usCompanies"
-                        >
-                          <Input 
-                            style={{ width: '95%' }} 
-                            placeholder="例如：123 BUSINESS AVENUE" 
-                            maxLength={100}
-                          />
-                        </QuestionItem>
-                      </div>
-                      <div className="explanation-column">
-                        {/* Empty explanation column to maintain layout */}
-                      </div>
-                    </div>
-
-                    <div className="question-row">
-                      <div className="question-column">
-                        <QuestionItem
-                          question="城市"
-                          name="city"
-                          parentFieldName="usCompanies"
-                        >
-                          <Input 
-                            style={{ width: '95%' }} 
-                            placeholder="例如：CHICAGO" 
-                            maxLength={50}
-                          />
-                        </QuestionItem>
-                      </div>
-                      <div className="explanation-column">
-                        {/* Empty explanation column to maintain layout */}
-                      </div>
-                    </div>
-
-                    <div className="question-row">
-                      <div className="question-column">
-                        <QuestionItem
-                          question="州"
-                          name="state"
-                          parentFieldName="usCompanies"
-                        >
-                          <Select 
-                            options={usStateOptions} 
-                            style={{ width: '95%' }} 
-                            placeholder="- 请选择一个 -"
-                          />
-                        </QuestionItem>
-                      </div>
-                      <div className="explanation-column">
-                        {/* Empty explanation column to maintain layout */}
-                      </div>
-                    </div>
-
-                    <div className="question-row">
-                      <div className="question-column">
-                        <QuestionItem
-                          question="邮编"
-                          name="zipCode"
-                          parentFieldName="usCompanies"
-                          hasNaCheckbox={true}
-                          naCheckboxName="zipCode_na"
-                        >
-                          <Input 
-                            style={{ width: '95%' }} 
-                            placeholder="例如：60601" 
-                            maxLength={10}
-                          />
-                        </QuestionItem>
-                      </div>
-                      <div className="explanation-column">
-                        {/* Empty explanation column to maintain layout */}
-                      </div>
-                    </div>
-
-                    <div className="question-row">
-                      <div className="question-column">
-                        <QuestionItem
-                          question="电话号码"
-                          name="phoneNumber"
-                          parentFieldName="usCompanies"
-                          hasNaCheckbox={true}
-                          naCheckboxName="phoneNumber_na"
-                        >
-                          <Input 
-                            style={{ width: '95%' }} 
-                            placeholder="例如：5555555555" 
-                            maxLength={15}
-                          />
-                        </QuestionItem>
-                      </div>
-                      <div className="explanation-column">
-                        {/* Empty explanation column to maintain layout */}
-                      </div>
-                    </div>
-                  </>
-                )}
-              </RepeatableFormItem>
-            </div>
-          </>
-        )}
       </fieldset>
-
-      {/* US School Section */}
-      <fieldset className="question-section">
-        <div className="question-row">
-          <div className="question-column">
-            <QuestionItem
-              question="您在美国有联系的学校"
-              name="hasSchoolInUS"
-            >
-              <Radio.Group onChange={handleHasSchoolChange}>
-                <Radio value="Y">是 (Yes)</Radio>
-                <Radio value="N">否 (No)</Radio>
-              </Radio.Group>
-            </QuestionItem>
-          </div>
-          <div className="explanation-column">
-            <h4 className="help-header">帮助：美国学校</h4>
-            <p>
-              如果您计划在美国就读或访问学校，请选择"是"并提供详细信息。
-            </p>
-          </div>
-        </div>
-
-        {hasSchoolInUS === 'Y' && (
-          <>
-            <h4 style={{ marginBottom: '16px', fontWeight: 'normal' }}>请提供以下信息：</h4>
-            <div className="highlighted-block">
-              <RepeatableFormItem
-                name="usSchools"
-                addButtonText="增加另一个学校"
-                removeButtonText="移走"
-              >
-                {(field) => (
-                  <>
-                    <div className="question-row">
-                      <div className="question-column">
-                        <QuestionItem
-                          question="学校名称"
-                          name="name"
-                          parentFieldName="usSchools"
-                        >
-                          <Input 
-                            style={{ width: '95%' }} 
-                            placeholder="例如：UNIVERSITY OF CALIFORNIA" 
-                            maxLength={100}
-                          />
-                        </QuestionItem>
-                      </div>
-                      <div className="explanation-column">
-                        {/* Empty explanation column to maintain layout */}
-                      </div>
-                    </div>
-
-                    <div className="question-row">
-                      <div className="question-column">
-                        <QuestionItem
-                          question="学校地址"
-                          name="address"
-                          parentFieldName="usSchools"
-                        >
-                          <Input 
-                            style={{ width: '95%' }} 
-                            placeholder="例如：123 CAMPUS DRIVE" 
-                            maxLength={100}
-                          />
-                        </QuestionItem>
-                      </div>
-                      <div className="explanation-column">
-                        {/* Empty explanation column to maintain layout */}
-                      </div>
-                    </div>
-
-                    <div className="question-row">
-                      <div className="question-column">
-                        <QuestionItem
-                          question="城市"
-                          name="city"
-                          parentFieldName="usSchools"
-                        >
-                          <Input 
-                            style={{ width: '95%' }} 
-                            placeholder="例如：LOS ANGELES" 
-                            maxLength={50}
-                          />
-                        </QuestionItem>
-                      </div>
-                      <div className="explanation-column">
-                        {/* Empty explanation column to maintain layout */}
-                      </div>
-                    </div>
-
-                    <div className="question-row">
-                      <div className="question-column">
-                        <QuestionItem
-                          question="州"
-                          name="state"
-                          parentFieldName="usSchools"
-                        >
-                          <Select 
-                            options={usStateOptions} 
-                            style={{ width: '95%' }} 
-                            placeholder="- 请选择一个 -"
-                          />
-                        </QuestionItem>
-                      </div>
-                      <div className="explanation-column">
-                        {/* Empty explanation column to maintain layout */}
-                      </div>
-                    </div>
-
-                    <div className="question-row">
-                      <div className="question-column">
-                        <QuestionItem
-                          question="邮编"
-                          name="zipCode"
-                          parentFieldName="usSchools"
-                          hasNaCheckbox={true}
-                          naCheckboxName="zipCode_na"
-                        >
-                          <Input 
-                            style={{ width: '95%' }} 
-                            placeholder="例如：90095" 
-                            maxLength={10}
-                          />
-                        </QuestionItem>
-                      </div>
-                      <div className="explanation-column">
-                        {/* Empty explanation column to maintain layout */}
-                      </div>
-                    </div>
-
-                    <div className="question-row">
-                      <div className="question-column">
-                        <QuestionItem
-                          question="课程名称"
-                          name="courseName"
-                          parentFieldName="usSchools"
-                          hasNaCheckbox={true}
-                          naCheckboxName="courseName_na"
-                        >
-                          <Input 
-                            style={{ width: '95%' }} 
-                            placeholder="例如：COMPUTER SCIENCE" 
-                            maxLength={100}
-                          />
-                        </QuestionItem>
-                      </div>
-                      <div className="explanation-column">
-                        {/* Empty explanation column to maintain layout */}
-                      </div>
-                    </div>
-                  </>
-                )}
-              </RepeatableFormItem>
-            </div>
-          </>
-        )}
-      </fieldset>
-
     </div>
   );
 };
