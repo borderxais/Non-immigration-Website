@@ -11,7 +11,7 @@ import ApplicationIdDisplay from '../ApplicationIdDisplay';
 // import PreviousTravel from './sections/PreviousTravel';
 // import AddressAndPhone from './sections/AddressAndPhone';
 // import Passport from './sections/Passport';
-// import USContact from './sections/USContact';
+import USContact from './sections/USContact';
 // import SecurityBackgroundI from './sections/SecurityBackgroundI';
 // import SecurityBackgroundII from './sections/SecurityBackgroundII';
 // import SecurityBackgroundIII from './sections/SecurityBackgroundIII';
@@ -71,11 +71,11 @@ const formSections: FormSection[] = [
   //   title: '护照信息',
   //   component: Passport as unknown as React.FC<SectionProps>
   // },
-  // {
-  //   key: 'usContact',
-  //   title: '美国联系人',
-  //   component: USContact as unknown as React.FC<SectionProps>
-  // },
+  {
+    key: 'usContact',
+    title: '美国联系人',
+    component: USContact as unknown as React.FC<SectionProps>
+  },
   // {
   //   key: 'securityBackground',
   //   title: '安全和背景: 第一部分',
