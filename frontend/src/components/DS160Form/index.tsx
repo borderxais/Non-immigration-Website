@@ -16,6 +16,7 @@ import USContact from './sections/USContact';
 import FamilyRelatives from './sections/FamilyRelatives';
 import FamilySpouse from './sections/FamilySpouse';
 import WorkEducationPresent from './sections/WorkEducationPresent';
+import WorkEducationPrevious from './sections/WorkEducationPrevious';
 import SecurityBackgroundI from './sections/SecurityBackgroundI';
 import SecurityBackgroundII from './sections/SecurityBackgroundII';
 import SecurityBackgroundIII from './sections/SecurityBackgroundIII';
@@ -33,7 +34,6 @@ const { Title } = Typography;
 
 interface SectionProps {
   form: FormInstance;
-  readOnly?: boolean;
 }
 
 interface FormSection {
@@ -44,86 +44,91 @@ interface FormSection {
 
 // Define the form sections and their titles
 const formSections: FormSection[] = [
-  // {
-  //   key: 'personalInfo1',
-  //   title: '个人信息 I',
-  //   component: PersonalInfoI
-  // },
-  // {
-  //   key: 'personalInfo2',
-  //   title: '个人信息 II',
-  //   component: PersonalInfoII
-  // },
-  // {
-  //   key: 'travelInfo',
-  //   title: '旅行信息',
-  //   component: TravelInfo
-  // },
-  // {
-  //   key: 'travelCompanions',
-  //   title: '同行人',
-  //   component: TravelCompanions
-  // },
-  // {
-  //   key: 'previousTravel',
-  //   title: '以前的旅行',
-  //   component: PreviousTravel
-  // },
-  // {
-  //   key: 'addressAndPhone',
-  //   title: '地址和电话',
-  //   component: AddressAndPhone
-  // },
-  // {
-  //   key: 'passport',
-  //   title: '护照信息',
-  //   component: Passport as unknown as React.FC<SectionProps>
-  // },
-  // {
-  //   key: 'usContact',
-  //   title: '美国联系人',
-  //   component: USContact as unknown as React.FC<SectionProps>
-  // },
-  // {
-  //   key: 'familyRelatives',
-  //   title: '家庭信息：亲属',
-  //   component: FamilyRelatives as unknown as React.FC<SectionProps>
-  // },
-  // {
-  //   key: 'familySpouse',
-  //   title: '家庭信息：配偶',
-  //   component: FamilySpouse as unknown as React.FC<SectionProps>
-  // },
+  {
+    key: 'personalInfo1',
+    title: '个人信息 I',
+    component: PersonalInfoI
+  },
+  {
+    key: 'personalInfo2',
+    title: '个人信息 II',
+    component: PersonalInfoII
+  },
+  {
+    key: 'travelInfo',
+    title: '旅行信息',
+    component: TravelInfo
+  },
+  {
+    key: 'travelCompanions',
+    title: '同行人',
+    component: TravelCompanions
+  },
+  {
+    key: 'previousTravel',
+    title: '以前的旅行',
+    component: PreviousTravel
+  },
+  {
+    key: 'addressAndPhone',
+    title: '地址和电话',
+    component: AddressAndPhone
+  },
+  {
+    key: 'passport',
+    title: '护照信息',
+    component: Passport as unknown as React.FC<SectionProps>
+  },
+  {
+    key: 'usContact',
+    title: '美国联系人',
+    component: USContact as unknown as React.FC<SectionProps>
+  },
+  {
+    key: 'familyRelatives',
+    title: '家庭信息：亲属',
+    component: FamilyRelatives as unknown as React.FC<SectionProps>
+  },
+  {
+    key: 'familySpouse',
+    title: '家庭信息：配偶',
+    component: FamilySpouse as unknown as React.FC<SectionProps>
+  },
   {
     key: 'workEducation',
     title: '工作和教育',
     component: WorkEducationPresent as unknown as React.FC<SectionProps>
   },
-  // {
-  //   key: 'securityBackground',
-  //   title: '安全和背景: 第一部分',
-  //   component: SecurityBackgroundI
-  // },
-  // {
-  //   key: 'securityBackground2',
-  //   title: '安全和背景: 第二部分',
-  //   component: SecurityBackgroundII
-  // },
-  // {
-  //   key: 'securityBackground3',
-  //   title: '安全和背景: 第三部分',
-  //   component: SecurityBackgroundIII
-  // },
-  // {
-  //   key: 'securityBackground4',
-  //   title: '安全和背景: 第四部分',
-  //   component: SecurityBackgroundIV
-  // },
-  // {
-  //   key: 'securityBackground5',
-  //   title: '安全和背景: 第五部分',
-  //   component: SecurityBackgroundV
-  // },
+  {
+    key: 'workEducationPrevious',
+    title: '以往工作和教育',
+    component: WorkEducationPrevious as unknown as React.FC<SectionProps>
+  },
+  {
+    key: 'securityBackground',
+    title: '安全和背景: 第一部分',
+    component: SecurityBackgroundI
+  },
+  {
+    key: 'securityBackground2',
+    title: '安全和背景: 第二部分',
+    component: SecurityBackgroundII
+  },
+  {
+    key: 'securityBackground3',
+    title: '安全和背景: 第三部分',
+    component: SecurityBackgroundIII
+  },
+  {
+    key: 'securityBackground4',
+    title: '安全和背景: 第四部分',
+    component: SecurityBackgroundIV
+  },
+  {
+    key: 'securityBackground5',
+    title: '安全和背景: 第五部分',
+    component: SecurityBackgroundV
+  },
   {
     key: 'review',
     title: '审核提交',
@@ -142,8 +147,9 @@ const DS160Form: React.FC = () => {
   const [form] = Form.useForm();
   const formSectionsRef = useRef(formSections);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [formStatus, setFormStatus] = useState<'draft' | 'submitted' | 'approved' | 'rejected'>('draft');
-  const [isReadOnly, setIsReadOnly] = useState(false);
+
+  // Store formSections in a ref since it's static and doesn't need to trigger re-renders
+  // const formSectionsRef = useRef(formSections);
 
   // Extract application_id from URL
   const pathSegments = location.pathname.split('/');
@@ -275,8 +281,6 @@ const DS160Form: React.FC = () => {
                 status: 'draft'
               });
               setApplicationId(newForm.application_id);
-              setFormStatus('draft');
-              setIsReadOnly(false);
               return;
             }
 
@@ -284,58 +288,20 @@ const DS160Form: React.FC = () => {
             
             // Load existing form data
             const response = await ds160Service.getFormById(urlApplicationId);
-            
-            if (response) {
-              // Set form status and read-only state based on the form's status
-              setFormStatus(response.status);
-              setIsReadOnly(response.status === 'submitted');
+            if (response?.form_data) {
+              form.setFieldsValue(response.form_data);
               
-              // Process form data by section
-              if (response.form_data) {
-                // Flatten the nested form data for each section
-                const formValues: any = {};
+              // Determine completed steps from saved data
+              const completedSections = formSectionsRef.current
+                .map((section, index) => ({
+                  index,
+                  hasData: response.form_data[section.key] && 
+                          Object.keys(response.form_data[section.key]).length > 0
+                }))
+                .filter(section => section.hasData)
+                .map(section => section.index);
                 
-                // Process each section's data
-                Object.keys(response.form_data).forEach(sectionKey => {
-                  const sectionData = response.form_data[sectionKey];
-                  if (sectionData && typeof sectionData === 'object') {
-                    // Merge section data into the main form values
-                    Object.assign(formValues, sectionData);
-                  }
-                });
-                
-                // Set form values
-                form.setFieldsValue(formValues);
-                
-                // Determine completed steps from saved data
-                const completedSections = formSectionsRef.current
-                  .map((section, index) => ({
-                    index,
-                    hasData: response.form_data[section.key] && 
-                            Object.keys(response.form_data[section.key]).length > 0
-                  }))
-                  .filter(section => section.hasData)
-                  .map(section => section.index);
-                  
-                setCompletedSteps(completedSections);
-                
-                // If there are completed sections, set the current step to the first incomplete section
-                // or the review page if all sections are complete
-                if (completedSections.length > 0) {
-                  // Find the first incomplete section
-                  for (let i = 0; i < formSectionsRef.current.length; i++) {
-                    if (!completedSections.includes(i)) {
-                      setCurrentStep(i);
-                      break;
-                    }
-                  }
-                  
-                  // If all sections are complete, go to the review page
-                  if (completedSections.length === formSectionsRef.current.length - 1) {
-                    setCurrentStep(formSectionsRef.current.length - 1);
-                  }
-                }
-              }
+              setCompletedSteps(completedSections);
             }
           } catch (error: any) {
             console.error('Error initializing form:', error);
@@ -375,57 +341,7 @@ const DS160Form: React.FC = () => {
     return null;
   }
 
-  const renderFormSection = () => {
-    const CurrentSection = formSectionsRef.current[currentStep].component;
-    
-    return (
-      <div className="form-section-container">
-        <CurrentSection 
-          form={form} 
-          readOnly={isReadOnly}
-        />
-        
-        <div className="form-actions">
-          {currentStep > 0 && (
-            <Button 
-              onClick={() => setCurrentStep(currentStep - 1)}
-              style={{ marginRight: '8px' }}
-            >
-              上一步
-            </Button>
-          )}
-          
-          {!isReadOnly && (
-            <Button 
-              type="primary" 
-              onClick={handleSave}
-              style={{ marginRight: '8px' }}
-            >
-              保存
-            </Button>
-          )}
-          
-          {currentStep < formSectionsRef.current.length - 1 ? (
-            <Button 
-              type="primary"
-              onClick={() => form.validateFields().then(handleSectionComplete)}
-              disabled={isReadOnly}
-            >
-              下一步
-            </Button>
-          ) : (
-            <Button 
-              type="primary" 
-              onClick={() => form.validateFields().then(handleSubmit)}
-              disabled={isReadOnly || formStatus === 'submitted'}
-            >
-              提交
-            </Button>
-          )}
-        </div>
-      </div>
-    );
-  };
+  const CurrentSection = formSectionsRef.current[currentStep].component;
 
   return (
     <div className="ds160-form-container">
@@ -468,17 +384,47 @@ const DS160Form: React.FC = () => {
             <Form
               form={form}
               layout="vertical"
+              onFinish={currentStep === formSectionsRef.current.length - 1 ? handleSubmit : handleSectionComplete}
             >
               {currentStep === formSectionsRef.current.length - 1 ? (
                 <DS160ReviewPage 
                   form={form}
-                  onSubmit={handleSubmit}
+                  onSubmit={() => {
+                    const values = form.getFieldsValue();
+                    handleSubmit(values);
+                  }}
                   onEdit={handleEdit}
-                  readOnly={isReadOnly}
                 />
               ) : (
-                renderFormSection()
+                <CurrentSection form={form} />
               )}
+              <div className="form-buttons">
+                {currentStep > 0 && (
+                  <Button 
+                    onClick={() => setCurrentStep(currentStep - 1)}
+                    style={{ marginRight: 8 }}
+                  >
+                    上一步
+                  </Button>
+                )}
+                
+                {currentStep !== formSectionsRef.current.length - 1 && (
+                  <>
+                    <Button
+                      onClick={handleSave}
+                      style={{ marginRight: '8px' }}
+                    >
+                      保存
+                    </Button>
+                    <Button 
+                      type="primary" 
+                      htmlType="submit"
+                    >
+                      下一步
+                    </Button>
+                  </>
+                )}
+              </div>
             </Form>
           </div>
         </div>
