@@ -19,9 +19,6 @@ const WorkEducationPrevious: React.FC<WorkEducationPreviousProps> = ({ form }) =
   // 监听是否上过学
   const watchAttendedEducation = Form.useWatch('attendedEducation', form);
   
-  // 监听主管姓氏不知道
-  const [supervisorSurnameNotKnown, setSupervisorSurnameNotKnown] = useState(false);
-  const [supervisorGivenNameNotKnown, setSupervisorGivenNameNotKnown] = useState(false);
   
   return (
     <div className="ds160-section">

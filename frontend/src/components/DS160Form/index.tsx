@@ -5,7 +5,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import ApplicationIdDisplay from '../ApplicationIdDisplay';
 
-import PersonalInfoI from './sections/PersonalInfoI';
+// import PersonalInfoI from './sections/PersonalInfoI';
 // import PersonalInfoII from './sections/PersonalInfoII';
 // import TravelInfo from './sections/TravelInfo';
 // import TravelCompanions from './sections/TravelCompanions';
@@ -15,8 +15,8 @@ import PersonalInfoI from './sections/PersonalInfoI';
 // import USContact from './sections/USContact';
 // import FamilyRelatives from './sections/FamilyRelatives';
 // import FamilySpouse from './sections/FamilySpouse';
-// import WorkEducationPresent from './sections/WorkEducationPresent';
-// import WorkEducationPrevious from './sections/WorkEducationPrevious';
+import WorkEducationPresent from './sections/WorkEducationPresent';
+import WorkEducationPrevious from './sections/WorkEducationPrevious';
 // import SecurityBackgroundI from './sections/SecurityBackgroundI';
 // import SecurityBackgroundII from './sections/SecurityBackgroundII';
 // import SecurityBackgroundIII from './sections/SecurityBackgroundIII';
@@ -44,11 +44,11 @@ interface FormSection {
 
 // Define the form sections and their titles
 const formSections: FormSection[] = [
-  {
-    key: 'personalInfo1',
-    title: '个人信息 I',
-    component: PersonalInfoI
-  },
+  // {
+  //   key: 'personalInfo1',
+  //   title: '个人信息 I',
+  //   component: PersonalInfoI
+  // },
   // {
   //   key: 'personalInfo2',
   //   title: '个人信息 II',
@@ -94,16 +94,16 @@ const formSections: FormSection[] = [
   //   title: '家庭信息：配偶',
   //   component: FamilySpouse as unknown as React.FC<SectionProps>
   // },
-  // {
-  //   key: 'workEducation',
-  //   title: '工作和教育',
-  //   component: WorkEducationPresent as unknown as React.FC<SectionProps>
-  // },
-  // {
-  //   key: 'workEducationPrevious',
-  //   title: '以往工作和教育',
-  //   component: WorkEducationPrevious as unknown as React.FC<SectionProps>
-  // },
+  {
+    key: 'workEducation',
+    title: '工作和教育',
+    component: WorkEducationPresent as unknown as React.FC<SectionProps>
+  },
+  {
+    key: 'workEducationPrevious',
+    title: '以往工作和教育',
+    component: WorkEducationPrevious as unknown as React.FC<SectionProps>
+  },
   // {
   //   key: 'securityBackground',
   //   title: '安全和背景: 第一部分',
