@@ -186,9 +186,9 @@ const Passport: React.FC<PassportProps> = ({ form }) => {
               name="passportIssuedDate"
             >
               <DateInput
-                dayName="passportIssuedDay"
-                monthName="passportIssuedMonth"
-                yearName="passportIssuedYear"
+                dayName={["passportIssuedDate", "day"]}
+                monthName={["passportIssuedDate", "month"]}
+                yearName={["passportIssuedDate", "year"]}
               />
             </QuestionItem>
           </div>
@@ -207,9 +207,9 @@ const Passport: React.FC<PassportProps> = ({ form }) => {
               inlineCheckbox={true}
             >
               <DateInput
-                dayName="passportExpirationDay"
-                monthName="passportExpirationMonth"
-                yearName="passportExpirationYear"
+                dayName={["passportExpirationDate", "day"]}
+                monthName={["passportExpirationDate", "month"]}
+                yearName={["passportExpirationDate", "year"]}
               />
             </QuestionItem>
           </div>
