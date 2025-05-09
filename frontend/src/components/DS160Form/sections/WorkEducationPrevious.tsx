@@ -4,6 +4,7 @@ import QuestionItem from '../common/QuestionItem';
 import DateInput from '../common/DateInput';
 import RepeatableFormItem from '../common/RepeatableFormItem';
 import { countryOptions } from '../utils/formOptions';
+import { FormListFieldData } from 'antd/lib/form/FormList';
 
 interface WorkEducationPreviousProps {
   form: any;
@@ -54,249 +55,210 @@ const WorkEducationPrevious: React.FC<WorkEducationPreviousProps> = ({ form }) =
                   addButtonText="增加另一个"
                   removeButtonText="移走"
                 >
-                  {(field) => (
-                    <>
-                      <div style={{ marginBottom: '24px' }}>
-                        <QuestionItem
-                          question="单位名称"
-                          name="employerName"
-                          required={true}
-                          parentFieldName={`previousEmployments.${field.name}`}
-                        >
-                          <Input 
-                            style={{ width: '99%' }} 
-                            maxLength={75}
-                          />
-                        </QuestionItem>
-                      </div>
-                      
-                      <h4>单位地址：</h4>
-                      <div className="block-inside-highlight">
+                  {(field: FormListFieldData) => {
+                    const { key, ...restField } = field;
+                    return (
+                      <>
                         <div style={{ marginBottom: '24px' }}>
                           <QuestionItem
-                            question="街道地址（第一行）"
-                            name="employerAddressLine1"
+                            question="单位名称"
+                            name={[field.name, 'employerName']}
                             required={true}
-                            parentFieldName={`previousEmployments.${field.name}`}
                           >
                             <Input 
                               style={{ width: '99%' }} 
-                              maxLength={40}
+                              maxLength={75}
                             />
                           </QuestionItem>
                         </div>
                         
+                        <h4>单位地址：</h4>
+                        <div className="block-inside-highlight">
+                          <div style={{ marginBottom: '24px' }}>
+                            <QuestionItem
+                              question="街道地址（第一行）"
+                              name={[field.name, 'employerAddressLine1']}
+                              required={true}
+                            >
+                              <Input 
+                                style={{ width: '99%' }} 
+                                maxLength={40}
+                              />
+                            </QuestionItem>
+                          </div>
+                          
+                          <div style={{ marginBottom: '24px' }}>
+                            <QuestionItem
+                              question="街道地址（第二行）"
+                              name={[field.name, 'employerAddressLine2']}
+                              required={false}
+                            >
+                              <Input 
+                                style={{ width: '99%' }} 
+                                maxLength={40}
+                              />
+                            </QuestionItem>
+                          </div>
+                          
+                          <div style={{ marginBottom: '24px' }}>
+                            <QuestionItem
+                              question="城市"
+                              name={[field.name, 'employerCity']}
+                              required={true}
+                            >
+                              <Input 
+                                style={{ width: '99%' }} 
+                                maxLength={20}
+                              />
+                            </QuestionItem>
+                          </div>
+                          
+                          <div style={{ marginBottom: '24px' }}>
+                            <QuestionItem
+                              question="州/省份"
+                              name={[field.name, 'employerState']}
+                              required={true}
+                              hasNaCheckbox={true}
+                              naCheckboxName={[field.name, 'employerState_na']}
+                              inlineCheckbox={true}
+                            >
+                              <Input 
+                                style={{ width: '90%' }} 
+                                maxLength={20}
+                              />
+                            </QuestionItem>
+                          </div>
+                          
+                          <div style={{ marginBottom: '24px' }}>
+                            <QuestionItem
+                              question="邮政区域/邮政编码"
+                              name={[field.name, 'employerPostalCode']}
+                              required={true}
+                              hasNaCheckbox={true}
+                              naCheckboxName={[field.name, 'employerPostalCode_na']}
+                              inlineCheckbox={true}
+                            >
+                              <Input 
+                                style={{ width: '90%' }} 
+                                maxLength={10}
+                              />
+                            </QuestionItem>
+                          </div>
+                          
+                          <div style={{ marginBottom: '24px' }}>
+                            <QuestionItem
+                              question="国家/地区"
+                              name={[field.name, 'employerCountry']}
+                              required={true}
+                            >
+                              <Select 
+                                style={{ width: '95%' }} 
+                                options={countryOptions}
+                                placeholder="- 请选择一个 -"
+                              />
+                            </QuestionItem>
+                          </div>
+                          
+                          <div style={{ marginBottom: '24px' }}>
+                            <QuestionItem
+                              question="电话号码"
+                              name={[field.name, 'employerPhone']}
+                              required={true}
+                            >
+                              <Input 
+                                style={{ width: '65%' }} 
+                                maxLength={15}
+                                placeholder="例如：5555555555"
+                              />
+                            </QuestionItem>
+                          </div>
+                        </div>
+                        
                         <div style={{ marginBottom: '24px' }}>
                           <QuestionItem
-                            question="街道地址（第二行）"
-                            name="employerAddressLine2"
-                            required={false}
-                            parentFieldName={`previousEmployments.${field.name}`}
+                            question="职务名称"
+                            name={[field.name, 'jobTitle']}
+                            required={true}
                           >
                             <Input 
-                              style={{ width: '99%' }} 
-                              maxLength={40}
-                            />
-                          </QuestionItem>
-                        </div>
-                        
-                        <div style={{ marginBottom: '24px' }}>
-                          <QuestionItem
-                            question="城市"
-                            name="employerCity"
-                            required={true}
-                            parentFieldName={`previousEmployments.${field.name}`}
-                          >
-                            <Input 
-                              style={{ width: '99%' }} 
-                              maxLength={20}
-                            />
-                          </QuestionItem>
-                        </div>
-                        
-                        <div style={{ marginBottom: '24px' }}>
-                          <QuestionItem
-                            question="州/省份"
-                            name="employerState"
-                            required={true}
-                            hasNaCheckbox={true}
-                            naCheckboxName="employerState_na"
-                            inlineCheckbox={true}
-                            parentFieldName={`previousEmployments.${field.name}`}
-                          >
-                            <Input 
-                              style={{ width: '90%' }} 
-                              maxLength={20}
-                            />
-                          </QuestionItem>
-                        </div>
-                        
-                        <div style={{ marginBottom: '24px' }}>
-                          <QuestionItem
-                            question="邮政区域/邮政编码"
-                            name="employerPostalCode"
-                            required={true}
-                            hasNaCheckbox={true}
-                            naCheckboxName="employerPostalCode_na"
-                            inlineCheckbox={true}
-                            parentFieldName={`previousEmployments.${field.name}`}
-                          >
-                            <Input 
-                              style={{ width: '90%' }} 
-                              maxLength={10}
-                            />
-                          </QuestionItem>
-                        </div>
-                        
-                        <div style={{ marginBottom: '24px' }}>
-                          <QuestionItem
-                            question="国家/地区"
-                            name="employerCountry"
-                            required={true}
-                            parentFieldName={`previousEmployments.${field.name}`}
-                          >
-                            <Select 
                               style={{ width: '95%' }} 
-                              options={countryOptions}
-                              placeholder="- 请选择一个 -"
+                              maxLength={75}
                             />
                           </QuestionItem>
                         </div>
                         
                         <div style={{ marginBottom: '24px' }}>
                           <QuestionItem
-                            question="电话号码"
-                            name="employerPhone"
+                            question="主管姓氏"
+                            name={[field.name, 'supervisorSurname']}
                             required={true}
-                            parentFieldName={`previousEmployments.${field.name}`}
+                            hasNaCheckbox={true}
+                            naCheckboxName={[field.name, 'supervisorSurname_na']}
+                            inlineCheckbox={true}
                           >
                             <Input 
-                              style={{ width: '65%' }} 
-                              maxLength={15}
-                              placeholder="例如：5555555555"
+                              style={{ width: '100%' }} 
+                              maxLength={33}
                             />
                           </QuestionItem>
                         </div>
-                      </div>
-                      
-                      <div style={{ marginBottom: '24px' }}>
-                        <QuestionItem
-                          question="职务名称"
-                          name="jobTitle"
-                          required={true}
-                          parentFieldName={`previousEmployments.${field.name}`}
-                        >
-                          <Input 
-                            style={{ width: '95%' }} 
-                            maxLength={75}
-                          />
-                        </QuestionItem>
-                      </div>
-                      
-                      <div style={{ marginBottom: '24px' }}>
-                        <QuestionItem
-                          question="主管姓氏"
-                          name="supervisorSurname"
-                          required={!supervisorSurnameNotKnown}
-                          parentFieldName={`previousEmployments.${field.name}`}
-                        >
-                          <Input 
-                            style={{ width: '95%' }} 
-                            maxLength={33}
-                            disabled={supervisorSurnameNotKnown}
-                          />
-                        </QuestionItem>
-                        <div style={{ textAlign: 'right', marginTop: '5px' }}>
-                          <Form.Item
-                            name={[`previousEmployments`, field.name, 'supervisorSurname_na']}
-                            valuePropName="checked"
-                            noStyle
+                        
+                        <div style={{ marginBottom: '24px' }}>
+                          <QuestionItem
+                            question="主管名字"
+                            name={[field.name, 'supervisorGivenName']}
+                            required={true}
+                            hasNaCheckbox={true}
+                            naCheckboxName={[field.name, 'supervisorGivenName_na']}
+                            inlineCheckbox={true}
                           >
-                            <Checkbox 
-                              onChange={(e) => setSupervisorSurnameNotKnown(e.target.checked)}
-                            >
-                              未知
-                            </Checkbox>
-                          </Form.Item>
+                            <Input 
+                              style={{ width: '100%' }} 
+                              maxLength={33}
+                            />
+                          </QuestionItem>
                         </div>
-                      </div>
-                      
-                      <div style={{ marginBottom: '24px' }}>
-                        <QuestionItem
-                          question="主管名字"
-                          name="supervisorGivenName"
-                          required={!supervisorGivenNameNotKnown}
-                          parentFieldName={`previousEmployments.${field.name}`}
-                        >
-                          <Input 
-                            style={{ width: '95%' }} 
-                            maxLength={33}
-                            disabled={supervisorGivenNameNotKnown}
-                          />
-                        </QuestionItem>
-                        <div style={{ textAlign: 'right', marginTop: '5px' }}>
-                          <Form.Item
-                            name={[`previousEmployments`, field.name, 'supervisorGivenName_na']}
-                            valuePropName="checked"
-                            noStyle
+                        
+                        <div style={{ marginBottom: '24px' }}>
+                          <QuestionItem
+                            question="工作开始日期"
                           >
-                            <Checkbox 
-                              onChange={(e) => setSupervisorGivenNameNotKnown(e.target.checked)}
-                            >
-                              未知
-                            </Checkbox>
-                          </Form.Item>
+                            <DateInput
+                              dayName={[field.name, 'employmentStartDay']}
+                              monthName={[field.name, 'employmentStartMonth']}
+                              yearName={[field.name, 'employmentStartYear']}
+                            />
+                          </QuestionItem>
                         </div>
-                      </div>
-                      
-                      <div style={{ marginBottom: '24px' }}>
-                        <QuestionItem
-                          question="工作开始日期"
-                          parentFieldName={`previousEmployments.${field.name}`}
-                        >
-                          <DateInput
-                            dayName={`previousEmployments.${field.name}.employmentStartDay`}
-                            monthName={`previousEmployments.${field.name}.employmentStartMonth`}
-                            yearName={`previousEmployments.${field.name}.employmentStartYear`}
-                          />
-                        </QuestionItem>
-                        <div className="hint">
-                          <span>(格式: DD-MMM-YYYY)</span>
+                        
+                        <div style={{ marginBottom: '24px' }}>
+                          <QuestionItem
+                            question="工作结束日期"
+                          >
+                            <DateInput
+                              dayName={[field.name, 'employmentEndDay']}
+                              monthName={[field.name, 'employmentEndMonth']}
+                              yearName={[field.name, 'employmentEndYear']}
+                            />
+                          </QuestionItem>
                         </div>
-                      </div>
-                      
-                      <div style={{ marginBottom: '24px' }}>
-                        <QuestionItem
-                          question="工作结束日期"
-                          parentFieldName={`previousEmployments.${field.name}`}
-                        >
-                          <DateInput
-                            dayName={`previousEmployments.${field.name}.employmentEndDay`}
-                            monthName={`previousEmployments.${field.name}.employmentEndMonth`}
-                            yearName={`previousEmployments.${field.name}.employmentEndYear`}
-                          />
-                        </QuestionItem>
-                        <div className="hint">
-                          <span>(格式: DD-MMM-YYYY)</span>
+                        
+                        <div style={{ marginBottom: '24px' }}>
+                          <QuestionItem
+                            question="请简要描述您的工作职责："
+                            name={[field.name, 'jobDuties']}
+                            required={true}
+                          >
+                            <TextArea 
+                              style={{ width: '99%' }} 
+                              rows={4} 
+                              maxLength={4000}
+                            />
+                          </QuestionItem>
                         </div>
-                      </div>
-                      
-                      <div style={{ marginBottom: '24px' }}>
-                        <QuestionItem
-                          question="请简要描述您的工作职责："
-                          name="jobDuties"
-                          required={true}
-                          parentFieldName={`previousEmployments.${field.name}`}
-                        >
-                          <TextArea 
-                            style={{ width: '99%' }} 
-                            rows={4} 
-                            maxLength={4000}
-                          />
-                        </QuestionItem>
-                      </div>
-                    </>
-                  )}
+                      </>
+                    );
+                  }}
                 </RepeatableFormItem>
               </div>
             )}
@@ -329,160 +291,153 @@ const WorkEducationPrevious: React.FC<WorkEducationPreviousProps> = ({ form }) =
                   addButtonText="增加另一个"
                   removeButtonText="移走"
                 >
-                  {(field) => (
-                    <>
-                      <div style={{ marginBottom: '24px' }}>
-                        <QuestionItem
-                          question="机构名称"
-                          name="institutionName"
-                          required={true}
-                          parentFieldName={`previousEducations.${field.name}`}
-                        >
-                          <Input 
-                            style={{ width: '95%' }} 
-                            maxLength={75}
-                          />
-                        </QuestionItem>
-                      </div>
-                      
-                      <div style={{ marginBottom: '24px' }}>
-                        <QuestionItem
-                          question="街道地址（第一行）"
-                          name="institutionAddressLine1"
-                          required={true}
-                          parentFieldName={`previousEducations.${field.name}`}
-                        >
-                          <Input 
-                            style={{ width: '95%' }} 
-                            maxLength={40}
-                          />
-                        </QuestionItem>
-                      </div>
-                      
-                      <div style={{ marginBottom: '24px' }}>
-                        <QuestionItem
-                          question="街道地址（第二行）"
-                          name="institutionAddressLine2"
-                          required={false}
-                          parentFieldName={`previousEducations.${field.name}`}
-                        >
-                          <Input 
-                            style={{ width: '95%' }} 
-                            maxLength={40}
-                          />
-                        </QuestionItem>
-                      </div>
-                      
-                      <div style={{ marginBottom: '24px' }}>
-                        <QuestionItem
-                          question="城市"
-                          name="institutionCity"
-                          required={true}
-                          parentFieldName={`previousEducations.${field.name}`}
-                        >
-                          <Input 
-                            style={{ width: '95%' }} 
-                            maxLength={20}
-                          />
-                        </QuestionItem>
-                      </div>
-                      
-                      <div style={{ marginBottom: '24px' }}>
-                        <QuestionItem
-                          question="州/省份"
-                          name="institutionState"
-                          required={true}
-                          hasNaCheckbox={true}
-                          naCheckboxName="institutionState_na"
-                          inlineCheckbox={true}
-                          parentFieldName={`previousEducations.${field.name}`}
-                        >
-                          <Input 
-                            style={{ width: '90%' }} 
-                            maxLength={20}
-                          />
-                        </QuestionItem>
-                      </div>
-                      
-                      <div style={{ marginBottom: '24px' }}>
-                        <QuestionItem
-                          question="邮政区域/邮政编码"
-                          name="institutionPostalCode"
-                          required={true}
-                          hasNaCheckbox={true}
-                          naCheckboxName="institutionPostalCode_na"
-                          inlineCheckbox={true}
-                          parentFieldName={`previousEducations.${field.name}`}
-                        >
-                          <Input 
-                            style={{ width: '90%' }} 
-                            maxLength={10}
-                          />
-                        </QuestionItem>
-                      </div>
-                      
-                      <div style={{ marginBottom: '24px' }}>
-                        <QuestionItem
-                          question="国家/地区"
-                          name="institutionCountry"
-                          required={true}
-                          parentFieldName={`previousEducations.${field.name}`}
-                        >
-                          <Select 
-                            style={{ width: '95%' }} 
-                            options={countryOptions}
-                            placeholder="- 请选择一个 -"
-                          />
-                        </QuestionItem>
-                      </div>
-                      
-                      <div style={{ marginBottom: '24px' }}>
-                        <QuestionItem
-                          question="课程"
-                          name="courseOfStudy"
-                          required={true}
-                          parentFieldName={`previousEducations.${field.name}`}
-                        >
-                          <Input 
-                            style={{ width: '95%' }} 
-                            maxLength={66}
-                          />
-                        </QuestionItem>
-                      </div>
-                      
-                      <div style={{ marginBottom: '24px' }}>
-                        <QuestionItem
-                          question="就读开始日期"
-                          parentFieldName={`previousEducations.${field.name}`}
-                        >
-                          <DateInput
-                            dayName={`previousEducations.${field.name}.attendanceStartDay`}
-                            monthName={`previousEducations.${field.name}.attendanceStartMonth`}
-                            yearName={`previousEducations.${field.name}.attendanceStartYear`}
-                          />
-                        </QuestionItem>
-                        <div className="hint">
-                          <span>(格式: DD-MMM-YYYY)</span>
+                  {(field) => {
+                    const { key, ...restField } = field;
+                    return (
+                      <>
+                        <div style={{ marginBottom: '24px' }}>
+                          <QuestionItem
+                            question="机构名称"
+                            name={[field.name, 'institutionName']}
+                            required={true}
+                          >
+                            <Input 
+                              style={{ width: '95%' }} 
+                              maxLength={75}
+                            />
+                          </QuestionItem>
                         </div>
-                      </div>
-                      
-                      <div style={{ marginBottom: '24px' }}>
-                        <QuestionItem
-                          question="就读结束日期"
-                          parentFieldName={`previousEducations.${field.name}`}
-                        >
-                          <DateInput
-                            dayName={`previousEducations.${field.name}.attendanceEndDay`}
-                            monthName={`previousEducations.${field.name}.attendanceEndMonth`}
-                            yearName={`previousEducations.${field.name}.attendanceEndYear`}
-                          />
-                        </QuestionItem>
-                        <div className="hint">
-                          <span>(格式: DD-MMM-YYYY)</span>
+                        
+                        <div style={{ marginBottom: '24px' }}>
+                          <QuestionItem
+                            question="街道地址（第一行）"
+                            name={[field.name, 'institutionAddressLine1']}
+                            required={true}
+                          >
+                            <Input 
+                              style={{ width: '95%' }} 
+                              maxLength={40}
+                            />
+                          </QuestionItem>
                         </div>
-                      </div>
-                    </>
-                  )}
+                        
+                        <div style={{ marginBottom: '24px' }}>
+                          <QuestionItem
+                            question="街道地址（第二行）"
+                            name={[field.name, 'institutionAddressLine2']}
+                            required={false}
+                          >
+                            <Input 
+                              style={{ width: '95%' }} 
+                              maxLength={40}
+                            />
+                          </QuestionItem>
+                        </div>
+                        
+                        <div style={{ marginBottom: '24px' }}>
+                          <QuestionItem
+                            question="城市"
+                            name={[field.name, 'institutionCity']}
+                            required={true}
+                          >
+                            <Input 
+                              style={{ width: '95%' }} 
+                              maxLength={20}
+                            />
+                          </QuestionItem>
+                        </div>
+                        
+                        <div style={{ marginBottom: '24px' }}>
+                          <QuestionItem
+                            question="州/省份"
+                            name={[field.name, 'institutionState']}
+                            required={true}
+                            hasNaCheckbox={true}
+                            naCheckboxName={[field.name, 'institutionState_na']}
+                            inlineCheckbox={true}
+                          >
+                            <Input 
+                              style={{ width: '90%' }} 
+                              maxLength={20}
+                            />
+                          </QuestionItem>
+                        </div>
+                        
+                        <div style={{ marginBottom: '24px' }}>
+                          <QuestionItem
+                            question="邮政区域/邮政编码"
+                            name={[field.name, 'institutionPostalCode']}
+                            required={true}
+                            hasNaCheckbox={true}
+                            naCheckboxName={[field.name, 'institutionPostalCode_na']}
+                            inlineCheckbox={true}
+                          >
+                            <Input 
+                              style={{ width: '90%' }} 
+                              maxLength={10}
+                            />
+                          </QuestionItem>
+                        </div>
+                        
+                        <div style={{ marginBottom: '24px' }}>
+                          <QuestionItem
+                            question="国家/地区"
+                            name={[field.name, 'institutionCountry']}
+                            required={true}
+                          >
+                            <Select 
+                              style={{ width: '95%' }} 
+                              options={countryOptions}
+                              placeholder="- 请选择一个 -"
+                            />
+                          </QuestionItem>
+                        </div>
+                        
+                        <div style={{ marginBottom: '24px' }}>
+                          <QuestionItem
+                            question="课程"
+                            name={[field.name, 'courseOfStudy']}
+                            required={true}
+                          >
+                            <Input 
+                              style={{ width: '95%' }} 
+                              maxLength={66}
+                            />
+                          </QuestionItem>
+                        </div>
+                        
+                        <div style={{ marginBottom: '24px' }}>
+                          <QuestionItem
+                            question="就读开始日期"
+                          >
+                            <DateInput
+                              dayName={[field.name, 'attendanceStartDay']}
+                              monthName={[field.name, 'attendanceStartMonth']}
+                              yearName={[field.name, 'attendanceStartYear']}
+                            />
+                          </QuestionItem>
+                          <div className="hint">
+                            <span>(格式: DD-MMM-YYYY)</span>
+                          </div>
+                        </div>
+                        
+                        <div style={{ marginBottom: '24px' }}>
+                          <QuestionItem
+                            question="就读结束日期"
+                          >
+                            <DateInput
+                              dayName={[field.name, 'attendanceEndDay']}
+                              monthName={[field.name, 'attendanceEndMonth']}
+                              yearName={[field.name, 'attendanceEndYear']}
+                            />
+                          </QuestionItem>
+                          <div className="hint">
+                            <span>(格式: DD-MMM-YYYY)</span>
+                          </div>
+                        </div>
+                      </>
+                    );
+                  }}
                 </RepeatableFormItem>
               </div>
             )}
