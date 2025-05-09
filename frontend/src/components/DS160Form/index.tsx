@@ -84,31 +84,31 @@ const formSections: FormSection[] = [
     title: '家庭信息：亲属',
     component: FamilyRelatives as unknown as React.FC<SectionProps>
   },
-  // {
-  //   key: 'securityBackground',
-  //   title: '安全和背景: 第一部分',
-  //   component: SecurityBackgroundI
-  // },
-  // {
-  //   key: 'securityBackground2',
-  //   title: '安全和背景: 第二部分',
-  //   component: SecurityBackgroundII
-  // },
-  // {
-  //   key: 'securityBackground3',
-  //   title: '安全和背景: 第三部分',
-  //   component: SecurityBackgroundIII
-  // },
-  // {
-  //   key: 'securityBackground4',
-  //   title: '安全和背景: 第四部分',
-  //   component: SecurityBackgroundIV
-  // },
-  // {
-  //   key: 'securityBackground5',
-  //   title: '安全和背景: 第五部分',
-  //   component: SecurityBackgroundV
-  // },
+  {
+    key: 'securityBackground',
+    title: '安全和背景: 第一部分',
+    component: SecurityBackgroundI
+  },
+  {
+    key: 'securityBackground2',
+    title: '安全和背景: 第二部分',
+    component: SecurityBackgroundII
+  },
+  {
+    key: 'securityBackground3',
+    title: '安全和背景: 第三部分',
+    component: SecurityBackgroundIII
+  },
+  {
+    key: 'securityBackground4',
+    title: '安全和背景: 第四部分',
+    component: SecurityBackgroundIV
+  },
+  {
+    key: 'securityBackground5',
+    title: '安全和背景: 第五部分',
+    component: SecurityBackgroundV
+  },
   {
     key: 'review',
     title: '审核提交',
