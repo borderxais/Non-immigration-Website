@@ -1,6 +1,6 @@
 import React from 'react';
-import { Typography, Card, Row, Col, Alert, Button, Upload } from 'antd';
-import { UploadOutlined, ClockCircleOutlined, FileTextOutlined, CheckCircleOutlined } from '@ant-design/icons';
+import { Typography, Card, Row, Col, Alert, Button } from 'antd';
+import { UploadOutlined, ClockCircleOutlined, FileTextOutlined } from '@ant-design/icons';
 
 const { Title, Paragraph } = Typography;
 
