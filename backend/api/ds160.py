@@ -63,7 +63,7 @@ class DS160FormResource(Resource):
             }
         return {'success': True}, 200, headers
 
-    # @jwt_required()  # Temporarily commented out for CORS testing
+    @jwt_required()  # Re-enabled JWT authentication
     def post(self):
         # DEBUG: mark entry into handler
         print("DEBUG: DS160FormResource.post() invoked")
