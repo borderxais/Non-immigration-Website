@@ -22,6 +22,7 @@ import InterviewSimulation from './pages/InterviewSimulation';
 import PlatformWechat from './pages/PlatformWechat';
 import PlatformApp from './pages/PlatformApp';
 import Profile from './pages/Profile';
+import PrivacyPolicy from './pages/PrivacyPolicy';
 
 // Auth Pages
 import Login from './pages/auth/Login';
@@ -83,6 +84,7 @@ const App: React.FC = () => {
                   <Route path="/auth/register" element={<Register />} />
                   <Route path="/auth/forgot-password" element={<ForgotPassword />} />
                   <Route path="/profile" element={<Profile />} />
+                  <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                 </Routes>
               </div>
             </Content>
