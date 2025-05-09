@@ -15,8 +15,8 @@ import ApplicationIdDisplay from '../ApplicationIdDisplay';
 // import USContact from './sections/USContact';
 // import FamilyRelatives from './sections/FamilyRelatives';
 // import FamilySpouse from './sections/FamilySpouse';
-import WorkEducationPresent from './sections/WorkEducationPresent';
-// import WorkEducationPrevious from './sections/WorkEducationPrevious';
+// import WorkEducationPresent from './sections/WorkEducationPresent';
+import WorkEducationPrevious from './sections/WorkEducationPrevious';
 // import SecurityBackgroundI from './sections/SecurityBackgroundI';
 // import SecurityBackgroundII from './sections/SecurityBackgroundII';
 // import SecurityBackgroundIII from './sections/SecurityBackgroundIII';
@@ -94,16 +94,16 @@ const formSections: FormSection[] = [
   //   title: '家庭信息：配偶',
   //   component: FamilySpouse as unknown as React.FC<SectionProps>
   // },
-  {
-    key: 'workEducation',
-    title: '工作和教育',
-    component: WorkEducationPresent as unknown as React.FC<SectionProps>
-  },
   // {
-  //   key: 'workEducationPrevious',
-  //   title: '以往工作和教育',
-  //   component: WorkEducationPrevious as unknown as React.FC<SectionProps>
+  //   key: 'workEducation',
+  //   title: '当前工作和教育',
+  //   component: WorkEducationPresent as unknown as React.FC<SectionProps>
   // },
+  {
+    key: 'workEducationPrevious',
+    title: '以往工作和教育',
+    component: WorkEducationPrevious as unknown as React.FC<SectionProps>
+  },
   // {
   //   key: 'securityBackground',
   //   title: '安全和背景: 第一部分',

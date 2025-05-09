@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Form, Input, Select, Radio } from 'antd';
 import QuestionItem from '../common/QuestionItem';
 import DateInput from '../common/DateInput';
@@ -8,17 +8,39 @@ import { FormListFieldData } from 'antd/lib/form/FormList';
 
 interface WorkEducationPreviousProps {
   form: any;
+  readOnly?: boolean;
 }
 
 const { TextArea } = Input;
 
-const WorkEducationPrevious: React.FC<WorkEducationPreviousProps> = ({ form }) => {
+const WorkEducationPrevious: React.FC<WorkEducationPreviousProps> = ({ form, readOnly = false }) => {
   // 监听是否有过往工作
   const watchPreviouslyEmployed = Form.useWatch('previouslyEmployed', form);
   
   // 监听是否上过学
   const watchAttendedEducation = Form.useWatch('attendedEducation', form);
   
+  // 处理是否有过往工作的变化
+  const handlePreviouslyEmployedChange = (e: any) => {
+    const value = e.target.value;
+    if (value === 'N') {
+      // 如果选择"否"，清除所有相关字段
+      form.setFieldsValue({
+        previousEmployments: undefined
+      });
+    }
+  };
+  
+  // 处理是否上过学的变化
+  const handleAttendedEducationChange = (e: any) => {
+    const value = e.target.value;
+    if (value === 'N') {
+      // 如果选择"否"，清除所有相关字段
+      form.setFieldsValue({
+        previousEducations: undefined
+      });
+    }
+  };
   
   return (
     <div className="ds160-section">
@@ -37,7 +59,7 @@ const WorkEducationPrevious: React.FC<WorkEducationPreviousProps> = ({ form }) =
               name="previouslyEmployed"
               required={true}
             >
-              <Radio.Group>
+              <Radio.Group disabled={readOnly} onChange={handlePreviouslyEmployedChange}>
                 <Radio value="Y">是</Radio>
                 <Radio value="N">否</Radio>
               </Radio.Group>
@@ -65,6 +87,7 @@ const WorkEducationPrevious: React.FC<WorkEducationPreviousProps> = ({ form }) =
                             <Input 
                               style={{ width: '99%' }} 
                               maxLength={75}
+                              disabled={readOnly}
                             />
                           </QuestionItem>
                         </div>
@@ -80,6 +103,7 @@ const WorkEducationPrevious: React.FC<WorkEducationPreviousProps> = ({ form }) =
                               <Input 
                                 style={{ width: '99%' }} 
                                 maxLength={40}
+                                disabled={readOnly}
                               />
                             </QuestionItem>
                           </div>
@@ -93,6 +117,7 @@ const WorkEducationPrevious: React.FC<WorkEducationPreviousProps> = ({ form }) =
                               <Input 
                                 style={{ width: '99%' }} 
                                 maxLength={40}
+                                disabled={readOnly}
                               />
                             </QuestionItem>
                           </div>
@@ -106,6 +131,7 @@ const WorkEducationPrevious: React.FC<WorkEducationPreviousProps> = ({ form }) =
                               <Input 
                                 style={{ width: '99%' }} 
                                 maxLength={20}
+                                disabled={readOnly}
                               />
                             </QuestionItem>
                           </div>
@@ -118,10 +144,12 @@ const WorkEducationPrevious: React.FC<WorkEducationPreviousProps> = ({ form }) =
                               hasNaCheckbox={true}
                               naCheckboxName={[field.name, 'employerState_na']}
                               inlineCheckbox={true}
+                              parentFieldName="previousEmployments"
                             >
                               <Input 
                                 style={{ width: '90%' }} 
                                 maxLength={20}
+                                disabled={readOnly}
                               />
                             </QuestionItem>
                           </div>
@@ -134,10 +162,12 @@ const WorkEducationPrevious: React.FC<WorkEducationPreviousProps> = ({ form }) =
                               hasNaCheckbox={true}
                               naCheckboxName={[field.name, 'employerPostalCode_na']}
                               inlineCheckbox={true}
+                              parentFieldName="previousEmployments"
                             >
                               <Input 
                                 style={{ width: '90%' }} 
                                 maxLength={10}
+                                disabled={readOnly}
                               />
                             </QuestionItem>
                           </div>
@@ -151,7 +181,12 @@ const WorkEducationPrevious: React.FC<WorkEducationPreviousProps> = ({ form }) =
                               <Select 
                                 style={{ width: '95%' }} 
                                 options={countryOptions}
-                                placeholder="- 请选择一个 -"
+                                placeholder="- 请选择 -"
+                                showSearch
+                                filterOption={(input, option) => 
+                                  (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+                                }
+                                disabled={readOnly}
                               />
                             </QuestionItem>
                           </div>
@@ -165,7 +200,7 @@ const WorkEducationPrevious: React.FC<WorkEducationPreviousProps> = ({ form }) =
                               <Input 
                                 style={{ width: '65%' }} 
                                 maxLength={15}
-                                placeholder="例如：5555555555"
+                                disabled={readOnly}
                               />
                             </QuestionItem>
                           </div>
@@ -180,6 +215,7 @@ const WorkEducationPrevious: React.FC<WorkEducationPreviousProps> = ({ form }) =
                             <Input 
                               style={{ width: '95%' }} 
                               maxLength={75}
+                              disabled={readOnly}
                             />
                           </QuestionItem>
                         </div>
@@ -192,10 +228,12 @@ const WorkEducationPrevious: React.FC<WorkEducationPreviousProps> = ({ form }) =
                             hasNaCheckbox={true}
                             naCheckboxName={[field.name, 'supervisorSurname_na']}
                             inlineCheckbox={true}
+                            parentFieldName="previousEmployments"
                           >
                             <Input 
                               style={{ width: '100%' }} 
                               maxLength={33}
+                              disabled={readOnly}
                             />
                           </QuestionItem>
                         </div>
@@ -208,10 +246,12 @@ const WorkEducationPrevious: React.FC<WorkEducationPreviousProps> = ({ form }) =
                             hasNaCheckbox={true}
                             naCheckboxName={[field.name, 'supervisorGivenName_na']}
                             inlineCheckbox={true}
+                            parentFieldName="previousEmployments"
                           >
                             <Input 
                               style={{ width: '100%' }} 
                               maxLength={33}
+                              disabled={readOnly}
                             />
                           </QuestionItem>
                         </div>
@@ -224,6 +264,7 @@ const WorkEducationPrevious: React.FC<WorkEducationPreviousProps> = ({ form }) =
                               dayName={[field.name, 'employmentStartDay']}
                               monthName={[field.name, 'employmentStartMonth']}
                               yearName={[field.name, 'employmentStartYear']}
+                              disabled={readOnly}
                             />
                           </QuestionItem>
                         </div>
@@ -236,22 +277,24 @@ const WorkEducationPrevious: React.FC<WorkEducationPreviousProps> = ({ form }) =
                               dayName={[field.name, 'employmentEndDay']}
                               monthName={[field.name, 'employmentEndMonth']}
                               yearName={[field.name, 'employmentEndYear']}
+                              disabled={readOnly}
                             />
                           </QuestionItem>
                         </div>
                         
                         <div style={{ marginBottom: '24px' }}>
-                          <QuestionItem
-                            question="请简要描述您的工作职责："
-                            name={[field.name, 'jobDuties']}
-                            required={true}
-                          >
+                            <h3>请简单说明你的职责：</h3>
+                            <Form.Item
+                            name="jobDuties"
+                            noStyle
+                            >
                             <TextArea 
-                              style={{ width: '99%' }} 
-                              rows={4} 
-                              maxLength={4000}
+                                style={{ width: '99%' }} 
+                                rows={4} 
+                                maxLength={4000}
+                                disabled={readOnly}
                             />
-                          </QuestionItem>
+                            </Form.Item>
                         </div>
                       </>
                     );
@@ -273,7 +316,7 @@ const WorkEducationPrevious: React.FC<WorkEducationPreviousProps> = ({ form }) =
               name="attendedEducation"
               required={true}
             >
-              <Radio.Group>
+              <Radio.Group disabled={readOnly} onChange={handleAttendedEducationChange}>
                 <Radio value="Y">是</Radio>
                 <Radio value="N">否</Radio>
               </Radio.Group>
@@ -301,6 +344,7 @@ const WorkEducationPrevious: React.FC<WorkEducationPreviousProps> = ({ form }) =
                             <Input 
                               style={{ width: '95%' }} 
                               maxLength={75}
+                              disabled={readOnly}
                             />
                           </QuestionItem>
                         </div>
@@ -314,6 +358,7 @@ const WorkEducationPrevious: React.FC<WorkEducationPreviousProps> = ({ form }) =
                             <Input 
                               style={{ width: '95%' }} 
                               maxLength={40}
+                              disabled={readOnly}
                             />
                           </QuestionItem>
                         </div>
@@ -327,6 +372,7 @@ const WorkEducationPrevious: React.FC<WorkEducationPreviousProps> = ({ form }) =
                             <Input 
                               style={{ width: '95%' }} 
                               maxLength={40}
+                              disabled={readOnly}
                             />
                           </QuestionItem>
                         </div>
@@ -340,6 +386,7 @@ const WorkEducationPrevious: React.FC<WorkEducationPreviousProps> = ({ form }) =
                             <Input 
                               style={{ width: '95%' }} 
                               maxLength={20}
+                              disabled={readOnly}
                             />
                           </QuestionItem>
                         </div>
@@ -352,10 +399,12 @@ const WorkEducationPrevious: React.FC<WorkEducationPreviousProps> = ({ form }) =
                             hasNaCheckbox={true}
                             naCheckboxName={[field.name, 'institutionState_na']}
                             inlineCheckbox={true}
+                            parentFieldName="previousEducations"
                           >
                             <Input 
                               style={{ width: '90%' }} 
                               maxLength={20}
+                              disabled={readOnly}
                             />
                           </QuestionItem>
                         </div>
@@ -368,10 +417,12 @@ const WorkEducationPrevious: React.FC<WorkEducationPreviousProps> = ({ form }) =
                             hasNaCheckbox={true}
                             naCheckboxName={[field.name, 'institutionPostalCode_na']}
                             inlineCheckbox={true}
+                            parentFieldName="previousEducations"
                           >
                             <Input 
                               style={{ width: '90%' }} 
                               maxLength={10}
+                              disabled={readOnly}
                             />
                           </QuestionItem>
                         </div>
@@ -385,7 +436,12 @@ const WorkEducationPrevious: React.FC<WorkEducationPreviousProps> = ({ form }) =
                             <Select 
                               style={{ width: '95%' }} 
                               options={countryOptions}
-                              placeholder="- 请选择一个 -"
+                              placeholder="- 请选择 -"
+                              showSearch
+                              filterOption={(input, option) => 
+                                (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+                              }
+                              disabled={readOnly}
                             />
                           </QuestionItem>
                         </div>
@@ -399,6 +455,7 @@ const WorkEducationPrevious: React.FC<WorkEducationPreviousProps> = ({ form }) =
                             <Input 
                               style={{ width: '95%' }} 
                               maxLength={66}
+                              disabled={readOnly}
                             />
                           </QuestionItem>
                         </div>
@@ -411,11 +468,9 @@ const WorkEducationPrevious: React.FC<WorkEducationPreviousProps> = ({ form }) =
                               dayName={[field.name, 'attendanceStartDay']}
                               monthName={[field.name, 'attendanceStartMonth']}
                               yearName={[field.name, 'attendanceStartYear']}
+                              disabled={readOnly}
                             />
                           </QuestionItem>
-                          <div className="hint">
-                            <span>(格式: DD-MMM-YYYY)</span>
-                          </div>
                         </div>
                         
                         <div style={{ marginBottom: '24px' }}>
@@ -426,11 +481,9 @@ const WorkEducationPrevious: React.FC<WorkEducationPreviousProps> = ({ form }) =
                               dayName={[field.name, 'attendanceEndDay']}
                               monthName={[field.name, 'attendanceEndMonth']}
                               yearName={[field.name, 'attendanceEndYear']}
+                              disabled={readOnly}
                             />
                           </QuestionItem>
-                          <div className="hint">
-                            <span>(格式: DD-MMM-YYYY)</span>
-                          </div>
                         </div>
                       </>
                     );
@@ -440,13 +493,17 @@ const WorkEducationPrevious: React.FC<WorkEducationPreviousProps> = ({ form }) =
             )}
           </div>
           <div className="explanation-column">
-            <h4 className="help-header">帮助：教育程度</h4>
-            <p>如果您曾上过高中/职业学校（或相当于本国这个程度的教育院校）、或大专、大学、研究生学校、博士项目或职业项目等，不管多长时间，您对这个问题均须回答"是"。</p>
-            
-            <div style={{ marginTop: '310px' }}>
-              <h4 className="help-header">帮助：课程</h4>
-              <p>对于中学/初中或高中阶段的课程，请注明是"学术性"的，或者是"职业性"的。对于其它程度的教育，请注明其专业或主要学习方向。</p>
-            </div>
+            {watchAttendedEducation === 'Y' && (
+              <>
+                <h4 className="help-header">帮助：教育程度</h4>
+                <p>如果您曾上过高中/职业学校（或相当于本国这个程度的教育院校）、或大专、大学、研究生学校、博士项目或职业项目等，不管多长时间，您对这个问题均须回答"是"。</p>
+                
+                <div style={{ marginTop: '310px' }}>
+                  <h4 className="help-header">帮助：课程</h4>
+                  <p>对于中学/初中或高中阶段的课程，请注明是"学术性"的，或者是"职业性"的。对于其它程度的教育，请注明其专业或主要学习方向。</p>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </fieldset>
