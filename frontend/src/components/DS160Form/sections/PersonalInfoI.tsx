@@ -295,11 +295,12 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
             <div className="question-column">
               <QuestionItem
                 question="日期"
+                name="dob"
               >
                 <DateInput 
-                  dayName="dobDay" 
-                  monthName="dobMonth" 
-                  yearName="dobYear"
+                  dayName={["dob", "day"]} 
+                  monthName={["dob", "month"]} 
+                  yearName={["dob", "year"]}
                 />
               </QuestionItem>
             </div>

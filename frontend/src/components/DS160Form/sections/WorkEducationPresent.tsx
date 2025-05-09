@@ -245,11 +245,12 @@ const WorkEducation: React.FC<WorkEducationProps> = ({ form, readOnly = false })
                   <div style={{ marginBottom: '24px' }}>
                     <QuestionItem
                       question="开始日期"
+                      name="employerStart"
                     >
                       <DateInput
-                        dayName="employerStartDay"
-                        monthName="employerStartMonth"
-                        yearName="employerStartYear"
+                        dayName={["employerStart", "day"]}
+                        monthName={["employerStart", "month"]}
+                        yearName={["employerStart", "year"]}
                         disabled={readOnly}
                       />
                     </QuestionItem>

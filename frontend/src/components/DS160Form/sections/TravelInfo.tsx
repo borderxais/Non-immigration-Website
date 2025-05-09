@@ -590,12 +590,12 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                 <div className="question-column">
                   <QuestionItem
                     question="入境美国日期"
-                    // name="arrivalUSDate"
+                    name="arrivalUSDate"
                   >
                     <DateInput 
-                      dayName="arrivalUSDate.arrivalDay" 
-                      monthName="arrivalUSDate.arrivalMonth" 
-                      yearName="arrivalUSDate.arrivalYear"
+                      dayName="arrivalUSDate.day" 
+                      monthName="arrivalUSDate.month" 
+                      yearName="arrivalUSDate.year"
                     />
                   </QuestionItem>
                 </div>
@@ -640,12 +640,12 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                 <div className="question-column">
                   <QuestionItem
                     question="离开美国日期"
-                    // name="departureUSDate"
+                    name="departureUSDate"
                   >
                     <DateInput 
-                      dayName="departureUSDate.departureDay" 
-                      monthName="departureUSDate.departureMonth" 
-                      yearName="departureUSDate.departureYear"
+                      dayName={["departureUSDate", "day"]} 
+                      monthName={["departureUSDate", "month"]} 
+                      yearName={["departureUSDate", "year"]}
                     />
                   </QuestionItem>
                 </div>
@@ -728,11 +728,12 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                 <div className="question-column">
                   <QuestionItem
                     question="计划到达日期"
+                    name="intendedDateOfArrival"
                   >
                     <DateInput 
-                      dayName="intendedDateOfArrival.arrivalDay" 
-                      monthName="intendedDateOfArrival.arrivalMonth" 
-                      yearName="intendedDateOfArrival.arrivalYear"
+                      dayName={["intendedDateOfArrival", "day"]} 
+                      monthName={["intendedDateOfArrival", "month"]} 
+                      yearName={["intendedDateOfArrival", "year"]}
                     />
                   </QuestionItem>
                 </div>

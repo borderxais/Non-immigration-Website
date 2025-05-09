@@ -11,13 +11,13 @@ import ApplicationIdDisplay from '../ApplicationIdDisplay';
 // import TravelCompanions from './sections/TravelCompanions';
 // import PreviousTravel from './sections/PreviousTravel';
 // import AddressAndPhone from './sections/AddressAndPhone';
-// import Passport from './sections/Passport';
+import Passport from './sections/Passport';
 // import USContact from './sections/USContact';
 // import FamilyRelatives from './sections/FamilyRelatives';
 // import FamilySpouse from './sections/FamilySpouse';
 // import WorkEducationPresent from './sections/WorkEducationPresent';
 // import WorkEducationPrevious from './sections/WorkEducationPrevious';
-import WorkEducationAdditional from './sections/WorkEducationAdditional';
+// import WorkEducationAdditional from './sections/WorkEducationAdditional';
 // import SecurityBackgroundI from './sections/SecurityBackgroundI';
 // import SecurityBackgroundII from './sections/SecurityBackgroundII';
 // import SecurityBackgroundIII from './sections/SecurityBackgroundIII';
@@ -75,11 +75,11 @@ const formSections: FormSection[] = [
   //   title: '地址和电话',
   //   component: AddressAndPhone
   // },
-  // {
-  //   key: 'passport',
-  //   title: '护照信息',
-  //   component: Passport as unknown as React.FC<SectionProps>
-  // },
+  {
+    key: 'passport',
+    title: '护照信息',
+    component: Passport as unknown as React.FC<SectionProps>
+  },
   // {
   //   key: 'usContact',
   //   title: '美国联系人',
@@ -105,11 +105,11 @@ const formSections: FormSection[] = [
   //   title: '以往工作和教育',
   //   component: WorkEducationPrevious as unknown as React.FC<SectionProps>
   // },
-  {
-    key: 'workEducationAdditional',
-    title: '额外工作和教育信息',
-    component: WorkEducationAdditional as unknown as React.FC<SectionProps>
-  },
+  // {
+  //   key: 'workEducationAdditional',
+  //   title: '额外工作和教育信息',
+  //   component: WorkEducationAdditional as unknown as React.FC<SectionProps>
+  // },
   // {
   //   key: 'securityBackground',
   //   title: '安全和背景: 第一部分',

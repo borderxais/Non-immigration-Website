@@ -61,12 +61,13 @@ const FamilySpouse: React.FC<FamilySpouseProps> = ({ form }) => {
               <div style={{ marginBottom: '24px' }}>
                 <QuestionItem
                   question="配偶的出生日期"
+                  name="spouseDob"
                   hasNaCheckbox={true}
                 >
                   <DateInput
-                    dayName="spouseDobDay"
-                    monthName="spouseDobMonth"
-                    yearName="spouseDobYear"
+                    dayName={["spouseDob", "day"]}
+                    monthName={["spouseDob", "month"]}
+                    yearName={["spouseDob", "year"]}
                   />
                 </QuestionItem>
               </div>

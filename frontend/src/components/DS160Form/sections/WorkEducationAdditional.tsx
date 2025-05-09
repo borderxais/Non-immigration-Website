@@ -398,11 +398,12 @@ const WorkEducationAdditional: React.FC<WorkEducationAdditionalProps> = ({ form,
                         <div style={{ marginBottom: '24px' }}>
                           <QuestionItem
                             question="服役开始日期"
+                            name={[field.name, 'serviceFrom']}
                           >
                             <DateInput
-                              dayName={[field.name, 'serviceFromDay']}
-                              monthName={[field.name, 'serviceFromMonth']}
-                              yearName={[field.name, 'serviceFromYear']}
+                              dayName={[field.name, 'serviceFrom', 'day']}
+                              monthName={[field.name, 'serviceFrom', 'month']}
+                              yearName={[field.name, 'serviceFrom', 'year']}
                               disabled={readOnly}
                             />
                           </QuestionItem>
@@ -411,11 +412,12 @@ const WorkEducationAdditional: React.FC<WorkEducationAdditionalProps> = ({ form,
                         <div style={{ marginBottom: '24px' }}>
                           <QuestionItem
                             question="服役结束日期"
+                            name={[field.name, 'serviceTo']}
                           >
                             <DateInput
-                              dayName={[field.name, 'serviceToDay']}
-                              monthName={[field.name, 'serviceToMonth']}
-                              yearName={[field.name, 'serviceToYear']}
+                              dayName={[field.name, 'serviceTo', 'day']}
+                              monthName={[field.name, 'serviceTo', 'month']}
+                              yearName={[field.name, 'serviceTo', 'year']}
                               disabled={readOnly}
                             />
                           </QuestionItem>

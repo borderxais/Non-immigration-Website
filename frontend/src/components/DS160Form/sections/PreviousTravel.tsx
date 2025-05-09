@@ -221,6 +221,7 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
                       <>
                         <QuestionItem
                           question="到达日期"
+                          name={[field.name, 'arrivalDate']}
                         >
                           <DateInput
                             dayName={[field.name, 'arrivalDate', 'day']}
@@ -345,7 +346,7 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
                     <div className="question-column">
                       <QuestionItem
                         question="上一次美国签证签发日期"
-                      name="lastVisaIssueDate"
+                        name="lastVisaIssueDate"
                     >
                       <DateInput 
                         dayName={["lastVisaIssueDate", "day"]}

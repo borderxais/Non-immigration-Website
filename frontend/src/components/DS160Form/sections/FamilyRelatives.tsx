@@ -126,9 +126,9 @@ const FamilyInfo: React.FC<FamilyInfoProps> = ({ form }) => {
                       inlineCheckbox={true}
                     >
                       <DateInput
-                        dayName="fatherDobDay"
-                        monthName="fatherDobMonth"
-                        yearName="fatherDobYear"
+                        dayName={["fatherDob", "day"]}
+                        monthName={["fatherDob", "month"]}
+                        yearName={["fatherDob", "year"]}
                         disabled={!!watchFatherDobNotKnown}
                       />
                     </QuestionItem>
@@ -226,9 +226,9 @@ const FamilyInfo: React.FC<FamilyInfoProps> = ({ form }) => {
                       inlineCheckbox={true}
                     >
                       <DateInput
-                        dayName="motherDobDay"
-                        monthName="motherDobMonth"
-                        yearName="motherDobYear"
+                        dayName={["motherDob", "day"]}
+                        monthName={["motherDob", "month"]}
+                        yearName={["motherDob", "year"]}
                         disabled={!!watchMotherDobNotKnown}
                       />
                     </QuestionItem>

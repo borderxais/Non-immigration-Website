@@ -258,11 +258,12 @@ const WorkEducationPrevious: React.FC<WorkEducationPreviousProps> = ({ form, rea
                         <div style={{ marginBottom: '24px' }}>
                           <QuestionItem
                             question="工作开始日期"
+                            name={[field.name, 'employmentStart']}
                           >
                             <DateInput
-                              dayName={[field.name, 'employmentStartDay']}
-                              monthName={[field.name, 'employmentStartMonth']}
-                              yearName={[field.name, 'employmentStartYear']}
+                              dayName={[field.name, 'employmentStart', 'day']}
+                              monthName={[field.name, 'employmentStart', 'month']}
+                              yearName={[field.name, 'employmentStart', 'year']}
                               disabled={readOnly}
                             />
                           </QuestionItem>
@@ -271,11 +272,12 @@ const WorkEducationPrevious: React.FC<WorkEducationPreviousProps> = ({ form, rea
                         <div style={{ marginBottom: '24px' }}>
                           <QuestionItem
                             question="工作结束日期"
+                            name={[field.name, 'employmentEnd']}
                           >
                             <DateInput
-                              dayName={[field.name, 'employmentEndDay']}
-                              monthName={[field.name, 'employmentEndMonth']}
-                              yearName={[field.name, 'employmentEndYear']}
+                              dayName={[field.name, 'employmentEnd', 'day']}
+                              monthName={[field.name, 'employmentEnd', 'month']}
+                              yearName={[field.name, 'employmentEnd', 'year']}
                               disabled={readOnly}
                             />
                           </QuestionItem>
@@ -461,11 +463,12 @@ const WorkEducationPrevious: React.FC<WorkEducationPreviousProps> = ({ form, rea
                         <div style={{ marginBottom: '24px' }}>
                           <QuestionItem
                             question="就读开始日期"
+                            name={[field.name, 'attendanceStart']}
                           >
                             <DateInput
-                              dayName={[field.name, 'attendanceStartDay']}
-                              monthName={[field.name, 'attendanceStartMonth']}
-                              yearName={[field.name, 'attendanceStartYear']}
+                              dayName={[field.name, 'attendanceStart', 'day']}
+                              monthName={[field.name, 'attendanceStart', 'month']}
+                              yearName={[field.name, 'attendanceStart', 'year']}
                               disabled={readOnly}
                             />
                           </QuestionItem>
@@ -474,11 +477,12 @@ const WorkEducationPrevious: React.FC<WorkEducationPreviousProps> = ({ form, rea
                         <div style={{ marginBottom: '24px' }}>
                           <QuestionItem
                             question="就读结束日期"
+                            name={[field.name, 'attendanceEnd']}
                           >
                             <DateInput
-                              dayName={[field.name, 'attendanceEndDay']}
-                              monthName={[field.name, 'attendanceEndMonth']}
-                              yearName={[field.name, 'attendanceEndYear']}
+                              dayName={[field.name, 'attendanceEnd', 'day']}
+                              monthName={[field.name, 'attendanceEnd', 'month']}
+                              yearName={[field.name, 'attendanceEnd', 'year']}
                               disabled={readOnly}
                             />
                           </QuestionItem>
