@@ -185,3 +185,30 @@ export const educationLevelOptions = [
   { value: 'PROFESSIONAL', label: '专业学位（如医学、法律）' },
   { value: 'OTHER', label: '其他' },
 ];
+
+// Occupation options for Work/Education/Training section
+export const occupationOptions = [
+  { value: '', label: '- 请选择一个 -' },
+  { value: 'A', label: '农业 (AGRICULTURE)' },
+  { value: 'AP', label: '艺术家/表演者 (ARTIST/PERFORMER)' },
+  { value: 'B', label: '商业 (BUSINESS)' },
+  { value: 'CM', label: '通讯 (COMMUNICATIONS)' },
+  { value: 'CS', label: '计算机科学 (COMPUTER SCIENCE)' },
+  { value: 'C', label: '烹饪/食品服务 (CULINARY/FOOD SERVICES)' },
+  { value: 'ED', label: '教育 (EDUCATION)' },
+  { value: 'EN', label: '工程 (ENGINEERING)' },
+  { value: 'G', label: '政府 (GOVERNMENT)' },
+  { value: 'H', label: '家庭主妇/夫 (HOMEMAKER)' },
+  { value: 'LP', label: '法律专业 (LEGAL PROFESSION)' },
+  { value: 'MH', label: '医疗/健康 (MEDICAL/HEALTH)' },
+  { value: 'M', label: '军事 (MILITARY)' },
+  { value: 'NS', label: '自然科学 (NATURAL SCIENCE)' },
+  { value: 'N', label: '未就业 (NOT EMPLOYED)' },
+  { value: 'PS', label: '物理科学 (PHYSICAL SCIENCES)' },
+  { value: 'RV', label: '宗教职业 (RELIGIOUS VOCATION)' },
+  { value: 'R', label: '研究 (RESEARCH)' },
+  { value: 'RT', label: '退休 (RETIRED)' },
+  { value: 'SS', label: '社会科学 (SOCIAL SCIENCE)' },
+  { value: 'S', label: '学生 (STUDENT)' },
+  { value: 'O', label: '其他 (OTHER)' },
+];

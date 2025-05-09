@@ -14,7 +14,8 @@ import ApplicationIdDisplay from '../ApplicationIdDisplay';
 // import Passport from './sections/Passport';
 // import USContact from './sections/USContact';
 // import FamilyRelatives from './sections/FamilyRelatives';
-import FamilySpouse from './sections/FamilySpouse';
+// import FamilySpouse from './sections/FamilySpouse';
+import WorkEducation from './sections/WorkEducation';
 // import SecurityBackgroundI from './sections/SecurityBackgroundI';
 // import SecurityBackgroundII from './sections/SecurityBackgroundII';
 // import SecurityBackgroundIII from './sections/SecurityBackgroundIII';
@@ -87,10 +88,15 @@ const formSections: FormSection[] = [
   //   title: '家庭信息：亲属',
   //   component: FamilyRelatives as unknown as React.FC<SectionProps>
   // },
+  // {
+  //   key: 'familySpouse',
+  //   title: '家庭信息：配偶',
+  //   component: FamilySpouse as unknown as React.FC<SectionProps>
+  // },
   {
-    key: 'familySpouse',
-    title: '家庭信息：配偶',
-    component: FamilySpouse as unknown as React.FC<SectionProps>
+    key: 'workEducation',
+    title: '工作和教育',
+    component: WorkEducation as unknown as React.FC<SectionProps>
   },
   // {
   //   key: 'securityBackground',
