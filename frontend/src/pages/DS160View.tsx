@@ -4,9 +4,9 @@ import { Card, Typography, Button, Descriptions, Divider, Alert, Modal, Spin, Sp
 import ds160Service from '../services/ds160Service';
 import ApplicationIdDisplay from '../components/ApplicationIdDisplay';
 import { useAuth } from '../contexts/AuthContext';
-import { getSections } from '../utils/ds160Sections';
+// import { getSections } from '../utils/ds160Sections';
 
-const { Title, Paragraph } = Typography;
+const { Title } = Typography;
 
 const formSections = [
   {
