@@ -5,8 +5,8 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import ApplicationIdDisplay from '../ApplicationIdDisplay';
 
-// import PersonalInfoI from './sections/PersonalInfoI';
-// import PersonalInfoII from './sections/PersonalInfoII';
+import PersonalInfoI from './sections/PersonalInfoI';
+import PersonalInfoII from './sections/PersonalInfoII';
 // import TravelInfo from './sections/TravelInfo';
 // import TravelCompanions from './sections/TravelCompanions';
 // import PreviousTravel from './sections/PreviousTravel';
@@ -45,16 +45,16 @@ interface FormSection {
 
 // Define the form sections and their titles
 const formSections: FormSection[] = [
-  // {
-  //   key: 'personalInfo1',
-  //   title: '个人信息 I',
-  //   component: PersonalInfoI
-  // },
-  // {
-  //   key: 'personalInfo2',
-  //   title: '个人信息 II',
-  //   component: PersonalInfoII
-  // },
+  {
+    key: 'personalInfo1',
+    title: '个人信息 I',
+    component: PersonalInfoI
+  },
+  {
+    key: 'personalInfo2',
+    title: '个人信息 II',
+    component: PersonalInfoII
+  },
   // {
   //   key: 'travelInfo',
   //   title: '旅行信息',
@@ -292,10 +292,55 @@ const DS160Form: React.FC = () => {
 
             setApplicationId(urlApplicationId);
             
+            // Check for query parameters
+            const queryParams = new URLSearchParams(location.search);
+            const sectionParam = queryParams.get('section');
+            const resetParam = queryParams.get('reset');
+            
+            console.log('DS160Form - Query parameters:', { 
+              section: sectionParam, 
+              reset: resetParam,
+              fullSearch: location.search
+            });
+            
             // Load existing form data
             const response = await ds160Service.getFormById(urlApplicationId);
+            console.log('DS160Form - Loaded form data:', response);
+            
             if (response?.form_data) {
-              form.setFieldsValue(response.form_data);
+              // If reset=true, don't set form fields but keep the application_id
+              if (resetParam !== 'true') {
+                console.log('DS160Form - Setting form fields with saved data');
+                
+                // Log the structure of the form data to understand it better
+                console.log('DS160Form - Form data structure:', JSON.stringify(response.form_data, null, 2));
+                
+                // Check if form_data is nested by section or flat
+                const isNestedBySection = response.form_data.personalInfo1 || 
+                                         response.form_data.personalInfo2 || 
+                                         response.form_data.workEducation || 
+                                         response.form_data.review;
+                
+                if (isNestedBySection) {
+                  console.log('DS160Form - Form data is nested by section, flattening...');
+                  
+                  // Flatten the nested form data
+                  const flattenedData = {};
+                  Object.keys(response.form_data).forEach(sectionKey => {
+                    if (typeof response.form_data[sectionKey] === 'object' && response.form_data[sectionKey] !== null) {
+                      Object.assign(flattenedData, response.form_data[sectionKey]);
+                    }
+                  });
+                  
+                  console.log('DS160Form - Flattened data:', flattenedData);
+                  form.setFieldsValue(flattenedData);
+                } else {
+                  // Form data is already flat
+                  form.setFieldsValue(response.form_data);
+                }
+              } else {
+                console.log('DS160Form - Reset parameter is true, not setting form fields');
+              }
               
               // Determine completed steps from saved data
               const completedSections = formSectionsRef.current
@@ -306,8 +351,38 @@ const DS160Form: React.FC = () => {
                 }))
                 .filter(section => section.hasData)
                 .map(section => section.index);
-                
+              
+              console.log('DS160Form - Completed sections:', completedSections);  
               setCompletedSteps(completedSections);
+              
+              // Set current step based on section parameter if provided
+              if (sectionParam && !isNaN(Number(sectionParam))) {
+                const sectionIndex = Number(sectionParam);
+                // Make sure the section index is valid
+                if (sectionIndex >= 0 && sectionIndex < formSectionsRef.current.length) {
+                  console.log('DS160Form - Setting current step to:', sectionIndex);
+                  setCurrentStep(sectionIndex);
+                  message.info(`正在从第 ${sectionIndex + 1} 步继续编辑`);
+                } else {
+                  console.log('DS160Form - Invalid section index:', sectionIndex, 'defaulting to first section');
+                  // If the section index is invalid, default to the first section
+                  setCurrentStep(0);
+                  message.info('正在从第一步继续编辑');
+                }
+              } else {
+                console.log('DS160Form - No valid section parameter, using default step');
+                // If there's no section parameter but we have completed sections, go to the first incomplete section
+                if (completedSections.length > 0 && completedSections.length < formSectionsRef.current.length) {
+                  // Find the first section that's not completed
+                  for (let i = 0; i < formSectionsRef.current.length; i++) {
+                    if (!completedSections.includes(i)) {
+                      console.log('DS160Form - Going to first incomplete section:', i);
+                      setCurrentStep(i);
+                      break;
+                    }
+                  }
+                }
+              }
             }
           } catch (error: any) {
             console.error('Error initializing form:', error);
