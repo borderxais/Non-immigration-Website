@@ -16,6 +16,7 @@ import DS160Upload from './pages/DS160Upload';
 import DS160History from './pages/DS160History';
 import DS160Success from './pages/DS160Success';
 import DS160Form from './components/DS160Form/index';
+import DS160View from './pages/DS160View'; // Fix the import path
 import InterviewPractice from './pages/InterviewPractice';
 import InterviewEvaluation from './pages/InterviewEvaluation';
 import InterviewSimulation from './pages/InterviewSimulation';
@@ -66,6 +67,7 @@ const App: React.FC = () => {
                   {/* DS-160 Routes */}
                   <Route path="/ds160" element={<DS160Landing />} />
                   <Route path="/ds160/form/:id" element={<DS160Form />} />
+                  <Route path="/ds160/view/:id" element={<DS160View />} />
                   <Route path="/ds160/upload" element={<DS160Upload />} />
                   <Route path="/ds160/history" element={<DS160History />} />
                   <Route path="/ds160-success" element={<DS160Success />} />

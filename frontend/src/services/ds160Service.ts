@@ -46,7 +46,9 @@ const updateForm = async (application_id: string, formData: Partial<DS160Form>):
  */
 const getFormById = async (application_id: string): Promise<DS160Form> => {
   try {
-    const response = await api.get(`/ds160/form/${application_id}`);
+    console.log(`Fetching form with application_id: ${application_id}`);
+    const response = await api.get(`/ds160/form/by-application-id/${application_id}`);
+    console.log('API response:', response);
     return response.data;
   } catch (error: any) {
     console.error('Error getting form:', error);

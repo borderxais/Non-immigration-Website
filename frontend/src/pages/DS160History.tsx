@@ -95,11 +95,14 @@ const DS160History: React.FC = () => {
       render: (_: any, record: DS160Form) => (
         <Space size="middle">
           {record.status === 'draft' ? (
-            <Button type="primary" onClick={() => navigate(`/ds160/form/${record.application_id}`)}>
+            <Button type="primary" onClick={() => {
+              console.log('DS160History - Continuing draft application:', record.application_id);
+              navigate(`/ds160/view/${record.application_id}?resume=true`);
+            }}>
               继续编辑
             </Button>
           ) : (
-            <Button onClick={() => navigate(`/ds160/form/${record.application_id}`)}>
+            <Button onClick={() => navigate(`/ds160/view/${record.application_id}`)}>
               查看详情
             </Button>
           )}
