@@ -59,7 +59,7 @@ const getFormById = async (application_id: string): Promise<DS160Form> => {
  */
 const getUserForms = async (): Promise<DS160Form[]> => {
   try {
-    const response = await api.get('/ds160/user');
+    const response = await api.get('/ds160/user/forms');
     return response.data;
   } catch (error: any) {
     console.error('Error getting user forms:', error);
