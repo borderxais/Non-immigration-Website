@@ -47,6 +47,8 @@ const Home: React.FC = () => {
         const chatButton = document.querySelector('.floating-chat-button .chat-button') as HTMLElement;
         if (chatButton) {
           chatButton.click();
+        } else {
+          message.info('签证咨询功能即将推出，敬请期待！');
         }
       }
     },
@@ -56,6 +58,10 @@ const Home: React.FC = () => {
       description: 'AI模拟面试官，真实场景对话，提升面签通过率',
       link: '/interview/practice',
       color: '#f9f0ff',
+      comingSoon: true,
+      onClick: () => {
+        message.info('模拟面签功能即将推出，敬请期待！');
+      }
     },
     {
       title: '多端支持',
@@ -63,6 +69,10 @@ const Home: React.FC = () => {
       description: '支持网页、小程序多平台访问，随时随地处理签证事务',
       link: '/platform/wechat',
       color: '#fff7e6',
+      comingSoon: true,
+      onClick: () => {
+        message.info('多端支持功能即将推出，敬请期待！');
+      }
     },
   ];
 
@@ -157,6 +167,7 @@ const Home: React.FC = () => {
               </div>
               <Title level={4} style={{ textAlign: 'center', marginBottom: 16 }}>
                 {feature.title}
+                {feature.comingSoon && <span style={{ fontSize: 12, color: '#999' }}> (即将推出)</span>}
               </Title>
               <Paragraph style={{ textAlign: 'center' }}>
                 {feature.description}
