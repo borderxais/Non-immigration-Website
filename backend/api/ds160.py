@@ -32,7 +32,8 @@ logger.info("Begin DS-160 API registration")
 ALLOWED_ORIGINS = [
     'http://localhost:3000',
     'https://visaimmigration.netlify.app',
-    'https://www.visaimmigration.netlify.app'
+    'https://www.visaimmigration.netlify.app',
+    'https://leonexusus.com'
 ]
 
 # Create a separate blueprint for CORS preflight handling
