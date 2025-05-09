@@ -8,6 +8,8 @@ interface WorkEducationProps {
   form: any;
 }
 
+const { TextArea } = Input;
+
 const WorkEducation: React.FC<WorkEducationProps> = ({ form }) => {
   // 监听职业选择
   const watchOccupation = Form.useWatch('presentOccupation', form);
@@ -63,7 +65,7 @@ const WorkEducation: React.FC<WorkEducationProps> = ({ form }) => {
                 </div>
                 
                 <h4>目前工作单位或学校的地址：</h4>
-                <div className="highlighted-block">
+                <div className="block-inside-highlight">
                   <div style={{ marginBottom: '24px' }}>
                     <QuestionItem
                       question="街道地址（第一行）"
@@ -88,7 +90,6 @@ const WorkEducation: React.FC<WorkEducationProps> = ({ form }) => {
                         maxLength={40}
                       />
                     </QuestionItem>
-                    <span className="optional-label">*可选的</span>
                   </div>
                   
                   <div style={{ marginBottom: '24px' }}>
@@ -114,7 +115,7 @@ const WorkEducation: React.FC<WorkEducationProps> = ({ form }) => {
                       inlineCheckbox={true}
                     >
                       <Input 
-                        style={{ width: '55%' }} 
+                        style={{ width: '90%' }} 
                         maxLength={20}
                       />
                     </QuestionItem>
@@ -130,7 +131,7 @@ const WorkEducation: React.FC<WorkEducationProps> = ({ form }) => {
                       inlineCheckbox={true}
                     >
                       <Input 
-                        style={{ width: '40%' }} 
+                        style={{ width: '90%' }} 
                         maxLength={10}
                       />
                     </QuestionItem>
@@ -175,9 +176,6 @@ const WorkEducation: React.FC<WorkEducationProps> = ({ form }) => {
                       yearName="employerStartYear"
                     />
                   </QuestionItem>
-                  <div className="hint">
-                    <span>(格式: DD-MMM-YYYY)</span>
-                  </div>
                 </div>
                 
                 <div style={{ marginBottom: '24px' }}>
@@ -190,24 +188,24 @@ const WorkEducation: React.FC<WorkEducationProps> = ({ form }) => {
                     inlineCheckbox={true}
                   >
                     <Input 
-                      style={{ width: '40%' }} 
+                      style={{ width: '90%' }} 
                       maxLength={15}
                     />
                   </QuestionItem>
                 </div>
                 
-                <div style={{ marginBottom: '24px' }}>
-                  <QuestionItem
-                    question="请简要描述您的工作职责："
+                <div>
+                  <p>请简单说明你的职责：</p>
+                  <Form.Item
                     name="jobDuties"
-                    required={true}
+                    noStyle
                   >
-                    <Input.TextArea 
+                    <TextArea 
                       style={{ width: '99%' }} 
                       rows={4} 
                       maxLength={4000}
                     />
-                  </QuestionItem>
+                  </Form.Item>
                 </div>
               </div>
             </div>
