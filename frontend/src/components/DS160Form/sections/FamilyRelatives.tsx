@@ -23,9 +23,6 @@ const FamilyInfo: React.FC<FamilyInfoProps> = ({ form }) => {
   // 监听是否有美国直系亲属
   const watchHasUsRelatives = Form.useWatch('hasUsRelatives', form);
   
-  // 监听是否有其他美国亲属
-  const watchHasOtherUsRelatives = Form.useWatch('hasOtherUsRelatives', form);
-  
   // 监听父亲是否在美国
   const watchFatherInUs = Form.useWatch('fatherInUs', form);
   

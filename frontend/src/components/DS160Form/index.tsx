@@ -12,7 +12,7 @@ import ApplicationIdDisplay from '../ApplicationIdDisplay';
 // import AddressAndPhone from './sections/AddressAndPhone';
 // import Passport from './sections/Passport';
 // import USContact from './sections/USContact';
-// import FamilyInfo from './sections/FamilyRelatives';
+import FamilyRelatives from './sections/FamilyRelatives';
 // import SecurityBackgroundI from './sections/SecurityBackgroundI';
 // import SecurityBackgroundII from './sections/SecurityBackgroundII';
 // import SecurityBackgroundIII from './sections/SecurityBackgroundIII';
@@ -79,11 +79,11 @@ const formSections: FormSection[] = [
   //   title: '美国联系人',
   //   component: USContact as unknown as React.FC<SectionProps>
   // },
-  // {
-  //   key: 'familyInfo',
-  //   title: '家庭信息：亲属',
-  //   component: FamilyInfo as unknown as React.FC<SectionProps>
-  // },
+  {
+    key: 'familyInfo',
+    title: '家庭信息：亲属',
+    component: FamilyRelatives as unknown as React.FC<SectionProps>
+  },
   // {
   //   key: 'securityBackground',
   //   title: '安全和背景: 第一部分',
