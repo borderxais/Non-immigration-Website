@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Form, Input, Select, Radio, Button } from 'antd';
+import React from 'react';
+import { Form, Input, Select, Radio } from 'antd';
 import QuestionItem from '../common/QuestionItem';
 import DateInput from '../common/DateInput';
 import RepeatableFormItem from '../common/RepeatableFormItem';
