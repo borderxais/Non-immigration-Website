@@ -75,7 +75,6 @@ const WorkEducationPrevious: React.FC<WorkEducationPreviousProps> = ({ form, rea
                   removeButtonText="移走"
                 >
                   {(field: FormListFieldData) => {
-                    const { key, ...restField } = field;
                     return (
                       <>
                         <div style={{ marginBottom: '24px' }}>
@@ -332,7 +331,6 @@ const WorkEducationPrevious: React.FC<WorkEducationPreviousProps> = ({ form, rea
                   removeButtonText="移走"
                 >
                   {(field) => {
-                    const { key, ...restField } = field;
                     return (
                       <>
                         <div style={{ marginBottom: '24px' }}>

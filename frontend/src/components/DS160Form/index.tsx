@@ -17,6 +17,7 @@ import ApplicationIdDisplay from '../ApplicationIdDisplay';
 // import FamilySpouse from './sections/FamilySpouse';
 // import WorkEducationPresent from './sections/WorkEducationPresent';
 import WorkEducationPrevious from './sections/WorkEducationPrevious';
+import WorkEducationAdditional from './sections/WorkEducationAdditional';
 // import SecurityBackgroundI from './sections/SecurityBackgroundI';
 // import SecurityBackgroundII from './sections/SecurityBackgroundII';
 // import SecurityBackgroundIII from './sections/SecurityBackgroundIII';
@@ -103,6 +104,11 @@ const formSections: FormSection[] = [
     key: 'workEducationPrevious',
     title: '以往工作和教育',
     component: WorkEducationPrevious as unknown as React.FC<SectionProps>
+  },
+  {
+    key: 'workEducationAdditional',
+    title: '额外工作和教育信息',
+    component: WorkEducationAdditional as unknown as React.FC<SectionProps>
   },
   // {
   //   key: 'securityBackground',
