@@ -6,11 +6,12 @@ import { countryOptions, occupationOptions } from '../utils/formOptions';
 
 interface WorkEducationProps {
   form: any;
+  readOnly?: boolean;
 }
 
 const { TextArea } = Input;
 
-const WorkEducation: React.FC<WorkEducationProps> = ({ form }) => {
+const WorkEducation: React.FC<WorkEducationProps> = ({ form, readOnly = false }) => {
   // 监听职业选择
   const watchOccupation = Form.useWatch('presentOccupation', form);
   
@@ -52,7 +53,8 @@ const WorkEducation: React.FC<WorkEducationProps> = ({ form }) => {
               <Select 
                 style={{ width: '99%' }} 
                 options={occupationOptions}
-                placeholder="- 请选择一个 -"
+                placeholder="请选择您的主要职业"
+                disabled={readOnly}
               />
             </QuestionItem>
             
@@ -70,6 +72,8 @@ const WorkEducation: React.FC<WorkEducationProps> = ({ form }) => {
                     style={{ width: '99%' }} 
                     rows={4} 
                     maxLength={1000}
+                    placeholder="请输入其他职业说明"
+                    disabled={readOnly}
                   />
                 </Form.Item>
                 </div>
@@ -97,6 +101,8 @@ const WorkEducation: React.FC<WorkEducationProps> = ({ form }) => {
                         style={{ width: '99%' }} 
                         rows={4} 
                         maxLength={4000}
+                        placeholder="请简要说明您目前的情况"
+                        disabled={readOnly}
                       />
                     </Form.Item>
                   </div>
@@ -112,6 +118,8 @@ const WorkEducation: React.FC<WorkEducationProps> = ({ form }) => {
                       <Input 
                         style={{ width: '99%' }} 
                         maxLength={75}
+                        placeholder="请输入雇主/学校名称"
+                        disabled={readOnly}
                       />
                     </QuestionItem>
                   </div>
@@ -127,6 +135,8 @@ const WorkEducation: React.FC<WorkEducationProps> = ({ form }) => {
                         <Input 
                           style={{ width: '99%' }} 
                           maxLength={40}
+                          placeholder="请输入地址"
+                          disabled={readOnly}
                         />
                       </QuestionItem>
                     </div>
@@ -140,6 +150,8 @@ const WorkEducation: React.FC<WorkEducationProps> = ({ form }) => {
                         <Input 
                           style={{ width: '99%' }} 
                           maxLength={40}
+                          placeholder="请输入地址"
+                          disabled={readOnly}
                         />
                       </QuestionItem>
                     </div>
@@ -153,6 +165,8 @@ const WorkEducation: React.FC<WorkEducationProps> = ({ form }) => {
                         <Input 
                           style={{ width: '99%' }} 
                           maxLength={20}
+                          placeholder="请输入城市"
+                          disabled={readOnly}
                         />
                       </QuestionItem>
                     </div>
@@ -169,6 +183,8 @@ const WorkEducation: React.FC<WorkEducationProps> = ({ form }) => {
                         <Input 
                           style={{ width: '90%' }} 
                           maxLength={20}
+                          placeholder="请输入州/省"
+                          disabled={readOnly}
                         />
                       </QuestionItem>
                     </div>
@@ -185,6 +201,8 @@ const WorkEducation: React.FC<WorkEducationProps> = ({ form }) => {
                         <Input 
                           style={{ width: '90%' }} 
                           maxLength={10}
+                          placeholder="请输入邮编"
+                          disabled={readOnly}
                         />
                       </QuestionItem>
                     </div>
@@ -198,7 +216,8 @@ const WorkEducation: React.FC<WorkEducationProps> = ({ form }) => {
                         <Input 
                           style={{ width: '65%' }} 
                           maxLength={15}
-                          placeholder="例如：5555555555"
+                          placeholder="请输入电话号码"
+                          disabled={readOnly}
                         />
                       </QuestionItem>
                     </div>
@@ -212,7 +231,12 @@ const WorkEducation: React.FC<WorkEducationProps> = ({ form }) => {
                         <Select 
                           style={{ width: '95%' }} 
                           options={countryOptions}
-                          placeholder="- 请选择一个 -"
+                          placeholder="请选择国家/地区"
+                          showSearch
+                          filterOption={(input, option) => 
+                            (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+                          }
+                          disabled={readOnly}
                         />
                       </QuestionItem>
                     </div>
@@ -226,6 +250,7 @@ const WorkEducation: React.FC<WorkEducationProps> = ({ form }) => {
                         dayName="employerStartDay"
                         monthName="employerStartMonth"
                         yearName="employerStartYear"
+                        disabled={readOnly}
                       />
                     </QuestionItem>
                   </div>
@@ -242,6 +267,8 @@ const WorkEducation: React.FC<WorkEducationProps> = ({ form }) => {
                       <Input 
                         style={{ width: '90%' }} 
                         maxLength={15}
+                        placeholder="请输入月薪（美元）"
+                        disabled={readOnly}
                       />
                     </QuestionItem>
                   </div>
@@ -256,6 +283,8 @@ const WorkEducation: React.FC<WorkEducationProps> = ({ form }) => {
                         style={{ width: '99%' }} 
                         rows={4} 
                         maxLength={4000}
+                        placeholder="请简要说明您目前的情况"
+                        disabled={readOnly}
                       />
                     </Form.Item>
                   </div>

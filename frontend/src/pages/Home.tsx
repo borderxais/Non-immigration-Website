@@ -1,6 +1,7 @@
 import React from 'react';
-import { Typography, Card, Row, Col, Button, Space, Divider, Statistic } from 'antd';
+import { Typography, Card, Row, Col, Button, Space, Divider, Statistic, message } from 'antd';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 import {
   FormOutlined,
   RobotOutlined,
@@ -15,6 +16,16 @@ const { Title, Paragraph } = Typography;
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
+
+  const handleStartDS160 = () => {
+    if (isAuthenticated) {
+      navigate('/ds160');
+    } else {
+      message.info('请先登录以开始填写DS-160表格');
+      navigate('/auth/login', { state: { from: '/ds160', message: '请先登录以开始填写DS-160表格' } });
+    }
+  };
 
   const features = [
     {
@@ -23,6 +34,7 @@ const Home: React.FC = () => {
       description: '智能表格填写系统，中英文自动翻译，实时保存进度，确保填写准确无误',
       link: '/ds160/form',
       color: '#e6f7ff',
+      onClick: () => handleStartDS160(),
     },
     {
       title: '签证咨询',
@@ -91,7 +103,7 @@ const Home: React.FC = () => {
           基于AI技术，为您提供专业、高效、便捷的签证申请服务
         </Paragraph>
         <Space size="large">
-          <Button type="primary" size="large" onClick={() => navigate('/ds160/form')}>
+          <Button type="primary" size="large" onClick={handleStartDS160}>
             开始填写DS-160
           </Button>
           <Button 
