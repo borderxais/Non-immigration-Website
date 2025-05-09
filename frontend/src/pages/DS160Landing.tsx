@@ -17,7 +17,7 @@ const DS160Landing: React.FC = () => {
       message.info('请先登录以开始新的DS-160申请');
       navigate('/auth/login', { 
         state: { 
-          from: '/ds160/landing', 
+          from: '/ds160', 
           message: '请先登录以开始新的DS-160申请' 
         } 
       });
@@ -45,7 +45,7 @@ const DS160Landing: React.FC = () => {
       message.info('请先登录以查看您的申请历史');
       navigate('/auth/login', { 
         state: { 
-          from: '/ds160/history', 
+          from: '/ds160', 
           message: '请先登录以查看您的申请历史' 
         } 
       });
