@@ -4,13 +4,26 @@ import { useNavigate } from 'react-router-dom';
 import { FormOutlined, HistoryOutlined } from '@ant-design/icons';
 import { generateApplicationId } from '../utils/formUtils';
 import ds160Service from '../services/ds160Service'; // Assuming ds160Service is imported from this location
+import { useAuth } from '../contexts/AuthContext';
 
 const { Title, Paragraph } = Typography;
 
 const DS160Landing: React.FC = () => {
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
 
   const handleNewApplication = () => {
+    if (!isAuthenticated) {
+      message.info('请先登录以开始新的DS-160申请');
+      navigate('/auth/login', { 
+        state: { 
+          from: '/ds160/landing', 
+          message: '请先登录以开始新的DS-160申请' 
+        } 
+      });
+      return;
+    }
+
     const application_id = generateApplicationId();
     // Create new form in database
     ds160Service.createForm({
@@ -25,6 +38,21 @@ const DS160Landing: React.FC = () => {
       console.error('Error creating form:', error);
       message.error('创建表单时出错');
     });
+  };
+
+  const handleViewApplications = () => {
+    if (!isAuthenticated) {
+      message.info('请先登录以查看您的申请历史');
+      navigate('/auth/login', { 
+        state: { 
+          from: '/ds160/history', 
+          message: '请先登录以查看您的申请历史' 
+        } 
+      });
+      return;
+    }
+    
+    navigate('/ds160/history');
   };
 
   return (
@@ -57,7 +85,7 @@ const DS160Landing: React.FC = () => {
         <Col xs={24} sm={12}>
           <Card
             hoverable
-            onClick={() => navigate('/ds160/history')}
+            onClick={handleViewApplications}
             style={{ height: '100%' }}
           >
             <div style={{ textAlign: 'center' }}>

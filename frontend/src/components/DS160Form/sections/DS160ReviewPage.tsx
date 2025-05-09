@@ -6,11 +6,12 @@ const { Title, Paragraph } = Typography;
 
 interface DS160ReviewPageProps {
   form: FormInstance;
-  onSubmit: () => void;
+  onSubmit: (values: any) => void;
   onEdit: (step: number) => void;
+  readOnly?: boolean;
 }
 
-const DS160ReviewPage: React.FC<DS160ReviewPageProps> = ({ form, onSubmit, onEdit }) => {
+const DS160ReviewPage: React.FC<DS160ReviewPageProps> = ({ form, onSubmit, onEdit, readOnly = false }) => {
   // Get form data
   const formData = form.getFieldsValue(true);
   
@@ -116,13 +117,15 @@ const DS160ReviewPage: React.FC<DS160ReviewPageProps> = ({ form, onSubmit, onEdi
     
     return (
       <Card 
-        title={
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <Typography.Text strong>{title}</Typography.Text>
-            <Button type="link" onClick={() => onEdit(editStep)}>编辑</Button>
-          </div>
-        }
+        title={title} 
         style={{ marginBottom: 16 }}
+        extra={
+          !readOnly && (
+            <Button type="link" onClick={() => onEdit(editStep)}>
+              编辑
+            </Button>
+          )
+        }
       >
         <Descriptions column={1} bordered>
           {filteredEntries.map(([key, value]: [string, any]) => {
@@ -389,7 +392,7 @@ const DS160ReviewPage: React.FC<DS160ReviewPageProps> = ({ form, onSubmit, onEdi
       
       <div style={{ textAlign: 'center', marginTop: '24px' }}>
         <Space size="large">
-          <Button type="primary" size="large" onClick={onSubmit}>
+          <Button type="primary" size="large" onClick={() => onSubmit(formData)}>
             提交申请
           </Button>
         </Space>

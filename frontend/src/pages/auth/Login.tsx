@@ -1,24 +1,46 @@
-import React, { useState } from 'react';
-import { Form, Input, Button, Card, Typography, Divider, message, Checkbox } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Form, Input, Button, Card, Typography, Divider, message, Checkbox, Alert } from 'antd';
 import { UserOutlined, LockOutlined, WechatOutlined, LogoutOutlined } from '@ant-design/icons';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { LoginCredentials } from '../../types/auth';
 
 const { Title, Text } = Typography;
 
+interface LocationState {
+  from?: string;
+  message?: string;
+}
+
 const Login: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { login, user, logout, isAuthenticated } = useAuth();
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
+  const [redirectMessage, setRedirectMessage] = useState<string | null>(null);
+
+  useEffect(() => {
+    // Check if there's a message in the location state
+    const state = location.state as LocationState;
+    if (state && state.message) {
+      setRedirectMessage(state.message);
+    }
+  }, [location]);
 
   const onFinish = async (values: LoginCredentials) => {
     setLoading(true);
     try {
       await login(values);
       message.success('登录成功！');
-      navigate('/');
+      
+      // If there was a 'from' path in the state, redirect there after login
+      const state = location.state as LocationState;
+      if (state && state.from) {
+        navigate(state.from);
+      } else {
+        navigate('/');
+      }
     } catch (error) {
       message.error('登录失败，请检查邮箱和密码');
     } finally {
@@ -43,6 +65,16 @@ const Login: React.FC = () => {
         <Title level={2} style={{ textAlign: 'center', marginBottom: 32 }}>
           欢迎回来
         </Title>
+
+        {/* Display redirect message if present */}
+        {redirectMessage && (
+          <Alert
+            message={redirectMessage}
+            type="info"
+            showIcon
+            style={{ marginBottom: 24 }}
+          />
+        )}
 
         {/* Display username and logout button if logged in */}
         {isAuthenticated && user ? (

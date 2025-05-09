@@ -5,22 +5,22 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import ApplicationIdDisplay from '../ApplicationIdDisplay';
 
-// import PersonalInfoI from './sections/PersonalInfoI';
-// import PersonalInfoII from './sections/PersonalInfoII';
-// import TravelInfo from './sections/TravelInfo';
-// import TravelCompanions from './sections/TravelCompanions';
-// import PreviousTravel from './sections/PreviousTravel';
-// import AddressAndPhone from './sections/AddressAndPhone';
-// import Passport from './sections/Passport';
-// import USContact from './sections/USContact';
-// import FamilyRelatives from './sections/FamilyRelatives';
-// import FamilySpouse from './sections/FamilySpouse';
+import PersonalInfoI from './sections/PersonalInfoI';
+import PersonalInfoII from './sections/PersonalInfoII';
+import TravelInfo from './sections/TravelInfo';
+import TravelCompanions from './sections/TravelCompanions';
+import PreviousTravel from './sections/PreviousTravel';
+import AddressAndPhone from './sections/AddressAndPhone';
+import Passport from './sections/Passport';
+import USContact from './sections/USContact';
+import FamilyRelatives from './sections/FamilyRelatives';
+import FamilySpouse from './sections/FamilySpouse';
 import WorkEducationPresent from './sections/WorkEducationPresent';
-// import SecurityBackgroundI from './sections/SecurityBackgroundI';
-// import SecurityBackgroundII from './sections/SecurityBackgroundII';
-// import SecurityBackgroundIII from './sections/SecurityBackgroundIII';
-// import SecurityBackgroundIV from './sections/SecurityBackgroundIV';
-// import SecurityBackgroundV from './sections/SecurityBackgroundV';
+import SecurityBackgroundI from './sections/SecurityBackgroundI';
+import SecurityBackgroundII from './sections/SecurityBackgroundII';
+import SecurityBackgroundIII from './sections/SecurityBackgroundIII';
+import SecurityBackgroundIV from './sections/SecurityBackgroundIV';
+import SecurityBackgroundV from './sections/SecurityBackgroundV';
 
 import DS160ReviewPage from './sections/DS160ReviewPage';
 
@@ -33,6 +33,7 @@ const { Title } = Typography;
 
 interface SectionProps {
   form: FormInstance;
+  readOnly?: boolean;
 }
 
 interface FormSection {
@@ -141,9 +142,8 @@ const DS160Form: React.FC = () => {
   const [form] = Form.useForm();
   const formSectionsRef = useRef(formSections);
   const [isModalVisible, setIsModalVisible] = useState(false);
-
-  // Store formSections in a ref since it's static and doesn't need to trigger re-renders
-  // const formSectionsRef = useRef(formSections);
+  const [formStatus, setFormStatus] = useState<'draft' | 'submitted' | 'approved' | 'rejected'>('draft');
+  const [isReadOnly, setIsReadOnly] = useState(false);
 
   // Extract application_id from URL
   const pathSegments = location.pathname.split('/');
@@ -275,6 +275,8 @@ const DS160Form: React.FC = () => {
                 status: 'draft'
               });
               setApplicationId(newForm.application_id);
+              setFormStatus('draft');
+              setIsReadOnly(false);
               return;
             }
 
@@ -282,20 +284,58 @@ const DS160Form: React.FC = () => {
             
             // Load existing form data
             const response = await ds160Service.getFormById(urlApplicationId);
-            if (response?.form_data) {
-              form.setFieldsValue(response.form_data);
+            
+            if (response) {
+              // Set form status and read-only state based on the form's status
+              setFormStatus(response.status);
+              setIsReadOnly(response.status === 'submitted');
               
-              // Determine completed steps from saved data
-              const completedSections = formSectionsRef.current
-                .map((section, index) => ({
-                  index,
-                  hasData: response.form_data[section.key] && 
-                          Object.keys(response.form_data[section.key]).length > 0
-                }))
-                .filter(section => section.hasData)
-                .map(section => section.index);
+              // Process form data by section
+              if (response.form_data) {
+                // Flatten the nested form data for each section
+                const formValues: any = {};
                 
-              setCompletedSteps(completedSections);
+                // Process each section's data
+                Object.keys(response.form_data).forEach(sectionKey => {
+                  const sectionData = response.form_data[sectionKey];
+                  if (sectionData && typeof sectionData === 'object') {
+                    // Merge section data into the main form values
+                    Object.assign(formValues, sectionData);
+                  }
+                });
+                
+                // Set form values
+                form.setFieldsValue(formValues);
+                
+                // Determine completed steps from saved data
+                const completedSections = formSectionsRef.current
+                  .map((section, index) => ({
+                    index,
+                    hasData: response.form_data[section.key] && 
+                            Object.keys(response.form_data[section.key]).length > 0
+                  }))
+                  .filter(section => section.hasData)
+                  .map(section => section.index);
+                  
+                setCompletedSteps(completedSections);
+                
+                // If there are completed sections, set the current step to the first incomplete section
+                // or the review page if all sections are complete
+                if (completedSections.length > 0) {
+                  // Find the first incomplete section
+                  for (let i = 0; i < formSectionsRef.current.length; i++) {
+                    if (!completedSections.includes(i)) {
+                      setCurrentStep(i);
+                      break;
+                    }
+                  }
+                  
+                  // If all sections are complete, go to the review page
+                  if (completedSections.length === formSectionsRef.current.length - 1) {
+                    setCurrentStep(formSectionsRef.current.length - 1);
+                  }
+                }
+              }
             }
           } catch (error: any) {
             console.error('Error initializing form:', error);
@@ -335,7 +375,57 @@ const DS160Form: React.FC = () => {
     return null;
   }
 
-  const CurrentSection = formSectionsRef.current[currentStep].component;
+  const renderFormSection = () => {
+    const CurrentSection = formSectionsRef.current[currentStep].component;
+    
+    return (
+      <div className="form-section-container">
+        <CurrentSection 
+          form={form} 
+          readOnly={isReadOnly}
+        />
+        
+        <div className="form-actions">
+          {currentStep > 0 && (
+            <Button 
+              onClick={() => setCurrentStep(currentStep - 1)}
+              style={{ marginRight: '8px' }}
+            >
+              上一步
+            </Button>
+          )}
+          
+          {!isReadOnly && (
+            <Button 
+              type="primary" 
+              onClick={handleSave}
+              style={{ marginRight: '8px' }}
+            >
+              保存
+            </Button>
+          )}
+          
+          {currentStep < formSectionsRef.current.length - 1 ? (
+            <Button 
+              type="primary"
+              onClick={() => form.validateFields().then(handleSectionComplete)}
+              disabled={isReadOnly}
+            >
+              下一步
+            </Button>
+          ) : (
+            <Button 
+              type="primary" 
+              onClick={() => form.validateFields().then(handleSubmit)}
+              disabled={isReadOnly || formStatus === 'submitted'}
+            >
+              提交
+            </Button>
+          )}
+        </div>
+      </div>
+    );
+  };
 
   return (
     <div className="ds160-form-container">
@@ -378,47 +468,17 @@ const DS160Form: React.FC = () => {
             <Form
               form={form}
               layout="vertical"
-              onFinish={currentStep === formSectionsRef.current.length - 1 ? handleSubmit : handleSectionComplete}
             >
               {currentStep === formSectionsRef.current.length - 1 ? (
                 <DS160ReviewPage 
                   form={form}
-                  onSubmit={() => {
-                    const values = form.getFieldsValue();
-                    handleSubmit(values);
-                  }}
+                  onSubmit={handleSubmit}
                   onEdit={handleEdit}
+                  readOnly={isReadOnly}
                 />
               ) : (
-                <CurrentSection form={form} />
+                renderFormSection()
               )}
-              <div className="form-buttons">
-                {currentStep > 0 && (
-                  <Button 
-                    onClick={() => setCurrentStep(currentStep - 1)}
-                    style={{ marginRight: 8 }}
-                  >
-                    上一步
-                  </Button>
-                )}
-                
-                {currentStep !== formSectionsRef.current.length - 1 && (
-                  <>
-                    <Button
-                      onClick={handleSave}
-                      style={{ marginRight: '8px' }}
-                    >
-                      保存
-                    </Button>
-                    <Button 
-                      type="primary" 
-                      htmlType="submit"
-                    >
-                      下一步
-                    </Button>
-                  </>
-                )}
-              </div>
             </Form>
           </div>
         </div>
