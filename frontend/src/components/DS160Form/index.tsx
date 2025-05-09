@@ -4,20 +4,20 @@ import { FormInstance } from 'antd';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import ApplicationIdDisplay from '../ApplicationIdDisplay';
-// import PersonalInfoI from './sections/PersonalInfoI';
-// import PersonalInfoII from './sections/PersonalInfoII';
-// import TravelInfo from './sections/TravelInfo';
-// import TravelCompanions from './sections/TravelCompanions';
-// import PreviousTravel from './sections/PreviousTravel';
-// import AddressAndPhone from './sections/AddressAndPhone';
-// import Passport from './sections/Passport';
-// import USContact from './sections/USContact';
+import PersonalInfoI from './sections/PersonalInfoI';
+import PersonalInfoII from './sections/PersonalInfoII';
+import TravelInfo from './sections/TravelInfo';
+import TravelCompanions from './sections/TravelCompanions';
+import PreviousTravel from './sections/PreviousTravel';
+import AddressAndPhone from './sections/AddressAndPhone';
+import Passport from './sections/Passport';
+import USContact from './sections/USContact';
 import FamilyRelatives from './sections/FamilyRelatives';
-// import SecurityBackgroundI from './sections/SecurityBackgroundI';
-// import SecurityBackgroundII from './sections/SecurityBackgroundII';
-// import SecurityBackgroundIII from './sections/SecurityBackgroundIII';
-// import SecurityBackgroundIV from './sections/SecurityBackgroundIV';
-// import SecurityBackgroundV from './sections/SecurityBackgroundV';
+import SecurityBackgroundI from './sections/SecurityBackgroundI';
+import SecurityBackgroundII from './sections/SecurityBackgroundII';
+import SecurityBackgroundIII from './sections/SecurityBackgroundIII';
+import SecurityBackgroundIV from './sections/SecurityBackgroundIV';
+import SecurityBackgroundV from './sections/SecurityBackgroundV';
 import DS160ReviewPage from './sections/DS160ReviewPage';
 
 import ds160Service from '../../services/ds160Service';
@@ -39,46 +39,46 @@ interface FormSection {
 
 // Define the form sections and their titles
 const formSections: FormSection[] = [
-  // {
-  //   key: 'personalInfo1',
-  //   title: '个人信息 I',
-  //   component: PersonalInfoI
-  // },
-  // {
-  //   key: 'personalInfo2',
-  //   title: '个人信息 II',
-  //   component: PersonalInfoII
-  // },
-  // {
-  //   key: 'travelInfo',
-  //   title: '旅行信息',
-  //   component: TravelInfo
-  // },
-  // {
-  //   key: 'travelCompanions',
-  //   title: '同行人',
-  //   component: TravelCompanions
-  // },
-  // {
-  //   key: 'previousTravel',
-  //   title: '以前的旅行',
-  //   component: PreviousTravel
-  // },
-  // {
-  //   key: 'addressAndPhone',
-  //   title: '地址和电话',
-  //   component: AddressAndPhone
-  // },
-  // {
-  //   key: 'passport',
-  //   title: '护照信息',
-  //   component: Passport as unknown as React.FC<SectionProps>
-  // },
-  // {
-  //   key: 'usContact',
-  //   title: '美国联系人',
-  //   component: USContact as unknown as React.FC<SectionProps>
-  // },
+  {
+    key: 'personalInfo1',
+    title: '个人信息 I',
+    component: PersonalInfoI
+  },
+  {
+    key: 'personalInfo2',
+    title: '个人信息 II',
+    component: PersonalInfoII
+  },
+  {
+    key: 'travelInfo',
+    title: '旅行信息',
+    component: TravelInfo
+  },
+  {
+    key: 'travelCompanions',
+    title: '同行人',
+    component: TravelCompanions
+  },
+  {
+    key: 'previousTravel',
+    title: '以前的旅行',
+    component: PreviousTravel
+  },
+  {
+    key: 'addressAndPhone',
+    title: '地址和电话',
+    component: AddressAndPhone
+  },
+  {
+    key: 'passport',
+    title: '护照信息',
+    component: Passport as unknown as React.FC<SectionProps>
+  },
+  {
+    key: 'usContact',
+    title: '美国联系人',
+    component: USContact as unknown as React.FC<SectionProps>
+  },
   {
     key: 'familyInfo',
     title: '家庭信息：亲属',
