@@ -153,6 +153,7 @@ const DS160Form: React.FC = () => {
   const [form] = Form.useForm();
   const formSectionsRef = useRef(formSections);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [submitting, setSubmitting] = useState<boolean>(false);
 
   // Store formSections in a ref since it's static and doesn't need to trigger re-renders
   // const formSectionsRef = useRef(formSections);
@@ -250,6 +251,9 @@ const DS160Form: React.FC = () => {
   // Handle final submission
   const handleSubmit = async (values: any) => {
     try {
+      setSubmitting(true);
+      message.loading('正在提交表单，请稍候...', 0);
+      
       // Get current form data first
       const response = await ds160Service.getFormById(application_id);
       
@@ -259,11 +263,15 @@ const DS160Form: React.FC = () => {
         status: 'submitted'
       });
 
+      message.destroy(); // Clear the loading message
       message.success('表单提交成功！');
-      navigate('/ds160-success', { state: { application_id } });
+      navigate('/ds160/history', { state: { submissionSuccess: true, application_id } });
     } catch (error) {
       console.error('Error submitting form:', error);
+      message.destroy(); // Clear the loading message
       message.error('提交表单时出错');
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -468,14 +476,40 @@ const DS160Form: React.FC = () => {
               onFinish={currentStep === formSectionsRef.current.length - 1 ? handleSubmit : handleSectionComplete}
             >
               {currentStep === formSectionsRef.current.length - 1 ? (
-                <DS160ReviewPage 
-                  form={form}
-                  onSubmit={() => {
-                    const values = form.getFieldsValue();
-                    handleSubmit(values);
-                  }}
-                  onEdit={handleEdit}
-                />
+                <>
+                  {submitting && (
+                    <div style={{ 
+                      position: 'absolute', 
+                      top: 0, 
+                      left: 0, 
+                      right: 0, 
+                      bottom: 0, 
+                      background: 'rgba(255, 255, 255, 0.7)', 
+                      zIndex: 100,
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      padding: '20px'
+                    }}>
+                      <Spin size="large" />
+                      <div style={{ marginTop: '20px', textAlign: 'center' }}>
+                        <p style={{ fontSize: '16px', fontWeight: 'bold' }}>正在提交表单，请稍候...</p>
+                        <p>我们正在处理您的申请并翻译相关内容，这可能需要一些时间。</p>
+                      </div>
+                    </div>
+                  )}
+                  <DS160ReviewPage 
+                    form={form}
+                    onSubmit={() => {
+                      const values = form.getFieldsValue();
+                      handleSubmit(values);
+                    }}
+                    onEdit={handleEdit}
+                    formSections={formSectionsRef.current}
+                    readOnly={submitting}
+                  />
+                </>
               ) : (
                 <CurrentSection form={form} />
               )}
@@ -500,6 +534,7 @@ const DS160Form: React.FC = () => {
                     <Button 
                       type="primary" 
                       htmlType="submit"
+                      loading={submitting}
                     >
                       下一步
                     </Button>
