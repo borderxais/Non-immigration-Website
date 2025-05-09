@@ -76,10 +76,6 @@ const WorkEducation: React.FC<WorkEducationProps> = ({ form }) => {
                 </div>
             )}
           </div>
-          <div className="explanation-column">
-            <h4 className="help-header">帮助：职业类别</h4>
-            <p>请选择最能描述您当前主要职业的类别。</p>
-          </div>
         </div>
      
       
@@ -266,14 +262,7 @@ const WorkEducation: React.FC<WorkEducationProps> = ({ form }) => {
                 </div>
               )}
             </div>
-            <div className="explanation-column">
-              <h4 className="help-header">帮助：工作/学校信息</h4>
-              {showOnlyExplanation() ? (
-                <p>请简要说明您当前未就业的情况，例如正在找工作、照顾家庭成员等。</p>
-              ) : (
-                <p>请提供您当前工作单位或学校的详细信息。如果您是学生，请填写您就读的学校信息。</p>
-              )}
-            </div>
+            <div className="explanation-column"></div>
           </div>
         </fieldset>
       )}
