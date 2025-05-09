@@ -5,23 +5,23 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import ApplicationIdDisplay from '../ApplicationIdDisplay';
 
-// import PersonalInfoI from './sections/PersonalInfoI';
-// import PersonalInfoII from './sections/PersonalInfoII';
-// import TravelInfo from './sections/TravelInfo';
-// import TravelCompanions from './sections/TravelCompanions';
-// import PreviousTravel from './sections/PreviousTravel';
-// import AddressAndPhone from './sections/AddressAndPhone';
-// import Passport from './sections/Passport';
-// import USContact from './sections/USContact';
-// import FamilyRelatives from './sections/FamilyRelatives';
-// import FamilySpouse from './sections/FamilySpouse';
-// import WorkEducationPresent from './sections/WorkEducationPresent';
+import PersonalInfoI from './sections/PersonalInfoI';
+import PersonalInfoII from './sections/PersonalInfoII';
+import TravelInfo from './sections/TravelInfo';
+import TravelCompanions from './sections/TravelCompanions';
+import PreviousTravel from './sections/PreviousTravel';
+import AddressAndPhone from './sections/AddressAndPhone';
+import Passport from './sections/Passport';
+import USContact from './sections/USContact';
+import FamilyRelatives from './sections/FamilyRelatives';
+import FamilySpouse from './sections/FamilySpouse';
+import WorkEducationPresent from './sections/WorkEducationPresent';
 import WorkEducationPrevious from './sections/WorkEducationPrevious';
-// import SecurityBackgroundI from './sections/SecurityBackgroundI';
-// import SecurityBackgroundII from './sections/SecurityBackgroundII';
-// import SecurityBackgroundIII from './sections/SecurityBackgroundIII';
-// import SecurityBackgroundIV from './sections/SecurityBackgroundIV';
-// import SecurityBackgroundV from './sections/SecurityBackgroundV';
+import SecurityBackgroundI from './sections/SecurityBackgroundI';
+import SecurityBackgroundII from './sections/SecurityBackgroundII';
+import SecurityBackgroundIII from './sections/SecurityBackgroundIII';
+import SecurityBackgroundIV from './sections/SecurityBackgroundIV';
+import SecurityBackgroundV from './sections/SecurityBackgroundV';
 
 import DS160ReviewPage from './sections/DS160ReviewPage';
 
@@ -44,91 +44,91 @@ interface FormSection {
 
 // Define the form sections and their titles
 const formSections: FormSection[] = [
-  // {
-  //   key: 'personalInfo1',
-  //   title: '个人信息 I',
-  //   component: PersonalInfoI
-  // },
-  // {
-  //   key: 'personalInfo2',
-  //   title: '个人信息 II',
-  //   component: PersonalInfoII
-  // },
-  // {
-  //   key: 'travelInfo',
-  //   title: '旅行信息',
-  //   component: TravelInfo
-  // },
-  // {
-  //   key: 'travelCompanions',
-  //   title: '同行人',
-  //   component: TravelCompanions
-  // },
-  // {
-  //   key: 'previousTravel',
-  //   title: '以前的旅行',
-  //   component: PreviousTravel
-  // },
-  // {
-  //   key: 'addressAndPhone',
-  //   title: '地址和电话',
-  //   component: AddressAndPhone
-  // },
-  // {
-  //   key: 'passport',
-  //   title: '护照信息',
-  //   component: Passport as unknown as React.FC<SectionProps>
-  // },
-  // {
-  //   key: 'usContact',
-  //   title: '美国联系人',
-  //   component: USContact as unknown as React.FC<SectionProps>
-  // },
-  // {
-  //   key: 'familyRelatives',
-  //   title: '家庭信息：亲属',
-  //   component: FamilyRelatives as unknown as React.FC<SectionProps>
-  // },
-  // {
-  //   key: 'familySpouse',
-  //   title: '家庭信息：配偶',
-  //   component: FamilySpouse as unknown as React.FC<SectionProps>
-  // },
-  // {
-  //   key: 'workEducation',
-  //   title: '工作和教育',
-  //   component: WorkEducationPresent as unknown as React.FC<SectionProps>
-  // },
+  {
+    key: 'personalInfo1',
+    title: '个人信息 I',
+    component: PersonalInfoI
+  },
+  {
+    key: 'personalInfo2',
+    title: '个人信息 II',
+    component: PersonalInfoII
+  },
+  {
+    key: 'travelInfo',
+    title: '旅行信息',
+    component: TravelInfo
+  },
+  {
+    key: 'travelCompanions',
+    title: '同行人',
+    component: TravelCompanions
+  },
+  {
+    key: 'previousTravel',
+    title: '以前的旅行',
+    component: PreviousTravel
+  },
+  {
+    key: 'addressAndPhone',
+    title: '地址和电话',
+    component: AddressAndPhone
+  },
+  {
+    key: 'passport',
+    title: '护照信息',
+    component: Passport as unknown as React.FC<SectionProps>
+  },
+  {
+    key: 'usContact',
+    title: '美国联系人',
+    component: USContact as unknown as React.FC<SectionProps>
+  },
+  {
+    key: 'familyRelatives',
+    title: '家庭信息：亲属',
+    component: FamilyRelatives as unknown as React.FC<SectionProps>
+  },
+  {
+    key: 'familySpouse',
+    title: '家庭信息：配偶',
+    component: FamilySpouse as unknown as React.FC<SectionProps>
+  },
+  {
+    key: 'workEducation',
+    title: '工作和教育',
+    component: WorkEducationPresent as unknown as React.FC<SectionProps>
+  },
   {
     key: 'workEducationPrevious',
     title: '以往工作和教育',
     component: WorkEducationPrevious as unknown as React.FC<SectionProps>
   },
-  // {
-  //   key: 'securityBackground',
-  //   title: '安全和背景: 第一部分',
-  //   component: SecurityBackgroundI
-  // },
-  // {
-  //   key: 'securityBackground2',
-  //   title: '安全和背景: 第二部分',
-  //   component: SecurityBackgroundII
-  // },
-  // {
-  //   key: 'securityBackground3',
-  //   title: '安全和背景: 第三部分',
-  //   component: SecurityBackgroundIII
-  // },
-  // {
-  //   key: 'securityBackground4',
-  //   title: '安全和背景: 第四部分',
-  //   component: SecurityBackgroundIV
-  // },
-  // {
-  //   key: 'securityBackground5',
-  //   title: '安全和背景: 第五部分',
-  //   component: SecurityBackgroundV
-  // },
+  {
+    key: 'securityBackground',
+    title: '安全和背景: 第一部分',
+    component: SecurityBackgroundI
+  },
+  {
+    key: 'securityBackground2',
+    title: '安全和背景: 第二部分',
+    component: SecurityBackgroundII
+  },
+  {
+    key: 'securityBackground3',
+    title: '安全和背景: 第三部分',
+    component: SecurityBackgroundIII
+  },
+  {
+    key: 'securityBackground4',
+    title: '安全和背景: 第四部分',
+    component: SecurityBackgroundIV
+  },
+  {
+    key: 'securityBackground5',
+    title: '安全和背景: 第五部分',
+    component: SecurityBackgroundV
+  },
   {
     key: 'review',
     title: '审核提交',
