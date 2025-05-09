@@ -15,24 +15,33 @@ const { TextArea } = Input;
 
 const WorkEducationAdditional: React.FC<WorkEducationAdditionalProps> = ({ form, readOnly = false }) => {
   // 监听各个问题的回答
-  const watchHasSpecializedSkills = Form.useWatch('hasSpecializedSkills', form);
-  const watchBelongsToOrganizations = Form.useWatch('belongsToOrganizations', form);
-  const watchHasMilitaryExperience = Form.useWatch('hasMilitaryExperience', form);
-  const watchHasArmedForcesMembership = Form.useWatch('hasArmedForcesMembership', form);
-  const watchHasRebelGroupMembership = Form.useWatch('hasRebelGroupMembership', form);
-  const watchHasWeaponsTraining = Form.useWatch('hasWeaponsTraining', form);
+  const watchClanTribeInd = Form.useWatch('clanTribeInd', form);
+  const watchCountriesVisitedInd = Form.useWatch('countriesVisitedInd', form);
+  const watchOrganizationInd = Form.useWatch('organizationInd', form);
+  const watchSpecializedSkillsInd = Form.useWatch('specializedSkillsInd', form);
+  const watchMilitaryServiceInd = Form.useWatch('militaryServiceInd', form);
+  const watchInsurgentOrgInd = Form.useWatch('insurgentOrgInd', form);
   
   // 处理各个问题的变化，当选择"否"时清除相关字段
-  const handleHasSpecializedSkillsChange = (e: any) => {
+  const handleClanTribeIndChange = (e: any) => {
     const value = e.target.value;
     if (value === 'N') {
       form.setFieldsValue({
-        specializedSkills: undefined
+        clanTribeName: undefined
       });
     }
   };
   
-  const handleBelongsToOrganizationsChange = (e: any) => {
+  const handleCountriesVisitedIndChange = (e: any) => {
+    const value = e.target.value;
+    if (value === 'N') {
+      form.setFieldsValue({
+        countriesVisited: undefined
+      });
+    }
+  };
+  
+  const handleOrganizationIndChange = (e: any) => {
     const value = e.target.value;
     if (value === 'N') {
       form.setFieldsValue({
@@ -41,38 +50,29 @@ const WorkEducationAdditional: React.FC<WorkEducationAdditionalProps> = ({ form,
     }
   };
   
-  const handleHasMilitaryExperienceChange = (e: any) => {
+  const handleSpecializedSkillsIndChange = (e: any) => {
     const value = e.target.value;
     if (value === 'N') {
       form.setFieldsValue({
-        militaryExperiences: undefined
+        specializedSkillsExpl: undefined
       });
     }
   };
   
-  const handleHasArmedForcesMembershipChange = (e: any) => {
+  const handleMilitaryServiceIndChange = (e: any) => {
     const value = e.target.value;
     if (value === 'N') {
       form.setFieldsValue({
-        armedForcesExplanation: undefined
+        militaryService: undefined
       });
     }
   };
   
-  const handleHasRebelGroupMembershipChange = (e: any) => {
+  const handleInsurgentOrgIndChange = (e: any) => {
     const value = e.target.value;
     if (value === 'N') {
       form.setFieldsValue({
-        rebelGroups: undefined
-      });
-    }
-  };
-  
-  const handleHasWeaponsTrainingChange = (e: any) => {
-    const value = e.target.value;
-    if (value === 'N') {
-      form.setFieldsValue({
-        weaponsTrainingExplanation: undefined
+        insurgentOrgExpl: undefined
       });
     }
   };
@@ -82,14 +82,55 @@ const WorkEducationAdditional: React.FC<WorkEducationAdditionalProps> = ({ form,
       <h2>额外工作/教育/培训信息</h2>
       
       <div className="note" style={{ border: '1px solid #ccc', padding: '10px' }}>
-        <h3>注意: 请提供有关您的专业技能、组织成员资格和军事经验的信息。</h3>
+        <h3>注意: 请提供以下有关工作、学历或培训的信息。对于所有要求解释的问题，请提供完整、准确的信息。</h3>
       </div>
       
-      {/* 专业技能 */}
+      {/* 宗族或部落 */}
       <fieldset className="question-section" style={{marginTop: '20px'}}>
         <div className="question-row">
           <div className="question-column">
-            <h4>请列出您掌握的所有语言：</h4>
+            <QuestionItem
+              question="您是否属于一个宗族或者部落？"
+              name="clanTribeInd"
+              required={true}
+            >
+              <Radio.Group disabled={readOnly} onChange={handleClanTribeIndChange}>
+                <Radio value="Y">是</Radio>
+                <Radio value="N">否</Radio>
+              </Radio.Group>
+            </QuestionItem>
+            
+            {/* 当选择"是"时显示的输入框 */}
+            {watchClanTribeInd === 'Y' && (
+              <div style={{ marginTop: '20px' }}>
+                <h4>请提供以下信息：</h4>
+                <div className="highlighted-block">
+                  <div style={{ marginBottom: '24px' }}>
+                    <QuestionItem
+                      question="宗族或者部落名称"
+                      name="clanTribeName"
+                      required={true}
+                    >
+                      <Input 
+                        style={{ width: '99%' }} 
+                        maxLength={80}
+                        disabled={readOnly}
+                      />
+                    </QuestionItem>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+          <div className="explanation-column"></div>
+        </div>
+      </fieldset>
+      
+      {/* 语言 */}
+      <fieldset className="question-section" style={{marginTop: '30px'}}>
+        <div className="question-row">
+          <div className="question-column">
+            <h4>请列出您所说语言的种类</h4>
             <RepeatableFormItem
               name="languages"
               addButtonText="增加另一个"
@@ -100,13 +141,13 @@ const WorkEducationAdditional: React.FC<WorkEducationAdditionalProps> = ({ form,
                   <>
                     <div style={{ marginBottom: '24px' }}>
                       <QuestionItem
-                        question="语言"
-                        name={[field.name, 'language']}
+                        question="语言名字"
+                        name={[field.name, 'languageName']}
                         required={true}
                       >
                         <Input 
                           style={{ width: '99%' }} 
-                          maxLength={75}
+                          maxLength={66}
                           disabled={readOnly}
                         />
                       </QuestionItem>
@@ -120,27 +161,27 @@ const WorkEducationAdditional: React.FC<WorkEducationAdditionalProps> = ({ form,
         </div>
       </fieldset>
       
-      {/* 专业技能 */}
+      {/* 最近五年里访问的国家 */}
       <fieldset className="question-section" style={{marginTop: '30px'}}>
         <div className="question-row">
           <div className="question-column">
             <QuestionItem
-              question="您是否有任何专业技能或培训，例如防火武器、爆炸物、核能、生物或化学经验？"
-              name="hasSpecializedSkills"
+              question="最近五年里您是否去过其他国家？"
+              name="countriesVisitedInd"
               required={true}
             >
-              <Radio.Group disabled={readOnly} onChange={handleHasSpecializedSkillsChange}>
+              <Radio.Group disabled={readOnly} onChange={handleCountriesVisitedIndChange}>
                 <Radio value="Y">是</Radio>
                 <Radio value="N">否</Radio>
               </Radio.Group>
             </QuestionItem>
             
             {/* 当选择"是"时显示的可重复表单项 */}
-            {watchHasSpecializedSkills === 'Y' && (
+            {watchCountriesVisitedInd === 'Y' && (
               <div style={{ marginTop: '20px' }}>
-                <h4>请提供专业技能或培训的详细信息：</h4>
+                <h4>请列出您访问过的国家</h4>
                 <RepeatableFormItem
-                  name="specializedSkills"
+                  name="countriesVisited"
                   addButtonText="增加另一个"
                   removeButtonText="移走"
                 >
@@ -149,42 +190,18 @@ const WorkEducationAdditional: React.FC<WorkEducationAdditionalProps> = ({ form,
                       <>
                         <div style={{ marginBottom: '24px' }}>
                           <QuestionItem
-                            question="技能或培训类型"
-                            name={[field.name, 'skillType']}
+                            question="国家/地区"
+                            name={[field.name, 'country']}
                             required={true}
                           >
-                            <Input 
-                              style={{ width: '99%' }} 
-                              maxLength={75}
-                              disabled={readOnly}
-                            />
-                          </QuestionItem>
-                        </div>
-                        
-                        <div style={{ marginBottom: '24px' }}>
-                          <QuestionItem
-                            question="描述"
-                            name={[field.name, 'skillDescription']}
-                            required={true}
-                          >
-                            <TextArea 
-                              style={{ width: '99%' }} 
-                              rows={4} 
-                              maxLength={4000}
-                              disabled={readOnly}
-                            />
-                          </QuestionItem>
-                        </div>
-                        
-                        <div style={{ marginBottom: '24px' }}>
-                          <QuestionItem
-                            question="获得年份"
-                            name={[field.name, 'yearAcquired']}
-                            required={true}
-                          >
-                            <Input 
+                            <Select 
                               style={{ width: '95%' }} 
-                              maxLength={4}
+                              options={countryOptions}
+                              placeholder="- 请选择 -"
+                              showSearch
+                              filterOption={(input, option) => 
+                                (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+                              }
                               disabled={readOnly}
                             />
                           </QuestionItem>
@@ -205,20 +222,20 @@ const WorkEducationAdditional: React.FC<WorkEducationAdditionalProps> = ({ form,
         <div className="question-row">
           <div className="question-column">
             <QuestionItem
-              question="您是否属于任何专业、社会或慈善组织？"
-              name="belongsToOrganizations"
+              question="您是否从属于任何一个专业的、社会或慈善组织？并为其做过贡献、或为其工作过？"
+              name="organizationInd"
               required={true}
             >
-              <Radio.Group disabled={readOnly} onChange={handleBelongsToOrganizationsChange}>
+              <Radio.Group disabled={readOnly} onChange={handleOrganizationIndChange}>
                 <Radio value="Y">是</Radio>
                 <Radio value="N">否</Radio>
               </Radio.Group>
             </QuestionItem>
             
             {/* 当选择"是"时显示的可重复表单项 */}
-            {watchBelongsToOrganizations === 'Y' && (
+            {watchOrganizationInd === 'Y' && (
               <div style={{ marginTop: '20px' }}>
-                <h4>请提供组织的详细信息：</h4>
+                <h4>请提供机构列表</h4>
                 <RepeatableFormItem
                   name="organizations"
                   addButtonText="增加另一个"
@@ -229,27 +246,13 @@ const WorkEducationAdditional: React.FC<WorkEducationAdditionalProps> = ({ form,
                       <>
                         <div style={{ marginBottom: '24px' }}>
                           <QuestionItem
-                            question="组织名称"
+                            question="机构名称"
                             name={[field.name, 'organizationName']}
                             required={true}
                           >
                             <Input 
                               style={{ width: '99%' }} 
-                              maxLength={75}
-                              disabled={readOnly}
-                            />
-                          </QuestionItem>
-                        </div>
-                        
-                        <div style={{ marginBottom: '24px' }}>
-                          <QuestionItem
-                            question="组织类型"
-                            name={[field.name, 'organizationType']}
-                            required={true}
-                          >
-                            <Input 
-                              style={{ width: '99%' }} 
-                              maxLength={75}
+                              maxLength={66}
                               disabled={readOnly}
                             />
                           </QuestionItem>
@@ -265,27 +268,66 @@ const WorkEducationAdditional: React.FC<WorkEducationAdditionalProps> = ({ form,
         </div>
       </fieldset>
       
+      {/* 专业技能 */}
+      <fieldset className="question-section" style={{marginTop: '30px'}}>
+        <div className="question-row">
+          <div className="question-column">
+            <QuestionItem
+              question="您是否具有特殊技能或接受过特殊培训，例如有关枪械、炸药、核装置、生物或化学方面的经验？"
+              name="specializedSkillsInd"
+              required={true}
+            >
+              <Radio.Group disabled={readOnly} onChange={handleSpecializedSkillsIndChange}>
+                <Radio value="Y">是</Radio>
+                <Radio value="N">否</Radio>
+              </Radio.Group>
+            </QuestionItem>
+            
+            {/* 当选择"是"时显示的解释字段 */}
+            {watchSpecializedSkillsInd === 'Y' && (
+              <div style={{ marginTop: '20px' }}>
+                <h4>解释</h4>
+                <div className="highlighted-block">
+                  <Form.Item
+                    name="specializedSkillsExpl"
+                    noStyle
+                  >
+                    <TextArea 
+                      style={{ width: '99%' }} 
+                      rows={4} 
+                      maxLength={4000}
+                      disabled={readOnly}
+                    />
+                  </Form.Item>
+                </div>
+              </div>
+            )}
+          </div>
+          <div className="explanation-column"></div>
+        </div>
+      </fieldset>
+      
       {/* 军事经验 */}
       <fieldset className="question-section" style={{marginTop: '30px'}}>
         <div className="question-row">
           <div className="question-column">
             <QuestionItem
-              question="您是否有任何军事经验？"
-              name="hasMilitaryExperience"
+              question="您是否曾经在军队服役？"
+              name="militaryServiceInd"
               required={true}
             >
-              <Radio.Group disabled={readOnly} onChange={handleHasMilitaryExperienceChange}>
+              <Radio.Group disabled={readOnly} onChange={handleMilitaryServiceIndChange}>
                 <Radio value="Y">是</Radio>
                 <Radio value="N">否</Radio>
               </Radio.Group>
             </QuestionItem>
             
             {/* 当选择"是"时显示的可重复表单项 */}
-            {watchHasMilitaryExperience === 'Y' && (
+            {watchMilitaryServiceInd === 'Y' && (
               <div style={{ marginTop: '20px' }}>
-                <h4>请提供军事经验的详细信息：</h4>
+                <h4>请提供以下信息：</h4>
                 <RepeatableFormItem
-                  name="militaryExperiences"
+                  name="militaryService"
                   addButtonText="增加另一个"
                   removeButtonText="移走"
                 >
@@ -294,7 +336,7 @@ const WorkEducationAdditional: React.FC<WorkEducationAdditionalProps> = ({ form,
                       <>
                         <div style={{ marginBottom: '24px' }}>
                           <QuestionItem
-                            question="国家/地区"
+                            question="国家/地区名称"
                             name={[field.name, 'country']}
                             required={true}
                           >
@@ -319,7 +361,7 @@ const WorkEducationAdditional: React.FC<WorkEducationAdditionalProps> = ({ form,
                           >
                             <Input 
                               style={{ width: '99%' }} 
-                              maxLength={75}
+                              maxLength={40}
                               disabled={readOnly}
                             />
                           </QuestionItem>
@@ -327,13 +369,13 @@ const WorkEducationAdditional: React.FC<WorkEducationAdditionalProps> = ({ form,
                         
                         <div style={{ marginBottom: '24px' }}>
                           <QuestionItem
-                            question="军衔/职位"
+                            question="级别/职位"
                             name={[field.name, 'rank']}
                             required={true}
                           >
                             <Input 
                               style={{ width: '99%' }} 
-                              maxLength={75}
+                              maxLength={40}
                               disabled={readOnly}
                             />
                           </QuestionItem>
@@ -341,13 +383,13 @@ const WorkEducationAdditional: React.FC<WorkEducationAdditionalProps> = ({ form,
                         
                         <div style={{ marginBottom: '24px' }}>
                           <QuestionItem
-                            question="军事专业"
+                            question="军事特长"
                             name={[field.name, 'specialty']}
                             required={true}
                           >
                             <Input 
                               style={{ width: '99%' }} 
-                              maxLength={75}
+                              maxLength={40}
                               disabled={readOnly}
                             />
                           </QuestionItem>
@@ -358,9 +400,9 @@ const WorkEducationAdditional: React.FC<WorkEducationAdditionalProps> = ({ form,
                             question="服役开始日期"
                           >
                             <DateInput
-                              dayName={[field.name, 'serviceStartDay']}
-                              monthName={[field.name, 'serviceStartMonth']}
-                              yearName={[field.name, 'serviceStartYear']}
+                              dayName={[field.name, 'serviceFromDay']}
+                              monthName={[field.name, 'serviceFromMonth']}
+                              yearName={[field.name, 'serviceFromYear']}
                               disabled={readOnly}
                             />
                           </QuestionItem>
@@ -371,9 +413,9 @@ const WorkEducationAdditional: React.FC<WorkEducationAdditionalProps> = ({ form,
                             question="服役结束日期"
                           >
                             <DateInput
-                              dayName={[field.name, 'serviceEndDay']}
-                              monthName={[field.name, 'serviceEndMonth']}
-                              yearName={[field.name, 'serviceEndYear']}
+                              dayName={[field.name, 'serviceToDay']}
+                              monthName={[field.name, 'serviceToMonth']}
+                              yearName={[field.name, 'serviceToYear']}
                               disabled={readOnly}
                             />
                           </QuestionItem>
@@ -382,45 +424,6 @@ const WorkEducationAdditional: React.FC<WorkEducationAdditionalProps> = ({ form,
                     );
                   }}
                 </RepeatableFormItem>
-              </div>
-            )}
-          </div>
-          <div className="explanation-column"></div>
-        </div>
-      </fieldset>
-      
-      {/* 武装部队成员资格 */}
-      <fieldset className="question-section" style={{marginTop: '30px'}}>
-        <div className="question-row">
-          <div className="question-column">
-            <QuestionItem
-              question="您是否曾经是准军事部队、安全部队、警察部队、民兵或叛乱组织的成员？"
-              name="hasArmedForcesMembership"
-              required={true}
-            >
-              <Radio.Group disabled={readOnly} onChange={handleHasArmedForcesMembershipChange}>
-                <Radio value="Y">是</Radio>
-                <Radio value="N">否</Radio>
-              </Radio.Group>
-            </QuestionItem>
-            
-            {/* 当选择"是"时显示的解释字段 */}
-            {watchHasArmedForcesMembership === 'Y' && (
-              <div style={{ marginTop: '20px' }}>
-                <h3>解释说明：</h3>
-                <div className="highlighted-block">
-                  <Form.Item
-                    name="armedForcesExplanation"
-                    noStyle
-                  >
-                    <TextArea 
-                      style={{ width: '99%' }} 
-                      rows={4} 
-                      maxLength={4000}
-                      disabled={readOnly}
-                    />
-                  </Form.Item>
-                </div>
               </div>
             )}
           </div>
@@ -433,133 +436,23 @@ const WorkEducationAdditional: React.FC<WorkEducationAdditionalProps> = ({ form,
         <div className="question-row">
           <div className="question-column">
             <QuestionItem
-              question="您是否曾经是叛乱组织、游击队或武装团体的成员？"
-              name="hasRebelGroupMembership"
+              question="你是否曾经服务于或参与过准军事性单位、治安团体、造反组织、游击队或暴动组织，或曾经是其成员之一？"
+              name="insurgentOrgInd"
               required={true}
             >
-              <Radio.Group disabled={readOnly} onChange={handleHasRebelGroupMembershipChange}>
-                <Radio value="Y">是</Radio>
-                <Radio value="N">否</Radio>
-              </Radio.Group>
-            </QuestionItem>
-            
-            {/* 当选择"是"时显示的可重复表单项 */}
-            {watchHasRebelGroupMembership === 'Y' && (
-              <div style={{ marginTop: '20px' }}>
-                <h4>请提供组织的详细信息：</h4>
-                <RepeatableFormItem
-                  name="rebelGroups"
-                  addButtonText="增加另一个"
-                  removeButtonText="移走"
-                >
-                  {(field: FormListFieldData) => {
-                    return (
-                      <>
-                        <div style={{ marginBottom: '24px' }}>
-                          <QuestionItem
-                            question="组织名称"
-                            name={[field.name, 'groupName']}
-                            required={true}
-                          >
-                            <Input 
-                              style={{ width: '99%' }} 
-                              maxLength={75}
-                              disabled={readOnly}
-                            />
-                          </QuestionItem>
-                        </div>
-                        
-                        <div style={{ marginBottom: '24px' }}>
-                          <QuestionItem
-                            question="国家/地区"
-                            name={[field.name, 'country']}
-                            required={true}
-                          >
-                            <Select 
-                              style={{ width: '95%' }} 
-                              options={countryOptions}
-                              placeholder="- 请选择 -"
-                              showSearch
-                              filterOption={(input, option) => 
-                                (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
-                              }
-                              disabled={readOnly}
-                            />
-                          </QuestionItem>
-                        </div>
-                        
-                        <div style={{ marginBottom: '24px' }}>
-                          <QuestionItem
-                            question="您在组织中的角色"
-                            name={[field.name, 'role']}
-                            required={true}
-                          >
-                            <Input 
-                              style={{ width: '99%' }} 
-                              maxLength={75}
-                              disabled={readOnly}
-                            />
-                          </QuestionItem>
-                        </div>
-                        
-                        <div style={{ marginBottom: '24px' }}>
-                          <QuestionItem
-                            question="成员资格开始日期"
-                          >
-                            <DateInput
-                              dayName={[field.name, 'membershipStartDay']}
-                              monthName={[field.name, 'membershipStartMonth']}
-                              yearName={[field.name, 'membershipStartYear']}
-                              disabled={readOnly}
-                            />
-                          </QuestionItem>
-                        </div>
-                        
-                        <div style={{ marginBottom: '24px' }}>
-                          <QuestionItem
-                            question="成员资格结束日期"
-                          >
-                            <DateInput
-                              dayName={[field.name, 'membershipEndDay']}
-                              monthName={[field.name, 'membershipEndMonth']}
-                              yearName={[field.name, 'membershipEndYear']}
-                              disabled={readOnly}
-                            />
-                          </QuestionItem>
-                        </div>
-                      </>
-                    );
-                  }}
-                </RepeatableFormItem>
-              </div>
-            )}
-          </div>
-          <div className="explanation-column"></div>
-        </div>
-      </fieldset>
-      
-      {/* 武器培训 */}
-      <fieldset className="question-section" style={{marginTop: '30px'}}>
-        <div className="question-row">
-          <div className="question-column">
-            <QuestionItem
-              question="您是否接受过任何类型的武器培训？"
-              name="hasWeaponsTraining"
-              required={true}
-            >
-              <Radio.Group disabled={readOnly} onChange={handleHasWeaponsTrainingChange}>
+              <Radio.Group disabled={readOnly} onChange={handleInsurgentOrgIndChange}>
                 <Radio value="Y">是</Radio>
                 <Radio value="N">否</Radio>
               </Radio.Group>
             </QuestionItem>
             
             {/* 当选择"是"时显示的解释字段 */}
-            {watchHasWeaponsTraining === 'Y' && (
+            {watchInsurgentOrgInd === 'Y' && (
               <div style={{ marginTop: '20px' }}>
-                <h3>解释说明：</h3>
+                <h4>解释</h4>
                 <div className="highlighted-block">
                   <Form.Item
-                    name="weaponsTrainingExplanation"
+                    name="insurgentOrgExpl"
                     noStyle
                   >
                     <TextArea 
