@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Typography, Table, Tag, Button, Space, message, Spin } from 'antd';
-import { useNavigate } from 'react-router-dom';
+import { Typography, Table, Tag, Button, Space, message, Spin, Alert } from 'antd';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import ds160Service from '../services/ds160Service';
 import { DS160Form } from '../services/ds160Service';
@@ -12,6 +12,11 @@ const DS160History: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const { isAuthenticated, isLoading } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  
+  // Check if we were redirected here after a successful submission
+  const submissionSuccess = location.state?.submissionSuccess;
+  const submittedApplicationId = location.state?.application_id;
 
   useEffect(() => {
     // Fetch user's applications when component mounts
@@ -20,6 +25,11 @@ const DS160History: React.FC = () => {
         setLoading(true);
         const forms = await ds160Service.getUserForms();
         setApplications(forms);
+        
+        // If we have a successful submission, show a success message
+        if (submissionSuccess && submittedApplicationId) {
+          message.success('表单提交成功！您的申请已成功提交。');
+        }
       } catch (error) {
         console.error('Error fetching applications:', error);
         message.error('获取申请历史记录失败');
@@ -34,7 +44,7 @@ const DS160History: React.FC = () => {
       message.warning('请先登录以查看您的申请历史');
       navigate('/auth/login');
     }
-  }, [isAuthenticated, isLoading, navigate]);
+  }, [isAuthenticated, isLoading, navigate, submissionSuccess, submittedApplicationId]);
 
   const getStatusTag = (status: string) => {
     switch (status) {
