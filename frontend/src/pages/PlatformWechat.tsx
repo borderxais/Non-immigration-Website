@@ -1,6 +1,6 @@
 import React from 'react';
-import { Typography, Card, Row, Col, Alert, Button, QRCode } from 'antd';
-import { MobileOutlined, WechatOutlined, ClockCircleOutlined, QrcodeOutlined } from '@ant-design/icons';
+import { Typography, Card, Row, Col, Alert, Button } from 'antd';
+import { WechatOutlined, ClockCircleOutlined, QrcodeOutlined } from '@ant-design/icons';
 
 const { Title, Paragraph } = Typography;
 
