@@ -96,7 +96,6 @@ const WorkEducationAdditional: React.FC<WorkEducationAdditionalProps> = ({ form,
               removeButtonText="移走"
             >
               {(field: FormListFieldData) => {
-                const { key, ...restField } = field;
                 return (
                   <>
                     <div style={{ marginBottom: '24px' }}>
@@ -146,7 +145,6 @@ const WorkEducationAdditional: React.FC<WorkEducationAdditionalProps> = ({ form,
                   removeButtonText="移走"
                 >
                   {(field: FormListFieldData) => {
-                    const { key, ...restField } = field;
                     return (
                       <>
                         <div style={{ marginBottom: '24px' }}>
@@ -227,7 +225,6 @@ const WorkEducationAdditional: React.FC<WorkEducationAdditionalProps> = ({ form,
                   removeButtonText="移走"
                 >
                   {(field: FormListFieldData) => {
-                    const { key, ...restField } = field;
                     return (
                       <>
                         <div style={{ marginBottom: '24px' }}>
@@ -293,7 +290,6 @@ const WorkEducationAdditional: React.FC<WorkEducationAdditionalProps> = ({ form,
                   removeButtonText="移走"
                 >
                   {(field: FormListFieldData) => {
-                    const { key, ...restField } = field;
                     return (
                       <>
                         <div style={{ marginBottom: '24px' }}>
@@ -457,7 +453,6 @@ const WorkEducationAdditional: React.FC<WorkEducationAdditionalProps> = ({ form,
                   removeButtonText="移走"
                 >
                   {(field: FormListFieldData) => {
-                    const { key, ...restField } = field;
                     return (
                       <>
                         <div style={{ marginBottom: '24px' }}>
