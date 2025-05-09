@@ -4,7 +4,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import ds160Service from '../services/ds160Service';
 import ApplicationIdDisplay from '../components/ApplicationIdDisplay';
 import { useAuth } from '../contexts/AuthContext';
-import { getSections, formatDate } from '../utils/ds160Sections';
+import { getSections } from '../utils/ds160Sections';
+// import { getSections, formatDate } from '../utils/ds160Sections';
 
 const { Title, Paragraph } = Typography;
 
@@ -228,11 +229,11 @@ const DS160View: React.FC = () => {
   };
 
   // Handle starting over
-  const handleStartOver = () => {
-    setDraftModalVisible(false);
-    console.log('DS160View - Starting over with reset=true');
-    navigate(`/ds160/form/${id}?reset=true`);
-  };
+//   const handleStartOver = () => {
+//     setDraftModalVisible(false);
+//     console.log('DS160View - Starting over with reset=true');
+//     navigate(`/ds160/form/${id}?reset=true`);
+//   };
 
   if (loading) {
     return (
@@ -260,7 +261,7 @@ const DS160View: React.FC = () => {
   }
 
   // Get the form data from the response
-  const formDataContent = formData.form_data || {};
+  // const formDataContent = formData.form_data || {};
 
   // If it's a draft, show the draft modal
   if (formStatus === 'draft') {
