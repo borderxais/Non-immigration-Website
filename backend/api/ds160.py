@@ -33,7 +33,8 @@ ALLOWED_ORIGINS = [
     'http://localhost:3000',
     'https://visaimmigration.netlify.app',
     'https://www.visaimmigration.netlify.app',
-    'https://leonexusus.com'
+    'https://leonexusus.com',
+    'https://visasupport-dot-overseabiz-453023.wl.r.appspot.com'
 ]
 
 # Create a separate blueprint for CORS preflight handling
