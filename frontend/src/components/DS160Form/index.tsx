@@ -294,7 +294,7 @@ const DS160Form: React.FC = () => {
       message.error('保存表单数据时出错');
       return false;
     }
-  }, [application_id, currentStep]);
+  }, [application_id, currentStep, sanitizeFormData]);
 
   // Handle final submission
   const handleSubmit = async (values: any) => {
