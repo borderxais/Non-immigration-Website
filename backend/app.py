@@ -41,14 +41,13 @@ CORS(
 # Add CORS headers to all responses
 @app.after_request
 def after_request(response):
-    # Get the origin from the request
     origin = request.headers.get('Origin')
-    # If the origin is in our allowed origins, set it in the response
     if origin in [
         "http://localhost:3000",
         "http://localhost:3001",
         "http://127.0.0.1:3000",
         "http://127.0.0.1:3001",
+        "http://192.168.86.59:3000",
         "https://visaimmigration.netlify.app",
         "https://www.visaimmigration.netlify.app",
         "https://leonexusus.com",
@@ -56,15 +55,33 @@ def after_request(response):
     ]:
         response.headers['Access-Control-Allow-Origin'] = origin
         response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'
-        response.headers['Access-Control-Allow-Headers'] = '*'
+        response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
+        response.headers['Access-Control-Allow-Credentials'] = 'true'
     return response
 
 
-# Handle OPTIONS requests explicitly
+# Handle OPTIONS requests for CORS preflight
 @app.route("/<path:path>", methods=["OPTIONS"])
 @app.route("/", methods=["OPTIONS"])
 def options_handler(*args, **kwargs):
-    return jsonify({})
+    response = app.make_default_options_response()
+    origin = request.headers.get('Origin')
+    if origin in [
+        "http://localhost:3000",
+        "http://localhost:3001",
+        "http://127.0.0.1:3000",
+        "http://127.0.0.1:3001",
+        "http://192.168.86.59:3000",
+        "https://visaimmigration.netlify.app",
+        "https://www.visaimmigration.netlify.app",
+        "https://leonexusus.com",
+        "chrome-extension://oimcinbapiapghcakhbbobdfdfncdgfe"
+    ]:
+        response.headers['Access-Control-Allow-Origin'] = origin
+        response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'
+        response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
+        response.headers['Access-Control-Allow-Credentials'] = 'true'
+    return response
 
 
 api = Api(app, doc="/docs", prefix="/api")
@@ -108,40 +125,29 @@ app.register_blueprint(chat_bp)
 @app.route("/api/health")
 def health_check():
     response = jsonify({"status": "healthy", "version": "1.0.0"})
-    origin = request.headers.get('Origin')
-    if origin in [
-        "http://localhost:3000",
-        "http://localhost:3001",
-        "http://127.0.0.1:3000",
-        "http://127.0.0.1:3001",
-        "https://visaimmigration.netlify.app",
-        "https://www.visaimmigration.netlify.app",
-        "https://leonexusus.com",
-        "chrome-extension://oimcinbapiapghcakhbbobdfdfncdgfe"
-    ]:
-        response.headers['Access-Control-Allow-Origin'] = origin
-        response.headers['Access-Control-Allow-Methods'] = 'GET,OPTIONS'
-        response.headers['Access-Control-Allow-Headers'] = '*'
     return response
 
 
-@app.route("/api/health", methods=['OPTIONS'])
-def health_check_options():
-    response = jsonify({"success": True})
+@app.route('/', defaults={'path': ''}, methods=['OPTIONS'])
+@app.route('/<path:path>', methods=['OPTIONS'])
+def options_handler(path):
+    response = app.make_default_options_response()
     origin = request.headers.get('Origin')
     if origin in [
         "http://localhost:3000",
         "http://localhost:3001",
         "http://127.0.0.1:3000",
         "http://127.0.0.1:3001",
+        "http://192.168.86.59:3000",
         "https://visaimmigration.netlify.app",
         "https://www.visaimmigration.netlify.app",
         "https://leonexusus.com",
         "chrome-extension://oimcinbapiapghcakhbbobdfdfncdgfe"
     ]:
         response.headers['Access-Control-Allow-Origin'] = origin
-        response.headers['Access-Control-Allow-Methods'] = 'GET,OPTIONS'
-        response.headers['Access-Control-Allow-Headers'] = '*'
+        response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'
+        response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
+        response.headers['Access-Control-Allow-Credentials'] = 'true'
     return response
 
 
