@@ -180,8 +180,9 @@ class DS160FormDetailResource(Resource):
         if origin in ALLOWED_ORIGINS:
             headers = {
                 'Access-Control-Allow-Origin': origin,
-                'Access-Control-Allow-Headers': '*',
-                'Access-Control-Allow-Methods': 'GET,POST,PUT,DELETE,OPTIONS'
+                'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+                'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+                'Access-Control-Allow-Credentials': 'true'
             }
         return {'success': True}, 200, headers
 
@@ -198,8 +199,9 @@ class DS160FormDetailResource(Resource):
             if origin in ALLOWED_ORIGINS:
                 headers = {
                     'Access-Control-Allow-Origin': origin,
-                    'Access-Control-Allow-Headers': '*',
-                    'Access-Control-Allow-Methods': 'GET,POST,PUT,DELETE,OPTIONS'
+                    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+                    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+                    'Access-Control-Allow-Credentials': 'true'
                 }
 
             return form.to_dict(), 200, headers
@@ -285,8 +287,9 @@ class DS160FormDetailResource(Resource):
             if origin in ALLOWED_ORIGINS:
                 headers = {
                     'Access-Control-Allow-Origin': origin,
-                    'Access-Control-Allow-Headers': '*',
-                    'Access-Control-Allow-Methods': 'GET,POST,PUT,DELETE,OPTIONS'
+                    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+                    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+                    'Access-Control-Allow-Credentials': 'true'
                 }
 
             return form.to_dict(), 200, headers
