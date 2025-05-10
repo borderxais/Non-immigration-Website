@@ -2,11 +2,7 @@ import axios from 'axios';
 
 
 // Define the API URL based on environment
-// const API_ENDPOINT = process.env.REACT_APP_SERVER_API_URL || 'https://visasupport-dot-overseabiz-453023.wl.r.appspot.com';
-// const API_URL = `${API_ENDPOINT}/api`;
-
-// Use CORS proxy to bypass CORS issues temporarily
-const API_ENDPOINT = 'https://corsproxy.io/?' + encodeURIComponent('https://visasupport-dot-overseabiz-453023.wl.r.appspot.com');
+const API_ENDPOINT = process.env.REACT_APP_SERVER_API_URL || 'https://visasupport-dot-overseabiz-453023.wl.r.appspot.com';
 const API_URL = `${API_ENDPOINT}/api`;
 
 // const API_ENDPOINT = 'http://localhost:5000';
