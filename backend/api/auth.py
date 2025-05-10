@@ -1,5 +1,5 @@
 from flask_restx import Namespace, Resource
-from flask import request, jsonify, make_response
+from flask import request, jsonify
 from models import ds160
 from models.user import User
 from core.extensions import db
@@ -8,30 +8,6 @@ from datetime import timedelta
 
 api = Namespace("auth", description="Authentication API")
 
-# Allowed origins - keep in sync with other API files
-ALLOWED_ORIGINS = [
-    'http://localhost:3000',
-    'http://localhost:3001',
-    'http://127.0.0.1:3000',
-    'http://127.0.0.1:3001',
-    'http://192.168.86.59:3000',
-    'https://visaimmigration.netlify.app',
-    'https://www.visaimmigration.netlify.app',
-    'https://leonexusus.com'
-]
-
-# Helper function to add CORS headers
-def add_cors_headers(response_data, status_code=200):
-    origin = request.headers.get('Origin')
-    headers = {}
-    if origin in ALLOWED_ORIGINS:
-        headers = {
-            'Access-Control-Allow-Origin': origin,
-            'Access-Control-Allow-Headers': 'Content-Type,Authorization',
-            'Access-Control-Allow-Methods': 'GET,POST,PUT,DELETE,OPTIONS',
-            'Access-Control-Allow-Credentials': 'true'
-        }
-    return response_data, status_code, headers
 
 @api.route("/register")
 class RegisterResource(Resource):
@@ -71,19 +47,6 @@ class RegisterResource(Resource):
 
 @api.route("/login")
 class LoginResource(Resource):
-    def options(self):
-        """Handle preflight OPTIONS request"""
-        origin = request.headers.get('Origin')
-        headers = {}
-        if origin in ALLOWED_ORIGINS:
-            headers = {
-                'Access-Control-Allow-Origin': origin,
-                'Access-Control-Allow-Headers': 'Content-Type,Authorization',
-                'Access-Control-Allow-Methods': 'GET,POST,PUT,DELETE,OPTIONS',
-                'Access-Control-Allow-Credentials': 'true'
-            }
-        return {'success': True}, 200, headers
-        
     def post(self):
         """Log in a user"""
         data = request.json
@@ -95,19 +58,20 @@ class LoginResource(Resource):
                 identity=str(user.id), expires_delta=timedelta(days=1)
             )
 
-            response_data = {
-                "user": {
-                    "id": str(user.id),
-                    "username": user.username,
-                    "email": user.email,
-                    "createdAt": user.created_at.isoformat(),
+            return (
+                {
+                    "user": {
+                        "id": str(user.id),
+                        "username": user.username,
+                        "email": user.email,
+                        "createdAt": user.created_at.isoformat(),
+                    },
+                    "token": access_token,
                 },
-                "token": access_token,
-            }
-            
-            return add_cors_headers(response_data)
+                200,
+            )
 
-        return add_cors_headers({"error": "Invalid credentials"}, 401)
+        return {"error": "Invalid credentials"}, 401
 
 
 @api.route("/me")
