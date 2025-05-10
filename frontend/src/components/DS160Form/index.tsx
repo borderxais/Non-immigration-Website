@@ -212,7 +212,7 @@ const DS160Form: React.FC = () => {
   const urlApplicationId = pathSegments[pathSegments.length - 1];
 
   // Utility function to sanitize date objects in form data
-  const sanitizeFormData = (data: any): any => {
+  const sanitizeFormData = useCallback((data: any): any => {
     if (!data) return data;
     
     // If it's an array, sanitize each item
@@ -258,7 +258,7 @@ const DS160Form: React.FC = () => {
     }
     
     return sanitized;
-  };
+  }, []);
 
   // Save form section data to database
   const saveSectionData = useCallback(async (sectionData: any) => {
