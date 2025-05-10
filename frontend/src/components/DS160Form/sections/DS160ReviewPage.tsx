@@ -23,66 +23,6 @@ const DS160ReviewPage: React.FC<DS160ReviewPageProps> = ({
   const formData = form.getFieldsValue(true);
   console.log('Review page form data:', formData);
   
-  // Helper function to format date values from form data
-  const formatDate = (dateObj: any) => {
-    // If no date object provided
-    if (!dateObj) return 'N/A';
-    
-    console.log("Formatting date object:", JSON.stringify(dateObj));
-    
-    // Handle nested date object with day, month, year properties
-    if (dateObj && typeof dateObj === 'object') {
-      if ('day' in dateObj && 'month' in dateObj && 'year' in dateObj) {
-        return `${dateObj.day}-${dateObj.month}-${dateObj.year}`;
-      }
-      
-      // Handle date object with different property names
-      if ('$D' in dateObj && '$M' in dateObj && '$y' in dateObj) {
-        // Note: $M is 0-indexed in moment objects, so add 1
-        return `${dateObj.$D}-${dateObj.$M + 1}-${dateObj.$y}`;
-      }
-      
-      // Handle moment-like objects
-      if (dateObj._isAMomentObject || dateObj._isValid || dateObj._d) {
-        try {
-          const date = new Date(dateObj._d || dateObj);
-          return `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
-        } catch (e) {
-          console.error("Error parsing moment object:", e);
-        }
-      }
-    }
-    
-    // Handle string date formats
-    if (typeof dateObj === 'string') {
-      // Try to parse various date formats
-      const dateParts = dateObj.split(/[-/]/);
-      if (dateParts.length === 3) {
-        return dateParts.join('-');
-      }
-      
-      // Try to parse ISO date string
-      try {
-        const date = new Date(dateObj);
-        if (!isNaN(date.getTime())) {
-          return `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
-        }
-      } catch (e) {
-        console.error("Error parsing date string:", e);
-      }
-      
-      return dateObj; // Return as is if it's already formatted
-    }
-    
-    return 'N/A';
-  };
-
-  // Helper function for individual date parts
-  const formatDateParts = (day: string, month: string, year: string) => {
-    if (!day || !month || !year) return 'N/A';
-    return `${day}-${month}-${year}`;
-  };
-
   // Helper function to get section title and data
   const renderSection = (title: string, sectionData: any, editStep: number) => {
     if (!sectionData) return null;
@@ -196,27 +136,7 @@ const DS160ReviewPage: React.FC<DS160ReviewPageProps> = ({
         fullNameNative: formData.fullNameNative || 'N/A',
         gender: formData.gender === 'M' ? '男' : '女',
         maritalStatus: formData.maritalStatus || 'N/A',
-        dateOfBirth: (() => {
-          // Debug all possible date of birth sources
-          console.log("DOB Debug - personalInfo1?.dob:", JSON.stringify(formData.personalInfo1?.dob));
-          console.log("DOB Debug - dob:", JSON.stringify(formData.dob));
-          console.log("DOB Debug - dobDay:", formData.dobDay);
-          console.log("DOB Debug - dobMonth:", formData.dobMonth);
-          console.log("DOB Debug - dobYear:", formData.dobYear);
-          
-          // Try all possible formats for date of birth
-          if (formData.personalInfo1?.dob) {
-            return formatDate(formData.personalInfo1.dob);
-          } 
-          if (formData.dob) {
-            return formatDate(formData.dob);
-          }
-          if (formData.dobDay && formData.dobMonth && formData.dobYear) {
-            return formatDateParts(formData.dobDay, formData.dobMonth, formData.dobYear);
-          }
-          
-          return 'N/A';
-        })(),
+        dateOfBirth: formData.dateOfBirth || 'N/A', // Simplified to avoid date issues
         birthCity: formData.birthCity || 'N/A',
         birthState: formData.birthState || 'N/A',
         birthCountry: formData.birthCountry || 'N/A',
@@ -238,7 +158,7 @@ const DS160ReviewPage: React.FC<DS160ReviewPageProps> = ({
         specificPurpose: formData.specificPurpose || formData.travelPurposes?.[0]?.specificPurpose || 'N/A',
         applicationReceiptNumber: formData.applicationReceiptNumber || formData.travelPurposes?.[0]?.applicationReceiptNumber || 'N/A',
         hasSpecificPlans: formData.hasSpecificPlans === 'Y' ? '是' : '否',
-        arrivalDate: formatDate(formData.intendedDateOfArrival) || formatDate(formData.arrivalDate),
+        arrivalDate: formData.arrivalDate || 'N/A', // Simplified to avoid date issues
         lengthOfStay: (formData.stayDuration || formData.intendedLengthOfStay) ? 
           `${formData.stayDuration || formData.intendedLengthOfStay} ${formData.stayDurationType || 'Days'}` : 
           'N/A',
@@ -285,12 +205,8 @@ const DS160ReviewPage: React.FC<DS160ReviewPageProps> = ({
         passportIssuedCountry: formData.passportIssuedCountry || formData.passport?.passportIssuedCountry || 'N/A',
         passportIssuedCity: formData.passportIssuedCity || formData.passport?.passportIssuedCity || 'N/A',
         passportIssuedInCountry: formData.passportIssuedInCountry || formData.passport?.passportIssuedInCountry || 'N/A',
-        passportIssuanceDate: formatDate(formData.passportIssuedDate) || 
-                             formatDate(formData.passport?.passportIssuedDate) || 
-                             formatDateParts(formData.passportIssuanceDay, formData.passportIssuanceMonth, formData.passportIssuanceYear),
-        passportExpirationDate: formatDate(formData.passportExpirationDate) || 
-                               formatDate(formData.passport?.passportExpirationDate) || 
-                               formatDateParts(formData.passportExpirationDay, formData.passportExpirationMonth, formData.passportExpirationYear),
+        passportIssuanceDate: formData.passportIssuanceDate || 'N/A', // Simplified to avoid date issues
+        passportExpirationDate: formData.passportExpirationDate || 'N/A', // Simplified to avoid date issues
         hasLostPassport: formData.hasLostPassport === 'Y' || formData.passport?.hasLostPassport === 'Y' ? '是' : '否'
       },
       usContact: formData.usContact || {
@@ -316,9 +232,7 @@ const DS160ReviewPage: React.FC<DS160ReviewPageProps> = ({
         spouseSurname: formData.familySpouse?.spouseSurname || formData.spouseSurname || 'N/A',
         spouseGivenName: formData.familySpouse?.spouseGivenName || formData.spouseGivenName || 'N/A',
         spouseName: `${formData.familySpouse?.spouseSurname || formData.spouseSurname || ''} ${formData.familySpouse?.spouseGivenName || formData.spouseGivenName || ''}`,
-        spouseBirthDate: formatDate(formData.spouseDob) || 
-                        formatDate(formData.familySpouse?.spouseDob) || 
-                        formatDateParts(formData.spouseDobDay, formData.spouseDobMonth, formData.spouseDobYear),
+        spouseBirthDate: formData.spouseDob || 'N/A', // Simplified to avoid date issues
         spouseBirthPlace: `${formData.familySpouse?.spousePobCity || formData.spouseBirthCity || ''}, ${formData.familySpouse?.spousePobState || formData.spouseBirthState || ''}, ${formData.familySpouse?.spousePobCountry || formData.spouseBirthCountry || ''}`,
         spouseNationality: formData.familySpouse?.spouseNationality || formData.spouseNationality || 'N/A',
         spouseAddressType: formData.familySpouse?.spouseAddressType || formData.spouseAddressType || 'N/A'
@@ -332,9 +246,7 @@ const DS160ReviewPage: React.FC<DS160ReviewPageProps> = ({
         employerSchoolName: formData.employerSchoolName || 'N/A',
         employerAddress: `${formData.employerAddressLine1 || ''}, ${formData.employerCity || ''}, ${formData.employerState || ''}, ${formData.employerPostalCode || ''}, ${formData.employerCountry || ''}`,
         employerPhone: formData.employerPhone || 'N/A',
-        employmentStartDate: formatDate(formData.employerStart) || 
-                           formatDate(formData.workEducation?.employerStart) || 
-                           formatDateParts(formData.employerStartDay, formData.employerStartMonth, formData.employerStartYear),
+        employmentStartDate: formData.employmentStartDate || 'N/A', // Simplified to avoid date issues
         monthlySalary: formData.monthlySalary || 'N/A'
       },
       workEducationPrevious: formData.workEducationPrevious || {
