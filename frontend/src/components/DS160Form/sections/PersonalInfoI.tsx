@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Input, Select, Radio, Form } from 'antd';
 import QuestionItem from '../common/QuestionItem';
-// import DateInput from '../common/DateInput';
+import DateInput from '../common/DateInput';
 import RepeatableFormItem from '../common/RepeatableFormItem';
 import { countryOptions } from '../utils/formOptions';
 import { FormListFieldData } from 'antd/lib/form/FormList';
@@ -297,21 +297,11 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
                 question="日期"
                 name="dob"
               >
-                {/* <DateInput 
+                <DateInput 
                   dayName={["dob", "day"]} 
                   monthName={["dob", "month"]} 
                   yearName={["dob", "year"]}
-                /> */}
-                <Form.Item noStyle name={["dob", "day"]} initialValue="1">
-                  <Input type="hidden" />
-                </Form.Item>
-                <Form.Item noStyle name={["dob", "month"]} initialValue="JAN">
-                  <Input type="hidden" />
-                </Form.Item>
-                <Form.Item noStyle name={["dob", "year"]} initialValue="2000">
-                  <Input type="hidden" />
-                </Form.Item>
-                <div>出生日期已设置为: 01-JAN-2000</div>
+                />
               </QuestionItem>
             </div>
             <div className="explanation-column">
