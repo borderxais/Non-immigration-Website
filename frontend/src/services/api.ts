@@ -29,7 +29,7 @@ api.interceptors.request.use(
     
     // Add CORS headers for preflight
     if (config.method?.toUpperCase() === 'OPTIONS') {
-      config.headers['Access-Control-Request-Method'] = 'POST';
+      config.headers['Access-Control-Request-Method'] = 'POST,PUT';
       config.headers['Access-Control-Request-Headers'] = 'content-type,authorization';
     }
     
