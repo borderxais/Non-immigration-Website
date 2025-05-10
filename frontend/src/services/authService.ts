@@ -2,10 +2,6 @@
 import { LoginCredentials, RegisterData, User } from '../types/auth';
 import api from './api';
 
-// // Access environment variables using Vite's import.meta.env
-// const API_ENDPOINT = process.env.REACT_APP_SERVER_API_URL || 'http://localhost:5000';
-// const API_URL = `${API_ENDPOINT}/api`;
-
 export interface AuthResponse {
   user: User;
   token: string;
