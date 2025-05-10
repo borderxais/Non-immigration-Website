@@ -1,9 +1,10 @@
-import axios from 'axios';
+// import axios from 'axios';
 import { LoginCredentials, RegisterData, User } from '../types/auth';
+import api from './api';
 
-// Access environment variables using Vite's import.meta.env
-const API_ENDPOINT = process.env.REACT_APP_SERVER_API_URL || 'http://localhost:5000';
-const API_URL = `${API_ENDPOINT}/api`;
+// // Access environment variables using Vite's import.meta.env
+// const API_ENDPOINT = process.env.REACT_APP_SERVER_API_URL || 'http://localhost:5000';
+// const API_URL = `${API_ENDPOINT}/api`;
 
 export interface AuthResponse {
   user: User;
@@ -14,7 +15,7 @@ export interface AuthResponse {
  * Register a new user
  */
 const register = async (data: RegisterData): Promise<AuthResponse> => {
-  const response = await axios.post(`${API_URL}/auth/register`, data);
+  const response = await api.post(`/auth/register`, data);
   return response.data;
 };
 
@@ -22,7 +23,7 @@ const register = async (data: RegisterData): Promise<AuthResponse> => {
  * Login a user
  */
 const login = async (credentials: LoginCredentials): Promise<AuthResponse> => {
-  const response = await axios.post(`${API_URL}/auth/login`, credentials);
+  const response = await api.post(`/auth/login`, credentials);
   return response.data;
 };
 
@@ -30,7 +31,7 @@ const login = async (credentials: LoginCredentials): Promise<AuthResponse> => {
  * Validate a token and get user information
  */
 const validateToken = async (token: string): Promise<User> => {
-  const response = await axios.get(`${API_URL}/auth/me`, {
+  const response = await api.get(`/auth/me`, {
     headers: {
       Authorization: `Bearer ${token}`
     }
@@ -42,7 +43,7 @@ const validateToken = async (token: string): Promise<User> => {
  * Reset password request
  */
 const requestPasswordReset = async (email: string): Promise<{ success: boolean }> => {
-  const response = await axios.post(`${API_URL}/auth/reset-password`, { email });
+  const response = await api.post(`/auth/reset-password`, { email });
   return response.data;
 };
 
@@ -50,7 +51,7 @@ const requestPasswordReset = async (email: string): Promise<{ success: boolean }
  * Complete password reset
  */
 const completePasswordReset = async (token: string, newPassword: string): Promise<{ success: boolean }> => {
-  const response = await axios.post(`${API_URL}/auth/reset-password/confirm`, { 
+  const response = await api.post(`/auth/reset-password/confirm`, { 
     token, 
     new_password: newPassword 
   });
@@ -62,7 +63,7 @@ const completePasswordReset = async (token: string, newPassword: string): Promis
  */
 const updateProfile = async (userData: Partial<User>): Promise<User> => {
   const token = localStorage.getItem('token');
-  const response = await axios.put(`${API_URL}/auth/profile`, userData, {
+  const response = await api.put(`/auth/profile`, userData, {
     headers: {
       Authorization: `Bearer ${token}`
     }
@@ -75,8 +76,8 @@ const updateProfile = async (userData: Partial<User>): Promise<User> => {
  */
 const changePassword = async (currentPassword: string, newPassword: string): Promise<{ success: boolean }> => {
   const token = localStorage.getItem('token');
-  const response = await axios.post(
-    `${API_URL}/auth/change-password`,
+  const response = await api.post(
+    `/auth/change-password`,
     { current_password: currentPassword, new_password: newPassword },
     {
       headers: {
