@@ -211,55 +211,6 @@ const DS160Form: React.FC = () => {
   const pathSegments = location.pathname.split('/');
   const urlApplicationId = pathSegments[pathSegments.length - 1];
 
-  // Utility function to sanitize date objects in form data
-  const sanitizeFormData = useCallback((data: any): any => {
-    if (!data) return data;
-    
-    // If it's an array, sanitize each item
-    if (Array.isArray(data)) {
-      return data.map(item => sanitizeFormData(item));
-    }
-    
-    // If it's not an object or is null, return as is
-    if (typeof data !== 'object' || data === null) {
-      return data;
-    }
-    
-    // Check if it's a date-like object
-    if (
-      // Moment.js objects
-      (data._isAMomentObject || data._isValid || data._d) ||
-      // Objects with day/month/year properties
-      (data.day && data.month && data.year) ||
-      // Objects with $D/$M/$y properties (moment.js)
-      (data.$D && data.$M !== undefined && data.$y)
-    ) {
-      try {
-        // Convert to a standard string format (YYYY-MM-DD)
-        if (data.day && data.month && data.year) {
-          return `${data.year}-${data.month.toString().padStart(2, '0')}-${data.day.toString().padStart(2, '0')}`;
-        } else if (data.$D && data.$M !== undefined && data.$y) {
-          // Note: $M is 0-indexed in moment objects, so add 1
-          return `${data.$y}-${(data.$M + 1).toString().padStart(2, '0')}-${data.$D.toString().padStart(2, '0')}`;
-        } else if (data._d) {
-          const date = new Date(data._d);
-          return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
-        }
-      } catch (e) {
-        console.error("Error sanitizing date object:", e);
-        return data; // Return original if conversion fails
-      }
-    }
-    
-    // Process each property of the object
-    const sanitized: any = {};
-    for (const key in data) {
-      sanitized[key] = sanitizeFormData(data[key]);
-    }
-    
-    return sanitized;
-  }, []);
-
   // Save form section data to database
   const saveSectionData = useCallback(async (sectionData: any) => {
     try {
@@ -270,15 +221,12 @@ const DS160Form: React.FC = () => {
       // Get current section key using the ref
       const currentSection = dynamicFormSectionsRef.current[currentStep];
 
-      // Sanitize the section data to handle date objects
-      const sanitizedSectionData = sanitizeFormData(sectionData);
-
       // Create nested structure for current section
       const updatedData = {
         ...existingData,
         [currentSection.key]: {
           ...existingData[currentSection.key],
-          ...sanitizedSectionData
+          ...sectionData
         }
       };
 
@@ -294,37 +242,7 @@ const DS160Form: React.FC = () => {
       message.error('保存表单数据时出错');
       return false;
     }
-  }, [application_id, currentStep, sanitizeFormData]);
-
-  // Handle final submission
-  const handleSubmit = async (values: any) => {
-    try {
-      setSubmitting(true);
-      message.loading('正在提交表单，请稍候...', 0);
-
-      // Get current form data first
-      const response = await ds160Service.getFormById(application_id);
-      
-      // Sanitize the entire form data to handle date objects
-      const sanitizedFormData = sanitizeFormData(response.form_data);
-
-      // Update form with sanitized data and set status to submitted
-      await ds160Service.updateForm(application_id, {
-        form_data: sanitizedFormData,
-        status: 'submitted'
-      });
-
-      message.destroy(); // Clear the loading message
-      message.success('表单提交成功！');
-      navigate('/ds160/history', { state: { submissionSuccess: true, application_id } });
-    } catch (error) {
-      console.error('Error submitting form:', error);
-      message.destroy(); // Clear the loading message
-      message.error('提交表单时出错');
-    } finally {
-      setSubmitting(false);
-    }
-  };
+  }, [application_id, currentStep]); // formSections removed from dependencies since we use ref
 
   // Handle save button click
   const handleSave = async () => {
@@ -376,6 +294,33 @@ const DS160Form: React.FC = () => {
     } catch (error) {
       console.error('Error completing section:', error);
       message.error('完成部分时出错');
+    }
+  };
+
+  // Handle final submission
+  const handleSubmit = async (values: any) => {
+    try {
+      setSubmitting(true);
+      message.loading('正在提交表单，请稍候...', 0);
+
+      // Get current form data first
+      const response = await ds160Service.getFormById(application_id);
+
+      // Update form with current data and set status to submitted
+      await ds160Service.updateForm(application_id, {
+        form_data: response.form_data,
+        status: 'submitted'
+      });
+
+      message.destroy(); // Clear the loading message
+      message.success('表单提交成功！');
+      navigate('/ds160/history', { state: { submissionSuccess: true, application_id } });
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      message.destroy(); // Clear the loading message
+      message.error('提交表单时出错');
+    } finally {
+      setSubmitting(false);
     }
   };
 
