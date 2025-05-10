@@ -34,8 +34,20 @@ const formSections = [
     title: '地址和电话'
   },
   {
+    key: 'passport',
+    title: '护照信息'
+  },
+  {
     key: 'usContact',
     title: '美国联系人'
+  },
+  {
+    key: 'familyRelatives',
+    title: '家庭信息：亲属'
+  },
+  {
+    key: 'familySpouse',
+    title: '家庭信息：配偶'
   },
   {
     key: 'workEducation',
@@ -172,15 +184,17 @@ const DS160View: React.FC = () => {
     
     return {
       personalInfo1: formDataContent.personalInfo1 || {
-        surname: formDataContent.surname,
-        givenName: formDataContent.givenName,
-        fullNameNative: formDataContent.fullNameNative,
+        surname: formDataContent.surname || 'N/A',
+        givenName: formDataContent.givenName || 'N/A',
+        fullNameNative: formDataContent.fullNameNative || 'N/A',
         gender: formDataContent.gender === 'M' ? '男' : '女',
-        maritalStatus: formDataContent.maritalStatus,
-        dateOfBirth: formatDate(formDataContent.dobDay, formDataContent.dobMonth, formDataContent.dobYear),
-        birthCity: formDataContent.birthCity,
-        birthState: formDataContent.birthState,
-        birthCountry: formDataContent.birthCountry,
+        maritalStatus: formDataContent.maritalStatus || 'N/A',
+        dateOfBirth: formDataContent.dob ? 
+          `${formDataContent.dob.day}-${formDataContent.dob.month}-${formDataContent.dob.year}` : 
+          formatDate(formDataContent.dobDay, formDataContent.dobMonth, formDataContent.dobYear),
+        birthCity: formDataContent.birthCity || 'N/A',
+        birthState: formDataContent.birthState || 'N/A',
+        birthCountry: formDataContent.birthCountry || 'N/A',
         hasOtherNames: formDataContent.hasOtherNames === 'Y' ? '是' : '否',
         hasTelecode: formDataContent.hasTelecode === 'Y' ? '是' : '否'
       },
@@ -243,6 +257,21 @@ const DS160View: React.FC = () => {
         emailAddress: formDataContent.emailAddress || 'N/A',
         socialMediaPlatforms: formDataContent.socialMediaPlatform || []
       },
+      passport: formDataContent.passport || {
+        passportNumber: formDataContent.passportNumber || formDataContent.passport?.passportNumber || 'N/A',
+        passportType: formDataContent.passportType || formDataContent.passport?.passportType || 'N/A',
+        passportBookNumber: formDataContent.passportBookNumber || formDataContent.passport?.passportBookNumber || 'N/A',
+        passportIssuedCountry: formDataContent.passportIssuedCountry || formDataContent.passport?.passportIssuedCountry || 'N/A',
+        passportIssuedCity: formDataContent.passportIssuedCity || formDataContent.passport?.passportIssuedCity || 'N/A',
+        passportIssuedInCountry: formDataContent.passportIssuedInCountry || formDataContent.passport?.passportIssuedInCountry || 'N/A',
+        passportIssuanceDate: formDataContent.passport?.passportIssuedDate ? 
+          `${formDataContent.passport.passportIssuedDate.day}-${formDataContent.passport.passportIssuedDate.month}-${formDataContent.passport.passportIssuedDate.year}` : 
+          formatDate(formDataContent.passportIssuanceDay, formDataContent.passportIssuanceMonth, formDataContent.passportIssuanceYear),
+        passportExpirationDate: formDataContent.passport?.passportExpirationDate ? 
+          `${formDataContent.passport.passportExpirationDate.day}-${formDataContent.passport.passportExpirationDate.month}-${formDataContent.passport.passportExpirationDate.year}` : 
+          formatDate(formDataContent.passportExpirationDay, formDataContent.passportExpirationMonth, formDataContent.passportExpirationYear),
+        hasLostPassport: formDataContent.hasLostPassport === 'Y' || formDataContent.passport?.hasLostPassport === 'Y' ? '是' : '否'
+      },
       usContact: formDataContent.usContact || {
         contactName: `${formDataContent.usPocSurname || ''} ${formDataContent.usPocGivenName || ''}`,
         organization: formDataContent.usPocOrganization || 'N/A',
@@ -255,6 +284,23 @@ const DS160View: React.FC = () => {
         address: `${formDataContent.usPocAddressLine1 || ''}, ${formDataContent.usPocCity || ''}, ${formDataContent.usPocState || ''}`,
         phone: formDataContent.usPocPhone || 'N/A',
         email: formDataContent.usPocEmail || 'N/A'
+      },
+      familyRelatives: formDataContent.familyRelatives || {
+        hasRelatives: formDataContent.hasRelatives === 'Y' ? '是' : '否',
+        relativesCount: formDataContent.hasRelatives === 'Y' ? formDataContent.relatives?.length || 0 : 'N/A',
+        relativesDetails: formDataContent.relatives || []
+      },
+      familySpouse: formDataContent.familySpouse || {
+        hasSpouse: formDataContent.hasSpouse === 'Y' ? '是' : '否',
+        spouseSurname: formDataContent.familySpouse?.spouseSurname || formDataContent.spouseSurname || 'N/A',
+        spouseGivenName: formDataContent.familySpouse?.spouseGivenName || formDataContent.spouseGivenName || 'N/A',
+        spouseName: `${formDataContent.familySpouse?.spouseSurname || formDataContent.spouseSurname || ''} ${formDataContent.familySpouse?.spouseGivenName || formDataContent.spouseGivenName || ''}`,
+        spouseBirthDate: formDataContent.familySpouse?.spouseDob ? 
+          `${formDataContent.familySpouse.spouseDob.day}-${formDataContent.familySpouse.spouseDob.month}-${formDataContent.familySpouse.spouseDob.year}` : 
+          formatDate(formDataContent.spouseDobDay, formDataContent.spouseDobMonth, formDataContent.spouseDobYear),
+        spouseBirthPlace: `${formDataContent.familySpouse?.spousePobCity || formDataContent.spouseBirthCity || ''}, ${formDataContent.familySpouse?.spousePobState || formDataContent.spouseBirthState || ''}, ${formDataContent.familySpouse?.spousePobCountry || formDataContent.spouseBirthCountry || ''}`,
+        spouseNationality: formDataContent.familySpouse?.spouseNationality || formDataContent.spouseNationality || 'N/A',
+        spouseAddressType: formDataContent.familySpouse?.spouseAddressType || formDataContent.spouseAddressType || 'N/A'
       },
       workEducation: formDataContent.workEducation || {
         presentOccupation: formDataContent.presentOccupation === 'EN' ? '工程师' : 
@@ -374,16 +420,19 @@ const DS160View: React.FC = () => {
               'travelCompanions': 3,
               'previousTravel': 4,
               'addressAndPhone': 5,
-              'usContact': 6,
-              'workEducation': 7,
-              'workEducationPrevious': 8,
-              'workEducationAdditional': 9,
-              'securityBackground': 10,
-              'securityBackground2': 11,
-              'securityBackground3': 12,
-              'securityBackground4': 13,
-              'securityBackground5': 14,
-              'review': 15
+              'passport': 6,
+              'usContact': 7,
+              'familyRelatives': 8,
+              'familySpouse': 9,
+              'workEducation': 10,
+              'workEducationPrevious': 11,
+              'workEducationAdditional': 12,
+              'securityBackground': 13,
+              'securityBackground2': 14,
+              'securityBackground3': 15,
+              'securityBackground4': 16,
+              'securityBackground5': 17,
+              'review': 18
             };
             
             let lastSectionIndex = 0;
