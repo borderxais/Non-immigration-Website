@@ -16,7 +16,7 @@ const PrivacyPolicy: React.FC = () => {
           
           <Title level={2}>Introduction</Title>
           <Paragraph>
-            BorderX ("we", "our", or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, and safeguard your information when you use our DS-160 Autofill Helper Chrome extension ("Extension").
+            LEONEX ("we", "our", or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, and safeguard your information when you use our DS-160 Autofill Helper Chrome extension ("Extension").
           </Paragraph>
           
           <Title level={2}>Information We Collect</Title>
@@ -73,7 +73,7 @@ const PrivacyPolicy: React.FC = () => {
             If you have any questions about this Privacy Policy, please contact us at:
           </Paragraph>
           <Paragraph>
-            <a href="mailto:support@borderx.ai">support@borderx.ai</a>
+            <a href="mailto:support@leonexus.com">support@leonexus.com</a>
           </Paragraph>
         </Typography>
       </Content>

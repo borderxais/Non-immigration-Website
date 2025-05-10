@@ -58,7 +58,7 @@ const PlatformWechat: React.FC = () => {
               我们正在开发微信小程序，让您可以更便捷地管理签证申请流程。小程序将提供与网页版相同的核心功能，并针对移动场景进行了优化。
             </Paragraph>
             <Paragraph>
-              小程序发布后，您可以扫描右侧二维码或在微信中搜索"BorderX签证助手"进行访问。
+              小程序发布后，您可以扫描右侧二维码或在微信中搜索"LEONEX签证助手"进行访问。
             </Paragraph>
           </Col>
           <Col xs={24} md={8} style={{ textAlign: 'center' }}>

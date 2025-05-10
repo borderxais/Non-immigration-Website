@@ -26,7 +26,7 @@ const PlatformApp: React.FC = () => {
             </div>
             <Title level={3} style={{ textAlign: 'center' }}>移动应用</Title>
             <Paragraph style={{ textAlign: 'center' }}>
-              BorderX签证助手移动应用，让您随时随地管理签证申请，获取实时更新和提醒。
+              LEONEX签证助手移动应用，让您随时随地管理签证申请，获取实时更新和提醒。
             </Paragraph>
             <div style={{ textAlign: 'center', marginTop: '24px' }}>
               <Button type="primary" disabled style={{ background: '#fa8c16', borderColor: '#fa8c16' }}>

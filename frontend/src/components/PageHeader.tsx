@@ -9,7 +9,7 @@ const PageHeader: React.FC = () => {
     <div>
       {/* Background Image Banner */}
       <div style={{
-        height: '200px',
+        height: '150px',
         background: 'url("/images/header-bg.jpg") center/cover no-repeat',
         position: 'relative',
         overflow: 'hidden',
@@ -27,25 +27,33 @@ const PageHeader: React.FC = () => {
         {/* Header Content */}
         <div style={{
           position: 'absolute',
-          bottom: '60px',
+          top: '50%',
           left: '50px',
+          transform: 'translateY(-50%)',
           color: 'white',
           zIndex: 1,
         }}>
-          <h1 style={{ 
-            color: 'white', 
-            margin: 0,
-            fontSize: '28px',
-            fontWeight: 'bold',
+          {/* Logo and text container with flex layout */}
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '10px'
           }}>
-            BorderX
-          </h1>
-          <p style={{ 
-            margin: '8px 0 0 0',
-            fontSize: '16px',
-          }}>
-            智能签证申请助手
-          </p>
+            <img 
+              src="/images/leonexus-logo.png" 
+              alt="LeoNexUS Advisory" 
+              style={{
+                height: '110px',  // Adjust based on your logo's dimensions
+              }}
+            />
+            <p style={{ 
+              margin: 0,
+              fontSize: '18px',
+              fontWeight: 'bold',
+            }}>
+              智能签证申请助手
+            </p>
+          </div>
         </div>
       </div>
 
