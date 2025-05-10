@@ -159,7 +159,7 @@ const DS160Form: React.FC = () => {
   const maritalStatus = Form.useWatch('maritalStatus', form);
 
   // Determine which spouse component to show based on marital status
-  const getSpouseComponent = () => {
+  const getSpouseComponent = useCallback(() => {
     // If maritalStatus is 'W' (Widowed), show a different version (to be created)
     if (maritalStatus === 'W') {
       // For now, we'll use the regular FamilySpouse component
@@ -176,10 +176,10 @@ const DS160Form: React.FC = () => {
 
     // For other values (like 'M' for Married, 'D' for Divorced, etc.), show the regular FamilySpouse
     return FamilySpouse;
-  };
+  }, [maritalStatus]);
 
   // Get the dynamic sections based on form values
-  const getDynamicFormSections = () => {
+  const getDynamicFormSections = useCallback(() => {
     const dynamicSections = [...formSectionsRef.current];
 
     // Find the index of the FamilySpouse section
@@ -194,7 +194,7 @@ const DS160Form: React.FC = () => {
     }
 
     return dynamicSections;
-  };
+  }, [maritalStatus, getSpouseComponent]);
 
   // Store dynamic form sections in a ref to avoid unnecessary re-renders
   const dynamicFormSectionsRef = useRef(getDynamicFormSections());
@@ -202,7 +202,7 @@ const DS160Form: React.FC = () => {
   // Update dynamic sections when maritalStatus changes
   useEffect(() => {
     dynamicFormSectionsRef.current = getDynamicFormSections();
-  }, [maritalStatus]);
+  }, [getDynamicFormSections]);
 
   // Store formSections in a ref since it's static and doesn't need to trigger re-renders
   // const formSectionsRef = useRef(formSections);
