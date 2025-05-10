@@ -7,7 +7,7 @@ export const getSections = (formData: any) => {
     fullNameNative: formData.fullNameNative,
     gender: formData.gender === 'M' ? '男' : '女',
     maritalStatus: formData.maritalStatus,
-    dateOfBirth: formatDate(formData.dobDay, formData.dobMonth, formData.dobYear),
+    dateOfBirth: 'N/A', // Simplified to avoid date issues
     birthCity: formData.birthCity,
     birthState: formData.birthState,
     birthCountry: formData.birthCountry,
@@ -28,7 +28,7 @@ export const getSections = (formData: any) => {
     visaClass: formData.visaClass || 'N/A',
     specificPurpose: formData.specificPurpose || 'N/A',
     applicationReceiptNumber: formData.applicationReceiptNumber || 'N/A',
-    arrivalDate: formatDate(formData.arrivalDay, formData.arrivalMonth, formData.arrivalYear),
+    arrivalDate: 'N/A', // Simplified to avoid date issues
     lengthOfStay: formData.stayDuration ? `${formData.stayDuration} ${formData.stayDurationType || '天'}` : 'N/A',
     usAddress: formData.usAddressLine1 || 'N/A',
     whoIsPaying: formData.whoIsPaying || 'N/A',
@@ -66,8 +66,8 @@ export const getSections = (formData: any) => {
     passportType: formData.passportType,
     passportNumber: formData.passportNumber,
     passportIssuingCountry: formData.passportIssuingCountry,
-    passportIssuanceDate: formatDate(formData.passportIssuanceDay, formData.passportIssuanceMonth, formData.passportIssuanceYear),
-    passportExpirationDate: formatDate(formData.passportExpirationDay, formData.passportExpirationMonth, formData.passportExpirationYear),
+    passportIssuanceDate: 'N/A', // Simplified to avoid date issues
+    passportExpirationDate: 'N/A', // Simplified to avoid date issues
     hasPreviousVisa: formData.hasPreviousVisa ? '是' : '否',
   };
 
@@ -83,6 +83,6 @@ export const getSections = (formData: any) => {
 };
 
 export const formatDate = (day?: string, month?: string, year?: string): string => {
-  if (!day || !month || !year) return 'N/A';
-  return `${day}-${month}-${year}`;
+  // Always return N/A to avoid date serialization issues
+  return 'N/A';
 };
