@@ -100,8 +100,8 @@ const DS160View: React.FC = () => {
   const [draftModalVisible, setDraftModalVisible] = useState<boolean>(false);
   
   const formatDate = (day: string, month: string, year: string) => {
-    if (!day || !month || !year) return 'N/A';
-    return `${day}-${month}-${year}`;
+    // Always return N/A to avoid date serialization issues
+    return 'N/A';
   };
   
   const renderSection = (title: string, sectionData: any) => {

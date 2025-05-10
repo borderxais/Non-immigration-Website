@@ -22,7 +22,7 @@ const DS160ReviewPage: React.FC<DS160ReviewPageProps> = ({
   // Get form data
   const formData = form.getFieldsValue(true);
   console.log('Review page form data:', formData);
-  
+
   // Helper function to get section title and data
   const renderSection = (title: string, sectionData: any, editStep: number) => {
     if (!sectionData) return null;
@@ -136,7 +136,7 @@ const DS160ReviewPage: React.FC<DS160ReviewPageProps> = ({
         fullNameNative: formData.fullNameNative || 'N/A',
         gender: formData.gender === 'M' ? '男' : '女',
         maritalStatus: formData.maritalStatus || 'N/A',
-        dateOfBirth: formData.dateOfBirth || 'N/A', // Simplified to avoid date issues
+        dateOfBirth: 'N/A', // Simplified to avoid date issues
         birthCity: formData.birthCity || 'N/A',
         birthState: formData.birthState || 'N/A',
         birthCountry: formData.birthCountry || 'N/A',
@@ -158,7 +158,7 @@ const DS160ReviewPage: React.FC<DS160ReviewPageProps> = ({
         specificPurpose: formData.specificPurpose || formData.travelPurposes?.[0]?.specificPurpose || 'N/A',
         applicationReceiptNumber: formData.applicationReceiptNumber || formData.travelPurposes?.[0]?.applicationReceiptNumber || 'N/A',
         hasSpecificPlans: formData.hasSpecificPlans === 'Y' ? '是' : '否',
-        arrivalDate: formData.arrivalDate || 'N/A', // Simplified to avoid date issues
+        arrivalDate: 'N/A', // Simplified to avoid date issues
         lengthOfStay: (formData.stayDuration || formData.intendedLengthOfStay) ? 
           `${formData.stayDuration || formData.intendedLengthOfStay} ${formData.stayDurationType || 'Days'}` : 
           'N/A',
@@ -205,8 +205,8 @@ const DS160ReviewPage: React.FC<DS160ReviewPageProps> = ({
         passportIssuedCountry: formData.passportIssuedCountry || formData.passport?.passportIssuedCountry || 'N/A',
         passportIssuedCity: formData.passportIssuedCity || formData.passport?.passportIssuedCity || 'N/A',
         passportIssuedInCountry: formData.passportIssuedInCountry || formData.passport?.passportIssuedInCountry || 'N/A',
-        passportIssuanceDate: formData.passportIssuanceDate || 'N/A', // Simplified to avoid date issues
-        passportExpirationDate: formData.passportExpirationDate || 'N/A', // Simplified to avoid date issues
+        passportIssuanceDate: 'N/A', // Simplified to avoid date issues
+        passportExpirationDate: 'N/A', // Simplified to avoid date issues
         hasLostPassport: formData.hasLostPassport === 'Y' || formData.passport?.hasLostPassport === 'Y' ? '是' : '否'
       },
       usContact: formData.usContact || {
@@ -232,7 +232,7 @@ const DS160ReviewPage: React.FC<DS160ReviewPageProps> = ({
         spouseSurname: formData.familySpouse?.spouseSurname || formData.spouseSurname || 'N/A',
         spouseGivenName: formData.familySpouse?.spouseGivenName || formData.spouseGivenName || 'N/A',
         spouseName: `${formData.familySpouse?.spouseSurname || formData.spouseSurname || ''} ${formData.familySpouse?.spouseGivenName || formData.spouseGivenName || ''}`,
-        spouseBirthDate: formData.spouseDob || 'N/A', // Simplified to avoid date issues
+        spouseBirthDate: 'N/A', // Simplified to avoid date issues
         spouseBirthPlace: `${formData.familySpouse?.spousePobCity || formData.spouseBirthCity || ''}, ${formData.familySpouse?.spousePobState || formData.spouseBirthState || ''}, ${formData.familySpouse?.spousePobCountry || formData.spouseBirthCountry || ''}`,
         spouseNationality: formData.familySpouse?.spouseNationality || formData.spouseNationality || 'N/A',
         spouseAddressType: formData.familySpouse?.spouseAddressType || formData.spouseAddressType || 'N/A'
@@ -246,7 +246,7 @@ const DS160ReviewPage: React.FC<DS160ReviewPageProps> = ({
         employerSchoolName: formData.employerSchoolName || 'N/A',
         employerAddress: `${formData.employerAddressLine1 || ''}, ${formData.employerCity || ''}, ${formData.employerState || ''}, ${formData.employerPostalCode || ''}, ${formData.employerCountry || ''}`,
         employerPhone: formData.employerPhone || 'N/A',
-        employmentStartDate: formData.employmentStartDate || 'N/A', // Simplified to avoid date issues
+        employmentStartDate: 'N/A', // Simplified to avoid date issues
         monthlySalary: formData.monthlySalary || 'N/A'
       },
       workEducationPrevious: formData.workEducationPrevious || {
