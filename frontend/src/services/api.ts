@@ -1,13 +1,13 @@
 import axios from 'axios';
 
-
 // Define the API URL based on environment
-const API_ENDPOINT = process.env.REACT_APP_SERVER_API_URL || 'https://visasupport-dot-overseabiz-453023.wl.r.appspot.com';
-const API_URL = `${API_ENDPOINT}/api`;
-
-// const API_ENDPOINT = 'http://localhost:5000';
+// Direct connection to production (not working due to CORS)
+// const API_ENDPOINT = process.env.REACT_APP_SERVER_API_URL || 'https://visasupport-dot-overseabiz-453023.wl.r.appspot.com';
 // const API_URL = `${API_ENDPOINT}/api`;
 
+// Use local backend for development and testing
+const API_ENDPOINT = 'http://localhost:5000';
+const API_URL = `${API_ENDPOINT}/api`;
 
 // Create axios instance with base URL
 const api = axios.create({
