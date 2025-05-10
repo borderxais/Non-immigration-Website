@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form, Input, Select } from 'antd';
 import QuestionItem from '../common/QuestionItem';
-// import DateInput from '../common/DateInput';
+import DateInput from '../common/DateInput';
 import { countryOptions } from '../utils/formOptions';
 
 interface FamilySpouseProps {
@@ -65,21 +65,11 @@ const FamilySpouse: React.FC<FamilySpouseProps> = ({ form }) => {
                   hasNaCheckbox={true}
                   naCheckboxName="spouseDob_na"
                 >
-                  {/* <DateInput
+                  <DateInput
                     dayName={["spouseDob", "day"]}
                     monthName={["spouseDob", "month"]}
                     yearName={["spouseDob", "year"]}
-                  /> */}
-                  <Form.Item noStyle name={["spouseDob", "day"]} initialValue="5">
-                    <Input type="hidden" />
-                  </Form.Item>
-                  <Form.Item noStyle name={["spouseDob", "month"]} initialValue="MAY">
-                    <Input type="hidden" />
-                  </Form.Item>
-                  <Form.Item noStyle name={["spouseDob", "year"]} initialValue="1995">
-                    <Input type="hidden" />
-                  </Form.Item>
-                  <div>配偶出生日期已设置为: 05-MAY-1995</div>
+                  />
                 </QuestionItem>
               </div>
               
