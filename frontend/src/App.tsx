@@ -91,7 +91,7 @@ const App: React.FC = () => {
               </div>
             </Content>
             <Footer style={{ textAlign: 'center' }}>
-              BorderX {new Date().getFullYear()} - 美国非移民签证智能辅助系统
+              LEONEX {new Date().getFullYear()} - 美国非移民签证智能辅助系统
             </Footer>
             {/* Floating Chat Button - visible on all pages */}
             <FloatingChatButton isAuthenticated={isAuthenticated} />
