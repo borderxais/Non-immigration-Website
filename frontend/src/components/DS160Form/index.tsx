@@ -18,10 +18,10 @@ import FamilySpouse from './sections/FamilySpouse';
 // import WorkEducationPresent from './sections/WorkEducationPresent';
 // import WorkEducationPrevious from './sections/WorkEducationPrevious';
 // import WorkEducationAdditional from './sections/WorkEducationAdditional';
-// import SecurityBackgroundI from './sections/SecurityBackgroundI';
-// import SecurityBackgroundII from './sections/SecurityBackgroundII';
-// import SecurityBackgroundIII from './sections/SecurityBackgroundIII';
-// import SecurityBackgroundIV from './sections/SecurityBackgroundIV';
+import SecurityBackgroundI from './sections/SecurityBackgroundI';
+import SecurityBackgroundII from './sections/SecurityBackgroundII';
+import SecurityBackgroundIII from './sections/SecurityBackgroundIII';
+import SecurityBackgroundIV from './sections/SecurityBackgroundIV';
 import SecurityBackgroundV from './sections/SecurityBackgroundV';
 
 import DS160ReviewPage from './sections/DS160ReviewPage';
@@ -110,26 +110,26 @@ const formSections: FormSection[] = [
   //   title: '额外工作和教育信息',
   //   component: WorkEducationAdditional
   // },
-  // {
-  //   key: 'securityBackground',
-  //   title: '安全和背景: 第一部分',
-  //   component: SecurityBackgroundI
-  // },
-  // {
-  //   key: 'securityBackground2',
-  //   title: '安全和背景: 第二部分',
-  //   component: SecurityBackgroundII
-  // },
-  // {
-  //   key: 'securityBackground3',
-  //   title: '安全和背景: 第三部分',
-  //   component: SecurityBackgroundIII
-  // },
-  // {
-  //   key: 'securityBackground4',
-  //   title: '安全和背景: 第四部分',
-  //   component: SecurityBackgroundIV
-  // },
+  {
+    key: 'securityBackground',
+    title: '安全和背景: 第一部分',
+    component: SecurityBackgroundI
+  },
+  {
+    key: 'securityBackground2',
+    title: '安全和背景: 第二部分',
+    component: SecurityBackgroundII
+  },
+  {
+    key: 'securityBackground3',
+    title: '安全和背景: 第三部分',
+    component: SecurityBackgroundIII
+  },
+  {
+    key: 'securityBackground4',
+    title: '安全和背景: 第四部分',
+    component: SecurityBackgroundIV
+  },
   {
     key: 'securityBackground5',
     title: '安全和背景: 第五部分',
