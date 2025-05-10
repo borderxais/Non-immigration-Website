@@ -8,12 +8,12 @@ import ApplicationIdDisplay from '../ApplicationIdDisplay';
 import PersonalInfoI from './sections/PersonalInfoI';
 import PersonalInfoII from './sections/PersonalInfoII';
 // import TravelInfo from './sections/TravelInfo';
-// import TravelCompanions from './sections/TravelCompanions';
-// import PreviousTravel from './sections/PreviousTravel';
+import TravelCompanions from './sections/TravelCompanions';
+import PreviousTravel from './sections/PreviousTravel';
 // import AddressAndPhone from './sections/AddressAndPhone';
 // import Passport from './sections/Passport';
 // import USContact from './sections/USContact';
-// import FamilyRelatives from './sections/FamilyRelatives';
+import FamilyRelatives from './sections/FamilyRelatives';
 import FamilySpouse from './sections/FamilySpouse';
 // import WorkEducationPresent from './sections/WorkEducationPresent';
 import WorkEducationPrevious from './sections/WorkEducationPrevious';
@@ -60,16 +60,16 @@ const formSections: FormSection[] = [
   //   title: '旅行信息',
   //   component: TravelInfo
   // },
-  // {
-  //   key: 'travelCompanions',
-  //   title: '同行人',
-  //   component: TravelCompanions
-  // },
-  // {
-  //   key: 'previousTravel',
-  //   title: '以前的旅行',
-  //   component: PreviousTravel
-  // },
+  {
+    key: 'travelCompanions',
+    title: '同行人',
+    component: TravelCompanions
+  },
+  {
+    key: 'previousTravel',
+    title: '以前的旅行',
+    component: PreviousTravel
+  },
   // {
   //   key: 'addressAndPhone',
   //   title: '地址和电话',
@@ -85,11 +85,11 @@ const formSections: FormSection[] = [
   //   title: '美国联系人',
   //   component: USContact
   // },
-  // {
-  //   key: 'familyRelatives',
-  //   title: '家庭信息：亲属',
-  //   component: FamilyRelatives
-  // },
+  {
+    key: 'familyRelatives',
+    title: '家庭信息：亲属',
+    component: FamilyRelatives
+  },
   // {
   //   key: 'familySpouse',
   //   title: '家庭信息：配偶',
