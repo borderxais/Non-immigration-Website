@@ -6,11 +6,7 @@ const axiosInstance = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
+  withCredentials: true, // 允许发送带有凭证的请求
 });
-
-// axiosInstance.interceptors.request.use(config => {
-//   // e.g. attach auth tokens
-//   return config;
-// });
 
 export default axiosInstance;
