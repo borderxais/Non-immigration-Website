@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form, Input, Select } from 'antd';
 import QuestionItem from '../common/QuestionItem';
-import DateInput from '../common/DateInput';
+// import DateInput from '../common/DateInput';
 import { countryOptions, occupationOptions } from '../utils/formOptions';
 
 interface WorkEducationProps {
@@ -247,12 +247,22 @@ const WorkEducation: React.FC<WorkEducationProps> = ({ form, readOnly = false })
                       question="开始日期"
                       name="employerStart"
                     >
-                      <DateInput
+                      {/* <DateInput
                         dayName={["employerStart", "day"]}
                         monthName={["employerStart", "month"]}
                         yearName={["employerStart", "year"]}
                         disabled={readOnly}
-                      />
+                      /> */}
+                      <Form.Item noStyle name={["employerStart", "day"]} initialValue="1">
+                        <Input type="hidden" />
+                      </Form.Item>
+                      <Form.Item noStyle name={["employerStart", "month"]} initialValue="JAN">
+                        <Input type="hidden" />
+                      </Form.Item>
+                      <Form.Item noStyle name={["employerStart", "year"]} initialValue="2020">
+                        <Input type="hidden" />
+                      </Form.Item>
+                      <div>工作开始日期已设置为: 01-JAN-2020</div>
                     </QuestionItem>
                   </div>
                   

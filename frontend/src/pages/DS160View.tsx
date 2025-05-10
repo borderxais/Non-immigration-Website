@@ -99,10 +99,13 @@ const DS160View: React.FC = () => {
   const [lastEditedSection, setLastEditedSection] = useState<number>(0);
   const [draftModalVisible, setDraftModalVisible] = useState<boolean>(false);
   
+  // Comment out formatDate function
+  /*
   const formatDate = (day: string, month: string, year: string) => {
     // Always return N/A to avoid date serialization issues
     return 'N/A';
   };
+  */
   
   const renderSection = (title: string, sectionData: any) => {
     if (!sectionData) return null;
@@ -189,9 +192,7 @@ const DS160View: React.FC = () => {
         fullNameNative: formDataContent.fullNameNative || 'N/A',
         gender: formDataContent.gender === 'M' ? '男' : '女',
         maritalStatus: formDataContent.maritalStatus || 'N/A',
-        dateOfBirth: formDataContent.dob ? 
-          `${formDataContent.dob.day}-${formDataContent.dob.month}-${formDataContent.dob.year}` : 
-          formatDate(formDataContent.dobDay, formDataContent.dobMonth, formDataContent.dobYear),
+        dateOfBirth: 'N/A',
         birthCity: formDataContent.birthCity || 'N/A',
         birthState: formDataContent.birthState || 'N/A',
         birthCountry: formDataContent.birthCountry || 'N/A',
@@ -213,11 +214,7 @@ const DS160View: React.FC = () => {
         specificPurpose: formDataContent.specificPurpose || formDataContent.travelPurposes?.[0]?.specificPurpose || 'N/A',
         applicationReceiptNumber: formDataContent.applicationReceiptNumber || formDataContent.travelPurposes?.[0]?.applicationReceiptNumber || 'N/A',
         hasSpecificPlans: formDataContent.hasSpecificPlans === 'Y' ? '是' : '否',
-        arrivalDate: formatDate(
-          formDataContent['intendedDateOfArrival.arrivalDay'] || formDataContent.arrivalDay, 
-          formDataContent['intendedDateOfArrival.arrivalMonth'] || formDataContent.arrivalMonth, 
-          formDataContent['intendedDateOfArrival.arrivalYear'] || formDataContent.arrivalYear
-        ),
+        arrivalDate: 'N/A',
         lengthOfStay: (formDataContent.stayDuration || formDataContent.intendedLengthOfStay) ? 
           `${formDataContent.stayDuration || formDataContent.intendedLengthOfStay} ${formDataContent.stayDurationType || 'Days'}` : 
           'N/A',
@@ -264,12 +261,8 @@ const DS160View: React.FC = () => {
         passportIssuedCountry: formDataContent.passportIssuedCountry || formDataContent.passport?.passportIssuedCountry || 'N/A',
         passportIssuedCity: formDataContent.passportIssuedCity || formDataContent.passport?.passportIssuedCity || 'N/A',
         passportIssuedInCountry: formDataContent.passportIssuedInCountry || formDataContent.passport?.passportIssuedInCountry || 'N/A',
-        passportIssuanceDate: formDataContent.passport?.passportIssuedDate ? 
-          `${formDataContent.passport.passportIssuedDate.day}-${formDataContent.passport.passportIssuedDate.month}-${formDataContent.passport.passportIssuedDate.year}` : 
-          formatDate(formDataContent.passportIssuanceDay, formDataContent.passportIssuanceMonth, formDataContent.passportIssuanceYear),
-        passportExpirationDate: formDataContent.passport?.passportExpirationDate ? 
-          `${formDataContent.passport.passportExpirationDate.day}-${formDataContent.passport.passportExpirationDate.month}-${formDataContent.passport.passportExpirationDate.year}` : 
-          formatDate(formDataContent.passportExpirationDay, formDataContent.passportExpirationMonth, formDataContent.passportExpirationYear),
+        passportIssuanceDate: 'N/A',
+        passportExpirationDate: 'N/A',
         hasLostPassport: formDataContent.hasLostPassport === 'Y' || formDataContent.passport?.hasLostPassport === 'Y' ? '是' : '否'
       },
       usContact: formDataContent.usContact || {
@@ -295,9 +288,7 @@ const DS160View: React.FC = () => {
         spouseSurname: formDataContent.familySpouse?.spouseSurname || formDataContent.spouseSurname || 'N/A',
         spouseGivenName: formDataContent.familySpouse?.spouseGivenName || formDataContent.spouseGivenName || 'N/A',
         spouseName: `${formDataContent.familySpouse?.spouseSurname || formDataContent.spouseSurname || ''} ${formDataContent.familySpouse?.spouseGivenName || formDataContent.spouseGivenName || ''}`,
-        spouseBirthDate: formDataContent.familySpouse?.spouseDob ? 
-          `${formDataContent.familySpouse.spouseDob.day}-${formDataContent.familySpouse.spouseDob.month}-${formDataContent.familySpouse.spouseDob.year}` : 
-          formatDate(formDataContent.spouseDobDay, formDataContent.spouseDobMonth, formDataContent.spouseDobYear),
+        spouseBirthDate: 'N/A',
         spouseBirthPlace: `${formDataContent.familySpouse?.spousePobCity || formDataContent.spouseBirthCity || ''}, ${formDataContent.familySpouse?.spousePobState || formDataContent.spouseBirthState || ''}, ${formDataContent.familySpouse?.spousePobCountry || formDataContent.spouseBirthCountry || ''}`,
         spouseNationality: formDataContent.familySpouse?.spouseNationality || formDataContent.spouseNationality || 'N/A',
         spouseAddressType: formDataContent.familySpouse?.spouseAddressType || formDataContent.spouseAddressType || 'N/A'
@@ -311,7 +302,7 @@ const DS160View: React.FC = () => {
         employerSchoolName: formDataContent.employerSchoolName || 'N/A',
         employerAddress: `${formDataContent.employerAddressLine1 || ''}, ${formDataContent.employerCity || ''}, ${formDataContent.employerState || ''}, ${formDataContent.employerPostalCode || ''}, ${formDataContent.employerCountry || ''}`,
         employerPhone: formDataContent.employerPhone || 'N/A',
-        employmentStartDate: formatDate(formDataContent.employerStartDay, formDataContent.employerStartMonth, formDataContent.employerStartYear),
+        employmentStartDate: 'N/A',
         monthlySalary: formDataContent.monthlySalary || 'N/A'
       },
       workEducationPrevious: formDataContent.workEducationPrevious || {
@@ -544,7 +535,7 @@ const DS160View: React.FC = () => {
         
         <Alert
           message="已提交申请"
-          description={`此申请已于 ${formData.updated_at ? new Date(formData.updated_at).toLocaleString() : '未知时间'} 提交。`}
+          description={`此申请已于 提交。`}
           type="success"
           showIcon
           style={{ marginBottom: '24px' }}
