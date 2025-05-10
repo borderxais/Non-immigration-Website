@@ -23,12 +23,6 @@ const DS160ReviewPage: React.FC<DS160ReviewPageProps> = ({
   const formData = form.getFieldsValue(true);
   console.log('Review page form data:', formData);
   
-  // Helper function to debug date objects
-  const debugDate = (label: string, dateObj: any) => {
-    console.log(`Debug ${label}:`, dateObj);
-    return dateObj;
-  };
-
   // Helper function to format date values from form data
   const formatDate = (dateObj: any) => {
     // If no date object provided
@@ -62,7 +56,7 @@ const DS160ReviewPage: React.FC<DS160ReviewPageProps> = ({
     // Handle string date formats
     if (typeof dateObj === 'string') {
       // Try to parse various date formats
-      const dateParts = dateObj.split(/[-\/]/);
+      const dateParts = dateObj.split(/[-/]/);
       if (dateParts.length === 3) {
         return dateParts.join('-');
       }
