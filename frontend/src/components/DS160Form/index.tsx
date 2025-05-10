@@ -16,8 +16,8 @@ import ApplicationIdDisplay from '../ApplicationIdDisplay';
 // import FamilyRelatives from './sections/FamilyRelatives';
 import FamilySpouse from './sections/FamilySpouse';
 // import WorkEducationPresent from './sections/WorkEducationPresent';
-// import WorkEducationPrevious from './sections/WorkEducationPrevious';
-// import WorkEducationAdditional from './sections/WorkEducationAdditional';
+import WorkEducationPrevious from './sections/WorkEducationPrevious';
+import WorkEducationAdditional from './sections/WorkEducationAdditional';
 import SecurityBackgroundI from './sections/SecurityBackgroundI';
 import SecurityBackgroundII from './sections/SecurityBackgroundII';
 import SecurityBackgroundIII from './sections/SecurityBackgroundIII';
@@ -100,16 +100,16 @@ const formSections: FormSection[] = [
   //   title: '当前工作和教育',
   //   component: WorkEducationPresent
   // },
-  // {
-  //   key: 'workEducationPrevious',
-  //   title: '以往工作和教育',
-  //   component: WorkEducationPrevious
-  // },
-  // {
-  //   key: 'workEducationAdditional',
-  //   title: '额外工作和教育信息',
-  //   component: WorkEducationAdditional
-  // },
+  {
+    key: 'workEducationPrevious',
+    title: '以往工作和教育',
+    component: WorkEducationPrevious
+  },
+  {
+    key: 'workEducationAdditional',
+    title: '额外工作和教育信息',
+    component: WorkEducationAdditional
+  },
   {
     key: 'securityBackground',
     title: '安全和背景: 第一部分',
