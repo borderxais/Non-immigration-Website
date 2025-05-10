@@ -63,6 +63,7 @@ const FamilySpouse: React.FC<FamilySpouseProps> = ({ form }) => {
                   question="配偶的出生日期"
                   name="spouseDob"
                   hasNaCheckbox={true}
+                  naCheckboxName="spouseDob_na"
                 >
                   <DateInput
                     dayName={["spouseDob", "day"]}
