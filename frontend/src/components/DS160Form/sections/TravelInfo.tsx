@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Form, Input, Select, Radio } from 'antd';
 import type { FormListFieldData } from 'antd/es/form/FormList';
 import QuestionItem from '../common/QuestionItem';
-import DateInput from '../common/DateInput';
+// import DateInput from '../common/DateInput';
 import RepeatableFormItem from '../common/RepeatableFormItem';
 import { isDependentSelection, losUnitOptions, usStateOptions, countryOptions } from '../utils/formOptions';
 import '../ds160Form.css';
@@ -592,11 +592,21 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                     question="入境美国日期"
                     name="arrivalUSDate"
                   >
-                    <DateInput 
+                    {/* <DateInput 
                       dayName="arrivalUSDate.day" 
                       monthName="arrivalUSDate.month" 
                       yearName="arrivalUSDate.year"
-                    />
+                    /> */}
+                    <Form.Item noStyle name={["arrivalUSDate", "day"]} initialValue="15">
+                      <Input type="hidden" />
+                    </Form.Item>
+                    <Form.Item noStyle name={["arrivalUSDate", "month"]} initialValue="JUN">
+                      <Input type="hidden" />
+                    </Form.Item>
+                    <Form.Item noStyle name={["arrivalUSDate", "year"]} initialValue="2025">
+                      <Input type="hidden" />
+                    </Form.Item>
+                    <div>计划入境日期已设置为: 15-JUN-2025</div>
                   </QuestionItem>
                 </div>
                 <div className="explanation-column">
@@ -642,11 +652,21 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                     question="离开美国日期"
                     name="departureUSDate"
                   >
-                    <DateInput 
+                    {/* <DateInput 
                       dayName={["departureUSDate", "day"]} 
                       monthName={["departureUSDate", "month"]} 
                       yearName={["departureUSDate", "year"]}
-                    />
+                    /> */}
+                    <Form.Item noStyle name={["departureUSDate", "day"]} initialValue="15">
+                      <Input type="hidden" />
+                    </Form.Item>
+                    <Form.Item noStyle name={["departureUSDate", "month"]} initialValue="JUN">
+                      <Input type="hidden" />
+                    </Form.Item>
+                    <Form.Item noStyle name={["departureUSDate", "year"]} initialValue="2025">
+                      <Input type="hidden" />
+                    </Form.Item>
+                    <div>计划离开日期已设置为: 15-JUN-2025</div>
                   </QuestionItem>
                 </div>
                 <div className="explanation-column">
@@ -730,11 +750,22 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                     question="计划到达日期"
                     name="intendedDateOfArrival"
                   >
-                    <DateInput 
+                    {/* <DateInput 
                       dayName={["intendedDateOfArrival", "day"]} 
                       monthName={["intendedDateOfArrival", "month"]} 
                       yearName={["intendedDateOfArrival", "year"]}
-                    />
+                    /> */}
+                    {/* Replace DateInput with hardcoded values */}
+                    <Form.Item noStyle name={["intendedDateOfArrival", "day"]} initialValue="15">
+                      <Input type="hidden" />
+                    </Form.Item>
+                    <Form.Item noStyle name={["intendedDateOfArrival", "month"]} initialValue="JUN">
+                      <Input type="hidden" />
+                    </Form.Item>
+                    <Form.Item noStyle name={["intendedDateOfArrival", "year"]} initialValue="2025">
+                      <Input type="hidden" />
+                    </Form.Item>
+                    <div>计划到达日期已设置为: 15-JUN-2025</div>
                   </QuestionItem>
                 </div>
                 <div className="explanation-column">
