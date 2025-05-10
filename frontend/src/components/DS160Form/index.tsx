@@ -90,11 +90,11 @@ const formSections: FormSection[] = [
     title: '家庭信息：亲属',
     component: FamilyRelatives
   },
-  {
-    key: 'familySpouse',
-    title: '家庭信息：配偶',
-    component: FamilySpouse
-  },
+  // {
+  //   key: 'familySpouse',
+  //   title: '家庭信息：配偶',
+  //   component: FamilySpouse
+  // },
   {
     key: 'workEducation',
     title: '当前工作和教育',
