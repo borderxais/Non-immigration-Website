@@ -1,27 +1,27 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Form, Steps, Button, Card, Typography, message, Spin, Modal } from 'antd';
 import { FormInstance } from 'antd';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import ApplicationIdDisplay from '../ApplicationIdDisplay';
 
-import PersonalInfoI from './sections/PersonalInfoI';
-import PersonalInfoII from './sections/PersonalInfoII';
-import TravelInfo from './sections/TravelInfo';
-import TravelCompanions from './sections/TravelCompanions';
-import PreviousTravel from './sections/PreviousTravel';
-import AddressAndPhone from './sections/AddressAndPhone';
-import Passport from './sections/Passport';
-import USContact from './sections/USContact';
-import FamilyRelatives from './sections/FamilyRelatives';
+// import PersonalInfoI from './sections/PersonalInfoI';
+// import PersonalInfoII from './sections/PersonalInfoII';
+// import TravelInfo from './sections/TravelInfo';
+// import TravelCompanions from './sections/TravelCompanions';
+// import PreviousTravel from './sections/PreviousTravel';
+// import AddressAndPhone from './sections/AddressAndPhone';
+// import Passport from './sections/Passport';
+// import USContact from './sections/USContact';
+// import FamilyRelatives from './sections/FamilyRelatives';
 import FamilySpouse from './sections/FamilySpouse';
-import WorkEducationPresent from './sections/WorkEducationPresent';
-import WorkEducationPrevious from './sections/WorkEducationPrevious';
-import WorkEducationAdditional from './sections/WorkEducationAdditional';
-import SecurityBackgroundI from './sections/SecurityBackgroundI';
-import SecurityBackgroundII from './sections/SecurityBackgroundII';
-import SecurityBackgroundIII from './sections/SecurityBackgroundIII';
-import SecurityBackgroundIV from './sections/SecurityBackgroundIV';
+// import WorkEducationPresent from './sections/WorkEducationPresent';
+// import WorkEducationPrevious from './sections/WorkEducationPrevious';
+// import WorkEducationAdditional from './sections/WorkEducationAdditional';
+// import SecurityBackgroundI from './sections/SecurityBackgroundI';
+// import SecurityBackgroundII from './sections/SecurityBackgroundII';
+// import SecurityBackgroundIII from './sections/SecurityBackgroundIII';
+// import SecurityBackgroundIV from './sections/SecurityBackgroundIV';
 import SecurityBackgroundV from './sections/SecurityBackgroundV';
 
 import DS160ReviewPage from './sections/DS160ReviewPage';
@@ -45,91 +45,91 @@ interface FormSection {
 
 // Define the form sections and their titles
 const formSections: FormSection[] = [
-  {
-    key: 'personalInfo1',
-    title: '个人信息 I',
-    component: PersonalInfoI
-  },
-  {
-    key: 'personalInfo2',
-    title: '个人信息 II',
-    component: PersonalInfoII
-  },
-  {
-    key: 'travelInfo',
-    title: '旅行信息',
-    component: TravelInfo
-  },
-  {
-    key: 'travelCompanions',
-    title: '同行人',
-    component: TravelCompanions
-  },
-  {
-    key: 'previousTravel',
-    title: '以前的旅行',
-    component: PreviousTravel
-  },
-  {
-    key: 'addressAndPhone',
-    title: '地址和电话',
-    component: AddressAndPhone
-  },
-  {
-    key: 'passport',
-    title: '护照信息',
-    component: Passport
-  },
-  {
-    key: 'usContact',
-    title: '美国联系人',
-    component: USContact
-  },
-  {
-    key: 'familyRelatives',
-    title: '家庭信息：亲属',
-    component: FamilyRelatives
-  },
-  {
-    key: 'familySpouse',
-    title: '家庭信息：配偶',
-    component: FamilySpouse
-  },
-  {
-    key: 'workEducation',
-    title: '当前工作和教育',
-    component: WorkEducationPresent
-  },
-  {
-    key: 'workEducationPrevious',
-    title: '以往工作和教育',
-    component: WorkEducationPrevious
-  },
-  {
-    key: 'workEducationAdditional',
-    title: '额外工作和教育信息',
-    component: WorkEducationAdditional
-  },
-  {
-    key: 'securityBackground',
-    title: '安全和背景: 第一部分',
-    component: SecurityBackgroundI
-  },
-  {
-    key: 'securityBackground2',
-    title: '安全和背景: 第二部分',
-    component: SecurityBackgroundII
-  },
-  {
-    key: 'securityBackground3',
-    title: '安全和背景: 第三部分',
-    component: SecurityBackgroundIII
-  },
-  {
-    key: 'securityBackground4',
-    title: '安全和背景: 第四部分',
-    component: SecurityBackgroundIV
-  },
+  // {
+  //   key: 'personalInfo1',
+  //   title: '个人信息 I',
+  //   component: PersonalInfoI
+  // },
+  // {
+  //   key: 'personalInfo2',
+  //   title: '个人信息 II',
+  //   component: PersonalInfoII
+  // },
+  // {
+  //   key: 'travelInfo',
+  //   title: '旅行信息',
+  //   component: TravelInfo
+  // },
+  // {
+  //   key: 'travelCompanions',
+  //   title: '同行人',
+  //   component: TravelCompanions
+  // },
+  // {
+  //   key: 'previousTravel',
+  //   title: '以前的旅行',
+  //   component: PreviousTravel
+  // },
+  // {
+  //   key: 'addressAndPhone',
+  //   title: '地址和电话',
+  //   component: AddressAndPhone
+  // },
+  // {
+  //   key: 'passport',
+  //   title: '护照信息',
+  //   component: Passport
+  // },
+  // {
+  //   key: 'usContact',
+  //   title: '美国联系人',
+  //   component: USContact
+  // },
+  // {
+  //   key: 'familyRelatives',
+  //   title: '家庭信息：亲属',
+  //   component: FamilyRelatives
+  // },
+  // {
+  //   key: 'familySpouse',
+  //   title: '家庭信息：配偶',
+  //   component: FamilySpouse
+  // },
+  // {
+  //   key: 'workEducation',
+  //   title: '当前工作和教育',
+  //   component: WorkEducationPresent
+  // },
+  // {
+  //   key: 'workEducationPrevious',
+  //   title: '以往工作和教育',
+  //   component: WorkEducationPrevious
+  // },
+  // {
+  //   key: 'workEducationAdditional',
+  //   title: '额外工作和教育信息',
+  //   component: WorkEducationAdditional
+  // },
+  // {
+  //   key: 'securityBackground',
+  //   title: '安全和背景: 第一部分',
+  //   component: SecurityBackgroundI
+  // },
+  // {
+  //   key: 'securityBackground2',
+  //   title: '安全和背景: 第二部分',
+  //   component: SecurityBackgroundII
+  // },
+  // {
+  //   key: 'securityBackground3',
+  //   title: '安全和背景: 第三部分',
+  //   component: SecurityBackgroundIII
+  // },
+  // {
+  //   key: 'securityBackground4',
+  //   title: '安全和背景: 第四部分',
+  //   component: SecurityBackgroundIV
+  // },
   {
     key: 'securityBackground5',
     title: '安全和背景: 第五部分',
@@ -155,6 +155,55 @@ const DS160Form: React.FC = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [submitting, setSubmitting] = useState<boolean>(false);
 
+  // Watch the marital status field to determine which spouse component to show
+  const maritalStatus = Form.useWatch('maritalStatus', form);
+
+  // Determine which spouse component to show based on marital status
+  const getSpouseComponent = () => {
+    // If maritalStatus is 'W' (Widowed), show a different version (to be created)
+    if (maritalStatus === 'W') {
+      // For now, we'll use the regular FamilySpouse component
+      // Later we can create a specific component for widowed applicants
+      return FamilySpouse;
+    }
+
+    // If maritalStatus is 'P' (Domestic Partner), show a different version (to be created)
+    if (maritalStatus === 'P') {
+      // For now, we'll use the regular FamilySpouse component
+      // Later we can create a specific component for domestic partners
+      return FamilySpouse;
+    }
+
+    // For other values (like 'M' for Married, 'D' for Divorced, etc.), show the regular FamilySpouse
+    return FamilySpouse;
+  };
+
+  // Get the dynamic sections based on form values
+  const getDynamicFormSections = () => {
+    const dynamicSections = [...formSectionsRef.current];
+
+    // Find the index of the FamilySpouse section
+    const spouseIndex = dynamicSections.findIndex(section => section.key === 'familySpouse');
+
+    // If maritalStatus is 'S' (Single) or 'O' (Other), remove the spouse section
+    if ((maritalStatus === 'S' || maritalStatus === 'O') && spouseIndex !== -1) {
+      dynamicSections.splice(spouseIndex, 1);
+    } else if (spouseIndex !== -1) {
+      // Otherwise, ensure the spouse component is set correctly
+      dynamicSections[spouseIndex].component = getSpouseComponent();
+    }
+
+    return dynamicSections;
+  };
+
+  // Store dynamic form sections in a ref to avoid unnecessary re-renders
+  const dynamicFormSectionsRef = useRef(getDynamicFormSections());
+
+  // Update dynamic sections when maritalStatus changes
+  useEffect(() => {
+    dynamicFormSectionsRef.current = getDynamicFormSections();
+  }, [maritalStatus]);
+
   // Store formSections in a ref since it's static and doesn't need to trigger re-renders
   // const formSectionsRef = useRef(formSections);
 
@@ -168,10 +217,10 @@ const DS160Form: React.FC = () => {
       // Get the current form data
       const response = await ds160Service.getFormById(application_id);
       const existingData = response?.form_data || {};
-      
+
       // Get current section key using the ref
-      const currentSection = formSectionsRef.current[currentStep];
-      
+      const currentSection = dynamicFormSectionsRef.current[currentStep];
+
       // Create nested structure for current section
       const updatedData = {
         ...existingData,
@@ -180,13 +229,13 @@ const DS160Form: React.FC = () => {
           ...sectionData
         }
       };
-      
+
       // Save to database
       await ds160Service.updateForm(application_id, {
         form_data: updatedData,
         status: 'draft'
       });
-      
+
       return true;
     } catch (error) {
       console.error('Error saving section data:', error);
@@ -236,9 +285,9 @@ const DS160Form: React.FC = () => {
           newCompletedSteps.push(currentStep);
           setCompletedSteps(newCompletedSteps);
         }
-        
+
         // Move to next section
-        if (currentStep < formSectionsRef.current.length - 1) {
+        if (currentStep < dynamicFormSectionsRef.current.length - 1) {
           setCurrentStep(currentStep + 1);
         }
       }
@@ -253,10 +302,10 @@ const DS160Form: React.FC = () => {
     try {
       setSubmitting(true);
       message.loading('正在提交表单，请稍候...', 0);
-      
+
       // Get current form data first
       const response = await ds160Service.getFormById(application_id);
-      
+
       // Update form with current data and set status to submitted
       await ds160Service.updateForm(application_id, {
         form_data: response.form_data,
@@ -284,7 +333,7 @@ const DS160Form: React.FC = () => {
         });
       } else {
         setShowForm(true);
-        
+
         const initializeForm = async () => {
           try {
             if (!urlApplicationId) {
@@ -299,39 +348,39 @@ const DS160Form: React.FC = () => {
             }
 
             setApplicationId(urlApplicationId);
-            
+
             // Check for query parameters
             const queryParams = new URLSearchParams(location.search);
             const sectionParam = queryParams.get('section');
             const resetParam = queryParams.get('reset');
-            
+
             console.log('DS160Form - Query parameters:', { 
               section: sectionParam, 
               reset: resetParam,
               fullSearch: location.search
             });
-            
+
             // Load existing form data
             const response = await ds160Service.getFormById(urlApplicationId);
             console.log('DS160Form - Loaded form data:', response);
-            
+
             if (response?.form_data) {
               // If reset=true, don't set form fields but keep the application_id
               if (resetParam !== 'true') {
                 console.log('DS160Form - Setting form fields with saved data');
-                
+
                 // Log the structure of the form data to understand it better
                 console.log('DS160Form - Form data structure:', JSON.stringify(response.form_data, null, 2));
-                
+
                 // Check if form_data is nested by section or flat
                 const isNestedBySection = response.form_data.personalInfo1 || 
                                          response.form_data.personalInfo2 || 
                                          response.form_data.workEducation || 
                                          response.form_data.review;
-                
+
                 if (isNestedBySection) {
                   console.log('DS160Form - Form data is nested by section, flattening...');
-                  
+
                   // Flatten the nested form data
                   const flattenedData = {};
                   Object.keys(response.form_data).forEach(sectionKey => {
@@ -339,7 +388,7 @@ const DS160Form: React.FC = () => {
                       Object.assign(flattenedData, response.form_data[sectionKey]);
                     }
                   });
-                  
+
                   console.log('DS160Form - Flattened data:', flattenedData);
                   form.setFieldsValue(flattenedData);
                 } else {
@@ -349,9 +398,9 @@ const DS160Form: React.FC = () => {
               } else {
                 console.log('DS160Form - Reset parameter is true, not setting form fields');
               }
-              
+
               // Determine completed steps from saved data
-              const completedSections = formSectionsRef.current
+              const completedSections = dynamicFormSectionsRef.current
                 .map((section, index) => ({
                   index,
                   hasData: response.form_data[section.key] && 
@@ -359,15 +408,15 @@ const DS160Form: React.FC = () => {
                 }))
                 .filter(section => section.hasData)
                 .map(section => section.index);
-              
+
               console.log('DS160Form - Completed sections:', completedSections);  
               setCompletedSteps(completedSections);
-              
+
               // Set current step based on section parameter if provided
               if (sectionParam && !isNaN(Number(sectionParam))) {
                 const sectionIndex = Number(sectionParam);
                 // Make sure the section index is valid
-                if (sectionIndex >= 0 && sectionIndex < formSectionsRef.current.length) {
+                if (sectionIndex >= 0 && sectionIndex < dynamicFormSectionsRef.current.length) {
                   console.log('DS160Form - Setting current step to:', sectionIndex);
                   setCurrentStep(sectionIndex);
                   message.info(`正在从第 ${sectionIndex + 1} 步继续编辑`);
@@ -380,9 +429,9 @@ const DS160Form: React.FC = () => {
               } else {
                 console.log('DS160Form - No valid section parameter, using default step');
                 // If there's no section parameter but we have completed sections, go to the first incomplete section
-                if (completedSections.length > 0 && completedSections.length < formSectionsRef.current.length) {
+                if (completedSections.length > 0 && completedSections.length < dynamicFormSectionsRef.current.length) {
                   // Find the first section that's not completed
-                  for (let i = 0; i < formSectionsRef.current.length; i++) {
+                  for (let i = 0; i < dynamicFormSectionsRef.current.length; i++) {
                     if (!completedSections.includes(i)) {
                       console.log('DS160Form - Going to first incomplete section:', i);
                       setCurrentStep(i);
@@ -430,7 +479,7 @@ const DS160Form: React.FC = () => {
     return null;
   }
 
-  const CurrentSection = formSectionsRef.current[currentStep].component;
+  const CurrentSection = dynamicFormSectionsRef.current[currentStep].component;
 
   return (
     <div className="ds160-form-container">
@@ -440,9 +489,9 @@ const DS160Form: React.FC = () => {
           请填写以下表格以完成您的DS-160非移民签证申请。所有带星号(*)的字段为必填项。
           您可以随时保存草稿并稍后返回继续填写。
         </p>
-        
+
         <ApplicationIdDisplay application_id={application_id} />
-        
+
         <div style={{ display: 'flex', gap: '24px' }}>
           {/* Left sidebar with steps */}
           <div style={{ width: '25%', minWidth: '200px' }}>
@@ -450,7 +499,7 @@ const DS160Form: React.FC = () => {
               current={currentStep} 
               direction="vertical"
               className="ds160-steps"
-              items={formSectionsRef.current.map((section, index) => ({
+              items={dynamicFormSectionsRef.current.map((section, index) => ({
                 title: section.title,
                 status: completedSteps.includes(index) 
                   ? 'finish' 
@@ -473,9 +522,9 @@ const DS160Form: React.FC = () => {
             <Form
               form={form}
               layout="vertical"
-              onFinish={currentStep === formSectionsRef.current.length - 1 ? handleSubmit : handleSectionComplete}
+              onFinish={currentStep === dynamicFormSectionsRef.current.length - 1 ? handleSubmit : handleSectionComplete}
             >
-              {currentStep === formSectionsRef.current.length - 1 ? (
+              {currentStep === dynamicFormSectionsRef.current.length - 1 ? (
                 <>
                   {submitting && (
                     <div style={{ 
@@ -506,7 +555,7 @@ const DS160Form: React.FC = () => {
                       handleSubmit(values);
                     }}
                     onEdit={handleEdit}
-                    formSections={formSectionsRef.current}
+                    formSections={dynamicFormSectionsRef.current}
                     readOnly={submitting}
                   />
                 </>
@@ -522,8 +571,8 @@ const DS160Form: React.FC = () => {
                     上一步
                   </Button>
                 )}
-                
-                {currentStep !== formSectionsRef.current.length - 1 && (
+
+                {currentStep !== dynamicFormSectionsRef.current.length - 1 && (
                   <>
                     <Button
                       onClick={handleSave}
