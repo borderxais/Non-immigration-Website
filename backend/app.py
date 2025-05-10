@@ -62,8 +62,29 @@ def after_request(response):
 
 # Handle OPTIONS requests for CORS preflight
 @app.route("/<path:path>", methods=["OPTIONS"])
+def options_handler(path):
+    response = app.make_default_options_response()
+    origin = request.headers.get('Origin')
+    if origin in [
+        "http://localhost:3000",
+        "http://localhost:3001",
+        "http://127.0.0.1:3000",
+        "http://127.0.0.1:3001",
+        "http://192.168.86.59:3000",
+        "https://visaimmigration.netlify.app",
+        "https://www.visaimmigration.netlify.app",
+        "https://leonexusus.com",
+        "chrome-extension://oimcinbapiapghcakhbbobdfdfncdgfe"
+    ]:
+        response.headers['Access-Control-Allow-Origin'] = origin
+        response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'
+        response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
+        response.headers['Access-Control-Allow-Credentials'] = 'true'
+    return response
+
+# Root OPTIONS handler
 @app.route("/", methods=["OPTIONS"])
-def options_handler(*args, **kwargs):
+def root_options_handler():
     response = app.make_default_options_response()
     origin = request.headers.get('Origin')
     if origin in [
@@ -125,29 +146,6 @@ app.register_blueprint(chat_bp)
 @app.route("/api/health")
 def health_check():
     response = jsonify({"status": "healthy", "version": "1.0.0"})
-    return response
-
-
-@app.route('/', defaults={'path': ''}, methods=['OPTIONS'])
-@app.route('/<path:path>', methods=['OPTIONS'])
-def options_handler(path):
-    response = app.make_default_options_response()
-    origin = request.headers.get('Origin')
-    if origin in [
-        "http://localhost:3000",
-        "http://localhost:3001",
-        "http://127.0.0.1:3000",
-        "http://127.0.0.1:3001",
-        "http://192.168.86.59:3000",
-        "https://visaimmigration.netlify.app",
-        "https://www.visaimmigration.netlify.app",
-        "https://leonexusus.com",
-        "chrome-extension://oimcinbapiapghcakhbbobdfdfncdgfe"
-    ]:
-        response.headers['Access-Control-Allow-Origin'] = origin
-        response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'
-        response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
-        response.headers['Access-Control-Allow-Credentials'] = 'true'
     return response
 
 
