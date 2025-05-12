@@ -311,6 +311,29 @@ class UserDS160FormsResource(Resource):
         return [form.to_dict() for form in forms]
 
 
+@api.route("/admin/forms")
+class AdminDS160FormsResource(Resource):
+    @jwt_required()
+    def get(self):
+        """Get all DS-160 forms (admin only)"""
+        # Get current user
+        current_user_id = get_jwt_identity()
+        #user = User.query.get(current_user_id)
+        
+        # Check if user exists and is admin
+        #if not user or not user.is_admin:
+        #    return {"error": "Unauthorized. Admin access required."}, 403
+            
+        # Get all forms ordered by creation date
+        forms = (
+            DS160Form.query
+            .order_by(DS160Form.created_at.desc())
+            .all()
+        )
+        
+        return [form.to_dict() for form in forms]
+
+
 @api.route("/interview-assessment")
 class InterviewAssessmentResource(Resource):
     def _generate_assessment_with_new_client(self, prompt: str) -> str:

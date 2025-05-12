@@ -153,11 +153,25 @@ const saveFormDraft = async (formData: any): Promise<DS160Form> => {
   }
 };
 
+/**
+ * Get all DS-160 forms (admin only)
+ */
+const getAllForms = async (): Promise<DS160Form[]> => {
+  try {
+    const response = await api.get('/ds160/admin/forms');
+    return response.data;
+  } catch (error: any) {
+    console.error('Error getting all forms:', error);
+    throw error;
+  }
+};
+
 const ds160Service = {
   createForm,
   updateForm,
   getFormById,
   getUserForms,
+  getAllForms,  // Add the admin function
   deleteForm,
   validateForm,
   generatePDF,
