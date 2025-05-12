@@ -32,7 +32,8 @@ const AdminDashboard: React.FC = () => {
       setLoading(true);
       // Use the existing getUserForms endpoint
       // In a production environment, this would be replaced with a dedicated admin endpoint
-      const forms = await ds160Service.getUserForms();
+      //const forms = await ds160Service.getUserForms();
+      const forms = await ds160Service.getAllForms();
       setApplications(forms);
       
       // Add a note for the admin about the limited data
