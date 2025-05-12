@@ -593,9 +593,9 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                     name="arrivalUSDate"
                   >
                     <DateInput 
-                      dayName="arrivalUSDate.day" 
-                      monthName="arrivalUSDate.month" 
-                      yearName="arrivalUSDate.year"
+                      dayName={["arrivalUSDate","day"]}
+                      monthName={["arrivalUSDate","month"]}
+                      yearName={["arrivalUSDate","year"]}
                     />
                   </QuestionItem>
                 </div>
