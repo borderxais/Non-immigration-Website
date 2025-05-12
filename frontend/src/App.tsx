@@ -30,6 +30,12 @@ import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
 import ForgotPassword from './pages/auth/ForgotPassword';
 
+// Admin Pages
+import AdminLogin from './pages/admin/AdminLogin';
+import AdminDashboard from './pages/admin/AdminDashboard';
+import AdminApplicationView from './pages/admin/AdminApplicationView';
+import AdminRoute from './components/AdminRoute';
+
 const { Content, Footer } = Layout;
 
 // Configure React Router future flags
@@ -87,11 +93,16 @@ const App: React.FC = () => {
                   <Route path="/auth/forgot-password" element={<ForgotPassword />} />
                   <Route path="/profile" element={<Profile />} />
                   <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                  
+                  {/* Admin Routes */}
+                  <Route path="/admin/login" element={<AdminLogin />} />
+                  <Route path="/admin/dashboard" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
+                  <Route path="/admin/applications/:id" element={<AdminRoute><AdminApplicationView /></AdminRoute>} />
                 </Routes>
               </div>
             </Content>
             <Footer style={{ textAlign: 'center' }}>
-              BorderX {new Date().getFullYear()} - 美国非移民签证智能辅助系统
+              LEONEX {new Date().getFullYear()} - 美国非移民签证智能辅助系统
             </Footer>
             {/* Floating Chat Button - visible on all pages */}
             <FloatingChatButton isAuthenticated={isAuthenticated} />

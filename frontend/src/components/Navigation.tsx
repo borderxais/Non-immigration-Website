@@ -7,7 +7,8 @@ import {
   MobileOutlined,
   HomeOutlined,
   UserOutlined,
-  LogoutOutlined
+  LogoutOutlined,
+  LockOutlined
 } from '@ant-design/icons';
 import { useAuth } from '../contexts/AuthContext';
 import type { MenuProps } from 'antd';
@@ -79,6 +80,11 @@ const Navigation: React.FC = () => {
           label: 'APP下载(即将推出)',
         },
       ]
+    },
+    {
+      key: '/admin/login',
+      icon: <LockOutlined />,
+      label: '管理员入口',
     },
   ];
 
