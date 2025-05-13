@@ -20,6 +20,7 @@ const register = async (data: RegisterData): Promise<AuthResponse> => {
  */
 const login = async (credentials: LoginCredentials): Promise<AuthResponse> => {
   const response = await api.post(`/auth/login`, credentials);
+  console.log('Login response:', response);
   return response.data;
 };
 

@@ -1,31 +1,37 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Form, Input, Button, Card, Typography, message } from 'antd';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../contexts/AuthContext';
+import { UserRole } from '../../types/auth';
+import authService from '../../services/authService';
 
 const { Title } = Typography;
 
-// Hardcoded admin credentials (in a real app, this would be authenticated against the backend)
-const ADMIN_USERNAME = 'admin';
-const ADMIN_PASSWORD = 'admin123'; // You should change this to something more secure
-
 const AdminLogin: React.FC = () => {
-  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const [loading, setLoading] = React.useState(false);
+  const { login, user } = useAuth();
 
-  const onFinish = (values: { username: string; password: string }) => {
+  const onFinish = async (values: { email: string; password: string }) => {
     setLoading(true);
-    
-    // Simple local authentication
-    if (values.username === ADMIN_USERNAME && values.password === ADMIN_PASSWORD) {
-      // Store admin status in localStorage
-      localStorage.setItem('adminToken', 'admin-session-token');
-      message.success('登录成功');
-      navigate('/admin/dashboard');
-    } else {
-      message.error('用户名或密码错误');
+    try {
+      const response = await authService.login(values); 
+      
+      // Check if the logged-in user is an admin
+      if (response.user?.role === UserRole.ADMIN) {
+        await login(values); // Update auth context
+        message.success('登录成功');
+        navigate('/admin/dashboard');
+      } else {
+        console.log('Access denied - insufficient permissions');
+        message.error('没有管理员权限');
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+      message.error('登录失败');
+    } finally {
+      setLoading(false);
     }
-    
-    setLoading(false);
   };
 
   return (
@@ -38,9 +44,9 @@ const AdminLogin: React.FC = () => {
           onFinish={onFinish}
         >
           <Form.Item
-            label="用户名"
-            name="username"
-            rules={[{ required: true, message: '请输入管理员用户名' }]}
+            label="邮箱"
+            name="email"
+            rules={[{ required: true, message: '请输入管理员邮箱' }, { type: 'email', message: '请输入有效的邮箱地址' }]}
           >
             <Input />
           </Form.Item>

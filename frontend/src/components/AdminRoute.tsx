@@ -1,32 +1,39 @@
-import React, { useEffect, useState } from 'react';
-import { Navigate } from 'react-router-dom';
-import { Spin } from 'antd';
+import React, { useEffect } from 'react';
+import { Navigate, useNavigate } from 'react-router-dom';
+import { Spin, message } from 'antd';
+import { useAuth } from '../contexts/AuthContext';
+import { UserRole } from '../types/auth';
 
 interface AdminRouteProps {
   children: React.ReactNode;
 }
 
 const AdminRoute: React.FC<AdminRouteProps> = ({ children }) => {
-  const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
+  const { user, isLoading, isAuthenticated } = useAuth();
+  const navigate = useNavigate();
   
   useEffect(() => {
-    // Check if admin is logged in
-    const adminToken = localStorage.getItem('adminToken');
-    setIsAdmin(!!adminToken);
-  }, []);
-  
-  if (isAdmin === null) {
+    if (!isLoading && !isAuthenticated) {
+      message.warning('请先登录');
+      navigate('/admin/login');
+    } else if (!isLoading && isAuthenticated && user?.role !== UserRole.ADMIN) {
+      message.error('没有管理员权限');
+      navigate('/');
+    }
+  }, [isLoading, isAuthenticated, user, navigate]);
+
+  if (isLoading) {
     return (
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
         <Spin size="large" />
       </div>
     );
   }
-  
-  if (!isAdmin) {
-    return <Navigate to="/admin/login" replace />;
+
+  if (!isAuthenticated || user?.role !== UserRole.ADMIN) {
+    return null; // Let useEffect handle the navigation
   }
-  
+
   return <>{children}</>;
 };
 

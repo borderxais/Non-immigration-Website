@@ -35,6 +35,7 @@ import AdminLogin from './pages/admin/AdminLogin';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminApplicationView from './pages/admin/AdminApplicationView';
 import AdminRoute from './components/AdminRoute';
+import AdminLayout from './layouts/AdminLayout';
 
 const { Content, Footer } = Layout;
 
@@ -96,8 +97,10 @@ const App: React.FC = () => {
                   
                   {/* Admin Routes */}
                   <Route path="/admin/login" element={<AdminLogin />} />
-                  <Route path="/admin/dashboard" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
-                  <Route path="/admin/applications/:id" element={<AdminRoute><AdminApplicationView /></AdminRoute>} />
+                  <Route path="/admin" element={<AdminLayout />}>
+                    <Route path="dashboard" element={<AdminDashboard />} />
+                    <Route path="applications/:id" element={<AdminApplicationView />} />
+                  </Route>
                 </Routes>
               </div>
             </Content>
