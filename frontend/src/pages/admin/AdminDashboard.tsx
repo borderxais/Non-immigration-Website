@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Typography, Table, Tag, Button, Space, message, Spin, Input, Select } from 'antd';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../contexts/AuthContext';
-import { UserRole } from '../../types/auth';
 import ds160Service, { DS160Form } from '../../services/ds160Service';
 
 const { Title } = Typography;

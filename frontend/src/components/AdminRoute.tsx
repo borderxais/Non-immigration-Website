@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Spin, message } from 'antd';
 import { useAuth } from '../contexts/AuthContext';
 import { UserRole } from '../types/auth';

@@ -10,7 +10,7 @@ const { Title } = Typography;
 const AdminLogin: React.FC = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = React.useState(false);
-  const { login, user } = useAuth();
+  const { login } = useAuth();
 
   const onFinish = async (values: { email: string; password: string }) => {
     setLoading(true);

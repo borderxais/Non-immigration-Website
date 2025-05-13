@@ -34,7 +34,6 @@ import ForgotPassword from './pages/auth/ForgotPassword';
 import AdminLogin from './pages/admin/AdminLogin';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminApplicationView from './pages/admin/AdminApplicationView';
-import AdminRoute from './components/AdminRoute';
 import AdminLayout from './layouts/AdminLayout';
 
 const { Content, Footer } = Layout;
