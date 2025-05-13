@@ -24,70 +24,13 @@ const AdminDashboard: React.FC = () => {
       const forms = await ds160Service.getAllForms();
       setApplications(forms);
       
-      // Add a note for the admin about the limited data
+      // Simple info message about the admin view
       if (forms.length === 0) {
-        message.info('当前只显示您自己的申请。在生产环境中，管理员将能够查看所有用户的申请。');
-      } else {
-        message.info('当前只显示您自己的申请。在生产环境中，此页面将显示所有用户的申请。');
+        message.info('没有找到申请记录');
       }
     } catch (error) {
       console.error('Error fetching applications:', error);
       message.error('获取申请数据失败');
-      
-      // If API call fails, use mock data for demonstration
-      const mockData: DS160Form[] = [
-        {
-          application_id: 'DS160-12345',
-          status: 'submitted',
-          updated_at: '2023-05-10T12:00:00Z',
-          form_data: {
-            personalInfo1: {
-              surname: 'Zhang',
-              givenName: 'Wei',
-              gender: 'M'
-            }
-          }
-        },
-        {
-          application_id: 'DS160-12346',
-          status: 'approved',
-          updated_at: '2023-05-11T14:30:00Z',
-          form_data: {
-            personalInfo1: {
-              surname: 'Li',
-              givenName: 'Ming',
-              gender: 'M'
-            }
-          }
-        },
-        {
-          application_id: 'DS160-12347',
-          status: 'rejected',
-          updated_at: '2023-05-09T09:15:00Z',
-          form_data: {
-            personalInfo1: {
-              surname: 'Wang',
-              givenName: 'Fang',
-              gender: 'F'
-            }
-          }
-        },
-        {
-          application_id: 'DS160-12348',
-          status: 'draft',
-          updated_at: '2023-05-12T16:45:00Z',
-          form_data: {
-            personalInfo1: {
-              surname: 'Chen',
-              givenName: 'Yu',
-              gender: 'F'
-            }
-          }
-        }
-      ];
-      
-      setApplications(mockData);
-      message.warning('使用演示数据进行展示');
     } finally {
       setLoading(false);
     }
