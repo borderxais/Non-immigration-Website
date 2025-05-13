@@ -37,18 +37,10 @@ const AdminApplicationView: React.FC = () => {
   const [formStatus, setFormStatus] = useState<string>('');
   
   useEffect(() => {
-    // Check if admin is logged in
-    const adminToken = localStorage.getItem('adminToken');
-    if (!adminToken) {
-      message.warning('请先登录管理员账户');
-      navigate('/admin/login');
-      return;
-    }
-    
     if (id) {
       fetchApplicationData(id);
     }
-  }, [id, navigate]);
+  }, [id]);
   
   const fetchApplicationData = async (applicationId: string) => {
     try {

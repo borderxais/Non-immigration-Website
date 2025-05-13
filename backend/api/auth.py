@@ -30,7 +30,7 @@ class RegisterResource(Resource):
         access_token = create_access_token(
             identity=str(user.id), expires_delta=timedelta(days=1)
         )
-
+        
         return (
             {
                 "user": {
@@ -57,7 +57,16 @@ class LoginResource(Resource):
             access_token = create_access_token(
                 identity=str(user.id), expires_delta=timedelta(days=1)
             )
-
+            print('Login response here:', {
+                "user": {
+                    "id": str(user.id),
+                    "username": user.username,
+                    "email": user.email,
+                    "createdAt": user.created_at.isoformat(),
+                    "role": user.role,
+                },
+                "token": access_token,
+            })
             return (
                 {
                     "user": {
@@ -65,6 +74,7 @@ class LoginResource(Resource):
                         "username": user.username,
                         "email": user.email,
                         "createdAt": user.created_at.isoformat(),
+                        "role": user.role,
                     },
                     "token": access_token,
                 },

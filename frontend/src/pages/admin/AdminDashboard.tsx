@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Typography, Table, Tag, Button, Space, message, Spin, Input, Select } from 'antd';
 import { useNavigate } from 'react-router-dom';
-// import api from '../../services/api';
+import { useAuth } from '../../contexts/AuthContext';
+import { UserRole } from '../../types/auth';
 import ds160Service, { DS160Form } from '../../services/ds160Service';
 
 const { Title } = Typography;
@@ -16,23 +17,12 @@ const AdminDashboard: React.FC = () => {
   const navigate = useNavigate();
   
   useEffect(() => {
-    // Check if admin is logged in
-    const adminToken = localStorage.getItem('adminToken');
-    if (!adminToken) {
-      message.warning('请先登录管理员账户');
-      navigate('/admin/login');
-      return;
-    }
-    
     fetchAllApplications();
-  }, [navigate]);
+  }, []);
   
   const fetchAllApplications = async () => {
     try {
       setLoading(true);
-      // Use the existing getUserForms endpoint
-      // In a production environment, this would be replaced with a dedicated admin endpoint
-      //const forms = await ds160Service.getUserForms();
       const forms = await ds160Service.getAllForms();
       setApplications(forms);
       
