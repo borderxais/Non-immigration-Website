@@ -37,8 +37,8 @@ const WorkEducation: React.FC<WorkEducationProps> = ({ form, readOnly = false })
     <div className="ds160-section">
       <h2>当前工作/教育/培训信息</h2>
       
-      <div className="note" style={{ border: '1px solid #ccc', padding: '10px' }}>
-        <h3>注意: 请提供以下关于您当前工作及教育的信息。</h3>
+      <div className="note">
+        <p>注意: 请提供以下关于您当前工作及教育的信息。</p>
       </div>
       
       {/* 主要职业 */}
@@ -72,7 +72,7 @@ const WorkEducation: React.FC<WorkEducationProps> = ({ form, readOnly = false })
                     style={{ width: '99%' }} 
                     rows={4} 
                     maxLength={1000}
-                    placeholder="请输入其他职业说明"
+                    required={true}
                     disabled={readOnly}
                   />
                 </Form.Item>
@@ -101,7 +101,7 @@ const WorkEducation: React.FC<WorkEducationProps> = ({ form, readOnly = false })
                         style={{ width: '99%' }} 
                         rows={4} 
                         maxLength={4000}
-                        placeholder="请简要说明您目前的情况"
+                        required={true}
                         disabled={readOnly}
                       />
                     </Form.Item>
@@ -216,6 +216,7 @@ const WorkEducation: React.FC<WorkEducationProps> = ({ form, readOnly = false })
                         <Input 
                           style={{ width: '65%' }} 
                           maxLength={15}
+                          minLength={10}
                           placeholder="请输入电话号码"
                           disabled={readOnly}
                         />
@@ -284,7 +285,7 @@ const WorkEducation: React.FC<WorkEducationProps> = ({ form, readOnly = false })
                         style={{ width: '99%' }} 
                         rows={4} 
                         maxLength={4000}
-                        placeholder="请简要说明您目前的情况"
+                        required={true}
                         disabled={readOnly}
                       />
                     </Form.Item>

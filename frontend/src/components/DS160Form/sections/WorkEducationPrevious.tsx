@@ -199,6 +199,7 @@ const WorkEducationPrevious: React.FC<WorkEducationPreviousProps> = ({ form, rea
                               <Input 
                                 style={{ width: '65%' }} 
                                 maxLength={15}
+                                minLength={10}
                                 disabled={readOnly}
                               />
                             </QuestionItem>
@@ -294,6 +295,7 @@ const WorkEducationPrevious: React.FC<WorkEducationPreviousProps> = ({ form, rea
                                 rows={4} 
                                 maxLength={4000}
                                 disabled={readOnly}
+                                required={true}
                             />
                             </Form.Item>
                         </div>

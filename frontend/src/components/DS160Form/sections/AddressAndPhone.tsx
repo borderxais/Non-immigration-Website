@@ -291,7 +291,7 @@ const AddressAndPhone: React.FC<AddressAndPhoneProps> = ({ form }) => {
             question="主要电话号码"
             name="primaryPhone"
             >
-            <Input style={{ width: '60%' }} maxLength={15} minLength={5} />
+            <Input style={{ width: '60%' }} maxLength={15} minLength={10} />
             </QuestionItem>
 
             <QuestionItem
@@ -301,7 +301,7 @@ const AddressAndPhone: React.FC<AddressAndPhoneProps> = ({ form }) => {
             naCheckboxName="secondaryPhone_na"
             inlineCheckbox={true}
             >
-            <Input style={{ width: '90%' }} maxLength={15} minLength={5} />
+            <Input style={{ width: '90%' }} maxLength={15} minLength={10} />
             </QuestionItem>
 
             <QuestionItem
@@ -311,7 +311,7 @@ const AddressAndPhone: React.FC<AddressAndPhoneProps> = ({ form }) => {
             naCheckboxName="workPhone_na"
             inlineCheckbox={true}
             >
-            <Input style={{ width: '90%' }} maxLength={15} minLength={5} />
+            <Input style={{ width: '90%' }} maxLength={15} minLength={10} />
             </QuestionItem>
           </div>
           <div className="explanation-column">
@@ -350,7 +350,7 @@ const AddressAndPhone: React.FC<AddressAndPhoneProps> = ({ form }) => {
                     question="电话号码"
                     name={[field.name,"phoneNumber"]}
                   >
-                    <Input style={{ width: '60%' }} maxLength={15} minLength={5} placeholder="例如：5555555555" />
+                    <Input style={{ width: '60%' }} maxLength={15} minLength={10} placeholder="例如：5555555555" />
                   </QuestionItem>
                 )}
               </RepeatableFormItem>

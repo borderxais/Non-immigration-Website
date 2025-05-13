@@ -7,6 +7,8 @@ import { countryOptions } from '../utils/formOptions';
 import { FormListFieldData } from 'antd/lib/form/FormList';
 import '../ds160Form.css';  
 
+const { TextArea } = Input;
+
 interface PersonalInfoIProps {
   form: any;
 }
@@ -266,10 +268,11 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
                         question="请说明您的具体婚姻状况"
                         name="otherMaritalStatus"
                       >
-                        <Input.TextArea 
+                        <TextArea 
                           style={{ width: '95%' }} 
                           maxLength={500} 
                           autoSize={{ minRows: 3, maxRows: 6 }}
+                          required={true}
                         />
                       </QuestionItem>
                     </div>

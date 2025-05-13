@@ -119,7 +119,7 @@ const FamilyInfo: React.FC<FamilyInfoProps> = ({ form }) => {
                   <div style={{ marginBottom: '24px' }}>
                     <QuestionItem
                       question="出生日期"
-                      name="fatherDobGroup"
+                      name="fatherDob"
                       required={true}
                       hasNaCheckbox={true}
                       naCheckboxName="fatherDobNotKnown"
@@ -219,7 +219,7 @@ const FamilyInfo: React.FC<FamilyInfoProps> = ({ form }) => {
                   <div style={{ marginBottom: '24px' }}>
                     <QuestionItem
                       question="出生日期"
-                      name="motherDobGroup"
+                      name="motherDob"
                       required={true}
                       hasNaCheckbox={true}
                       naCheckboxName="motherDobNotKnown"

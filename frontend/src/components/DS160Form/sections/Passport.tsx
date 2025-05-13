@@ -75,6 +75,7 @@ const Passport: React.FC<PassportProps> = ({ form }) => {
                           rows={4} 
                           maxLength={4000}
                           placeholder="请详细说明您的护照/旅行证件种类"
+                          required={true}
                         />
                       </Form.Item>
                     </div>
@@ -301,6 +302,7 @@ const Passport: React.FC<PassportProps> = ({ form }) => {
                         rows={4} 
                         maxLength={4000}
                         placeholder="请详细说明您的情况"
+                        required={true}
                       />
                     </Form.Item>
               

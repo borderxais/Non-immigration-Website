@@ -437,7 +437,7 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
                           question="签证丢失或被盗的年份"
                           name="visaLostYear"
                         >
-                          <Input style={{ width: '98%' }} placeholder="例如：2020" />
+                          <Input style={{ width: '98%' }} />
                         </QuestionItem>
                       </div>
                     </div>
@@ -482,7 +482,7 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
                                   style={{ width: '99%' }} 
                                   rows={4} 
                                   maxLength={4000}
-                                  placeholder="请详细说明您的情况"
+                                  required={true}
                                 />
                               </Form.Item>
                             </div>
@@ -538,7 +538,7 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
                           style={{ width: '99%' }} 
                           rows={4} 
                           maxLength={4000}
-                          placeholder="请详细说明您的情况"
+                          required={true}
                         />
                       </Form.Item>
                     </div>
@@ -584,7 +584,7 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
                           style={{ width: '99%' }} 
                           rows={4} 
                           maxLength={4000}
-                          placeholder="请详细说明您的情况"
+                          required={true}
                         />
                       </Form.Item>
                     </div>

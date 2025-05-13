@@ -91,7 +91,7 @@ const SecurityBackgroundII: React.FC<SecurityBackgroundIIProps> = ({ form }) => 
                           style={{ width: '99%' }} 
                           rows={4} 
                           maxLength={4000}
-                          placeholder="请详细说明您的情况"
+                          required={true}
                         />
                       </Form.Item>
                     </div>
@@ -133,7 +133,7 @@ const SecurityBackgroundII: React.FC<SecurityBackgroundIIProps> = ({ form }) => 
                           style={{ width: '99%' }} 
                           rows={4} 
                           maxLength={4000}
-                          placeholder="请详细说明您的情况"
+                          required={true}
                         />
                       </Form.Item>
                     </div>
@@ -175,7 +175,7 @@ const SecurityBackgroundII: React.FC<SecurityBackgroundIIProps> = ({ form }) => 
                           style={{ width: '99%' }} 
                           rows={4} 
                           maxLength={4000}
-                          placeholder="请详细说明您的情况"
+                          required={true}
                         />
                       </Form.Item>
                     </div>
@@ -216,7 +216,7 @@ const SecurityBackgroundII: React.FC<SecurityBackgroundIIProps> = ({ form }) => 
                           style={{ width: '99%' }} 
                           rows={4} 
                           maxLength={4000}
-                          placeholder="请详细说明您的情况"
+                          required={true}
                         />
                       </Form.Item>
                     </div>
@@ -258,7 +258,7 @@ const SecurityBackgroundII: React.FC<SecurityBackgroundIIProps> = ({ form }) => 
                           style={{ width: '99%' }} 
                           rows={4} 
                           maxLength={4000}
-                          placeholder="请详细说明您的情况"
+                          required={true}
                         />
                       </Form.Item>
                     </div>
@@ -300,7 +300,7 @@ const SecurityBackgroundII: React.FC<SecurityBackgroundIIProps> = ({ form }) => 
                           style={{ width: '99%' }} 
                           rows={4} 
                           maxLength={4000}
-                          placeholder="请详细说明您的情况"
+                          required={true}
                         />
                       </Form.Item>
                     </div>
@@ -342,7 +342,7 @@ const SecurityBackgroundII: React.FC<SecurityBackgroundIIProps> = ({ form }) => 
                           style={{ width: '99%' }} 
                           rows={4} 
                           maxLength={4000}
-                          placeholder="请详细说明您的情况"
+                          required={true}
                         />
                       </Form.Item>
                     </div>

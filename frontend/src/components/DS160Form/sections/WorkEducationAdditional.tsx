@@ -297,6 +297,7 @@ const WorkEducationAdditional: React.FC<WorkEducationAdditionalProps> = ({ form,
                       rows={4} 
                       maxLength={4000}
                       disabled={readOnly}
+                      required={true}
                     />
                   </Form.Item>
                 </div>
@@ -462,6 +463,7 @@ const WorkEducationAdditional: React.FC<WorkEducationAdditionalProps> = ({ form,
                       rows={4} 
                       maxLength={4000}
                       disabled={readOnly}
+                      required={true}
                     />
                   </Form.Item>
                 </div>

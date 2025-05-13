@@ -79,3 +79,9 @@
   justify-content: space-between;
   margin-bottom: 16px;
 }
+
+.note {
+  border: 1px solid #ccc;
+  padding: 5px;
+  margin-bottom: 16px;
+}

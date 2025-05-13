@@ -227,7 +227,7 @@ const USContact: React.FC<USContactProps> = ({ form }) => {
                     question="电话号码"
                     name="usPocPhone"
                   >
-                    <Input style={{ width: '99%' }} maxLength={15} minLength={5} placeholder="例如：5555555555" />
+                    <Input style={{ width: '99%' }} maxLength={15} minLength={10} placeholder="例如：5555555555" />
                   </QuestionItem>
 
                   <QuestionItem
