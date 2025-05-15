@@ -127,11 +127,6 @@ export const usSsnValidator = (value: any) => {
   return usSsnPattern.test(value);
 };
 
-// Validator for ID documents (passport, national ID)
-export const passportValidator = idDocumentValidator;
-export const nationalIdValidator = idDocumentValidator;
-export const taxpayerIdValidator = numericValidator;
-
 // Validator for flight numbers
 export const flightNumberValidator = (value: any) => {
   if (!value) return true; // Empty values are handled by required rule

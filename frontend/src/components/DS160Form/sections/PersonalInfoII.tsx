@@ -5,11 +5,11 @@ import QuestionItem from '../common/QuestionItem';
 import RepeatableFormItem from '../common/RepeatableFormItem';
 import { countryOptions } from '../utils/formOptions';
 import { 
-  passportValidator, 
-  passportPatternMessage,
-  passportMaxLength,
-  usTaxpayerIdPattern,
-  usTaxpayerIdPatternMessage
+  idDocumentValidator, 
+  idDocumentPatternMessage,
+  maxLengths,
+  numericValidator,
+  numericPatternMessage
 } from '../utils/validationRules';
 import { FormListFieldData } from 'antd/lib/form/FormList';
 import '../ds160Form.css';
@@ -137,19 +137,20 @@ const PersonalInfoII: React.FC<PersonalInfoIIProps> = ({ form }) => {
                               label="护照号码"
                               rules={[
                                 { required: true, message: '请输入护照号码' },
+                                { max: maxLengths.idDocument, message: idDocumentPatternMessage },
                                 { 
                                   validator: (_, value) => {
-                                    if (!value || passportValidator(value)) {
+                                    if (!value || idDocumentValidator(value)) {
                                       return Promise.resolve();
                                     }
-                                    return Promise.reject(passportPatternMessage);
+                                    return Promise.reject(idDocumentPatternMessage);
                                   }
                                 }
                               ]}
                             >
                               <Input 
                                 style={{ width: '95%' }} 
-                                maxLength={passportMaxLength} 
+                                maxLength={maxLengths.idDocument} 
                                 placeholder="请输入护照号码" 
                               />
                             </Form.Item>
@@ -227,13 +228,13 @@ const PersonalInfoII: React.FC<PersonalInfoIIProps> = ({ form }) => {
               name="nationalIdNumber"
               hasNaCheckbox={true}
               naCheckboxName="nationalIdNumber_na"
-              validator={passportValidator}
-              validatorMessage={passportPatternMessage}
+              validator={idDocumentValidator}
+              validatorMessage={idDocumentPatternMessage}
             >
               <Input 
                 placeholder="请输入您的身份证号码" 
                 style={{ width: '99%' }} 
-                maxLength={passportMaxLength}
+                maxLength={maxLengths.idDocument}
               />
             </QuestionItem>
           </div>
@@ -322,10 +323,13 @@ const PersonalInfoII: React.FC<PersonalInfoIIProps> = ({ form }) => {
               name="usTaxId"
               hasNaCheckbox={true}
               naCheckboxName="usTaxId_na"
-              validator={(value) => !value || usTaxpayerIdPattern.test(value)}
-              validatorMessage={usTaxpayerIdPatternMessage}
+              validator={(value) => !value || numericValidator(value)}
+              validatorMessage={numericPatternMessage}
             >
-              <Input placeholder="请输入您的美国纳税人身份号码" style={{ width: '99%' }} />
+              <Input placeholder="请输入您的美国纳税人身份号码" 
+              style={{ width: '99%' }} 
+              maxLength={maxLengths.idDocument}
+              />
             </QuestionItem>
           </div>
           <div className="explanation-column">

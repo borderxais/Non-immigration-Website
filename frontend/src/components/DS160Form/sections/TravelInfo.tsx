@@ -4,7 +4,7 @@ import type { FormListFieldData } from 'antd/es/form/FormList';
 import QuestionItem from '../common/QuestionItem';
 import DateInput from '../common/DateInput';
 import RepeatableFormItem from '../common/RepeatableFormItem';
-import { isDependentSelection, losUnitOptions, usStateOptions, countryOptions } from '../utils/formOptions';
+import { isDependentSelection, losUnitOptions, countryOptions } from '../utils/formOptions';
 import { 
   flightNumberValidator,
   flightNumberPatternMessage,
