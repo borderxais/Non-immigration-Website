@@ -32,9 +32,18 @@ export const phonePatternMessage = '只能包含数字、空格和电话符号(+
 export const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 export const emailPatternMessage = '请输入有效的电子邮件地址';
 
-// Passport number pattern (alphanumeric)
-export const passportPattern = /^[A-Z0-9]+$/;
-export const passportPatternMessage = '只能包含大写字母和数字';
+// Passport number pattern (alphanumeric with spaces between characters)
+export const passportPattern = /^[A-Z0-9]+(?: [A-Z0-9]+)*$/;
+export const passportPatternMessage = '只能包含大写字母、数字和字符/数字之间的单个空格';
+export const passportMaxLength = 20;
+
+// U.S. Social Security Number pattern (exactly 9 digits)
+export const usSsnPattern = /^\d{9}$/;
+export const usSsnPatternMessage = '只能包含9位数字';
+
+// U.S. Taxpayer ID Number pattern (only numbers)
+export const usTaxpayerIdPattern = /^\d+$/;
+export const usTaxpayerIdPatternMessage = '只能包含数字';
 
 // Social media identifier pattern (alphanumeric with some special characters)
 export const socialMediaPattern = /^[A-Za-z0-9_.\-@]+$/;
@@ -98,8 +107,20 @@ export const emailValidator = (value: any) => {
 
 // Validator for passport number fields
 export const passportValidator = (value: any) => {
-  if (!value) return true;
-  return passportPattern.test(value);
+  if (!value) return true; // Empty values are handled by required rule
+  return passportPattern.test(value) && value.length <= passportMaxLength;
+};
+
+// Validator for U.S. Social Security Number
+export const usSsnValidator = (value: any) => {
+  if (!value) return true; // Empty values are handled by required rule
+  return usSsnPattern.test(value);
+};
+
+// Validator for U.S. Taxpayer ID Number
+export const usTaxpayerIdValidator = (value: any) => {
+  if (!value) return true; // Empty values are handled by required rule
+  return usTaxpayerIdPattern.test(value);
 };
 
 // Validator for date fields to ensure they are not earlier than May 15, 1915
