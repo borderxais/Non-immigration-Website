@@ -7,7 +7,11 @@ import RepeatableFormItem from '../common/RepeatableFormItem';
 import { isDependentSelection, losUnitOptions, usStateOptions, countryOptions } from '../utils/formOptions';
 import { 
   flightNumberValidator,
-  flightNumberPatternMessage
+  flightNumberPatternMessage,
+  zipCodeValidator,
+  zipCodePatternMessage,
+  locationValidator,
+  locationPatternMessage
 } from '../utils/validationRules';
 import '../ds160Form.css';
 
@@ -637,8 +641,14 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                   <QuestionItem
                     question="抵达城市"
                     name="arrivalCity"
+                    validator={locationValidator}
+                    validatorMessage={locationPatternMessage}
                   >
-                    <Input style={{ width: '99%' }} maxLength={20} />
+                    <Input 
+                      style={{ width: '99%' }} 
+                      maxLength={20} 
+                      placeholder="例如: New York"
+                    />
                   </QuestionItem>
                 </div>
                 <div className="explanation-column">
@@ -687,8 +697,14 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                   <QuestionItem
                     question="离开城市"
                     name="departureCity"
+                    validator={locationValidator}
+                    validatorMessage={locationPatternMessage}
                   >
-                    <Input style={{ width: '99%' }} maxLength={20} />
+                    <Input 
+                      style={{ width: '99%' }} 
+                      maxLength={20}
+                      placeholder="例如: Los Angeles"
+                    />
                   </QuestionItem>
                 </div>
                 <div className="explanation-column">
@@ -807,6 +823,8 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                       <QuestionItem
                         question="城市"
                         name="city"
+                        validator={locationValidator}
+                        validatorMessage={locationPatternMessage}
                       >
                         <Input style={{ width: '99%' }} maxLength={20} />
                       </QuestionItem>
@@ -814,21 +832,18 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                       <QuestionItem
                         question="州"
                         name="state"
+                        validator={locationValidator}
+                        validatorMessage={locationPatternMessage}
                       >
-                        <Select style={{ width: '99%' }} options={usStateOptions}>
-                          <Select.Option value="">- 请选择一个 -</Select.Option>
-                          {usStateOptions.map(option => (
-                            <Select.Option key={option.value} value={option.value}>
-                              {option.label}
-                            </Select.Option>
-                          ))}
-                        </Select>
+                        <Input style={{ width: '99%' }} maxLength={20} />
                       </QuestionItem>
                       
                       <QuestionItem
                         question="邮政编码"
                         name="zipCode"
                         required={false}
+                        validator={zipCodeValidator}
+                        validatorMessage={zipCodePatternMessage}
                       >
                         <Input style={{ width: '99%' }} maxLength={10} />
                       </QuestionItem>
@@ -930,8 +945,14 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                 <QuestionItem
                   question="城市"
                   name="missionCity"
+                  validator={locationValidator}
+                  validatorMessage={locationPatternMessage}
                 >
-                  <Input style={{ width: '99%' }} placeholder="请输入城市名称" maxLength={20} />
+                  <Input 
+                    style={{ width: '99%' }} 
+                    placeholder="例如: Washington" 
+                    maxLength={20}
+                  />
                 </QuestionItem>
               </div>
               <div className="explanation-column">
@@ -944,10 +965,10 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                 <QuestionItem
                   question="州"
                   name="missionState"
+                  validator={locationValidator}
+                  validatorMessage={locationPatternMessage}
                 >
-                  <Select style={{ width: '99%' }} options={usStateOptions} placeholder="- 请选择一个 -">
-                    <Select.Option value="">- 请选择一个 -</Select.Option>
-                  </Select>
+                  <Input style={{ width: '99%' }} maxLength={20} />
                 </QuestionItem>
               </div>
               <div className="explanation-column">
@@ -1168,8 +1189,14 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                             <QuestionItem
                               question="城市"
                               name="payerCity"
+                              validator={locationValidator}
+                              validatorMessage={locationPatternMessage}
                             >
-                              <Input maxLength={20} />
+                              <Input 
+                                style={{ width: '99%' }} 
+                                maxLength={20}
+                                placeholder="例如: Chicago"
+                              />
                             </QuestionItem>
                           </div>
                           <div className="explanation-column">
@@ -1185,6 +1212,8 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                               hasNaCheckbox={true}
                               naCheckboxName="payerStateProvince_na"
                               inlineCheckbox={true}
+                              validator={locationValidator}
+                              validatorMessage={locationPatternMessage}
                             >
                               <Input maxLength={20} />
                             </QuestionItem>
@@ -1202,7 +1231,7 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                               hasNaCheckbox={true}
                               naCheckboxName="payerPostalZIPCode_na"
                               inlineCheckbox={true}
-                                >
+                            >
                               <Input maxLength={10} />
                             </QuestionItem>
                           </div>
@@ -1338,8 +1367,14 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                           <QuestionItem
                             question="城市"
                             name="companyCity"
+                            validator={locationValidator}
+                            validatorMessage={locationPatternMessage}
                           >
-                            <Input maxLength={20} />
+                            <Input 
+                              style={{ width: '99%' }} 
+                              maxLength={20}
+                              placeholder="例如: San Francisco"
+                            />
                           </QuestionItem>
                         </div>
                         <div className="explanation-column">
@@ -1354,6 +1389,8 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                             hasNaCheckbox={true}
                             naCheckboxName="companyStateProvince_na"
                             inlineCheckbox={true}
+                            validator={locationValidator}
+                            validatorMessage={locationPatternMessage}
                           >
                             <Input maxLength={20} />
                           </QuestionItem>

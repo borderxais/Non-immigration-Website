@@ -10,7 +10,9 @@ import {
   maxLengths,
   namePattern,
   telecodeValidator,
-  telecodePatternMessage
+  telecodePatternMessage,
+  locationValidator,
+  locationPatternMessage
 } from '../utils/validationRules';
 import { FormListFieldData } from 'antd/lib/form/FormList';
 import '../ds160Form.css';  
@@ -358,8 +360,8 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
                 question="城市"
                 name="birthCity"
                 maxLength={maxLengths.city}
-                validator={nameValidator}
-                validatorMessage={namePatternMessage}
+                validator={locationValidator}
+                validatorMessage={locationPatternMessage}
               >
                 <Input placeholder="例如：北京" style={{ width: '99%' }} />
               </QuestionItem>
@@ -372,15 +374,13 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
           <div className="question-row">
             <div className="question-column">
               <QuestionItem
-                question="州/省"
+                question="省/州/地区"
                 name="birthState"
-                hasNaCheckbox={true}
-                naCheckboxName="birthState_na"
                 maxLength={maxLengths.state}
-                validator={nameValidator}
-                validatorMessage={namePatternMessage}
+                validator={locationValidator}
+                validatorMessage={locationPatternMessage}
               >
-                <Input placeholder="例如：北京市" style={{ width: '99%' }} />
+                <Input placeholder="例如：北京" style={{ width: '99%' }} />
               </QuestionItem>
             </div>
             <div className="explanation-column">

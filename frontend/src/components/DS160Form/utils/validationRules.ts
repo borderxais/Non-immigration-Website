@@ -53,6 +53,11 @@ export const flightNumberPatternMessage = '只能包含大写字母、数字和�
 export const zipCodePattern = /^\d{5}(?:-\d{4})?$/;
 export const zipCodePatternMessage = '邮政编码格式不正确 (例如: 12345 或 12345-1234)';
 
+// Location pattern (for city and state/province fields)
+// A-Z, 0-9, $, ?, period (.), apostrophe ('), comma (,), hyphen (-), and space
+export const locationPattern = /^[A-Za-z0-9$?.',-\s]+$/;
+export const locationPatternMessage = "只能包含字母、数字、$、?、句点(.)、撇号(')、逗号(,)、连字符(-)和空格";
+
 // Social media identifier pattern (alphanumeric with some special characters)
 export const socialMediaPattern = /^[A-Za-z0-9_.\-@]+$/;
 export const socialMediaPatternMessage = '只能包含字母、数字和特殊字符(_、.、-、@)';
@@ -143,6 +148,12 @@ export const zipCodeValidator = (value: any) => {
   return zipCodePattern.test(value);
 };
 
+// Validator for location fields (city and state/province)
+export const locationValidator = (value: any) => {
+  if (!value) return true; // Empty values are handled by required rule
+  return locationPattern.test(value);
+};
+
 // Validator for date fields to ensure they are not earlier than May 15, 1915
 export const historicalDateValidator = (day: string, month: string, year: string) => {
   if (!day || !month || !year) return true; // Empty values are handled by required rule
@@ -206,8 +217,8 @@ export const maxLengths = {
   name: 33,           // Name fields (surname, given name, etc.)
   nativeName: 100,    // Native name fields
   address: 50,        // Address fields
-  city: 30,           // City names
-  state: 30,          // State/province names
+  city: 20,           // City names
+  state: 20,          // State/province names
   postalCode: 10,     // Postal/ZIP codes
   phone: 20,          // Phone numbers
   email: 50,          // Email addresses
