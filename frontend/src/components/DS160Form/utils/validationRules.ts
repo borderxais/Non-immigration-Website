@@ -32,18 +32,15 @@ export const phonePatternMessage = '只能包含数字、空格和电话符号(+
 export const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 export const emailPatternMessage = '请输入有效的电子邮件地址';
 
-// Passport number pattern (alphanumeric with spaces between characters)
-export const passportPattern = /^[A-Z0-9]+(?: [A-Z0-9]+)*$/;
-export const passportPatternMessage = '只能包含大写字母、数字和字符/数字之间的单个空格';
-export const passportMaxLength = 20;
+// ID Document pattern (passport, national ID) - alphanumeric with spaces
+export const idDocumentPattern = /^[A-Z0-9]+(?: [A-Z0-9]+)*$/;
+export const idDocumentPatternMessage = '只能包含大写字母、数字和字符/数字之间的单个空格';
 
 // U.S. Social Security Number pattern (exactly 9 digits)
 export const usSsnPattern = /^\d{9}$/;
 export const usSsnPatternMessage = '只能包含9位数字';
 
-// U.S. Taxpayer ID Number pattern (only numbers)
-export const usTaxpayerIdPattern = /^\d+$/;
-export const usTaxpayerIdPatternMessage = '只能包含数字';
+
 
 // Flight number pattern (alphanumeric with spaces between characters)
 export const flightNumberPattern = /^[A-Z0-9]+(?: [A-Z0-9]+)*$/;
@@ -96,7 +93,7 @@ export const addressValidator = (value: any) => {
 
 // Validator for numeric fields
 export const numericValidator = (value: any) => {
-  if (!value) return true;
+  if (!value) return true; // Empty values are handled by required rule
   return numericPattern.test(value);
 };
 
@@ -118,10 +115,10 @@ export const emailValidator = (value: any) => {
   return emailPattern.test(value);
 };
 
-// Validator for passport number fields
-export const passportValidator = (value: any) => {
+// Validator for ID documents (passport, national ID)
+export const idDocumentValidator = (value: any) => {
   if (!value) return true; // Empty values are handled by required rule
-  return passportPattern.test(value) && value.length <= passportMaxLength;
+  return idDocumentPattern.test(value) && value.length <= maxLengths.idDocument;
 };
 
 // Validator for U.S. Social Security Number
@@ -130,11 +127,10 @@ export const usSsnValidator = (value: any) => {
   return usSsnPattern.test(value);
 };
 
-// Validator for U.S. Taxpayer ID Number
-export const usTaxpayerIdValidator = (value: any) => {
-  if (!value) return true; // Empty values are handled by required rule
-  return usTaxpayerIdPattern.test(value);
-};
+// Validator for ID documents (passport, national ID)
+export const passportValidator = idDocumentValidator;
+export const nationalIdValidator = idDocumentValidator;
+export const taxpayerIdValidator = numericValidator;
 
 // Validator for flight numbers
 export const flightNumberValidator = (value: any) => {
@@ -222,10 +218,11 @@ export const maxLengths = {
   postalCode: 10,     // Postal/ZIP codes
   phone: 20,          // Phone numbers
   email: 50,          // Email addresses
-  passport: 20,       // Passport numbers
+  idDocument: 20,     // Common max length for passport, national ID, taxpayer ID
   explanation: 4000,  // Explanation text areas
   socialMedia: 30,    // Social media identifiers
   telecode: 20,       // Telecode fields
   flightNumber: 20,   // Flight numbers
   zipCode: 10         // ZIP codes
 };
+
