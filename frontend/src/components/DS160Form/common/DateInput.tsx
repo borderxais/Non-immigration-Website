@@ -6,7 +6,6 @@ import {
   notFutureDateValidator, 
   MIN_HISTORICAL_DATE_MESSAGE 
 } from '../utils/validationRules';
-import { useForm } from 'antd/lib/form/Form';
 
 // Format for month dropdown options
 const monthOptions = [
