@@ -45,6 +45,14 @@ export const usSsnPatternMessage = '只能包含9位数字';
 export const usTaxpayerIdPattern = /^\d+$/;
 export const usTaxpayerIdPatternMessage = '只能包含数字';
 
+// Flight number pattern (alphanumeric with spaces between characters)
+export const flightNumberPattern = /^[A-Z0-9]+(?: [A-Z0-9]+)*$/;
+export const flightNumberPatternMessage = '只能包含大写字母、数字和字符/数字之间的单个空格';
+
+// ZIP code pattern (format: 12345 or 12345-1234)
+export const zipCodePattern = /^\d{5}(?:-\d{4})?$/;
+export const zipCodePatternMessage = '邮政编码格式不正确 (例如: 12345 或 12345-1234)';
+
 // Social media identifier pattern (alphanumeric with some special characters)
 export const socialMediaPattern = /^[A-Za-z0-9_.\-@]+$/;
 export const socialMediaPatternMessage = '只能包含字母、数字和特殊字符(_、.、-、@)';
@@ -123,6 +131,18 @@ export const usTaxpayerIdValidator = (value: any) => {
   return usTaxpayerIdPattern.test(value);
 };
 
+// Validator for flight numbers
+export const flightNumberValidator = (value: any) => {
+  if (!value) return true; // Empty values are handled by required rule
+  return flightNumberPattern.test(value);
+};
+
+// Validator for ZIP codes
+export const zipCodeValidator = (value: any) => {
+  if (!value) return true; // Empty values are handled by required rule
+  return zipCodePattern.test(value);
+};
+
 // Validator for date fields to ensure they are not earlier than May 15, 1915
 export const historicalDateValidator = (day: string, month: string, year: string) => {
   if (!day || !month || !year) return true; // Empty values are handled by required rule
@@ -194,5 +214,7 @@ export const maxLengths = {
   passport: 20,       // Passport numbers
   explanation: 4000,  // Explanation text areas
   socialMedia: 30,    // Social media identifiers
-  telecode: 20        // Telecode fields
+  telecode: 20,       // Telecode fields
+  flightNumber: 20,   // Flight numbers
+  zipCode: 10         // ZIP codes
 };

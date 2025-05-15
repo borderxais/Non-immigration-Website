@@ -8,7 +8,6 @@ import {
   passportValidator, 
   passportPatternMessage,
   passportMaxLength,
-  usSsnPattern,
   usTaxpayerIdPattern,
   usTaxpayerIdPatternMessage
 } from '../utils/validationRules';

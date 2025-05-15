@@ -1,10 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Form, Input, Select, Radio } from 'antd';
 import type { FormListFieldData } from 'antd/es/form/FormList';
 import QuestionItem from '../common/QuestionItem';
 import DateInput from '../common/DateInput';
 import RepeatableFormItem from '../common/RepeatableFormItem';
 import { isDependentSelection, losUnitOptions, usStateOptions, countryOptions } from '../utils/formOptions';
+import { 
+  flightNumberValidator,
+  flightNumberPatternMessage
+} from '../utils/validationRules';
 import '../ds160Form.css';
 
 interface TravelInfoProps {
@@ -19,7 +23,7 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
   const [isSameAddress, setIsSameAddress] = useState<string | null>(form.getFieldValue('isSameAddress') || null);
 
   // Initialize state from form values when component mounts
-  useEffect(() => {
+  React.useEffect(() => {
     const formVisaClass = form.getFieldValue('visaClass');
     const formSpecificPurpose = form.getFieldValue('specificPurpose');
     const formHasSpecificPlans = form.getFieldValue('hasSpecificPlans');
@@ -405,7 +409,7 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
             removeButtonText="移走"
           >
             {(field: FormListFieldData) => (
-              <div className="highlighted-block">
+              <>
                 <div className="question-row">
                   <div className="question-column">
                     <QuestionItem
@@ -559,7 +563,7 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                     </div>
                   </>
                 )}
-              </div>
+              </>
             )}
           </RepeatableFormItem>
         </div>
@@ -596,6 +600,7 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                       dayName={["arrivalUSDate","day"]}
                       monthName={["arrivalUSDate","month"]}
                       yearName={["arrivalUSDate","year"]}
+                      validateFutureDate={true}
                     />
                   </QuestionItem>
                 </div>
@@ -611,13 +616,19 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                     question="抵达航班"
                     name="arrivalFlight"
                     required={false}
+                    validator={flightNumberValidator}
+                    validatorMessage={flightNumberPatternMessage}
                   >
-                    <Input style={{ width: '99%' }} maxLength={20} />
+                    <Input 
+                      style={{ width: '99%' }} 
+                      maxLength={20} 
+                      placeholder="例如: AA 123 或 UA 456"
+                    />
                   </QuestionItem>
                 </div>
                 <div className="explanation-column">
                   <h4 className="help-header">帮助：抵达航班</h4>
-                  <p>请输入您的抵达航班号（如果知道）</p>
+                  <p>请输入您的抵达航班号（如果知道）。只能包含大写字母、数字和字符/数字之间的单个空格。</p>
                 </div>
               </div>
 
@@ -734,6 +745,7 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                       dayName={["intendedDateOfArrival", "day"]} 
                       monthName={["intendedDateOfArrival", "month"]} 
                       yearName={["intendedDateOfArrival", "year"]}
+                      validateFutureDate={true}
                     />
                   </QuestionItem>
                 </div>
