@@ -156,6 +156,29 @@ export const notFutureDateValidator = (day: string, month: string, year: string)
   return inputDate <= CURRENT_DATE;
 };
 
+// Validator to ensure a date is strictly after today (for future dates like arrival dates)
+export const futureDateValidator = (day: string, month: string, year: string) => {
+  if (!day || !month || !year) return true;
+  
+  const monthMap: { [key: string]: number } = {
+    'JAN': 0, 'FEB': 1, 'MAR': 2, 'APR': 3, 'MAY': 4, 'JUN': 5,
+    'JUL': 6, 'AUG': 7, 'SEP': 8, 'OCT': 9, 'NOV': 10, 'DEC': 11
+  };
+  
+  const monthNum = monthMap[month];
+  if (monthNum === undefined) return false;
+  
+  // Create a date object for the input date
+  const inputDate = new Date(parseInt(year), monthNum, parseInt(day));
+  
+  // Create a date object for today, but reset the time to midnight
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  
+  // Check if the input date is strictly after today
+  return inputDate > today;
+};
+
 /**
  * Common field length constraints
  */

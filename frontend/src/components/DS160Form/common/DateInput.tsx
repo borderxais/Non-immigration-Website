@@ -4,6 +4,7 @@ import { NamePath } from 'antd/lib/form/interface';
 import { 
   historicalDateValidator, 
   notFutureDateValidator, 
+  futureDateValidator,
   MIN_HISTORICAL_DATE_MESSAGE 
 } from '../utils/validationRules';
 
@@ -68,6 +69,7 @@ interface DateInputProps {
   disabled?: boolean;
   validateHistoricalDate?: boolean; // Validate date is not earlier than May 15, 1915
   validateNotFutureDate?: boolean; // Validate date is not in the future
+  validateFutureDate?: boolean; // Validate date is strictly after today
 }
 
 const DateInput: React.FC<DateInputProps> = ({
@@ -78,6 +80,7 @@ const DateInput: React.FC<DateInputProps> = ({
   disabled = false,
   validateHistoricalDate = false,
   validateNotFutureDate = false,
+  validateFutureDate = false,
 }) => {
   const dateBlockStyle = {
     display: 'flex',
@@ -109,6 +112,11 @@ const DateInput: React.FC<DateInputProps> = ({
         return Promise.reject('日期不能是未来日期');
       }
 
+      // Validate future date if required
+      if (validateFutureDate && !futureDateValidator(day, month, year)) {
+        return Promise.reject('日期必须晚于今天');
+      }
+
       return Promise.resolve();
     },
   });
@@ -121,9 +129,9 @@ const DateInput: React.FC<DateInputProps> = ({
           noStyle
           rules={required ? [
             { required: true, message: '请选择日期' },
-            ...(validateHistoricalDate || validateNotFutureDate ? [validateDate()] : [])
+            ...(validateHistoricalDate || validateNotFutureDate || validateFutureDate ? [validateDate()] : [])
           ] : [
-            ...(validateHistoricalDate || validateNotFutureDate ? [validateDate()] : [])
+            ...(validateHistoricalDate || validateNotFutureDate || validateFutureDate ? [validateDate()] : [])
           ]}
           dependencies={[monthName, yearName]}
         >
@@ -140,9 +148,9 @@ const DateInput: React.FC<DateInputProps> = ({
           noStyle
           rules={required ? [
             { required: true, message: '请选择月份' },
-            ...(validateHistoricalDate || validateNotFutureDate ? [validateDate()] : [])
+            ...(validateHistoricalDate || validateNotFutureDate || validateFutureDate ? [validateDate()] : [])
           ] : [
-            ...(validateHistoricalDate || validateNotFutureDate ? [validateDate()] : [])
+            ...(validateHistoricalDate || validateNotFutureDate || validateFutureDate ? [validateDate()] : [])
           ]}
           dependencies={[dayName, yearName]}
         >
@@ -160,10 +168,10 @@ const DateInput: React.FC<DateInputProps> = ({
           rules={required ? [
             { required: true, message: '请输入年份' },
             { pattern: /^\d{4}$/, message: '请输入4位数年份' },
-            ...(validateHistoricalDate || validateNotFutureDate ? [validateDate()] : [])
+            ...(validateHistoricalDate || validateNotFutureDate || validateFutureDate ? [validateDate()] : [])
           ] : [
             { pattern: /^\d{4}$/, message: '请输入4位数年份' },
-            ...(validateHistoricalDate || validateNotFutureDate ? [validateDate()] : [])
+            ...(validateHistoricalDate || validateNotFutureDate || validateFutureDate ? [validateDate()] : [])
           ]}
           dependencies={[dayName, monthName]}
         >
