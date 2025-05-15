@@ -29,7 +29,8 @@ import DS160ReviewPage from './sections/DS160ReviewPage';
 import ds160Service from '../../services/ds160Service';
 import './ds160Form.css';
 
-//  Application ID AA00EGS9G1, AA00EJ7QS1, AA00EMTFSH
+//  Application ID AA00EJ7QS1, AA00EMTFSH, AAAAA, 1999
+// Date cannot be earlier than 14 May 1915.
 
 const { Title } = Typography;
 

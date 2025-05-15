@@ -13,6 +13,11 @@ interface QuestionItemProps {
   naCheckboxName?: string | (string | number)[];
   inlineCheckbox?: boolean; // New prop to control checkbox layout
   parentFieldName?: string; // New prop to specify parent field name for RepeatableFormItem
+  maxLength?: number;
+  pattern?: RegExp;
+  patternMessage?: string;
+  validator?: (value: any) => boolean | Promise<boolean>;
+  validatorMessage?: string;
 }
 
 const QuestionItem: React.FC<QuestionItemProps> = ({ 
@@ -24,7 +29,12 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
   hasNaCheckbox = false, 
   naCheckboxName,
   inlineCheckbox = false, // Default to false for backward compatibility
-  parentFieldName // Parent field name for RepeatableFormItem
+  parentFieldName, // Parent field name for RepeatableFormItem
+  maxLength,
+  pattern,
+  patternMessage,
+  validator,
+  validatorMessage
 }) => {
   // Use the form instance from the parent component
   const form = Form.useFormInstance();
@@ -83,11 +93,51 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
     setIsNaChecked(checked);
   };
   
-  // Modify the rules to respect the NA checkbox state
-  const fieldRules = required ? [{ 
-    required: !isNaChecked, 
-    message: '此字段为必填项' 
-  }] : [];
+  // Build form validation rules
+  const fieldRules = React.useMemo(() => {
+    const rules: any[] = [];
+    
+    if (required && !isNaChecked) {
+      rules.push({
+        required: true,
+        message: '此字段为必填项'
+      });
+    }
+    
+    // Add maxLength validation
+    if (maxLength) {
+      rules.push({
+        max: maxLength,
+        message: `不能超过${maxLength}个字符`
+      });
+    }
+    
+    // Add pattern validation
+    if (pattern) {
+      rules.push({
+        pattern: pattern,
+        message: patternMessage || '格式不正确'
+      });
+    }
+    
+    // Add custom validator
+    if (validator) {
+      rules.push({
+        validator: async (rule: any, value: any) => {
+          if (value === undefined || value === null || value === '') {
+            return Promise.resolve();
+          }
+          const isValid = await validator(value);
+          if (!isValid) {
+            return Promise.reject(new Error(validatorMessage || '输入无效'));
+          }
+          return Promise.resolve();
+        }
+      });
+    }
+    
+    return rules;
+  }, [required, isNaChecked, maxLength, pattern, patternMessage, validator, validatorMessage]);
   
   // Create a custom input with disabled state based on NA checkbox
   const renderDisableableInput = () => {

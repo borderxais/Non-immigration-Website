@@ -4,6 +4,14 @@ import QuestionItem from '../common/QuestionItem';
 import DateInput from '../common/DateInput';
 import RepeatableFormItem from '../common/RepeatableFormItem';
 import { countryOptions } from '../utils/formOptions';
+import { 
+  nameValidator, 
+  namePatternMessage, 
+  maxLengths,
+  namePattern,
+  telecodeValidator,
+  telecodePatternMessage
+} from '../utils/validationRules';
 import { FormListFieldData } from 'antd/lib/form/FormList';
 import '../ds160Form.css';  
 
@@ -57,6 +65,9 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
             <QuestionItem
               question="姓（拼音，与护照一致）"
               name="surname"
+              maxLength={maxLengths.name}
+              validator={nameValidator}
+              validatorMessage={namePatternMessage}
             >
               <Input placeholder="例如：ZHANG" />
             </QuestionItem>
@@ -72,6 +83,9 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
             <QuestionItem
               question="名（拼音，与护照一致）"
               name="givenName"
+              maxLength={maxLengths.name}
+              validator={nameValidator}
+              validatorMessage={namePatternMessage}
             >
               <Input placeholder="例如：SAN" />
             </QuestionItem>
@@ -89,6 +103,9 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
               name="fullNameNative"
               hasNaCheckbox={true}
               naCheckboxName="fullNameNative_na"
+              maxLength={maxLengths.nativeName}
+              validator={nameValidator}
+              validatorMessage={namePatternMessage}
             >
               <Input placeholder="请用中文填写您的全名" />
             </QuestionItem>
@@ -132,10 +149,14 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
                             {...restField}
                             name={[field.name, 'surname']}
                             label="曾用姓氏"
-                            rules={[{ required: true, message: '请输入曾用姓氏' }]}
+                            rules={[
+                              { required: true, message: '请输入曾用姓氏' },
+                              { max: maxLengths.name, message: `不能超过${maxLengths.name}个字符` },
+                              { pattern: namePattern, message: namePatternMessage }
+                            ]}
                             style={{ marginBottom: '16px' }}
                           >
-                            <Input style={{ width: '95%' }} maxLength={33} />
+                            <Input style={{ width: '95%' }} />
                           </Form.Item>
                           
                           <Form.Item
@@ -143,9 +164,13 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
                             {...restField}
                             name={[field.name, 'givenName']}
                             label="曾用名字"
-                            rules={[{ required: true, message: '请输入曾用名字' }]}
+                            rules={[
+                              { required: true, message: '请输入曾用名字' },
+                              { max: maxLengths.name, message: `不能超过${maxLengths.name}个字符` },
+                              { pattern: namePattern, message: namePatternMessage }
+                            ]}
                           >
-                            <Input style={{ width: '95%' }} maxLength={33} />
+                            <Input style={{ width: '95%' }} />
                           </Form.Item>
                         </>
                       );
@@ -182,8 +207,14 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
                       <QuestionItem
                         question="姓氏的电码"
                         name={['telecode', 'surname']}
+                        maxLength={maxLengths.telecode}
+                        validator={telecodeValidator}
+                        validatorMessage={telecodePatternMessage}
                       >
-                        <Input style={{ width: '95%' }} maxLength={20} />
+                        <Input 
+                          style={{ width: '95%' }} 
+                          placeholder="例如：1234" 
+                        />
                       </QuestionItem>
                     </div>
                   </div>
@@ -193,8 +224,14 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
                       <QuestionItem
                         question="名字的电码"
                         name={['telecode', 'givenName']}
+                        maxLength={maxLengths.telecode}
+                        validator={telecodeValidator}
+                        validatorMessage={telecodePatternMessage}
                       >
-                        <Input style={{ width: '95%' }} maxLength={20} />
+                        <Input 
+                          style={{ width: '95%' }} 
+                          placeholder="例如：1234 5678" 
+                        />
                       </QuestionItem>
                     </div>
                   </div>
@@ -304,6 +341,8 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
                   dayName={["dob", "day"]} 
                   monthName={["dob", "month"]} 
                   yearName={["dob", "year"]}
+                  validateHistoricalDate={true}
+                  validateNotFutureDate={true}
                 />
               </QuestionItem>
             </div>
@@ -318,6 +357,9 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
               <QuestionItem
                 question="城市"
                 name="birthCity"
+                maxLength={maxLengths.city}
+                validator={nameValidator}
+                validatorMessage={namePatternMessage}
               >
                 <Input placeholder="例如：北京" style={{ width: '99%' }} />
               </QuestionItem>
@@ -334,6 +376,9 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
                 name="birthState"
                 hasNaCheckbox={true}
                 naCheckboxName="birthState_na"
+                maxLength={maxLengths.state}
+                validator={nameValidator}
+                validatorMessage={namePatternMessage}
               >
                 <Input placeholder="例如：北京市" style={{ width: '99%' }} />
               </QuestionItem>

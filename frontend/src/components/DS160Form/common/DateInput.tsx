@@ -1,6 +1,12 @@
 import React from 'react';
 import { Form, Select, Input } from 'antd';
 import { NamePath } from 'antd/lib/form/interface';
+import { 
+  historicalDateValidator, 
+  notFutureDateValidator, 
+  MIN_HISTORICAL_DATE_MESSAGE 
+} from '../utils/validationRules';
+import { useForm } from 'antd/lib/form/Form';
 
 // Format for month dropdown options
 const monthOptions = [
@@ -61,6 +67,8 @@ interface DateInputProps {
   yearName: NamePath;
   required?: boolean;
   disabled?: boolean;
+  validateHistoricalDate?: boolean; // Validate date is not earlier than May 15, 1915
+  validateNotFutureDate?: boolean; // Validate date is not in the future
 }
 
 const DateInput: React.FC<DateInputProps> = ({
@@ -69,6 +77,8 @@ const DateInput: React.FC<DateInputProps> = ({
   yearName,
   required = true,
   disabled = false,
+  validateHistoricalDate = false,
+  validateNotFutureDate = false,
 }) => {
   const dateBlockStyle = {
     display: 'flex',
@@ -76,13 +86,47 @@ const DateInput: React.FC<DateInputProps> = ({
     gap: '4px'
   };
 
+  const form = Form.useFormInstance();
+
+  // Custom validator that combines all validation rules
+  const validateDate = () => ({
+    validator: (_: any, __: any) => {
+      const day = form.getFieldValue(dayName);
+      const month = form.getFieldValue(monthName);
+      const year = form.getFieldValue(yearName);
+
+      // Skip validation if any field is empty
+      if (!day || !month || !year) {
+        return Promise.resolve();
+      }
+
+      // Validate historical date if required
+      if (validateHistoricalDate && !historicalDateValidator(day, month, year)) {
+        return Promise.reject(MIN_HISTORICAL_DATE_MESSAGE);
+      }
+
+      // Validate not future date if required
+      if (validateNotFutureDate && !notFutureDateValidator(day, month, year)) {
+        return Promise.reject('日期不能是未来日期');
+      }
+
+      return Promise.resolve();
+    },
+  });
+
   return (
     <div>
       <div style={dateBlockStyle}>
         <Form.Item 
           name={dayName} 
           noStyle
-          rules={required ? [{ required: true, message: '请选择日期' }] : []}
+          rules={required ? [
+            { required: true, message: '请选择日期' },
+            ...(validateHistoricalDate || validateNotFutureDate ? [validateDate()] : [])
+          ] : [
+            ...(validateHistoricalDate || validateNotFutureDate ? [validateDate()] : [])
+          ]}
+          dependencies={[monthName, yearName]}
         >
           <Select 
             options={dayOptions} 
@@ -95,7 +139,13 @@ const DateInput: React.FC<DateInputProps> = ({
         <Form.Item 
           name={monthName} 
           noStyle
-          rules={required ? [{ required: true, message: '请选择月份' }] : []}
+          rules={required ? [
+            { required: true, message: '请选择月份' },
+            ...(validateHistoricalDate || validateNotFutureDate ? [validateDate()] : [])
+          ] : [
+            ...(validateHistoricalDate || validateNotFutureDate ? [validateDate()] : [])
+          ]}
+          dependencies={[dayName, yearName]}
         >
           <Select 
             options={monthOptions} 
@@ -110,8 +160,13 @@ const DateInput: React.FC<DateInputProps> = ({
           noStyle
           rules={required ? [
             { required: true, message: '请输入年份' },
-            { pattern: /^\d{4}$/, message: '请输入4位数年份' }
-          ] : []}
+            { pattern: /^\d{4}$/, message: '请输入4位数年份' },
+            ...(validateHistoricalDate || validateNotFutureDate ? [validateDate()] : [])
+          ] : [
+            { pattern: /^\d{4}$/, message: '请输入4位数年份' },
+            ...(validateHistoricalDate || validateNotFutureDate ? [validateDate()] : [])
+          ]}
+          dependencies={[dayName, monthName]}
         >
           <Input 
             placeholder="年" 
