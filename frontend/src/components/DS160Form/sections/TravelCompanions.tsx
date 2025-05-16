@@ -165,6 +165,7 @@ const TravelCompanions: React.FC<TravelCompanionsProps> = ({ form }) => {
                             rules={[{ required: true, message: '请选择与同行人的关系' }]}
                           >
                             <Select style={{ width: '95%' }} placeholder="- 选择一个 -">
+                              <Select.Option value="-">- 选择一个 -</Select.Option>
                               <Select.Option value="S">配偶</Select.Option>
                               <Select.Option value="C">子女</Select.Option>
                               <Select.Option value="P">父母</Select.Option>

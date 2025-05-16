@@ -5,7 +5,10 @@ import {
   historicalDateValidator, 
   notFutureDateValidator, 
   futureDateValidator,
-  MIN_HISTORICAL_DATE_MESSAGE 
+  notEarlierThanBirthDateValidator,
+  MIN_HISTORICAL_DATE_MESSAGE,
+  FUTURE_DATE_MESSAGE,
+  AFTER_BIRTH_DATE_MESSAGE
 } from '../utils/validationRules';
 
 // Format for month dropdown options
@@ -65,22 +68,32 @@ interface DateInputProps {
   dayName: NamePath;
   monthName: NamePath;
   yearName: NamePath;
+  birthDate?: { 
+    day: string;
+    month: string;
+    year: string;
+  };
   required?: boolean;
   disabled?: boolean;
   validateHistoricalDate?: boolean; // Validate date is not earlier than May 15, 1915
   validateNotFutureDate?: boolean; // Validate date is not in the future
   validateFutureDate?: boolean; // Validate date is strictly after today
+  validateNotEarlierThanBirthDate?: boolean; // Validate date is not earlier than birth date
+  naCheckboxName?: string | (string | number)[]; // Name of the N/A checkbox to check
 }
 
 const DateInput: React.FC<DateInputProps> = ({
   dayName,
   monthName,
   yearName,
+  birthDate,
   required = true,
   disabled = false,
   validateHistoricalDate = false,
   validateNotFutureDate = false,
   validateFutureDate = false,
+  validateNotEarlierThanBirthDate = false,
+  naCheckboxName,
 }) => {
   const dateBlockStyle = {
     display: 'flex',
@@ -89,10 +102,18 @@ const DateInput: React.FC<DateInputProps> = ({
   };
 
   const form = Form.useFormInstance();
+  
+  // Check if the N/A checkbox is checked
+  const isNaChecked = naCheckboxName ? form.getFieldValue(naCheckboxName) : false;
 
   // Custom validator that combines all validation rules
   const validateDate = () => ({
     validator: (_: any, __: any) => {
+      // Skip validation if N/A checkbox is checked
+      if (isNaChecked) {
+        return Promise.resolve();
+      }
+      
       const day = form.getFieldValue(dayName);
       const month = form.getFieldValue(monthName);
       const year = form.getFieldValue(yearName);
@@ -109,7 +130,7 @@ const DateInput: React.FC<DateInputProps> = ({
 
       // Validate not future date if required
       if (validateNotFutureDate && !notFutureDateValidator(day, month, year)) {
-        return Promise.reject('日期不能是未来日期');
+        return Promise.reject(FUTURE_DATE_MESSAGE);
       }
 
       // Validate future date if required
@@ -117,8 +138,18 @@ const DateInput: React.FC<DateInputProps> = ({
         return Promise.reject('日期必须晚于今天');
       }
 
+      // Validate not earlier than birth date if required
+      if (validateNotEarlierThanBirthDate && birthDate) {
+        if (!notEarlierThanBirthDateValidator(
+          day, month, year, 
+          birthDate.day, birthDate.month, birthDate.year
+        )) {
+          return Promise.reject(AFTER_BIRTH_DATE_MESSAGE);
+        }
+      }
+
       return Promise.resolve();
-    },
+    }
   });
 
   return (
@@ -127,11 +158,11 @@ const DateInput: React.FC<DateInputProps> = ({
         <Form.Item 
           name={dayName} 
           noStyle
-          rules={required ? [
+          rules={required && !isNaChecked ? [
             { required: true, message: '请选择日期' },
-            ...(validateHistoricalDate || validateNotFutureDate || validateFutureDate ? [validateDate()] : [])
+            ...(validateHistoricalDate || validateNotFutureDate || validateFutureDate || validateNotEarlierThanBirthDate ? [validateDate()] : [])
           ] : [
-            ...(validateHistoricalDate || validateNotFutureDate || validateFutureDate ? [validateDate()] : [])
+            ...(validateHistoricalDate || validateNotFutureDate || validateFutureDate || validateNotEarlierThanBirthDate ? [validateDate()] : [])
           ]}
           dependencies={[monthName, yearName]}
         >
@@ -139,18 +170,18 @@ const DateInput: React.FC<DateInputProps> = ({
             options={dayOptions} 
             style={{ width: 70 }} 
             placeholder="日" 
-            disabled={disabled}
+            disabled={disabled || isNaChecked}
           />
         </Form.Item>
 
         <Form.Item 
           name={monthName} 
           noStyle
-          rules={required ? [
+          rules={required && !isNaChecked ? [
             { required: true, message: '请选择月份' },
-            ...(validateHistoricalDate || validateNotFutureDate || validateFutureDate ? [validateDate()] : [])
+            ...(validateHistoricalDate || validateNotFutureDate || validateFutureDate || validateNotEarlierThanBirthDate ? [validateDate()] : [])
           ] : [
-            ...(validateHistoricalDate || validateNotFutureDate || validateFutureDate ? [validateDate()] : [])
+            ...(validateHistoricalDate || validateNotFutureDate || validateFutureDate || validateNotEarlierThanBirthDate ? [validateDate()] : [])
           ]}
           dependencies={[dayName, yearName]}
         >
@@ -158,20 +189,20 @@ const DateInput: React.FC<DateInputProps> = ({
             options={monthOptions} 
             style={{ width: 80 }} 
             placeholder="月" 
-            disabled={disabled}
+            disabled={disabled || isNaChecked}
           />
         </Form.Item>
 
         <Form.Item 
           name={yearName} 
           noStyle
-          rules={required ? [
+          rules={required && !isNaChecked ? [
             { required: true, message: '请输入年份' },
             { pattern: /^\d{4}$/, message: '请输入4位数年份' },
-            ...(validateHistoricalDate || validateNotFutureDate || validateFutureDate ? [validateDate()] : [])
+            ...(validateHistoricalDate || validateNotFutureDate || validateFutureDate || validateNotEarlierThanBirthDate ? [validateDate()] : [])
           ] : [
             { pattern: /^\d{4}$/, message: '请输入4位数年份' },
-            ...(validateHistoricalDate || validateNotFutureDate || validateFutureDate ? [validateDate()] : [])
+            ...(validateHistoricalDate || validateNotFutureDate || validateFutureDate || validateNotEarlierThanBirthDate ? [validateDate()] : [])
           ]}
           dependencies={[dayName, monthName]}
         >
@@ -179,7 +210,7 @@ const DateInput: React.FC<DateInputProps> = ({
             placeholder="年" 
             style={{ width: '60px' }} 
             maxLength={4} 
-            disabled={disabled}
+            disabled={disabled || isNaChecked}
           />
         </Form.Item>
       </div>

@@ -211,6 +211,7 @@ const Passport: React.FC<PassportProps> = ({ form }) => {
                 dayName={["passportExpirationDate", "day"]}
                 monthName={["passportExpirationDate", "month"]}
                 yearName={["passportExpirationDate", "year"]}
+                naCheckboxName="passportExpirationDate_na"
               />
             </QuestionItem>
           </div>

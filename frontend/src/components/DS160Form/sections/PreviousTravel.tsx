@@ -17,24 +17,58 @@ const { TextArea } = Input;
 
 interface PreviousTravelProps {
   form: FormInstance;
-  birthDate?: {
-    day: string;
-    month: string;
-    year: string;
-  };
 }
 
-const PreviousTravel: React.FC<PreviousTravelProps> = ({ form, birthDate }) => {
+const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
   const [hasBeenToUS, setHasBeenToUS] = useState<string | null>(form.getFieldValue('hasBeenToUS') || null);
   const [hadUSVisa, setHadUSVisa] = useState<string | null>(form.getFieldValue('previousUsVisa') || null);
   const [visaRefused, setVisaRefused] = useState<string | null>(form.getFieldValue('visaRefused') || null);
-  const [immigrantPetition, setImmigrantPetition] = useState<string | null>(form.getFieldValue('immigrantPetition') || null);
   const [hasUSDriverLicense, setHasUSDriverLicense] = useState<string | null>(form.getFieldValue('hasUSDriverLicense') || null);
   const [sameTypeVisa, setSameTypeVisa] = useState<string | null>(form.getFieldValue('sameTypeVisa') || null);
   const [sameCountry, setSameCountry] = useState<string | null>(form.getFieldValue('sameCountry') || null);
   const [tenPrinted, setTenPrinted] = useState<string | null>(form.getFieldValue('tenPrinted') || null);
   const [visaLostStolen, setVisaLostStolen] = useState<string | null>(form.getFieldValue('visaLostStolen') || null);
   const [visaCancelled, setVisaCancelled] = useState<string | null>(form.getFieldValue('visaCancelled') || null);
+  const [immigrantPetition, setImmigrantPetition] = useState<string | null>(form.getFieldValue('immigrantPetition') || null);
+
+  // Watch birth date fields for changes - try multiple possible paths
+  const birthDayDirect = Form.useWatch(['dob', 'day'], form);
+  const birthMonthDirect = Form.useWatch(['dob', 'month'], form);
+  const birthYearDirect = Form.useWatch(['dob', 'year'], form);
+
+  // Get birth date from form data
+  const [birthDate, setBirthDate] = useState<{day: string, month: string, year: string} | undefined>(() => {
+    // Initialize with direct path values if available
+    const directDay = form.getFieldValue(['dob', 'day']);
+    const directMonth = form.getFieldValue(['dob', 'month']);
+    const directYear = form.getFieldValue(['dob', 'year']);
+    
+    if (directDay && directMonth && directYear) {
+      console.log('Birth date initialized (direct path):', { directDay, directMonth, directYear });
+      return {
+        day: directDay,
+        month: directMonth,
+        year: directYear
+      };
+    }
+    
+    console.log('Birth date not found during initialization');
+    return undefined;
+  });
+  
+  // Update birth date when watched fields change
+  useEffect(() => {
+    // Try direct path first
+    if (birthDayDirect && birthMonthDirect && birthYearDirect) {
+      setBirthDate({
+        day: birthDayDirect,
+        month: birthMonthDirect,
+        year: birthYearDirect
+      });
+      console.log('Birth date updated (direct watch):', { birthDayDirect, birthMonthDirect, birthYearDirect });
+    } 
+    
+  }, [birthDayDirect, birthMonthDirect, birthYearDirect]);
 
   // Update state when form values change
   useEffect(() => {
@@ -238,8 +272,9 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form, birthDate }) => {
                             monthName={[field.name, 'arrivalDate', 'month']}
                             yearName={[field.name, 'arrivalDate', 'year']}
                             required={true}
-                            validateHistoricalDate={true}
                             validateNotFutureDate={true}
+                            validateNotEarlierThanBirthDate={!!birthDate}
+                            birthDate={birthDate}
                           />
                         </QuestionItem>
 
@@ -367,6 +402,9 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form, birthDate }) => {
                         monthName={["lastVisaIssueDate", "month"]}
                         yearName={["lastVisaIssueDate", "year"]}
                         required={true}
+                        validateNotFutureDate={true}
+                        validateNotEarlierThanBirthDate={!!birthDate}
+                        birthDate={birthDate}
                       />
                     </QuestionItem>
                   </div>
