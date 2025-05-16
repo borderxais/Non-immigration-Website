@@ -778,7 +778,6 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
           <div className="question-column">
             <QuestionItem
               question="在美住址"
-              name="addressWhereYouWillStay"
             >
               <div className="highlighted-block">
                 <QuestionItem

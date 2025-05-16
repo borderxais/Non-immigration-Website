@@ -23,7 +23,6 @@ export interface InterviewAssessment {
     employer: string;
     monthlyIncome: string;
     previousUsVisa: boolean;
-    intendedLengthOfStay: string;
     pointOfContact: string;
     relationshipToContact: string;
     [key: string]: any;

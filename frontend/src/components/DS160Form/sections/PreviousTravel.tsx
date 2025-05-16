@@ -7,15 +7,24 @@ import RepeatableFormItem from '../common/RepeatableFormItem';
 import { FormListFieldData } from 'antd/lib/form/FormList';
 import { losUnitOptions, usStateOptions } from '../utils/formOptions';
 import '../ds160Form.css';
-import { maxLengths } from '../utils/validationRules';
+import { 
+  maxLengths, 
+  driverLicenseValidator, 
+  driverLicensePatternMessage,
+} from '../utils/validationRules';
 
 const { TextArea } = Input;
 
 interface PreviousTravelProps {
   form: FormInstance;
+  birthDate?: {
+    day: string;
+    month: string;
+    year: string;
+  };
 }
 
-const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
+const PreviousTravel: React.FC<PreviousTravelProps> = ({ form, birthDate }) => {
   const [hasBeenToUS, setHasBeenToUS] = useState<string | null>(form.getFieldValue('hasBeenToUS') || null);
   const [hadUSVisa, setHadUSVisa] = useState<string | null>(form.getFieldValue('previousUsVisa') || null);
   const [visaRefused, setVisaRefused] = useState<string | null>(form.getFieldValue('visaRefused') || null);
@@ -286,10 +295,12 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
                               hasNaCheckbox={true}
                               naCheckboxName={[field.name, 'licenseNumber_na']}
                               parentFieldName="driverLicenses"
+                              validator={driverLicenseValidator}
+                              validatorMessage={driverLicensePatternMessage}
                             >
                               <Input 
                                 style={{ width: '95%' }} 
-                                maxLength={20}
+                                maxLength={maxLengths.driverLicenseNumber}
                                 disabled={form.getFieldValue(['driverLicenses', field.name, 'licenseNumber_na'])}
                               />
                             </QuestionItem>

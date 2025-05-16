@@ -73,12 +73,19 @@ export const numPhonePatternMessage = '电话号码必须为5-15位数字，不�
 export const relationshipPattern = /^[A-Z0-9]+(?: [A-Z0-9]+)*$/;
 export const relationshipPatternMessage = '只能包含大写字母、数字和字符/数字之间的单个空格';
 
+// Driver's License Number pattern (A-Z, 0-9, period, hyphen, and space)
+export const driverLicensePattern = /^[A-Z0-9.\- ]+$/;
+export const driverLicensePatternMessage = '只能包含大写字母、数字、句点(.)、连字符(-)和空格';
+
 /**
  * Date validation constants
  */
 // Minimum date for historical dates (birthdays, issue dates, etc.)
 export const MIN_HISTORICAL_DATE = new Date(1915, 4, 15); // May 15, 1915
 export const MIN_HISTORICAL_DATE_MESSAGE = '日期不能早于1915年5月15日';
+export const FUTURE_DATE_MESSAGE = '日期不能是未来日期';
+export const AFTER_BIRTH_DATE_MESSAGE = '日期不能早于出生日期';
+
 
 // Current date (for maximum date validation)
 export const CURRENT_DATE = new Date();
@@ -183,6 +190,12 @@ export const relationshipValidator = (value: any) => {
   return relationshipPattern.test(value);
 };
 
+// Validator for driver's license numbers
+export const driverLicenseValidator = (value: any) => {
+  if (!value) return true; // Empty values are handled by required rule
+  return driverLicensePattern.test(value);
+};
+
 // Validator for date fields to ensure they are not earlier than May 15, 1915
 export const historicalDateValidator = (day: string, month: string, year: string) => {
   if (!day || !month || !year) return true; // Empty values are handled by required rule
@@ -239,6 +252,7 @@ export const futureDateValidator = (day: string, month: string, year: string) =>
   return inputDate > today;
 };
 
+
 /**
  * Common field length constraints
  */
@@ -256,5 +270,6 @@ export const maxLengths = {
   socialMedia: 30,    // Social media identifiers
   telecode: 20,       // Telecode fields
   flightNumber: 20,   // Flight numbers
-  zipCode: 10         // ZIP codes
+  zipCode: 10,        // ZIP codes
+  driverLicenseNumber: 20 // Driver's license numbers
 };
