@@ -18,10 +18,10 @@ import {
   zipCodePatternMessage,
   locationValidator,
   locationPatternMessage,
-  missionZipCodeValidator,
-  missionZipCodePatternMessage,
-  missionPhoneValidator,
-  missionPhonePatternMessage,
+  stateZipCodeValidator,
+  stateZipCodePatternMessage,
+  numPhoneValidator,
+  numPhonePatternMessage,
   maxLengths
 } from '../utils/validationRules';
 import '../ds160Form.css';
@@ -899,8 +899,8 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                 <QuestionItem
                   question="邮政编码"
                   name="missionZipCode"
-                  validator={missionZipCodeValidator}
-                  validatorMessage={missionZipCodePatternMessage}
+                  validator={stateZipCodeValidator}
+                  validatorMessage={stateZipCodePatternMessage}
                 >
                   <Input style={{ width: '60%' }} placeholder="例如：12345 或 12345-1234" maxLength={10} />
                 </QuestionItem>
@@ -908,10 +908,10 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                 <QuestionItem
                   question="电话号码"
                   name="missionPhoneNumber"
-                  validator={missionPhoneValidator}
-                  validatorMessage={missionPhonePatternMessage}
+                  validator={numPhoneValidator}
+                  validatorMessage={numPhonePatternMessage}
                 >
-                  <Input style={{ width: '60%' }} placeholder="例如：5555555555" maxLength={15} />
+                  <Input style={{ width: '60%' }} placeholder="例如：5555555555" minLength={5} maxLength={15} />
                 </QuestionItem>
               </div>
             </div>
@@ -953,139 +953,93 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
         </div>
 
         {whoIsPaying === 'O' && (
-              <>
-                <h4 className="question-header">提供以下信息：</h4>
+          <>
+            <h4 className="question-header">提供以下信息：</h4>
+            <div className="question-row">
+              <div className="question-column">
                 <div className="highlighted-block">
-                  <div className="question-row">
-                    <div className="question-column">
-                      <QuestionItem
-                        question="付款人姓氏"
-                        name="payerSurname"
-                      >
-                        <Input maxLength={33} placeholder="例如：FERNANDEZ GARCIA" />
-                      </QuestionItem>
-                    </div>
-                    <div className="explanation-column">
-                      <h4 className="help-header">帮助：付款人姓氏</h4>
-                      <p>请输入付款人的姓氏（英文）</p>
-                    </div>
-                  </div>
-
-                  <div className="question-row">
-                    <div className="question-column">
-                      <QuestionItem
-                        question="付款人名字"
-                        name="payerGivenName"
-                      >
-                        <Input maxLength={33} placeholder="例如：JUAN MIGUEL" />
-                      </QuestionItem>
-                    </div>
-                    <div className="explanation-column">
-                      <h4 className="help-header">帮助：付款人名字</h4>
-                      <p>请输入付款人的名字（英文）</p>
-                    </div>
-                  </div>
-
-                  <div className="question-row">
-                    <div className="question-column">
-                      <QuestionItem
-                        question="电话号码"
-                        name="payerPhone"
-                      >
-                        <Input maxLength={15} minLength={5} placeholder="例如：5555555555" />
-                      </QuestionItem>
-                    </div>
-                    <div className="explanation-column">
-                      <h4 className="help-header">帮助：电话号码</h4>
-                      <p>请输入付款人的联系电话</p>
-                    </div>
-                  </div>
-
-                  <div className="question-row">
-                    <div className="question-column">
-                      <QuestionItem
-                        question="电子邮件地址"
-                        name="payerEmail"
-                        hasNaCheckbox={true}
-                        naCheckboxName="payerEmail_na"
-                        inlineCheckbox={true}
-                      >
-                        <Input 
-                          placeholder="例如：example@email.com" 
-                          style={{ width: '99%' }} 
-                        />
-                      </QuestionItem>
-                    </div>
-                    <div className="explanation-column">
-                      <h4 className="help-header">帮助：电子邮件</h4>
-                      <p>请输入付款人的电子邮件地址</p>
-                    </div>
-                  </div>
-
-                  <div className="question-row">
-                    <div className="question-column">
-                      <QuestionItem
-                        question="与您的关系"
-                        name="payerRelationship"
-                      >
-                        <Select 
-                          className="select-input" 
-                          placeholder="- 请选择一个 -"
-                          options={[
-                            { value: '', label: '- 请选择一个 -' },
-                            { value: 'C', label: '子女' },
-                            { value: 'P', label: '父母' },
-                            { value: 'S', label: '配偶' },
-                            { value: 'R', label: '其他亲属' },
-                            { value: 'F', label: '朋友' },
-                            { value: 'O', label: '其他' }
-                          ]}
-                        />
-                      </QuestionItem>
-                    </div>
-                    <div className="explanation-column">
-                      <h4 className="help-header">帮助：关系</h4>
-                      <p>请选择付款人与您的关系</p>
-                    </div>
-                  </div>
-
-                  <div className="question-row">
-                    <div className="question-column">
-                      <QuestionItem
-                        question="付款人地址是否与您的家庭/通信地址相同？"
-                        name="isSameAddress"
-                      >
-                        <Radio.Group onChange={handleSameAddressChange}>
-                          <Radio value="Y">是</Radio>
-                          <Radio value="N">否</Radio>
-                        </Radio.Group>
-                      </QuestionItem>
-                    </div>
-                    <div className="explanation-column">
-                      <h4 className="help-header">帮助：付款人地址</h4>
-                      <p>请选择付款人地址是否与您的家庭/通信地址相同</p>
-                    </div>
-                  </div>
+                  <QuestionItem
+                    question="付款人姓氏"
+                    name="payerSurname"
+                    validator={nameValidator}
+                    validatorMessage={namePatternMessage}
+                  >
+                    <Input maxLength={maxLengths.name} placeholder="例如：FERNANDEZ GARCIA" />
+                  </QuestionItem>
+                
+                  <QuestionItem
+                    question="付款人名字"
+                    name="payerGivenName"
+                    validator={nameValidator}
+                    validatorMessage={namePatternMessage}
+                  >
+                    <Input maxLength={maxLengths.name} placeholder="例如：JUAN MIGUEL" />
+                  </QuestionItem>
+                
+                  <QuestionItem
+                    question="电话号码"
+                    name="payerPhone"
+                    validator={numPhoneValidator}
+                    validatorMessage={numPhonePatternMessage}
+                  >
+                    <Input maxLength={15} minLength={5} placeholder="例如：5555555555" />
+                  </QuestionItem>
+                
+                  <QuestionItem
+                    question="电子邮件地址"
+                    name="payerEmail"
+                    hasNaCheckbox={true}
+                    naCheckboxName="payerEmail_na"
+                    inlineCheckbox={true}
+                  >
+                    <Input 
+                      placeholder="例如：example@email.com" 
+                      style={{ width: '99%' }} 
+                      maxLength={maxLengths.email}
+                    />
+                  </QuestionItem>
+                
+                  <QuestionItem
+                    question="与您的关系"
+                    name="payerRelationship"
+                  >
+                    <Select 
+                      className="select-input" 
+                      placeholder="- 请选择一个 -"
+                      options={[
+                        { value: '', label: '- 请选择一个 -' },
+                        { value: 'C', label: '子女' },
+                        { value: 'P', label: '父母' },
+                        { value: 'S', label: '配偶' },
+                        { value: 'R', label: '其他亲属' },
+                        { value: 'F', label: '朋友' },
+                        { value: 'O', label: '其他' }
+                      ]}
+                    />
+                  </QuestionItem>
+                
+                  <QuestionItem
+                    question="付款人地址是否与您的家庭/通信地址相同？"
+                    name="isSameAddress"
+                  >
+                    <Radio.Group onChange={handleSameAddressChange}>
+                      <Radio value="Y">是</Radio>
+                      <Radio value="N">否</Radio>
+                    </Radio.Group>
+                  </QuestionItem>
 
                   {isSameAddress === 'N' && (
-                    <>
-                      <div className="block-inside-highlight">
-                        <div className="question-row">
-                          <div className="question-column">
+                    <>                 
+                      <div className="question-row">
+                        <div className="question-column">
+                          <div className="block-inside-highlight">
                             <QuestionItem
                               question="付款人地址（第1行）"
                               name="payerAddress1"
                             >
                               <Input maxLength={40} placeholder="例如：123 MAIN STREET" />
                             </QuestionItem>
-                          </div>
-                          <div className="explanation-column">
-                            {/* Empty explanation column to maintain layout */}
-                          </div>
-                        </div>
-
-                        <div className="question-row">
-                          <div className="question-column">
+                          
                             <QuestionItem
                               question="付款人地址（第2行）"
                               name="payerAddress2"
@@ -1093,14 +1047,7 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                             >
                               <Input maxLength={40} placeholder="例如：公寓号，套房号等（如有）" />
                             </QuestionItem>
-                          </div>
-                          <div className="explanation-column">
-                            {/* Empty explanation column to maintain layout */}
-                          </div>
-                        </div>
-
-                        <div className="question-row">
-                          <div className="question-column">
+                          
                             <QuestionItem
                               question="城市"
                               name="payerCity"
@@ -1109,18 +1056,11 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                             >
                               <Input 
                                 style={{ width: '99%' }} 
-                                maxLength={20}
+                                maxLength={maxLengths.city}
                                 placeholder="例如: Chicago"
                               />
                             </QuestionItem>
-                          </div>
-                          <div className="explanation-column">
-                            {/* Empty explanation column to maintain layout */}
-                          </div>
-                        </div>
-
-                        <div className="question-row">
-                          <div className="question-column">
+                          
                             <QuestionItem
                               question="州/省"
                               name="payerStateProvince"
@@ -1130,33 +1070,21 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                               validator={locationValidator}
                               validatorMessage={locationPatternMessage}
                             >
-                              <Input maxLength={20} />
+                              <Input maxLength={maxLengths.state} />
                             </QuestionItem>
-                          </div>
-                          <div className="explanation-column">
-                            {/* Empty explanation column to maintain layout */}
-                          </div>
-                        </div>
-
-                        <div className="question-row">
-                          <div className="question-column">
+                          
                             <QuestionItem
                               question="邮政编码"
                               name="payerPostalZIPCode"
                               hasNaCheckbox={true}
                               naCheckboxName="payerPostalZIPCode_na"
                               inlineCheckbox={true}
+                              validator={stateZipCodeValidator}
+                              validatorMessage={stateZipCodePatternMessage}
                             >
-                              <Input maxLength={10} />
+                              <Input maxLength={maxLengths.postalCode} />
                             </QuestionItem>
-                          </div>
-                          <div className="explanation-column">
-                            {/* Empty explanation column to maintain layout */}
-                          </div>
-                        </div>
-
-                        <div className="question-row">
-                          <div className="question-column">
+                          
                             <QuestionItem
                               question="国家/地区"
                               name="payerCountry"
@@ -1164,52 +1092,42 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                               <Select options={countryOptions} placeholder="- 请选择一个 -" style={{ width: '98%' }} />
                             </QuestionItem>
                           </div>
-                          <div className="explanation-column">
-                            {/* Empty explanation column to maintain layout */}
-                          </div>
                         </div>
                       </div>
                     </>
                   )}
                 </div>
-              </>
+              </div>
+              <div className="explanation-column">
+                <h4 className="help-header">帮助：付款人地址</h4>
+                <p>请选择付款人地址是否与您的家庭/通信地址相同</p>
+              </div>
+            </div>
+          </>
         )}
 
         {whoIsPaying === 'C' && (
           <>
             <h4 className="question-header">提供以下信息：</h4>
-            <div className="highlighted-block">
-              <div className="question-row">
-                <div className="question-column">
+            <div className="question-row">
+              <div className="question-column">
+                <div className="highlighted-block">
                   <QuestionItem
                     question="支付旅行费用的公司/组织名称"
                     name="companyName"
                   >
-                    <Input maxLength={33} />
+                    <Input maxLength={maxLengths.name} />
                   </QuestionItem>
-                </div>
-                <div className="explanation-column">
-                  {/* Empty explanation column to maintain layout */}
-                </div>
-              </div>
-
-              <div className="question-row">
-                <div className="question-column">
+                
                   <QuestionItem
                     question="电话号码"
                     name="companyPhone"
+                    validator={numPhoneValidator}
+                    validatorMessage={numPhonePatternMessage}
                   >
                     <Input maxLength={15} minLength={5} placeholder="例如：5555555555" />
                   </QuestionItem>
-                </div>
-                <div className="explanation-column">
-                  <h4 className="help-header">帮助：电话号码</h4>
-                  <p>请输入公司或组织的联系电话</p>
-                </div>
-              </div>
-
-              <div className="question-row">
-                <div className="question-column">
+                
                   <QuestionItem
                     question="电子邮件地址"
                     name="companyEmail"
@@ -1219,29 +1137,14 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                       style={{ width: '99%' }} 
                     />
                   </QuestionItem>
-                </div>
-                <div className="explanation-column">
-                  <h4 className="help-header">帮助：电子邮件</h4>
-                  <p>请输入公司或组织的电子邮件地址</p>
-                </div>
-              </div>
-
-              <div className="question-row">
-                <div className="question-column">
+                
                   <QuestionItem
                     question="与您的关系"
                     name="companyRelation"
                   >
                     <Input />
                   </QuestionItem>
-                </div>
-                <div className="explanation-column">
-                </div>
                 
-              </div>
-
-              <div className="question-row">
-                <div className="question-column">
                   <QuestionItem
                     question="公司/组织地址"
                     name="companyAddress"
@@ -1255,15 +1158,7 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                           >
                             <Input maxLength={40} />
                           </QuestionItem>
-                        </div>
-                        <div className="explanation-column">
-                          <h4 className="help-header">帮助：公司地址</h4>
-                          <p>请输入公司或组织的详细地址（英文）</p>
-                        </div>
-                      </div>
 
-                      <div className="question-row">
-                        <div className="question-column">
                           <QuestionItem
                             question="街道地址 (第2行)"
                             name="companyStreetAddress2"
@@ -1272,13 +1167,7 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                             <Input maxLength={40} />
                             <span className="optional-label">*可选</span>
                           </QuestionItem>
-                        </div>
-                        <div className="explanation-column">
-                        </div>
-                      </div>
 
-                      <div className="question-row">
-                        <div className="question-column">
                           <QuestionItem
                             question="城市"
                             name="companyCity"
@@ -1291,13 +1180,7 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                               placeholder="例如: San Francisco"
                             />
                           </QuestionItem>
-                        </div>
-                        <div className="explanation-column">
-                        </div>
-                      </div>
 
-                      <div className="question-row">
-                        <div className="question-column">
                           <QuestionItem
                             question="州/省"
                             name="companyStateProvince"
@@ -1309,13 +1192,7 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                           >
                             <Input maxLength={20} />
                           </QuestionItem>
-                        </div>
-                        <div className="explanation-column">
-                        </div>
-                      </div>
 
-                      <div className="question-row">
-                        <div className="question-column">
                           <QuestionItem
                             question="邮政编码"
                             name="companyPostalZIPCode"
@@ -1325,13 +1202,7 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                           >
                             <Input maxLength={10} />
                           </QuestionItem>
-                        </div>
-                        <div className="explanation-column">
-                        </div>
-                      </div>
 
-                      <div className="question-row">
-                        <div className="question-column">
                           <QuestionItem
                             question="国家/地区"
                             name="companyCountry"
@@ -1339,13 +1210,12 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                             <Select options={countryOptions} placeholder="- 请选择一个 -" style={{ width: '98%' }} />
                           </QuestionItem>
                         </div>
-                        <div className="explanation-column">
-                        </div>
                       </div>
                     </div>
                   </QuestionItem>
                 </div>
               </div>
+              <div className="explanation-column"></div>
             </div>
           </>
         )}

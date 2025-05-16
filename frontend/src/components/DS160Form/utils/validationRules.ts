@@ -62,12 +62,12 @@ export const receiptNumberPattern = /^[A-Z0-9]+$/;
 export const receiptNumberPatternMessage = '只能包含大写字母和数字';
 
 // ZIP code pattern (A-Z, 0-9, hyphen, and single spaces)
-export const missionZipCodePattern = /^[A-Z0-9]+(?: [A-Z0-9]+)*(?:-[A-Z0-9]+)*$/;
-export const missionZipCodePatternMessage = '只能包含大写字母、数字、连字符(-)和单个空格';
+export const stateZipCodePattern = /^[A-Z0-9]+(?: [A-Z0-9]+)*(?:-[A-Z0-9]+)*$/;
+export const stateZipCodePatternMessage = '只能包含大写字母、数字、连字符(-)和单个空格';
 
 // Phone number pattern (5-15 digits, no spaces or hyphens)
-export const missionPhonePattern = /^\d{5,15}$/;
-export const missionPhonePatternMessage = '电话号码必须为5-15位数字，不含空格或连字符';
+export const numPhonePattern = /^\d{5,15}$/;
+export const numPhonePatternMessage = '电话号码必须为5-15位数字，不含空格或连字符';
 
 /**
  * Date validation constants
@@ -162,15 +162,15 @@ export const receiptNumberValidator = (value: any) => {
 };
 
 // Validator for mission ZIP codes
-export const missionZipCodeValidator = (value: any) => {
+export const stateZipCodeValidator = (value: any) => {
   if (!value) return true; // Empty values are handled by required rule
-  return missionZipCodePattern.test(value);
+  return stateZipCodePattern.test(value);
 };
 
 // Validator for mission phone numbers
-export const missionPhoneValidator = (value: any) => {
+export const numPhoneValidator = (value: any) => {
   if (!value) return true; // Empty values are handled by required rule
-  return missionPhonePattern.test(value);
+  return numPhonePattern.test(value);
 };
 
 // Validator for date fields to ensure they are not earlier than May 15, 1915
