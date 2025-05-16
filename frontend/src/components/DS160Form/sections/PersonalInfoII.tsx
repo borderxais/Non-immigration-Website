@@ -9,7 +9,8 @@ import {
   idDocumentPatternMessage,
   maxLengths,
   numericValidator,
-  numericPatternMessage
+  numericPatternMessage,
+  idDocumentPattern
 } from '../utils/validationRules';
 import { FormListFieldData } from 'antd/lib/form/FormList';
 import '../ds160Form.css';
@@ -137,15 +138,8 @@ const PersonalInfoII: React.FC<PersonalInfoIIProps> = ({ form }) => {
                               label="护照号码"
                               rules={[
                                 { required: true, message: '请输入护照号码' },
-                                { max: maxLengths.idDocument, message: idDocumentPatternMessage },
-                                { 
-                                  validator: (_, value) => {
-                                    if (!value || idDocumentValidator(value)) {
-                                      return Promise.resolve();
-                                    }
-                                    return Promise.reject(idDocumentPatternMessage);
-                                  }
-                                }
+                                { max: maxLengths.idDocument, message: '不能超过${maxLengths.idDocument}个字符' },
+                                { pattern: idDocumentPattern, message: idDocumentPatternMessage },
                               ]}
                             >
                               <Input 

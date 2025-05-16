@@ -4,6 +4,7 @@ import QuestionItem from '../common/QuestionItem';
 import RepeatableFormItem from '../common/RepeatableFormItem';
 import { FormListFieldData } from 'antd/lib/form/FormList';
 import '../ds160Form.css';
+import { locationValidator, locationPatternMessage, maxLengths, namePattern, namePatternMessage } from '../utils/validationRules';
 
 interface TravelCompanionsProps {
   form: any;
@@ -110,6 +111,8 @@ const TravelCompanions: React.FC<TravelCompanionsProps> = ({ form }) => {
                       <QuestionItem
                         question="团队或组织名称"
                         name="groupName"
+                        validator={locationValidator}
+                        validatorMessage={locationPatternMessage}
                       >
                         <Input style={{ width: '99%' }} maxLength={40} placeholder="请输入团队或组织名称" />
                       </QuestionItem>
@@ -135,7 +138,9 @@ const TravelCompanions: React.FC<TravelCompanionsProps> = ({ form }) => {
                             {...field}
                             name={[field.name, 'surname']}
                             label="姓氏"
-                            rules={[{ required: true, message: '请输入同行人姓氏' }]}
+                            rules={[{ required: true, message: '请输入同行人姓氏' }, 
+                              { max: maxLengths.name, message: `不能超过${maxLengths.name}个字符` }, 
+                              { pattern: namePattern, message: namePatternMessage }]}
                             style={{ marginBottom: '16px' }}
                           >
                             <Input style={{ width: '95%' }} maxLength={33} placeholder="例如：ZHANG" />
@@ -145,7 +150,9 @@ const TravelCompanions: React.FC<TravelCompanionsProps> = ({ form }) => {
                             {...field}
                             name={[field.name, 'givenName']}
                             label="名字"
-                            rules={[{ required: true, message: '请输入同行人名字' }]}
+                            rules={[{ required: true, message: '请输入同行人名字' }, 
+                              { max: maxLengths.name, message: `不能超过${maxLengths.name}个字符` }, 
+                              { pattern: namePattern, message: namePatternMessage }]}
                             style={{ marginBottom: '16px' }}
                           >
                             <Input style={{ width: '95%' }} maxLength={33} placeholder="例如：SAN" />

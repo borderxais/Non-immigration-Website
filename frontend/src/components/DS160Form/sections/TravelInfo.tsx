@@ -713,7 +713,7 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                         name={[field.name, 'location']}
                         rules={[{ required: true, message: '请输入访问地点' }]}
                       >
-                        <Input placeholder="请输入访问地点" maxLength={40} style={{ width: '95%' }} />
+                        <Input placeholder="请输入访问地点" maxLength={maxLengths.address} style={{ width: '95%' }} />
                       </Form.Item>
                     )}
                   </RepeatableFormItem>
@@ -906,7 +906,7 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                   validator={stateZipCodeValidator}
                   validatorMessage={stateZipCodePatternMessage}
                 >
-                  <Input style={{ width: '60%' }} placeholder="例如：12345 或 12345-1234" maxLength={10} />
+                  <Input style={{ width: '60%' }} placeholder="例如：12345 或 12345-1234" maxLength={maxLengths.zipCode} />
                 </QuestionItem>
               
                 <QuestionItem
@@ -1045,7 +1045,7 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                               question="付款人地址（第1行）"
                               name="payerAddress1"
                             >
-                              <Input maxLength={40} placeholder="例如：123 MAIN STREET" />
+                              <Input maxLength={maxLengths.address} placeholder="例如：123 MAIN STREET" />
                             </QuestionItem>
                           
                             <QuestionItem
@@ -1053,7 +1053,7 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                               name="payerAddress2"
                               required={false}
                             >
-                              <Input maxLength={40} placeholder="例如：公寓号，套房号等（如有）" />
+                              <Input maxLength={maxLengths.address} placeholder="例如：公寓号，套房号等（如有）" />
                             </QuestionItem>
                           
                             <QuestionItem
@@ -1090,7 +1090,7 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                               validator={stateZipCodeValidator}
                               validatorMessage={stateZipCodePatternMessage}
                             >
-                              <Input maxLength={maxLengths.postalCode} />
+                              <Input maxLength={maxLengths.zipCode} />
                             </QuestionItem>
                           
                             <QuestionItem
@@ -1190,7 +1190,7 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                             validator={locationValidator}
                             validatorMessage={locationPatternMessage}
                           >
-                            <Input maxLength={20} />
+                            <Input maxLength={maxLengths.state} />
                           </QuestionItem>
 
                           <QuestionItem
@@ -1202,7 +1202,7 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                             validator={stateZipCodeValidator}
                             validatorMessage={stateZipCodePatternMessage}
                           >
-                            <Input maxLength={10} />
+                            <Input maxLength={maxLengths.zipCode} />
                           </QuestionItem>
 
                           <QuestionItem
