@@ -49,9 +49,9 @@ export const zipCodePattern = /^\d{5}(?:-\d{4})?$/;
 export const zipCodePatternMessage = '邮政编码格式不正确 (例如: 12345 或 12345-1234)';
 
 // Location pattern (for city and state/province fields)
-// A-Z, 0-9, $, ?, period (.), apostrophe ('), comma (,), hyphen (-), and space
-export const locationPattern = /^[A-Za-z0-9$?.',-\s]+$/;
-export const locationPatternMessage = "只能包含字母、数字、$、?、句点(.)、撇号(')、逗号(,)、连字符(-)和空格";
+// A-Z, 0-9, $, ?, period (.), apostrophe ('), comma (,), hyphen (-), space, and Chinese characters
+export const locationPattern = /^[A-Za-z0-9$?.',-\s\u4e00-\u9fa5·]+$/;
+export const locationPatternMessage = "只能包含字母、数字、中文字符、$、?、句点(.)、撇号(')、逗号(,)、连字符(-)和空格";
 
 // Social media identifier pattern (alphanumeric with some special characters)
 export const socialMediaPattern = /^[A-Za-z0-9_.\-@]+$/;
@@ -69,9 +69,9 @@ export const stateZipCodePatternMessage = '只能包含大写字母、数字、�
 export const numPhonePattern = /^\d{5,15}$/;
 export const numPhonePatternMessage = '电话号码必须为5-15位数字，不含空格或连字符';
 
-// Relationship pattern (A-Z, 0-9, and single spaces between characters)
-export const relationshipPattern = /^[A-Z0-9]+(?: [A-Z0-9]+)*$/;
-export const relationshipPatternMessage = '只能包含大写字母、数字和字符/数字之间的单个空格';
+// Relationship pattern (A-Z, 0-9, Chinese characters, and spaces)
+export const relationshipPattern = /^[A-Z0-9\u4e00-\u9fa5·]+(?: [A-Z0-9\u4e00-\u9fa5·]+)*$/;
+export const relationshipPatternMessage = '只能包含大写字母、数字、中文字符和单个空格';
 
 // Driver's License Number pattern (A-Z, 0-9, period, hyphen, and space)
 export const driverLicensePattern = /^[A-Z0-9.\- ]+$/;
@@ -85,7 +85,6 @@ export const MIN_HISTORICAL_DATE = new Date(1915, 4, 15); // May 15, 1915
 export const MIN_HISTORICAL_DATE_MESSAGE = '日期不能早于1915年5月15日';
 export const FUTURE_DATE_MESSAGE = '日期不能是未来日期';
 export const AFTER_BIRTH_DATE_MESSAGE = '日期不能早于出生日期';
-
 
 // Current date (for maximum date validation)
 export const CURRENT_DATE = new Date();
@@ -252,6 +251,49 @@ export const futureDateValidator = (day: string, month: string, year: string) =>
   return inputDate > today;
 };
 
+// Validator to ensure a date is not earlier than birth date
+export const notEarlierThanBirthDateValidator = (day: string, month: string, year: string, birthDay: string, birthMonth: string, birthYear: string) => {
+  console.log('notEarlierThanBirthDateValidator called with:', {
+    inputDate: { day, month, year },
+    birthDate: { birthDay, birthMonth, birthYear }
+  });
+  
+  if (!day || !month || !year || !birthDay || !birthMonth || !birthYear) {
+    console.log('Missing date components, skipping validation');
+    return true;
+  }
+  
+  const monthMap: { [key: string]: number } = {
+    'JAN': 0, 'FEB': 1, 'MAR': 2, 'APR': 3, 'MAY': 4, 'JUN': 5,
+    'JUL': 6, 'AUG': 7, 'SEP': 8, 'OCT': 9, 'NOV': 10, 'DEC': 11,
+    '01': 0, '02': 1, '03': 2, '04': 3, '05': 4, '06': 5,
+    '07': 6, '08': 7, '09': 8, '10': 9, '11': 10, '12': 11,
+    '1': 0, '2': 1, '3': 2, '4': 3, '5': 4, '6': 5,
+    '7': 6, '8': 7, '9': 8
+  };
+  
+  const monthNum = monthMap[month];
+  const birthMonthNum = monthMap[birthMonth];
+  
+  console.log('Month numbers:', { monthNum, birthMonthNum });
+  
+  if (monthNum === undefined || birthMonthNum === undefined) {
+    console.log('Invalid month format:', { month, birthMonth });
+    return false;
+  }
+  
+  const inputDate = new Date(parseInt(year), monthNum, parseInt(day));
+  const birthDate = new Date(parseInt(birthYear), birthMonthNum, parseInt(birthDay));
+  
+  console.log('Comparing dates:', { 
+    inputDate: inputDate.toISOString(), 
+    birthDate: birthDate.toISOString(),
+    result: inputDate >= birthDate
+  });
+  
+  // Check if the input date is not earlier than birth date
+  return inputDate >= birthDate;
+};
 
 /**
  * Common field length constraints

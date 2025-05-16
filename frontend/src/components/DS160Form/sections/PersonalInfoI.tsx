@@ -376,6 +376,8 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
               <QuestionItem
                 question="省/州/地区"
                 name="birthState"
+                hasNaCheckbox={true}
+                naCheckboxName="birthState_na"
                 maxLength={maxLengths.state}
                 validator={locationValidator}
                 validatorMessage={locationPatternMessage}
