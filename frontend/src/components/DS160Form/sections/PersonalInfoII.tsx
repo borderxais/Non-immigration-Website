@@ -138,7 +138,7 @@ const PersonalInfoII: React.FC<PersonalInfoIIProps> = ({ form }) => {
                               label="护照号码"
                               rules={[
                                 { required: true, message: '请输入护照号码' },
-                                { max: maxLengths.idDocument, message: '不能超过${maxLengths.idDocument}个字符' },
+                                { max: maxLengths.idDocument, message: `不能超过${maxLengths.idDocument}个字符` },
                                 { pattern: idDocumentPattern, message: idDocumentPatternMessage },
                               ]}
                             >

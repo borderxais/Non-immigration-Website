@@ -7,6 +7,7 @@ import RepeatableFormItem from '../common/RepeatableFormItem';
 import { FormListFieldData } from 'antd/lib/form/FormList';
 import { losUnitOptions, usStateOptions } from '../utils/formOptions';
 import '../ds160Form.css';
+import { maxLengths } from '../utils/validationRules';
 
 const { TextArea } = Input;
 
@@ -228,6 +229,8 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
                             monthName={[field.name, 'arrivalDate', 'month']}
                             yearName={[field.name, 'arrivalDate', 'year']}
                             required={true}
+                            validateHistoricalDate={true}
+                            validateNotFutureDate={true}
                           />
                         </QuestionItem>
 
@@ -537,7 +540,7 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
                         <TextArea 
                           style={{ width: '99%' }} 
                           rows={4} 
-                          maxLength={4000}
+                          maxLength={maxLengths.explanation}
                           required={true}
                         />
                       </Form.Item>
@@ -583,7 +586,7 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
                         <TextArea 
                           style={{ width: '99%' }} 
                           rows={4} 
-                          maxLength={4000}
+                          maxLength={maxLengths.explanation}
                           required={true}
                         />
                       </Form.Item>
