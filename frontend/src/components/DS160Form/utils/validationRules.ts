@@ -69,6 +69,10 @@ export const stateZipCodePatternMessage = '只能包含大写字母、数字、�
 export const numPhonePattern = /^\d{5,15}$/;
 export const numPhonePatternMessage = '电话号码必须为5-15位数字，不含空格或连字符';
 
+// Relationship pattern (A-Z, 0-9, and single spaces between characters)
+export const relationshipPattern = /^[A-Z0-9]+(?: [A-Z0-9]+)*$/;
+export const relationshipPatternMessage = '只能包含大写字母、数字和字符/数字之间的单个空格';
+
 /**
  * Date validation constants
  */
@@ -171,6 +175,12 @@ export const stateZipCodeValidator = (value: any) => {
 export const numPhoneValidator = (value: any) => {
   if (!value) return true; // Empty values are handled by required rule
   return numPhonePattern.test(value);
+};
+
+// Validator for relationship fields
+export const relationshipValidator = (value: any) => {
+  if (!value) return true; // Empty values are handled by required rule
+  return relationshipPattern.test(value);
 };
 
 // Validator for date fields to ensure they are not earlier than May 15, 1915

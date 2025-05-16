@@ -22,7 +22,11 @@ import {
   stateZipCodePatternMessage,
   numPhoneValidator,
   numPhonePatternMessage,
-  maxLengths
+  relationshipValidator,
+  relationshipPatternMessage,
+  maxLengths,
+  emailValidator,
+  emailPatternMessage
 } from '../utils/validationRules';
 import '../ds160Form.css';
 
@@ -880,8 +884,8 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                 >
                   <Input 
                     style={{ width: '99%' }} 
-                    placeholder="例如: Washington" 
                     maxLength={maxLengths.city}
+                    placeholder="例如: Washington"
                   />
                 </QuestionItem>
               
@@ -991,6 +995,8 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                     hasNaCheckbox={true}
                     naCheckboxName="payerEmail_na"
                     inlineCheckbox={true}
+                    validator={emailValidator}
+                    validatorMessage={emailPatternMessage}
                   >
                     <Input 
                       placeholder="例如：example@email.com" 
@@ -1002,6 +1008,8 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                   <QuestionItem
                     question="与您的关系"
                     name="payerRelationship"
+                    validator={relationshipValidator}
+                    validatorMessage={relationshipPatternMessage}
                   >
                     <Select 
                       className="select-input" 
@@ -1129,20 +1137,12 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                   </QuestionItem>
                 
                   <QuestionItem
-                    question="电子邮件地址"
-                    name="companyEmail"
-                  >
-                    <Input 
-                      placeholder="例如：example@email.com" 
-                      style={{ width: '99%' }} 
-                    />
-                  </QuestionItem>
-                
-                  <QuestionItem
                     question="与您的关系"
                     name="companyRelation"
+                    validator={relationshipValidator}
+                    validatorMessage={relationshipPatternMessage}
                   >
-                    <Input />
+                    <Input maxLength={maxLengths.name} placeholder="例如：EMPLOYER" />
                   </QuestionItem>
                 
                   <QuestionItem
@@ -1156,7 +1156,7 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                             question="街道地址 (第1行)"
                             name="companyStreetAddress1"
                           >
-                            <Input maxLength={40} />
+                            <Input maxLength={maxLengths.address} />
                           </QuestionItem>
 
                           <QuestionItem
@@ -1164,7 +1164,7 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                             name="companyStreetAddress2"
                             required={false}
                           >
-                            <Input maxLength={40} />
+                            <Input maxLength={maxLengths.address} />
                             <span className="optional-label">*可选</span>
                           </QuestionItem>
 
@@ -1176,7 +1176,7 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                           >
                             <Input 
                               style={{ width: '99%' }} 
-                              maxLength={20}
+                              maxLength={maxLengths.city}
                               placeholder="例如: San Francisco"
                             />
                           </QuestionItem>
@@ -1199,6 +1199,8 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                             hasNaCheckbox={true}
                             naCheckboxName="companyPostalZIPCode_na"
                             inlineCheckbox={true}
+                            validator={stateZipCodeValidator}
+                            validatorMessage={stateZipCodePatternMessage}
                           >
                             <Input maxLength={10} />
                           </QuestionItem>
