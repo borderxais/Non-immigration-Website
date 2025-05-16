@@ -4,14 +4,25 @@ import type { FormListFieldData } from 'antd/es/form/FormList';
 import QuestionItem from '../common/QuestionItem';
 import DateInput from '../common/DateInput';
 import RepeatableFormItem from '../common/RepeatableFormItem';
-import { isDependentSelection, losUnitOptions, countryOptions } from '../utils/formOptions';
+import { isDependentSelection, losUnitOptions, countryOptions, usStateOptions } from '../utils/formOptions';
 import { 
+  nameValidator,
+  namePatternMessage,
+  numericPattern,
+  numericPatternMessage,
+  receiptNumberValidator,
+  receiptNumberPatternMessage,
   flightNumberValidator,
   flightNumberPatternMessage,
   zipCodeValidator,
   zipCodePatternMessage,
   locationValidator,
-  locationPatternMessage
+  locationPatternMessage,
+  missionZipCodeValidator,
+  missionZipCodePatternMessage,
+  missionPhoneValidator,
+  missionPhonePatternMessage,
+  maxLengths
 } from '../utils/validationRules';
 import '../ds160Form.css';
 
@@ -451,10 +462,7 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                       />
                     </QuestionItem>
                   </div>
-                  <div className="explanation-column">
-                    <h4 className="help-header">帮助：赴美目的</h4>
-                    <p>请选择与您赴美目的最相符的签证类别。</p>
-                  </div>
+                  <div className="explanation-column"></div>
                 </div>
 
                 {form.getFieldValue(['travelPurposes', field.name, 'visaClass']) && (
@@ -495,11 +503,13 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                                        form.getFieldValue(['travelPurposes', field.name, 'specificPurpose']).includes('H2'))}
                         naCheckboxName={[field.name, 'applicationReceiptNumber_na']}
                         key={`receipt-${form.getFieldValue(['travelPurposes', field.name, 'specificPurpose']) || 'default'}`}
+                        validator={receiptNumberValidator}
+                        validatorMessage={receiptNumberPatternMessage}
                       >
                         <Input 
                           style={{ width: '95%' }} 
                           placeholder="例如: ABC1234567890" 
-                          maxLength={13}
+                          maxLength={maxLengths.receiptNumber}
                         />
                       </QuestionItem>
                     </div>
@@ -522,10 +532,12 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                             question="主申请人姓氏"
                             name={[field.name, 'principalApplicantSurname']}
                             required
+                            validator={nameValidator}
+                            validatorMessage={namePatternMessage}
                           >
                             <Input 
                               style={{ width: '95%' }} 
-                              maxLength={33}
+                              maxLength={maxLengths.name}
                               placeholder="例如：ZHANG"
                             />
                           </QuestionItem>
@@ -534,10 +546,12 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                             question="主申请人名字"
                             name={[field.name, 'principalApplicantGivenName']}
                             required
+                            validator={nameValidator}
+                            validatorMessage={namePatternMessage}
                           >
                             <Input 
                               style={{ width: '95%' }} 
-                              maxLength={33}
+                              maxLength={maxLengths.name}
                               placeholder="例如：WEI"
                             />
                           </QuestionItem>
@@ -554,7 +568,7 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                               <Input 
                                 style={{ width: '95%' }} 
                                 placeholder="例如: ABC1234567890" 
-                                maxLength={13}
+                                maxLength={maxLengths.receiptNumber}
                               />
                             </QuestionItem>
                           )}
@@ -593,9 +607,9 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
         {hasSpecificPlans === 'Y' && (
           <fieldset className="question-section">
             <h4 style={{ marginBottom: '16px', fontWeight: 'normal' }}>请提供您来美国的旅行的详细行程</h4>
-            <div className="highlighted-block">
-              <div className="question-row">
-                <div className="question-column">
+            <div className="question-row">
+              <div className="question-column">
+                <div className="highlighted-block">
                   <QuestionItem
                     question="入境美国日期"
                     name="arrivalUSDate"
@@ -607,15 +621,7 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                       validateFutureDate={true}
                     />
                   </QuestionItem>
-                </div>
-                <div className="explanation-column">
-                  <h4 className="help-header">帮助：入境日期</h4>
-                  <p>请输入您计划入境美国的日期</p>
-                </div>
-              </div>
 
-              <div className="question-row">
-                <div className="question-column">
                   <QuestionItem
                     question="抵达航班"
                     name="arrivalFlight"
@@ -625,19 +631,11 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                   >
                     <Input 
                       style={{ width: '99%' }} 
-                      maxLength={20} 
+                      maxLength={maxLengths.flightNumber} 
                       placeholder="例如: AA 123 或 UA 456"
                     />
                   </QuestionItem>
-                </div>
-                <div className="explanation-column">
-                  <h4 className="help-header">帮助：抵达航班</h4>
-                  <p>请输入您的抵达航班号（如果知道）。只能包含大写字母、数字和字符/数字之间的单个空格。</p>
-                </div>
-              </div>
-
-              <div className="question-row">
-                <div className="question-column">
+                
                   <QuestionItem
                     question="抵达城市"
                     name="arrivalCity"
@@ -646,19 +644,11 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                   >
                     <Input 
                       style={{ width: '99%' }} 
-                      maxLength={20} 
+                      maxLength={maxLengths.city} 
                       placeholder="例如: New York"
                     />
                   </QuestionItem>
-                </div>
-                <div className="explanation-column">
-                  <h4 className="help-header">帮助：抵达城市</h4>
-                  <p>请输入您入境的美国城市</p>
-                </div>
-              </div>
-
-              <div className="question-row">
-                <div className="question-column">
+                
                   <QuestionItem
                     question="离开美国日期"
                     name="departureUSDate"
@@ -667,33 +657,20 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                       dayName={["departureUSDate", "day"]} 
                       monthName={["departureUSDate", "month"]} 
                       yearName={["departureUSDate", "year"]}
+                      validateFutureDate={true}
                     />
                   </QuestionItem>
-                </div>
-                <div className="explanation-column">
-                  <h4 className="help-header">帮助：离开日期</h4>
-                  <p>请输入您计划离开美国的日期</p>
-                </div>
-              </div>
 
-              <div className="question-row">
-                <div className="question-column">
                   <QuestionItem
                     question="离开航班"
                     name="departureFlight"
                     required={false}
+                    validator={flightNumberValidator}
+                    validatorMessage={flightNumberPatternMessage}
                   >
-                    <Input style={{ width: '99%' }} maxLength={20} />
+                    <Input style={{ width: '99%' }} maxLength={maxLengths.flightNumber} />
                   </QuestionItem>
-                </div>
-                <div className="explanation-column">
-                  <h4 className="help-header">帮助：离开航班</h4>
-                  <p>请输入您的离开航班号（如果知道）</p>
-                </div>
-              </div>
 
-              <div className="question-row">
-                <div className="question-column">
                   <QuestionItem
                     question="离开城市"
                     name="departureCity"
@@ -702,47 +679,45 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                   >
                     <Input 
                       style={{ width: '99%' }} 
-                      maxLength={20}
+                      maxLength={maxLengths.city}
                       placeholder="例如: Los Angeles"
                     />
                   </QuestionItem>
                 </div>
-                <div className="explanation-column">
-                  <h4 className="help-header">帮助：离开城市</h4>
-                  <p>请输入您离开美国的城市</p>
-                </div>
               </div>
-
-              <div className="question-row">
-                <div className="question-column">
-                  <QuestionItem
-                    question="您计划在美国访问的地点"
-                    name="visitLocations"
-                  >
-                    <RepeatableFormItem
-                      name="visitLocations"
-                      addButtonText="增加另一个"
-                      removeButtonText="移走"
-                      blockStyle="white"
-                    >
-                      {(field) => (
-                        <Form.Item
-                          {...field}
-                          name={[field.name, 'location']}
-                          rules={[{ required: true, message: '请输入访问地点' }]}
-                        >
-                          <Input placeholder="请输入访问地点" maxLength={40} style={{ width: '95%' }} />
-                        </Form.Item>
-                      )}
-                    </RepeatableFormItem>
-                  </QuestionItem>
-                </div>
-                <div className="explanation-column">
-                  <h4 className="help-header">帮助：访问地点</h4>
-                  <p>请提供您计划在美国访问的地点</p>
-                </div>
+              <div className="explanation-column">                 
+                <h4 className="help-header">帮助：旅行计划</h4>                 
+                <p>如果您不确定您到达美国的日期或离开美国的日期，请提供一个估计日期。</p>               
               </div>
             </div>
+
+            <div className="question-row">
+              <div className="question-column">
+                <QuestionItem
+                  question="您计划在美国访问的地点"
+                  name="visitLocations"
+                >
+                  <RepeatableFormItem
+                    name="visitLocations"
+                    addButtonText="增加另一个"
+                    removeButtonText="移走"
+                    blockStyle="highlighted"
+                  >
+                    {(field) => (
+                      <Form.Item
+                        {...field}
+                        name={[field.name, 'location']}
+                        rules={[{ required: true, message: '请输入访问地点' }]}
+                      >
+                        <Input placeholder="请输入访问地点" maxLength={40} style={{ width: '95%' }} />
+                      </Form.Item>
+                    )}
+                  </RepeatableFormItem>
+                </QuestionItem>
+              </div>
+                <div className="explanation-column"></div>
+              </div>
+            
           </fieldset>
         )}
 
@@ -750,198 +725,153 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
         {hasSpecificPlans === 'N' && (
           <fieldset className="question-section">
             <h4 style={{ marginBottom: '16px', fontWeight: 'normal' }}>请提供您预计的旅行信息</h4>
-            <div className="highlighted-block">
-              <div className="question-row">
-                <div className="question-column">
-                  <QuestionItem
-                    question="计划到达日期"
-                    name="intendedDateOfArrival"
-                  >
-                    <DateInput 
-                      dayName={["intendedDateOfArrival", "day"]} 
-                      monthName={["intendedDateOfArrival", "month"]} 
-                      yearName={["intendedDateOfArrival", "year"]}
-                      validateFutureDate={true}
-                    />
-                  </QuestionItem>
-                </div>
-                <div className="explanation-column">
-                  <h4 className="help-header">帮助：计划到达日期</h4>
-                  <p>请提供您计划入境美国的日期。如果您还不确定，请提供一个预计日期。</p>
-                </div>
-              </div>
+            <div className="question-row">
+              <div className="question-column">
+                <QuestionItem
+                  question="计划到达日期"
+                  name="intendedDateOfArrival"
+                >
+                  <DateInput 
+                    dayName={["intendedDateOfArrival", "day"]} 
+                    monthName={["intendedDateOfArrival", "month"]} 
+                    yearName={["intendedDateOfArrival", "year"]}
+                    validateFutureDate={true}
+                  />
+                </QuestionItem>
 
-              <div className="question-row">
-                <div className="question-column">
-                  <QuestionItem
-                    question="计划在美停留时间"
-                    name="intendedLengthOfStay"
-                  >
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <Form.Item name="stayDuration" noStyle rules={[{ required: true, message: '请输入停留时间' }]}>
-                        <Input style={{ width: '80px' }} maxLength={3} placeholder="数量" />
-                      </Form.Item>
-                      
-                      <Form.Item name="stayDurationType" noStyle rules={[{ required: true, message: '请选择单位' }]}>
-                        <Select 
-                          options={losUnitOptions} 
-                          style={{ width: '120px' }}
-                          placeholder="- 请选择一个 -"
-                        />
-                      </Form.Item>
-                    </div>
-                  </QuestionItem>
-                </div>
-                <div className="explanation-column">
-                  <h4 className="help-header">帮助：停留时间</h4>
-                  <p>请输入您计划在美国停留的时间长度和单位。</p>
-                </div>
+                <QuestionItem
+                  question="计划在美停留时间"
+                  name="intendedLengthOfStay"
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <Form.Item name="stayDuration" noStyle 
+                      rules={[{ required: true, message: '请输入停留时间' },
+                        { pattern: numericPattern, message: numericPatternMessage }
+                      ]}>
+                      <Input style={{ width: '80px' }} maxLength={3} placeholder="数量" />
+                    </Form.Item>
+                    
+                    <Form.Item name="stayDurationType" noStyle 
+                      rules={[{ required: true, message: '请选择单位' }]}>
+                      <Select 
+                        options={losUnitOptions} 
+                        style={{ width: '120px' }}
+                        placeholder="- 请选择一个 -"
+                      />
+                    </Form.Item>
+                  </div>
+                </QuestionItem>
               </div>
-
-              <div className="question-row">
-                <div className="question-column">
-                  <QuestionItem
-                    question="在美住址"
-                    name="addressWhereYouWillStay"
-                  >
-                    <div className="block-inside-highlight">
-                      <QuestionItem
-                        question="街道地址 (第1行)"
-                        name="streetAddress1"
-                      >
-                        <Input style={{ width: '99%' }} maxLength={40} />
-                      </QuestionItem>
-                      
-                      <QuestionItem
-                        question="街道地址 (第2行)"
-                        name="streetAddress2"
-                        required={false}
-                      >
-                        <Input style={{ width: '99%' }} maxLength={40} />
-                      </QuestionItem>
-                      
-                      <QuestionItem
-                        question="城市"
-                        name="city"
-                        validator={locationValidator}
-                        validatorMessage={locationPatternMessage}
-                      >
-                        <Input style={{ width: '99%' }} maxLength={20} />
-                      </QuestionItem>
-                      
-                      <QuestionItem
-                        question="州"
-                        name="state"
-                        validator={locationValidator}
-                        validatorMessage={locationPatternMessage}
-                      >
-                        <Input style={{ width: '99%' }} maxLength={20} />
-                      </QuestionItem>
-                      
-                      <QuestionItem
-                        question="邮政编码"
-                        name="zipCode"
-                        required={false}
-                        validator={zipCodeValidator}
-                        validatorMessage={zipCodePatternMessage}
-                      >
-                        <Input style={{ width: '99%' }} maxLength={10} />
-                      </QuestionItem>
-                    </div>
-                  </QuestionItem>
-                </div>
-                <div className="explanation-column">
-                  <h4 className="help-header">帮助：在美住址</h4>
-                  <p>请提供您在美国期间的详细住址，如酒店名称和地址、朋友或亲戚的住址等。</p>
-                </div>
+              <div className="explanation-column">
+                <h4 className="help-header">帮助：计划到达日期</h4>
+                <p>请提供您计划入境美国的日期。如果您还不确定，请提供一个预计日期。</p>
               </div>
             </div>
           </fieldset>
         )}
+
+        <div className="question-row">
+          <div className="question-column">
+            <QuestionItem
+              question="在美住址"
+              name="addressWhereYouWillStay"
+            >
+              <div className="highlighted-block">
+                <QuestionItem
+                  question="街道地址 (第1行)"
+                  name="streetAddress1"
+                >
+                  <Input style={{ width: '99%' }} maxLength={maxLengths.address} />
+                </QuestionItem>
+                
+                <QuestionItem
+                  question="街道地址 (第2行)"
+                  name="streetAddress2"
+                  required={false}
+                >
+                  <Input style={{ width: '99%' }} maxLength={maxLengths.address} />
+                </QuestionItem>
+                
+                <QuestionItem
+                  question="城市"
+                  name="city"
+                  validator={locationValidator}
+                  validatorMessage={locationPatternMessage}
+                >
+                  <Input style={{ width: '99%' }} maxLength={maxLengths.city} />
+                </QuestionItem>
+                
+                <QuestionItem
+                  question="州"
+                  name="state"
+                >
+                  <Select 
+                    options={usStateOptions}
+                    style={{ width: '99%' }}
+                    placeholder="- 请选择一个 -"
+                  />
+                </QuestionItem>
+                
+                <QuestionItem
+                  question="邮政编码"
+                  name="zipCode"
+                  required={false}
+                  validator={zipCodeValidator}
+                  validatorMessage={zipCodePatternMessage}
+                >
+                  <Input style={{ width: '60%' }} maxLength={maxLengths.zipCode} />
+                </QuestionItem>
+              </div>
+            </QuestionItem>
+            </div>
+          <div className="explanation-column">
+          </div>
+        </div>
       </fieldset>
 
       {/* Mission Information Section */}
       {visaClass === 'A' && specificPurpose && !isDependentSelection(specificPurpose) && (
         <fieldset className="question-section">
           <h4 style={{ marginBottom: '16px', fontWeight: 'normal' }}>使团信息</h4>
-          <div className="highlighted-block">
-            <div className="question-row">
-              <div className="question-column">
+          <div className="question-row">
+            <div className="question-column">
+              <div className="highlighted-block">
                 <QuestionItem
                   question="赞助使团/组织"
                   name="sponsoringMission"
                 >
                   <Input style={{ width: '99%' }} placeholder="请输入赞助使团/组织名称" maxLength={40} />
                 </QuestionItem>
-              </div>
-              <div className="explanation-column">
-                <h4 className="help-header">帮助：赞助使团/组织</h4>
-                <p>请输入赞助您此次访问的使团或组织的名称（英文）</p>
-              </div>
-            </div>
-
-            <div className="question-row">
-              <div className="question-column">
+              
                 <QuestionItem
                   question="联络人姓氏"
                   name="contactSurname"
                 >
-                  <Input style={{ width: '99%' }} placeholder="请输入联络人姓氏" maxLength={33} />
+                  <Input style={{ width: '99%' }} placeholder="请输入联络人姓氏" maxLength={maxLengths.name} />
                 </QuestionItem>
-              </div>
-              <div className="explanation-column">
-                <h4 className="help-header">帮助：联络人姓氏</h4>
-                <p>请输入使团联络人的姓氏（英文）</p>
-              </div>
-            </div>
-
-            <div className="question-row">
-              <div className="question-column">
+              
                 <QuestionItem
                   question="联络人名字"
                   name="contactGivenName"
                 >
-                  <Input style={{ width: '99%' }} placeholder="请输入联络人名字" maxLength={33} />
+                  <Input style={{ width: '99%' }} placeholder="请输入联络人名字" maxLength={maxLengths.name} />
                 </QuestionItem>
-              </div>
-              <div className="explanation-column">
-                <h4 className="help-header">帮助：联络人名字</h4>
-                <p>请输入使团联络人的名字（英文）</p>
-              </div>
-            </div>
-
-            <div className="question-row">
-              <div className="question-column">
+              
                 <QuestionItem
                   question="美国地址（第一行）"
                   name="missionAddressLine1"
                 >
-                  <Input style={{ width: '99%' }} placeholder="请输入地址第一行" maxLength={40} />
+                  <Input style={{ width: '99%' }} placeholder="请输入地址第一行" maxLength={maxLengths.address} />
                 </QuestionItem>
-              </div>
-              <div className="explanation-column">
-                <h4 className="help-header">帮助：使团地址</h4>
-                <p>请输入使团在美国的详细地址（英文）</p>
-              </div>
-            </div>
-
-            <div className="question-row">
-              <div className="question-column">
+              
                 <QuestionItem
                   question="美国地址（第二行）"
                   name="missionAddressLine2"
                   required={false}
                 >
-                  <Input style={{ width: '99%' }} placeholder="请输入地址第二行（可选）" maxLength={40} />
+                  <Input style={{ width: '99%' }} placeholder="请输入地址第二行（可选）" maxLength={maxLengths.address} />
                 </QuestionItem>
-              </div>
-              <div className="explanation-column">
-                {/* Empty explanation column to maintain layout */}
-              </div>
-            </div>
-
-            <div className="question-row">
-              <div className="question-column">
+              
                 <QuestionItem
                   question="城市"
                   name="missionCity"
@@ -951,58 +881,43 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                   <Input 
                     style={{ width: '99%' }} 
                     placeholder="例如: Washington" 
-                    maxLength={20}
+                    maxLength={maxLengths.city}
                   />
                 </QuestionItem>
-              </div>
-              <div className="explanation-column">
-                {/* Empty explanation column to maintain layout */}
-              </div>
-            </div>
-
-            <div className="question-row">
-              <div className="question-column">
+              
                 <QuestionItem
                   question="州"
                   name="missionState"
-                  validator={locationValidator}
-                  validatorMessage={locationPatternMessage}
                 >
-                  <Input style={{ width: '99%' }} maxLength={20} />
+                  <Select 
+                    options={usStateOptions} 
+                    style={{ width: '99%' }} 
+                    placeholder="- 请选择一个 -" 
+                  />  
                 </QuestionItem>
-              </div>
-              <div className="explanation-column">
-                {/* Empty explanation column to maintain layout */}
-              </div>
-            </div>
-
-            <div className="question-row">
-              <div className="question-column">
+              
                 <QuestionItem
                   question="邮政编码"
                   name="missionZipCode"
+                  validator={missionZipCodeValidator}
+                  validatorMessage={missionZipCodePatternMessage}
                 >
-                  <Input style={{ width: '99%' }} placeholder="例如：12345 或 12345-1234" maxLength={10} />
+                  <Input style={{ width: '60%' }} placeholder="例如：12345 或 12345-1234" maxLength={10} />
                 </QuestionItem>
-              </div>
-              <div className="explanation-column">
-                {/* Empty explanation column to maintain layout */}
-              </div>
-            </div>
-
-            <div className="question-row">
-              <div className="question-column">
+              
                 <QuestionItem
                   question="电话号码"
                   name="missionPhoneNumber"
+                  validator={missionPhoneValidator}
+                  validatorMessage={missionPhonePatternMessage}
                 >
-                  <Input style={{ width: '99%' }} placeholder="例如：5555555555" maxLength={15} />
+                  <Input style={{ width: '60%' }} placeholder="例如：5555555555" maxLength={15} />
                 </QuestionItem>
               </div>
-              <div className="explanation-column">
-                <h4 className="help-header">帮助：电话号码</h4>
-                <p>请输入使团的联系电话，包括区号</p>
-              </div>
+            </div>
+            <div className="explanation-column">
+              <h4 className="help-header">帮助：电话号码</h4>
+              <p>请输入使团的联系电话，包括区号</p>
             </div>
           </div>
         </fieldset>
