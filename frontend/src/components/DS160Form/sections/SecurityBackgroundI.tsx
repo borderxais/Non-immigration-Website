@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Radio, Input, Form } from 'antd';
 import QuestionItem from '../common/QuestionItem';
-import { maxLengths } from '../utils/validationRules';
+import { maxLengths, explanationPattern, explanationPatternMessage } from '../utils/validationRules';
 
 interface SecurityBackgroundProps {
     form: any;
@@ -63,6 +63,9 @@ const SecurityBackground: React.FC<SecurityBackgroundProps> = ({ form }) => {
                       <Form.Item
                           name="diseaseExplanation"
                           noStyle
+                          rules={[
+                            { pattern: explanationPattern, message: explanationPatternMessage }
+                          ]}
                       >
                           <TextArea 
                           style={{ width: '99%' }} 
@@ -105,6 +108,9 @@ const SecurityBackground: React.FC<SecurityBackgroundProps> = ({ form }) => {
                       <Form.Item
                         name="disorderExplanation"
                         noStyle
+                        rules={[
+                          { pattern: explanationPattern, message: explanationPatternMessage }
+                        ]}
                       >
                         <TextArea 
                         style={{ width: '99%' }} 
@@ -146,7 +152,10 @@ const SecurityBackground: React.FC<SecurityBackgroundProps> = ({ form }) => {
                       <Form.Item
                         name="drugUserExplanation"
                         noStyle
-                    >
+                        rules={[
+                          { pattern: explanationPattern, message: explanationPatternMessage }
+                        ]}
+                      >
                         <TextArea 
                         style={{ width: '99%' }} 
                         rows={4} 

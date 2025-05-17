@@ -53,6 +53,11 @@ export const zipCodePatternMessage = '邮政编码格式不正确 (例如: 12345
 export const locationPattern = /^[A-Za-z0-9$?.',-\s\u4e00-\u9fa5·]+$/;
 export const locationPatternMessage = "只能包含字母、数字、中文字符、$、?、句点(.)、撇号(')、逗号(,)、连字符(-)和空格";
 
+// Explanation field pattern (for security background explanations and other detailed text fields)
+// A-Z, 0-9, #, $, *, %, &, (;), !, @, ^, ?, >, <, parens (), period (.), apostrophe ('), comma (,), hyphen (-), and space
+export const explanationPattern = /^[A-Z0-9#$*%&;!@^?><().,'\-\s]+$/;
+export const explanationPatternMessage = "只能包含大写字母、数字、特殊符号(#, $, *, %, &, ;, !, @, ^, ?, >, <)、括号()、句点(.)、撇号(')、逗号(,)、连字符(-)和空格";
+
 // Social media identifier pattern (alphanumeric with some special characters)
 export const socialMediaPattern = /^[A-Za-z0-9_.\-@]+$/;
 export const socialMediaPatternMessage = '只能包含字母、数字和特殊字符(_、.、-、@)';
@@ -163,6 +168,12 @@ export const zipCodeValidator = (value: any) => {
 export const locationValidator = (value: any) => {
   if (!value) return true; // Empty values are handled by required rule
   return locationPattern.test(value);
+};
+
+// Validator for explanation fields
+export const explanationValidator = (value: any) => {
+  if (!value) return true; // Empty values are handled by required rule
+  return explanationPattern.test(value);
 };
 
 // Validator for receipt numbers
