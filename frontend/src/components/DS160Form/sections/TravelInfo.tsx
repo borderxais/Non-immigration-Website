@@ -568,6 +568,8 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                               question="申请收据/申请号码"
                               name={[field.name, 'principalApplicantReceiptNumber']}
                               required
+                              validator={receiptNumberValidator}
+                              validatorMessage={receiptNumberPatternMessage}
                             >
                               <Input 
                                 style={{ width: '95%' }} 
@@ -1007,8 +1009,6 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                   <QuestionItem
                     question="与您的关系"
                     name="payerRelationship"
-                    validator={relationshipValidator}
-                    validatorMessage={relationshipPatternMessage}
                   >
                     <Select 
                       className="select-input" 

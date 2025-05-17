@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Radio, Input, Form } from 'antd';
 import QuestionItem from '../common/QuestionItem';
+import { maxLengths } from '../utils/validationRules';
 
 interface SecurityBackgroundProps {
     form: any;
@@ -66,7 +67,7 @@ const SecurityBackground: React.FC<SecurityBackgroundProps> = ({ form }) => {
                           <TextArea 
                           style={{ width: '99%' }} 
                           rows={4} 
-                          maxLength={4000}
+                          maxLength={maxLengths.explanation}
                           required={true}
                           />
                       </Form.Item>
@@ -108,7 +109,7 @@ const SecurityBackground: React.FC<SecurityBackgroundProps> = ({ form }) => {
                         <TextArea 
                         style={{ width: '99%' }} 
                         rows={4} 
-                        maxLength={4000}
+                        maxLength={maxLengths.explanation}
                         required={true}
                         />
                       </Form.Item>
@@ -149,7 +150,7 @@ const SecurityBackground: React.FC<SecurityBackgroundProps> = ({ form }) => {
                         <TextArea 
                         style={{ width: '99%' }} 
                         rows={4} 
-                        maxLength={4000}
+                        maxLength={maxLengths.explanation}
                         required={true}
                         />
                       </Form.Item>

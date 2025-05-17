@@ -4,9 +4,9 @@
  * Regular expression patterns for field validation
  */
 
-// Name field patterns (English and Chinese characters with spaces)
-export const namePattern = /^[A-Za-z\u4e00-\u9fa5\s]+$/;
-export const namePatternMessage = '只能包含英文或中文字符和空格';
+// Name field patterns (Uppercase English letters, Chinese characters, and single spaces between names)
+export const namePattern = /^[A-Z\u4e00-\u9fa5]+(?: [A-Z\u4e00-\u9fa5]+)*$/;
+export const namePatternMessage = '只能包含大写英文字母、中文字符和名字之间的单个空格';
 
 // English-only name patterns (for passport fields)
 export const englishNamePattern = /^[A-Za-z\s]+$/;
@@ -93,7 +93,7 @@ export const CURRENT_DATE = new Date();
  * Common field validation functions
  */
 
-// Validator for name fields (English and Chinese characters with spaces)
+// Validator for name fields (Uppercase English letters, Chinese characters, and single spaces between names)
 export const nameValidator = (value: any) => {
   if (!value) return true; // Empty values are handled by required rule
   return namePattern.test(value);
