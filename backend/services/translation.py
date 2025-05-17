@@ -1,5 +1,6 @@
 import os
 import logging
+import json
 from typing import Optional, Dict, Any
 from openai import OpenAI
 
@@ -83,17 +84,76 @@ def translate_form_data(form_data: Dict[str, Any], source_lang: str = 'zh', targ
     """
     if not form_data:
         return form_data
+    
+    # Option 1: Process the entire form data at once
+    try:
+        # Convert the form data to a JSON string
+        form_data_str = json.dumps(form_data, ensure_ascii=False)
+        
+        # Create a prompt that instructs the model to translate all Chinese text to Pinyin
+        prompt = f"""
+        Translate all Chinese text in the following JSON to Pinyin. 
+        Keep all non-Chinese text, numbers, and special characters unchanged.
+        Keep the JSON structure exactly the same.
+        Only translate Chinese characters to Pinyin.
+        
+        Examples:
+        - "我喜歡學習" → "Wo xihuan xuexi"
+        - "王大明在北京大學學習" → "Wang Daming zai Beijing Daxue xuexi"
+        - "Y" → Keep as "Y"
+        - "aven@borderxai.com" → Keep as "aven@borderxai.com"
+        - "孙意" → "Sun Yi"
+        
+        JSON to translate:
+        {form_data_str}
+        """
+        
+        response = client.chat.completions.create(
+            model="gpt-4o",
+            messages=[
+                {"role": "system", "content": "You are a Chinese to Pinyin converter. Only output the converted JSON, no explanations."},
+                {"role": "user", "content": prompt}
+            ],
+            temperature=0,
+            max_tokens=4000
+        )
+        
+        translated_json_str = response.choices[0].message.content.strip()
+        
+        # Try to parse the response as JSON
+        try:
+            # Find the JSON part in the response (in case the model adds any explanations)
+            import re
+            json_match = re.search(r'(\{.*\})', translated_json_str, re.DOTALL)
+            if json_match:
+                translated_json_str = json_match.group(1)
+            
+            translated_data = json.loads(translated_json_str)
+            return translated_data
+        except json.JSONDecodeError:
+            logger.error("Failed to parse the translated JSON response")
+            # Fall back to the recursive method
+            return _translate_form_data_recursive(form_data, source_lang, target_lang)
+    
+    except Exception as e:
+        logger.error(f"Error translating entire form data: {str(e)}")
+        # Fall back to the recursive method
+        return _translate_form_data_recursive(form_data, source_lang, target_lang)
 
+def _translate_form_data_recursive(form_data: Dict[str, Any], source_lang: str = 'zh', target_lang: str = 'pinyin') -> Dict[str, Any]:
+    """
+    Convert all Chinese text in form data to Pinyin using a recursive approach.
+    """
     translated_data = {}
     
     for key, value in form_data.items():
         if isinstance(value, str):
             translated_data[key] = translate_text(value, source_lang, target_lang)
         elif isinstance(value, dict):
-            translated_data[key] = translate_form_data(value, source_lang, target_lang)
+            translated_data[key] = _translate_form_data_recursive(value, source_lang, target_lang)
         elif isinstance(value, list):
             translated_data[key] = [
-                translate_form_data(item, source_lang, target_lang) if isinstance(item, dict)
+                _translate_form_data_recursive(item, source_lang, target_lang) if isinstance(item, dict)
                 else translate_text(item, source_lang, target_lang) if isinstance(item, str)
                 else item
                 for item in value
