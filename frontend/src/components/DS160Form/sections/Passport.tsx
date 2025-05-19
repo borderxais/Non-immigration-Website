@@ -6,6 +6,7 @@ import '../ds160Form.css';
 import DateInput from '../common/DateInput';
 import RepeatableFormItem from '../common/RepeatableFormItem';
 import { FormListFieldData } from 'antd/lib/form/FormList';
+import { idDocumentPatternMessage, idDocumentValidator, historicalDateValidator, notFutureDateValidator, futureDateValidator, maxLengths } from '../utils/validationRules';
 
 const { TextArea } = Input;
 
@@ -45,6 +46,7 @@ const Passport: React.FC<PassportProps> = ({ form }) => {
             <QuestionItem
               question="护照/旅行证件种类"
               name="passportType"
+              required={true}
             >
               <Select 
                 placeholder="- 请选择一个 -" 
@@ -69,13 +71,13 @@ const Passport: React.FC<PassportProps> = ({ form }) => {
                       <Form.Item
                         name="passportTypeExplanation"
                         noStyle
+                        rules={[{ required: true, message: '请说明护照种类' }]}
                       >
                         <TextArea 
                           style={{ width: '99%' }} 
                           rows={4} 
-                          maxLength={4000}
+                          maxLength={maxLengths.explanation}
                           placeholder="请详细说明您的护照/旅行证件种类"
-                          required={true}
                         />
                       </Form.Item>
                     </div>
@@ -94,8 +96,11 @@ const Passport: React.FC<PassportProps> = ({ form }) => {
             <QuestionItem
               question="护照/旅行证件号码"
               name="passportNumber"
+              validator={idDocumentValidator}
+              validatorMessage={idDocumentPatternMessage}
+              maxLength={maxLengths.idDocument}
             >
-              <Input style={{ width: '99%' }} maxLength={20} />
+              <Input style={{ width: '99%' }} maxLength={maxLengths.idDocument} />
             </QuestionItem>
           </div>
           <div className="explanation-column">
@@ -114,8 +119,11 @@ const Passport: React.FC<PassportProps> = ({ form }) => {
               hasNaCheckbox={true}
               naCheckboxName="passportBookNumber_na"
               inlineCheckbox={true}
+              maxLength={maxLengths.idDocument}
+              validator={idDocumentValidator}
+              validatorMessage={idDocumentPatternMessage}
             >
-              <Input style={{ width: '90%' }} maxLength={20} />
+              <Input style={{ width: '90%' }} maxLength={maxLengths.idDocument} />
             </QuestionItem>
           </div>
           <div className="explanation-column">
@@ -185,6 +193,9 @@ const Passport: React.FC<PassportProps> = ({ form }) => {
             <QuestionItem
               question="签发日期"
               name="passportIssuedDate"
+              required={true}
+              validator={(value) => historicalDateValidator(value.day, value.month, value.year) && notFutureDateValidator(value.day, value.month, value.year)}
+              validatorMessage={"签发日期必须在1915年5月15日之后，且不能是未来日期"}
             >
               <DateInput
                 dayName={["passportIssuedDate", "day"]}
@@ -206,6 +217,9 @@ const Passport: React.FC<PassportProps> = ({ form }) => {
               hasNaCheckbox={true}
               naCheckboxName="passportExpirationDate_na"
               inlineCheckbox={true}
+              required={true}
+              validator={(value) => futureDateValidator(value.day, value.month, value.year)}
+              validatorMessage="失效日期必须是未来日期"
             >
               <DateInput
                 dayName={["passportExpirationDate", "day"]}
@@ -231,6 +245,7 @@ const Passport: React.FC<PassportProps> = ({ form }) => {
             <QuestionItem
               question="您的护照是否曾遗失或者被盗？"
               name="hasLostPassport"
+              required={true}
             >
               <Radio.Group onChange={handleLostPassportChange}>
                 <Radio value="Y">是 (Yes)</Radio>
@@ -264,8 +279,14 @@ const Passport: React.FC<PassportProps> = ({ form }) => {
                         naCheckboxName={[field.name, 'passportNumber_na']}
                         inlineCheckbox={true}
                         parentFieldName="lostPassports"
+                        validator={idDocumentValidator}
+                        validatorMessage={idDocumentPatternMessage}
+                        maxLength={maxLengths.idDocument}
                     >
-                        <Input style={{ width: '95%' }} maxLength={20} />
+                        <Input 
+                          style={{ width: '95%' }} 
+                          maxLength={maxLengths.idDocument} 
+                        />
                     </QuestionItem>
                     </div>
                     <div className="explanation-column">
@@ -278,6 +299,7 @@ const Passport: React.FC<PassportProps> = ({ form }) => {
                     <QuestionItem
                         question="颁发国家/机构"
                         name={[field.name, 'issuingCountry']}
+                        required={true}
                     >
                         <Select 
                         options={countryOptions}
@@ -297,13 +319,13 @@ const Passport: React.FC<PassportProps> = ({ form }) => {
                     <Form.Item
                       name={[field.name, 'explanation']}
                       noStyle
+                      rules={[{ required: true, message: '请说明护照遗失情况' }]}
                     >
                       <TextArea 
                         style={{ width: '99%' }} 
                         rows={4} 
-                        maxLength={4000}
+                        maxLength={maxLengths.explanation}
                         placeholder="请详细说明您的情况"
-                        required={true}
                       />
                     </Form.Item>
               
