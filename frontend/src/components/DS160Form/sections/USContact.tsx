@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Form, Input, Select, Checkbox } from 'antd';
 import QuestionItem from '../common/QuestionItem';
 import { usStateOptions } from '../utils/formOptions';
+import { maxLengths, englishNameValidator, addressValidator, locationValidator, zipCodeValidator, numPhoneValidator, emailValidator } from '../utils/validationRules';
 
 interface USContactProps {
     form: any;
@@ -61,7 +62,10 @@ const USContact: React.FC<USContactProps> = ({ form }) => {
                   <span style={{ fontWeight: 'bold' }}>姓氏</span>
                   <span style={{ color: '#ff4d4f', marginLeft: '4px' }}>*</span>
                 </div>
-                <Form.Item name="usPocSurname">
+                <Form.Item 
+                  name="usPocSurname"
+                  rules={[{ required: !watchNameNotKnown, message: '请输入姓氏' },
+                          { validator: (_, value) => value && englishNameValidator(value) ? Promise.resolve() : Promise.reject('姓氏只能包含英文字母和空格') }]}>
                   <Input 
                     style={{ width: '99%' }} 
                     maxLength={33} 
@@ -76,7 +80,10 @@ const USContact: React.FC<USContactProps> = ({ form }) => {
                   <span style={{ fontWeight: 'bold' }}>名字</span>
                   <span style={{ color: '#ff4d4f', marginLeft: '4px' }}>*</span>
                 </div>
-                <Form.Item name="usPocGivenName">
+                <Form.Item 
+                  name="usPocGivenName"
+                  rules={[{ required: !watchNameNotKnown, message: '请输入名字' },
+                          { validator: (_, value) => value && englishNameValidator(value) ? Promise.resolve() : Promise.reject('名字只能包含英文字母和空格') }]}>
                   <Input 
                     style={{ width: '99%' }} 
                     maxLength={33} 
@@ -152,6 +159,7 @@ const USContact: React.FC<USContactProps> = ({ form }) => {
             <QuestionItem
               question="与您的关系"
               name="usPocRelationship"
+              required={true}
             >
               <Select 
                 placeholder="- 请选择一个 -" 
@@ -185,8 +193,15 @@ const USContact: React.FC<USContactProps> = ({ form }) => {
                   <QuestionItem
                     question="美国街道地址(第一行)"
                     name="usPocAddressLine1"
+                    required={true}
                   >
-                    <Input style={{ width: '99%' }} maxLength={40} />
+                    <Form.Item
+                      name="usPocAddressLine1"
+                      rules={[{ required: true, message: '请输入街道地址' },
+                             { validator: (_, value) => value && addressValidator(value) ? Promise.resolve() : Promise.reject('地址格式不正确') }]}
+                    >
+                      <Input style={{ width: '99%' }} maxLength={40} />
+                    </Form.Item>
                   </QuestionItem>
 
                   <QuestionItem
@@ -200,13 +215,21 @@ const USContact: React.FC<USContactProps> = ({ form }) => {
                   <QuestionItem
                     question="城市"
                     name="usPocCity"
+                    required={true}
                   >
-                    <Input style={{ width: '99%' }} maxLength={20} />
+                    <Form.Item
+                      name="usPocCity"
+                      rules={[{ required: true, message: '请输入城市名' },
+                             { validator: (_, value) => value && locationValidator(value) ? Promise.resolve() : Promise.reject('城市名格式不正确') }]}
+                    >
+                      <Input style={{ width: '99%' }} maxLength={20} />
+                    </Form.Item>
                   </QuestionItem>
 
                   <QuestionItem
                     question="州"
                     name="usPocState"
+                    required={true}
                   >
                     <Select 
                       options={usStateOptions} 
@@ -220,14 +243,26 @@ const USContact: React.FC<USContactProps> = ({ form }) => {
                     name="usPocZipCode"
                     required={false}
                   >
-                    <Input style={{ width: '99%' }} maxLength={10} placeholder="例如：55555 或 55555-5555" />
+                    <Form.Item
+                      name="usPocZipCode"
+                      rules={[{ validator: (_, value) => !value || zipCodeValidator(value) ? Promise.resolve() : Promise.reject('邮政编码格式不正确') }]}
+                    >
+                      <Input style={{ width: '99%' }} maxLength={10} placeholder="例如：55555 或 55555-5555" />
+                    </Form.Item>
                   </QuestionItem>
 
                   <QuestionItem
                     question="电话号码"
                     name="usPocPhone"
+                    required={true}
                   >
-                    <Input style={{ width: '99%' }} maxLength={15} minLength={10} placeholder="例如：5555555555" />
+                    <Form.Item
+                      name="usPocPhone"
+                      rules={[{ required: true, message: '请输入电话号码' },
+                             { validator: (_, value) => value && numPhoneValidator(value) ? Promise.resolve() : Promise.reject('电话号码格式不正确') }]}
+                    >
+                      <Input style={{ width: '99%' }} maxLength={15} minLength={10} placeholder="例如：5555555555" />
+                    </Form.Item>
                   </QuestionItem>
 
                   <QuestionItem
@@ -236,11 +271,16 @@ const USContact: React.FC<USContactProps> = ({ form }) => {
                     hasNaCheckbox={true}
                     naCheckboxName="usPocEmail_na"
                   >
-                    <Input 
-                      style={{ width: '99%' }} 
-                      maxLength={50} 
-                      placeholder="例如：emailaddress@example.com"
-                    />
+                    <Form.Item
+                      name="usPocEmail"
+                      rules={[{ validator: (_, value) => !value || emailValidator(value) ? Promise.resolve() : Promise.reject('电子邮件地址格式不正确') }]}
+                    >
+                      <Input 
+                        style={{ width: '99%' }} 
+                        maxLength={50} 
+                        placeholder="例如：emailaddress@example.com"
+                      />
+                    </Form.Item>
                   </QuestionItem>
                 </div>
               </div>

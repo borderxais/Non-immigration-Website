@@ -4,6 +4,7 @@ import QuestionItem from '../common/QuestionItem';
 import DateInput from '../common/DateInput';
 import RepeatableFormItem from '../common/RepeatableFormItem';
 import { relationshipOptions, usStatusOptions } from '../utils/formOptions';
+import { englishNameValidator, englishNamePatternMessage, maxLengths, historicalDateValidator, notFutureDateValidator } from '../utils/validationRules';
 
 interface FamilyInfoProps {
   form: any;
@@ -86,10 +87,13 @@ const FamilyInfo: React.FC<FamilyInfoProps> = ({ form }) => {
                   required={true}
                   hasNaCheckbox={true}
                   naCheckboxName="fatherSurnameNotKnown"
+                  validator={englishNameValidator}
+                  validatorMessage={englishNamePatternMessage}
+                  maxLength={maxLengths.name}
                 >
                   <Input 
                     style={{ width: '99%' }} 
-                    maxLength={33} 
+                    maxLength={maxLengths.name} 
                     disabled={!!watchFatherSurnameNotKnown}
                     placeholder={!!watchFatherSurnameNotKnown ? '' : '请输入父亲姓氏'}
                   />
@@ -103,10 +107,13 @@ const FamilyInfo: React.FC<FamilyInfoProps> = ({ form }) => {
                   required={true}
                   hasNaCheckbox={true}
                   naCheckboxName="fatherGivenNameNotKnown"
+                  validator={englishNameValidator}
+                  validatorMessage={englishNamePatternMessage}
+                  maxLength={maxLengths.name}
                 >
                   <Input 
                     style={{ width: '99%' }} 
-                    maxLength={33} 
+                    maxLength={maxLengths.name} 
                     disabled={!!watchFatherGivenNameNotKnown}
                     placeholder={!!watchFatherGivenNameNotKnown ? '' : '请输入父亲名字'}
                   />
@@ -124,6 +131,23 @@ const FamilyInfo: React.FC<FamilyInfoProps> = ({ form }) => {
                       hasNaCheckbox={true}
                       naCheckboxName="fatherDobNotKnown"
                       inlineCheckbox={true}
+                      validator={(value) => {
+                        if (!value) return true;
+                        const { day, month, year } = value;
+                        
+                        // Check historical date
+                        if (!historicalDateValidator(day, month, year)) {
+                          return false;
+                        }
+                        
+                        // Check not future date
+                        if (!notFutureDateValidator(day, month, year)) {
+                          return false;
+                        }
+                        
+                        return true;
+                      }}
+                      validatorMessage="日期无效，请确保日期不早于1915年5月15日，不晚于今天，且早于申请人出生日期"
                     >
                       <DateInput
                         dayName={["fatherDob", "day"]}
@@ -186,6 +210,9 @@ const FamilyInfo: React.FC<FamilyInfoProps> = ({ form }) => {
                   required={true}
                   hasNaCheckbox={true}
                   naCheckboxName="motherSurnameNotKnown"
+                  validator={englishNameValidator}
+                  validatorMessage={englishNamePatternMessage}
+                  maxLength={maxLengths.name}
                 >
                   <Input 
                     style={{ width: '99%' }} 
@@ -203,6 +230,9 @@ const FamilyInfo: React.FC<FamilyInfoProps> = ({ form }) => {
                   required={true}
                   hasNaCheckbox={true}
                   naCheckboxName="motherGivenNameNotKnown"
+                  validator={englishNameValidator}
+                  validatorMessage={englishNamePatternMessage}
+                  maxLength={maxLengths.name}
                 >
                   <Input 
                     style={{ width: '99%' }} 
@@ -223,7 +253,24 @@ const FamilyInfo: React.FC<FamilyInfoProps> = ({ form }) => {
                       required={true}
                       hasNaCheckbox={true}
                       naCheckboxName="motherDobNotKnown"
-                      inlineCheckbox={true}
+                      validator={({ day, month, year }) => {
+                        if (!day || !month || !year) {
+                          return true;
+                        }
+                        
+                        // Check historical date
+                        if (!historicalDateValidator(day, month, year)) {
+                          return false;
+                        }
+                        
+                        // Check not future date
+                        if (!notFutureDateValidator(day, month, year)) {
+                          return false;
+                        }
+                        
+                        return true;
+                      }}
+                      validatorMessage="日期无效，请确保日期不早于1915年5月15日，不晚于今天，且早于申请人出生日期"
                     >
                       <DateInput
                         dayName={["motherDob", "day"]}

@@ -94,6 +94,12 @@ export const AFTER_BIRTH_DATE_MESSAGE = '日期不能早于出生日期';
 // Current date (for maximum date validation)
 export const CURRENT_DATE = new Date();
 
+// Date validation error messages
+export const historicalDatePatternMessage = '日期不能早于1915年5月15日';
+export const notFutureDatePatternMessage = '日期不能晚于今天';
+export const earlierThanUserBirthDatePatternMessage = '日期必须早于申请人出生日期';
+export const notEarlierThanBirthDatePatternMessage = '日期不能早于出生日期';
+
 /**
  * Common field validation functions
  */
@@ -263,6 +269,27 @@ export const futureDateValidator = (day: string, month: string, year: string) =>
 };
 
 // Validator to ensure a date is not earlier than birth date
+// Validator to ensure a date is earlier than user's birth date
+export const earlierThanUserBirthDateValidator = (day: string, month: string, year: string, userBirthDay: string, userBirthMonth: string, userBirthYear: string) => {
+  if (!day || !month || !year || !userBirthDay || !userBirthMonth || !userBirthYear) return true;
+  
+  const monthMap: { [key: string]: number } = {
+    'JAN': 0, 'FEB': 1, 'MAR': 2, 'APR': 3, 'MAY': 4, 'JUN': 5,
+    'JUL': 6, 'AUG': 7, 'SEP': 8, 'OCT': 9, 'NOV': 10, 'DEC': 11
+  };
+  
+  const monthNum = monthMap[month];
+  const userBirthMonthNum = monthMap[userBirthMonth];
+  
+  if (monthNum === undefined || userBirthMonthNum === undefined) return false;
+  
+  const inputDate = new Date(parseInt(year), monthNum, parseInt(day));
+  const userBirthDate = new Date(parseInt(userBirthYear), userBirthMonthNum, parseInt(userBirthDay));
+  
+  // Check if the input date is earlier than user's birth date
+  return inputDate < userBirthDate;
+};
+
 export const notEarlierThanBirthDateValidator = (day: string, month: string, year: string, birthDay: string, birthMonth: string, birthYear: string) => {
   console.log('notEarlierThanBirthDateValidator called with:', {
     inputDate: { day, month, year },
