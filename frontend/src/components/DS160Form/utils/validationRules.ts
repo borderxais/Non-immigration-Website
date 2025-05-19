@@ -315,7 +315,7 @@ export const maxLengths = {
   address: 40,        // Address fields
   city: 20,           // City names
   state: 20,          // State/province names
-  phone: 20,          // Phone numbers
+  phone: 15,          // Phone numbers
   email: 50,          // Email addresses
   idDocument: 20,     // Common max length for passport, national ID, taxpayer ID
   receiptNumber: 13,  // Receipt number

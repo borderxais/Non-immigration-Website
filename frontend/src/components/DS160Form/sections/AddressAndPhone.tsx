@@ -5,6 +5,21 @@ import { countryOptions } from '../utils/formOptions';
 import '../ds160Form.css';
 import RepeatableFormItem from '../common/RepeatableFormItem';
 import { FormListFieldData } from 'antd/lib/form/FormList';
+import { 
+  maxLengths, 
+  addressValidator,
+  addressPatternMessage,
+  phoneValidator,
+  phonePatternMessage,
+  emailValidator,
+  emailPatternMessage,
+  zipCodeValidator,
+  zipCodePatternMessage,
+  locationValidator,
+  locationPatternMessage,
+  socialMediaPattern,
+  socialMediaPatternMessage
+} from '../utils/validationRules';
 
 interface AddressAndPhoneProps {
   form: any;
@@ -101,8 +116,11 @@ const AddressAndPhone: React.FC<AddressAndPhoneProps> = ({ form }) => {
             <QuestionItem
               question="街道地址（第一行）"
               name="homeAddressStreet1"
+              maxLength={maxLengths.address}
+              validator={addressValidator}
+              validatorMessage={addressPatternMessage}
             >
-              <Input style={{ width: '99%' }} placeholder="" />
+              <Input style={{ width: '99%' }} placeholder="" maxLength={maxLengths.address} />
             </QuestionItem>
           </div>
           <div className="explanation-column">
@@ -115,8 +133,11 @@ const AddressAndPhone: React.FC<AddressAndPhoneProps> = ({ form }) => {
               question="街道地址（第二行）"
               name="homeAddressStreet2"
               required={false}
+              maxLength={maxLengths.address}
+              validator={addressValidator}
+              validatorMessage={addressPatternMessage}
             >
-              <Input style={{ width: '99%' }}/>
+              <Input style={{ width: '99%' }} maxLength={maxLengths.address} />
             </QuestionItem>
           </div>
           <div className="explanation-column">
@@ -128,8 +149,11 @@ const AddressAndPhone: React.FC<AddressAndPhoneProps> = ({ form }) => {
             <QuestionItem
               question="城市"
               name="homeAddressCity"
+              maxLength={maxLengths.city}
+              validator={locationValidator}
+              validatorMessage={locationPatternMessage}
             >
-              <Input style={{ width: '99%' }}/>
+              <Input style={{ width: '99%' }} maxLength={maxLengths.city} />
             </QuestionItem>
           </div>
           <div className="explanation-column">
@@ -142,11 +166,14 @@ const AddressAndPhone: React.FC<AddressAndPhoneProps> = ({ form }) => {
             <QuestionItem
               question="州/省/地区"
               name="homeAddressState"
+              maxLength={maxLengths.state}
+              validator={locationValidator}
+              validatorMessage={locationPatternMessage}
               hasNaCheckbox={true}
               naCheckboxName="homeAddressState_na"
               inlineCheckbox={true}
             >
-              <Input style={{ width: '90%' }}/>
+              <Input style={{ width: '90%' }} maxLength={maxLengths.state}/>
             </QuestionItem>
           </div>
           <div className="explanation-column">
@@ -159,11 +186,14 @@ const AddressAndPhone: React.FC<AddressAndPhoneProps> = ({ form }) => {
             <QuestionItem
               question="邮政编码"
               name="homeAddressZipCode"
+              maxLength={maxLengths.zipCode}
+              validator={zipCodeValidator}
+              validatorMessage={zipCodePatternMessage}
               hasNaCheckbox={true}
               naCheckboxName="homeAddressZipCode_na"
               inlineCheckbox={true}
             >
-              <Input style={{ width: '80%' }}/>
+              <Input style={{ width: '80%' }} maxLength={maxLengths.zipCode}/>
             </QuestionItem>
           </div>
           <div className="explanation-column">
@@ -221,43 +251,54 @@ const AddressAndPhone: React.FC<AddressAndPhoneProps> = ({ form }) => {
                             <QuestionItem
                                 question="街道地址（第一行）"
                                 name="mailingAddressStreet1"
+                                maxLength={maxLengths.address}
+                                validator={addressValidator}
+                                validatorMessage={addressPatternMessage}
                                 >
-                                <Input style={{ width: '99%' }}/>
+                                <Input style={{ width: '99%' }} maxLength={maxLengths.address} />
                             </QuestionItem>
 
                             <QuestionItem
                                 question="街道地址（第二行）"
                                 name="mailingAddressStreet2"
                                 required={false}
+                                maxLength={maxLengths.address}
+                                validator={addressValidator}
+                                validatorMessage={addressPatternMessage}
                                 >
-                                <Input style={{ width: '99%' }}/>
+                                <Input style={{ width: '99%' }} maxLength={maxLengths.address} />
                             </QuestionItem>
 
                             <QuestionItem
                                 question="城市"
                                 name="mailingAddressCity"
+                                maxLength={maxLengths.city}
+                                validator={locationValidator}
+                                validatorMessage={locationPatternMessage}
                                 >
-                                <Input style={{ width: '99%' }}/>
+                                <Input style={{ width: '99%' }} maxLength={maxLengths.city}/>
                                 </QuestionItem>
 
                             <QuestionItem
                                 question="州/省/地区"
                                 name="mailingAddressState"
+                                maxLength={maxLengths.state}
                                 hasNaCheckbox={true}
                                 naCheckboxName="mailingAddressState_na"
                                 inlineCheckbox={true}
                                 >
-                            <Input style={{ width: '90%' }}/>
+                                <Input style={{ width: '90%' }} maxLength={maxLengths.state}/>
                             </QuestionItem>
 
                             <QuestionItem
                                 question="邮政编码"
                                 name="mailingAddressZipCode"
+                                maxLength={maxLengths.zipCode}
                                 hasNaCheckbox={true}
                                 naCheckboxName="mailingAddressZipCode_na"
                                 inlineCheckbox={true}
                                 >
-                                <Input style={{ width: '80%' }}/>
+                                <Input style={{ width: '80%' }} maxLength={maxLengths.zipCode}/>
                             </QuestionItem>
 
                             <QuestionItem
@@ -288,30 +329,39 @@ const AddressAndPhone: React.FC<AddressAndPhoneProps> = ({ form }) => {
               <span>电话</span>
             </h3>
             <QuestionItem
-            question="主要电话号码"
-            name="primaryPhone"
+              question="主要电话号码"
+              name="primaryPhone"
+              maxLength={maxLengths.phone}
+              validator={phoneValidator}
+              validatorMessage={phonePatternMessage}
             >
-            <Input style={{ width: '60%' }} maxLength={15} minLength={10} />
+              <Input style={{ width: '60%' }} maxLength={maxLengths.phone} minLength={5} />
             </QuestionItem>
 
             <QuestionItem
-            question="备用电话号码"
-            name="secondaryPhone"
-            hasNaCheckbox={true}
-            naCheckboxName="secondaryPhone_na"
-            inlineCheckbox={true}
+              question="备用电话号码"
+              name="secondaryPhone"
+              maxLength={maxLengths.phone}
+              validator={phoneValidator}
+              validatorMessage={phonePatternMessage}
+              hasNaCheckbox={true}
+              naCheckboxName="secondaryPhone_na"
+              inlineCheckbox={true}
             >
-            <Input style={{ width: '90%' }} maxLength={15} minLength={10} />
+            <Input style={{ width: '90%' }} maxLength={maxLengths.phone} minLength={5} />
             </QuestionItem>
 
             <QuestionItem
-            question="工作电话号码"
-            name="workPhone"
-            hasNaCheckbox={true}
-            naCheckboxName="workPhone_na"
-            inlineCheckbox={true}
+              question="工作电话号码"
+              name="workPhone"
+              maxLength={maxLengths.phone}
+              validator={phoneValidator}
+              validatorMessage={phonePatternMessage}
+              hasNaCheckbox={true}
+              naCheckboxName="workPhone_na"
+              inlineCheckbox={true}
             >
-            <Input style={{ width: '90%' }} maxLength={15} minLength={10} />
+            <Input style={{ width: '90%' }} maxLength={maxLengths.phone} minLength={5} />
             </QuestionItem>
           </div>
           <div className="explanation-column">
@@ -349,8 +399,11 @@ const AddressAndPhone: React.FC<AddressAndPhoneProps> = ({ form }) => {
                   <QuestionItem
                     question="电话号码"
                     name={[field.name,"phoneNumber"]}
+                    maxLength={maxLengths.phone}
+                    validator={phoneValidator}
+                    validatorMessage={phonePatternMessage}
                   >
-                    <Input style={{ width: '60%' }} maxLength={15} minLength={10} placeholder="例如：5555555555" />
+                    <Input style={{ width: '60%' }} maxLength={maxLengths.phone} minLength={5} placeholder="例如：5555555555" />
                   </QuestionItem>
                 )}
               </RepeatableFormItem>
@@ -374,6 +427,9 @@ const AddressAndPhone: React.FC<AddressAndPhoneProps> = ({ form }) => {
               <QuestionItem
                 question="电子邮件地址"
                 name="emailAddress"
+                maxLength={maxLengths.email}
+                validator={emailValidator}
+                validatorMessage={emailPatternMessage}
               >
                 <Input style={{ width: '95%' }} maxLength={50} />
               </QuestionItem>
@@ -417,6 +473,9 @@ const AddressAndPhone: React.FC<AddressAndPhoneProps> = ({ form }) => {
                   <QuestionItem
                     question="电子邮件地址"
                     name={[field.name,"emailAddress"]}
+                    maxLength={maxLengths.email}
+                    validator={emailValidator}
+                    validatorMessage={emailPatternMessage}
                   >
                     <Input style={{ width: '95%' }} maxLength={50} placeholder="例如：example@email.com" />
                   </QuestionItem>
@@ -501,7 +560,8 @@ const AddressAndPhone: React.FC<AddressAndPhoneProps> = ({ form }) => {
                             {...field}
                             name={[field.name, 'identifier']}
                             label="用户名/标识符"
-                            rules={[{ required: !isDisabled, message: '请输入用户名或标识符' }]}
+                            rules={[{ required: !isDisabled, message: '请输入用户名或标识符' },
+                              { pattern: socialMediaPattern, message: socialMediaPatternMessage }]}
                             style={{ marginBottom: '16px' }}
                           >
                             <Input 
@@ -551,15 +611,19 @@ const AddressAndPhone: React.FC<AddressAndPhoneProps> = ({ form }) => {
                       <QuestionItem
                         question="其他社交媒体平台"
                         name={[field.name, 'otherPlatform']}
+                        maxLength={maxLengths.socialMedia}
                       >
-                        <Input style={{ width: '95%' }} maxLength={50} />
+                        <Input style={{ width: '95%' }} maxLength={maxLengths.socialMedia} />
                       </QuestionItem>
 
                       <QuestionItem
                         question="其他社交媒体平台的用户名/标识符"
                         name={[field.name, 'otherIdentifier']}
+                        maxLength={maxLengths.socialMedia}
+                        validator={(value: string) => socialMediaPattern.test(value)}
+                        validatorMessage={socialMediaPatternMessage}
                       >
-                        <Input style={{ width: '95%' }} maxLength={50} />
+                        <Input style={{ width: '95%' }} maxLength={maxLengths.socialMedia} />
                       </QuestionItem>
                     </>
                   )}
