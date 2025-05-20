@@ -4,7 +4,7 @@ import type { FormListFieldData } from 'antd/es/form/FormList';
 import QuestionItem from '../common/QuestionItem';
 import DateInput from '../common/DateInput';
 import RepeatableFormItem from '../common/RepeatableFormItem';
-import { isDependentSelection, losUnitOptions, countryOptions, usStateOptions } from '../utils/formOptions';
+import { isDependentSelection, losUnitOptions, permanentResidenceOptions, usStateOptions } from '../utils/formOptions';
 import { 
   nameValidator,
   namePatternMessage,
@@ -1096,7 +1096,7 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                               question="国家/地区"
                               name="payerCountry"
                             >
-                              <Select options={countryOptions} placeholder="- 请选择一个 -" style={{ width: '98%' }} />
+                              <Select options={permanentResidenceOptions } placeholder="- 请选择一个 -" style={{ width: '98%' }} />
                             </QuestionItem>
                           </div>
                         </div>
@@ -1208,7 +1208,7 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                             question="国家/地区"
                             name="companyCountry"
                           >
-                            <Select options={countryOptions} placeholder="- 请选择一个 -" style={{ width: '98%' }} />
+                            <Select options={permanentResidenceOptions} placeholder="- 请选择一个 -" style={{ width: '98%' }} />
                           </QuestionItem>
                         </div>
                       </div>

@@ -245,16 +245,15 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
             {/* Empty explanation column to maintain layout */}
           </div>
         </div>
-      </fieldset>
-
+      
       {/* Previous visits section */}
       {hasBeenToUS === 'Y' && (
         <>
           <fieldset className="question-section">
-            <div className="highlighted-block">
-              <h4 style={{ marginBottom: '16px', fontWeight: 'normal' }}>请提供以下信息：</h4>
-              <div className="question-row">
-                <div className="question-column" style={{ width: '100%' }}>
+            <h4 style={{ marginBottom: '16px', fontWeight: 'normal' }}>请提供以下信息：</h4>
+            <div className="question-row">
+              <div className="question-column" style={{ width: '100%' }}>
+                <div className="highlighted-block">
                   <RepeatableFormItem
                     name="previousTrips"
                     addButtonText="增加另一次"
@@ -353,10 +352,10 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
                     </div>
                   )}
                 </div>
-                <div className="explanation-column">
-                  <h4 className="help-header">帮助：以前赴美信息</h4>
-                  <p>如果您不能确定您以前赴美访问的时间，请估计一个最接近的时间。</p>
-                </div>
+              </div> 
+              <div className="explanation-column">
+                <h4 className="help-header">帮助：以前赴美信息</h4>
+                <p>如果您不能确定您以前赴美访问的时间，请估计一个最接近的时间。</p>
               </div>
             </div>     
           </fieldset>
@@ -364,6 +363,7 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
           
         </>
       )}
+      </fieldset>
 
       {/* Previous US Visa Question */}
       <fieldset className="question-section">

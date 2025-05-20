@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Input, Select, Radio, Form } from 'antd';
 import QuestionItem from '../common/QuestionItem';
-import { countryOptions } from '../utils/formOptions';
+import { passportIssuingOptions, permanentResidenceOptions } from '../utils/formOptions';
 import '../ds160Form.css';
 import DateInput from '../common/DateInput';
 import RepeatableFormItem from '../common/RepeatableFormItem';
@@ -149,7 +149,7 @@ const Passport: React.FC<PassportProps> = ({ form }) => {
               name="passportIssuedCountry"
             >
               <Select 
-                options={countryOptions}
+                options={passportIssuingOptions}
                 style={{ width: '99%' }}
                 placeholder="- 请选择一个 -"
               />
@@ -186,7 +186,7 @@ const Passport: React.FC<PassportProps> = ({ form }) => {
                     name="passportIssuedInCountry"
                 >
                     <Select 
-                        options={countryOptions}
+                        options={permanentResidenceOptions}
                         style={{ width: '99%' }}
                         placeholder="- 请选择一个 -"
                     />
@@ -324,7 +324,7 @@ const Passport: React.FC<PassportProps> = ({ form }) => {
                         required={true}
                     >
                         <Select 
-                        options={countryOptions}
+                        options={passportIssuingOptions}
                         style={{ width: '95%' }}
                         placeholder="- 选择一个 -"
                         />

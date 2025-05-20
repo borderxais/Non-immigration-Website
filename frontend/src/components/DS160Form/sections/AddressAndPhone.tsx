@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Input, Select, Radio, Form } from 'antd';
 import QuestionItem from '../common/QuestionItem';
-import { countryOptions } from '../utils/formOptions';
+import { permanentResidenceOptions } from '../utils/formOptions';
 import '../ds160Form.css';
 import RepeatableFormItem from '../common/RepeatableFormItem';
 import { FormListFieldData } from 'antd/lib/form/FormList';
@@ -208,7 +208,7 @@ const AddressAndPhone: React.FC<AddressAndPhoneProps> = ({ form }) => {
               name="homeAddressCountry"
             >
               <Select 
-                options={countryOptions} 
+                options={permanentResidenceOptions } 
                 placeholder="- 请选择一个 -" 
                 style={{ width: '99%' }}
               />
@@ -306,7 +306,7 @@ const AddressAndPhone: React.FC<AddressAndPhoneProps> = ({ form }) => {
                                 name="mailingAddressCountry"
                                 >
                                 <Select 
-                                    options={countryOptions} 
+                                    options={permanentResidenceOptions} 
                                     placeholder="- 请选择一个 -" 
                                     style={{ width: '99%' }}
                                 />

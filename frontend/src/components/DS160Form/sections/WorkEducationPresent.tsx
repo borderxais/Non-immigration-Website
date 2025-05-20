@@ -2,7 +2,7 @@ import React from 'react';
 import { Form, Input, Select } from 'antd';
 import QuestionItem from '../common/QuestionItem';
 import DateInput from '../common/DateInput';
-import { countryOptions, occupationOptions } from '../utils/formOptions';
+import { permanentResidenceOptions , occupationOptions } from '../utils/formOptions';
 
 interface WorkEducationProps {
   form: any;
@@ -231,7 +231,7 @@ const WorkEducation: React.FC<WorkEducationProps> = ({ form, readOnly = false })
                       >
                         <Select 
                           style={{ width: '95%' }} 
-                          options={countryOptions}
+                          options={permanentResidenceOptions }
                           placeholder="请选择国家/地区"
                           showSearch
                           filterOption={(input, option) => 

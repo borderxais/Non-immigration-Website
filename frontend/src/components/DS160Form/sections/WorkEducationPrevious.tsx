@@ -3,7 +3,7 @@ import { Form, Input, Select, Radio } from 'antd';
 import QuestionItem from '../common/QuestionItem';
 import DateInput from '../common/DateInput';
 import RepeatableFormItem from '../common/RepeatableFormItem';
-import { countryOptions } from '../utils/formOptions';
+import { permanentResidenceOptions } from '../utils/formOptions';
 import { FormListFieldData } from 'antd/lib/form/FormList';
 
 interface WorkEducationPreviousProps {
@@ -179,7 +179,7 @@ const WorkEducationPrevious: React.FC<WorkEducationPreviousProps> = ({ form, rea
                             >
                               <Select 
                                 style={{ width: '95%' }} 
-                                options={countryOptions}
+                                options={permanentResidenceOptions}
                                 placeholder="- 请选择 -"
                                 showSearch
                                 filterOption={(input, option) => 
@@ -437,7 +437,7 @@ const WorkEducationPrevious: React.FC<WorkEducationPreviousProps> = ({ form, rea
                           >
                             <Select 
                               style={{ width: '95%' }} 
-                              options={countryOptions}
+                              options={permanentResidenceOptions}
                               placeholder="- 请选择 -"
                               showSearch
                               filterOption={(input, option) => 

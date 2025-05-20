@@ -2,7 +2,7 @@ import React from 'react';
 import { Form, Input, Select } from 'antd';
 import QuestionItem from '../common/QuestionItem';
 import DateInput from '../common/DateInput';
-import { countryOptions } from '../utils/formOptions';
+import { countryOptions, currentNationalityOptions, permanentResidenceOptions } from '../utils/formOptions';
 
 interface FamilySpouseProps {
   form: any;
@@ -84,13 +84,8 @@ const FamilySpouse: React.FC<FamilySpouseProps> = ({ form }) => {
                     placeholder="- 请选择一个 -"
                     showSearch
                     optionFilterProp="children"
-                  >
-                    {countryOptions.map(option => (
-                      <Select.Option key={option.value} value={option.value}>
-                        {option.label}
-                      </Select.Option>
-                    ))}
-                  </Select>
+                    options={currentNationalityOptions }
+                  />
                 </QuestionItem>
               </div>
             </div>
@@ -135,13 +130,8 @@ const FamilySpouse: React.FC<FamilySpouseProps> = ({ form }) => {
                     placeholder="- 请选择一个 -"
                     showSearch
                     optionFilterProp="children"
-                  >
-                    {countryOptions.map(option => (
-                      <Select.Option key={option.value} value={option.value}>
-                        {option.label}
-                      </Select.Option>
-                    ))}
-                  </Select>
+                    options={countryOptions} 
+                  />
                 </QuestionItem>
               </div>
             </div>
@@ -255,7 +245,7 @@ const FamilySpouse: React.FC<FamilySpouseProps> = ({ form }) => {
                     >
                       <Select 
                         style={{ width: '99%' }} 
-                        options={countryOptions}
+                        options={permanentResidenceOptions }
                         placeholder="- 请选择一个 -"
                       />
                     </QuestionItem>
