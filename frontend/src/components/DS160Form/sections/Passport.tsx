@@ -6,7 +6,7 @@ import '../ds160Form.css';
 import DateInput from '../common/DateInput';
 import RepeatableFormItem from '../common/RepeatableFormItem';
 import { FormListFieldData } from 'antd/lib/form/FormList';
-import { idDocumentPatternMessage, idDocumentValidator, historicalDateValidator, notFutureDateValidator, futureDateValidator, maxLengths } from '../utils/validationRules';
+import { idDocumentPatternMessage, idDocumentValidator, historicalDateValidator, notFutureDateValidator, futureDateValidator, maxLengths, notEarlierThanBirthDateValidator } from '../utils/validationRules';
 
 const { TextArea } = Input;
 
@@ -15,6 +15,14 @@ interface PassportProps {
 }
 
 const Passport: React.FC<PassportProps> = ({ form }) => {
+  // Get birth date from form data
+  const formValues = form.getFieldsValue(true);
+  const dobData = formValues?.dob;
+  const watchSelfBirthDate = dobData ? {
+    day: dobData.day,
+    month: dobData.month,
+    year: dobData.year
+  } : undefined;
   const [hasLostPassport, setHasLostPassport] = useState<string | null>(null);
   const [passportType, setPassportType] = useState<string>('');
 
@@ -194,8 +202,22 @@ const Passport: React.FC<PassportProps> = ({ form }) => {
               question="签发日期"
               name="passportIssuedDate"
               required={true}
-              validator={(value) => historicalDateValidator(value.day, value.month, value.year) && notFutureDateValidator(value.day, value.month, value.year)}
-              validatorMessage={"签发日期必须在1915年5月15日之后，且不能是未来日期"}
+              validator={(value) => {
+                if (!historicalDateValidator(value.day, value.month, value.year)) return false;
+                if (!notFutureDateValidator(value.day, value.month, value.year)) return false;
+                if (watchSelfBirthDate) {
+                  if (!notEarlierThanBirthDateValidator(
+                    value.day,
+                    value.month,
+                    value.year,
+                    watchSelfBirthDate.day,
+                    watchSelfBirthDate.month,
+                    watchSelfBirthDate.year
+                  )) return false;
+                }
+                return true;
+              }}
+              validatorMessage={"签发日期必须在1915年5月15日之后，不能是未来日期，且不能早于出生日期"}
             >
               <DateInput
                 dayName={["passportIssuedDate", "day"]}
