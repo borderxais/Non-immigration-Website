@@ -4,7 +4,7 @@ import QuestionItem from '../common/QuestionItem';
 import DateInput from '../common/DateInput';
 import RepeatableFormItem from '../common/RepeatableFormItem';
 import { relationshipOptions, usStatusOptions } from '../utils/formOptions';
-import { englishNameValidator, englishNamePatternMessage, maxLengths, historicalDateValidator, notFutureDateValidator } from '../utils/validationRules';
+import { englishNameValidator, englishNamePatternMessage, maxLengths, historicalDateValidator, notFutureDateValidator, earlierThanUserBirthDateValidator } from '../utils/validationRules';
 
 interface FamilyInfoProps {
   form: any;
@@ -29,6 +29,9 @@ const FamilyInfo: React.FC<FamilyInfoProps> = ({ form }) => {
   
   // 监听母亲是否在美国
   const watchMotherInUs = Form.useWatch('motherInUs', form);
+
+  // 监听申请人出生日期
+  const watchSelfBirthDate = Form.useWatch('birthDate', form);
   
   // 处理是否有美国直系亲属的变化
   const handleHasUsRelativesChange = (e: any) => {
@@ -143,6 +146,18 @@ const FamilyInfo: React.FC<FamilyInfoProps> = ({ form }) => {
                         // Check not future date
                         if (!notFutureDateValidator(day, month, year)) {
                           return false;
+                        }
+
+                        // Check earlier than user birth date
+                        if (watchSelfBirthDate) {
+                          if (!earlierThanUserBirthDateValidator(
+                            day, month, year,
+                            watchSelfBirthDate.day,
+                            watchSelfBirthDate.month,
+                            watchSelfBirthDate.year
+                          )) {
+                            return false;
+                          }
                         }
                         
                         return true;
@@ -266,6 +281,18 @@ const FamilyInfo: React.FC<FamilyInfoProps> = ({ form }) => {
                         // Check not future date
                         if (!notFutureDateValidator(day, month, year)) {
                           return false;
+                        }
+
+                        // Check earlier than user birth date
+                        if (watchSelfBirthDate) {
+                          if (!earlierThanUserBirthDateValidator(
+                            day, month, year,
+                            watchSelfBirthDate.day,
+                            watchSelfBirthDate.month,
+                            watchSelfBirthDate.year
+                          )) {
+                            return false;
+                          }
                         }
                         
                         return true;
