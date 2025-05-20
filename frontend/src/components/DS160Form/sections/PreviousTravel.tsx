@@ -11,6 +11,8 @@ import {
   maxLengths, 
   driverLicenseValidator, 
   driverLicensePatternMessage,
+  explanationPattern,
+  explanationPatternMessage,
 } from '../utils/validationRules';
 
 const { TextArea } = Input;
@@ -281,11 +283,11 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
                           question="停留时间"
                         >
                           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                            <Form.Item name={[field.name, 'stayDuration']} noStyle rules={[{ required: true, message: '请输入停留时间' }]}>
+                            <Form.Item name={[field.name, 'stayDuration']} rules={[{ required: true, message: '请输入停留时间' }]}>
                               <Input style={{ width: '80px' }} maxLength={3} placeholder="数量" />
                             </Form.Item>
                             
-                            <Form.Item name={[field.name, 'stayUnit']} noStyle rules={[{ required: true, message: '请选择单位' }]}>
+                            <Form.Item name={[field.name, 'stayUnit']} rules={[{ required: true, message: '请选择单位' }]}>
                               <Select 
                                 options={losUnitOptions} 
                                 style={{ width: '150px' }}
@@ -388,9 +390,9 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
         {hadUSVisa === 'Y' && (
           <fieldset className="question-section">
             <p>过往美国签证信息</p>
-            <div className="highlighted-block">
-              <div className="question-row">
-                <div className="question-column" style={{ width: '100%' }}>
+            <div className="question-row">
+              <div className="question-column" style={{ width: '100%' }}>
+                <div className="highlighted-block">
                   <div className="question-row">
                     <div className="question-column">
                       <QuestionItem
@@ -407,10 +409,7 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
                         birthDate={birthDate}
                       />
                     </QuestionItem>
-                  </div>
-                </div>
-                <div className="question-row">
-                  <div className="question-column">
+
                     <QuestionItem
                       question="签证号码"
                       name="lastVisaNumber"
@@ -418,13 +417,9 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
                       naCheckboxName="lastVisaNumber_na"
                       inlineCheckbox={true}
                     >
-                      <Input style={{ width: '98%' }} />
+                      <Input style={{ width: '98%' }} maxLength={maxLengths.visaNumber} />
                     </QuestionItem>
-                  </div>
-                </div>
 
-                <div className="question-row">
-                  <div className="question-column">
                     <QuestionItem
                       question="您是否申请相同类型的签证？"
                       name="sameTypeVisa"
@@ -434,11 +429,7 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
                         <Radio value="N">否 (No)</Radio>
                       </Radio.Group>
                     </QuestionItem>
-                  </div>
-                </div>
 
-                <div className="question-row">
-                  <div className="question-column">
                     <QuestionItem
                       question="您是否在签发上述签证的同一国家或地点申请，并且该国家或地点是您的主要居住地？"
                       name="sameCountry"
@@ -448,11 +439,7 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
                         <Radio value="N">否 (No)</Radio>
                       </Radio.Group>
                     </QuestionItem>
-                  </div>
-                </div>
 
-                <div className="question-row">
-                  <div className="question-column">
                     <QuestionItem
                       question="您是否曾经提供过十指指纹？"
                       name="tenPrinted"
@@ -462,11 +449,7 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
                         <Radio value="N">否 (No)</Radio>
                       </Radio.Group>
                     </QuestionItem>
-                  </div>
-                </div>
 
-                <div className="question-row">
-                  <div className="question-column">
                     <QuestionItem
                       question="您的美国签证是否曾经丢失或被盗？"
                       name="visaLostStolen"
@@ -478,36 +461,43 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
                     </QuestionItem>
                   </div>
                 </div>
-
-                {visaLostStolen === 'Y' && (
-                  <>
-                  <h4>请回答以下问题：</h4>
-                    <div className="block-inside-highlight">
-                    <div className="question-row">
-                      <div className="question-column">
-                        <QuestionItem
-                          question="签证丢失或被盗的年份"
-                          name="visaLostYear"
-                        >
-                          <Input style={{ width: '98%' }} />
-                        </QuestionItem>
+                
+                  {visaLostStolen === 'Y' && (
+                    <>
+                    <h4>请回答以下问题：</h4>
+                      <div className="block-inside-highlight">
+                      <div className="question-row">
+                        <div className="question-column">
+                          <QuestionItem
+                            question="签证丢失或被盗的年份"
+                            name="visaLostYear"
+                            // validateNotFutureDate={true}
+                            // validateNotEarlierThanBirthDate={true}
+                            // birthDate={birthDate}
+                          >
+                            <Input style={{ width: '98%' }} maxLength={maxLengths.year}/>
+                          </QuestionItem>
+                        
+                        <h4>请说明签证丢失或被盗的情况</h4>
+                          <Form.Item
+                            name="visaLostExplanation"
+                            rules={[
+                              { required: true, message: '请说明签证丢失或被盗的情况' },
+                              { pattern: explanationPattern, message: explanationPatternMessage }
+                            ]}
+                          >
+                            <TextArea 
+                            style={{ width: '99%' }} 
+                            rows={4} 
+                            maxLength={maxLengths.explanation}
+                            />
+                          </Form.Item>
+                        </div>
                       </div>
-                    </div>
-
-                    <div className="question-row">
-                      <div className="question-column">
-                        <QuestionItem
-                          question="请说明签证丢失或被盗的情况"
-                          name="visaLostExplanation"
-                        >
-                          <TextArea rows={4} style={{ width: '98%' }} />
-                        </QuestionItem>
                       </div>
-                    </div>
-                    </div>
-                  </>
-                )}
-
+                    </>
+                  )}
+                
                 <div className="question-row">
                   <div className="question-column">
                     <QuestionItem
@@ -528,13 +518,15 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
                             <div className="block-inside-highlight">
                               <Form.Item
                                 name="visaCancelledExplanation"
-                                noStyle
+                                rules={[
+                                  { required: true, message: '请说明签证被取消或撤销的情况' },
+                                  { pattern: explanationPattern, message: explanationPatternMessage }
+                                ]}
                               >
                                 <TextArea 
                                   style={{ width: '99%' }} 
                                   rows={4} 
-                                  maxLength={4000}
-                                  required={true}
+                                  maxLength={maxLengths.explanation}
                                 />
                               </Form.Item>
                             </div>
@@ -545,7 +537,7 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
 
                   </div>
                 </div>
-
+                </div>
 
                 </div>
                 <div className="explanation-column">
@@ -555,7 +547,7 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
                   <p>与仅留了两个手指指纹相比，您已经提供了全部十个手指的指纹。</p>
                 </div>
                 
-              </div>
+              
             </div>
           </fieldset>
         )}
@@ -584,13 +576,15 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
                     <div className="highlighted-block">
                       <Form.Item
                         name="refusalDetails"
-                        noStyle
+                        rules={[
+                          { required: true, message: '请说明拒绝签证的原因' },
+                          { pattern: explanationPattern, message: explanationPatternMessage }
+                        ]}
                       >
                         <TextArea 
                           style={{ width: '99%' }} 
                           rows={4} 
                           maxLength={maxLengths.explanation}
-                          required={true}
                         />
                       </Form.Item>
                     </div>
@@ -630,13 +624,15 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
                     <div className="highlighted-block">
                       <Form.Item
                         name="petitionerInfo"
-                        noStyle
+                        rules={[
+                          { required: true, message: '请说明移民申请的详细信息' },
+                          { pattern: explanationPattern, message: explanationPatternMessage }
+                        ]}
                       >
                         <TextArea 
                           style={{ width: '99%' }} 
                           rows={4} 
                           maxLength={maxLengths.explanation}
-                          required={true}
                         />
                       </Form.Item>
                     </div>
