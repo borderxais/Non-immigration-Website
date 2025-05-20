@@ -68,7 +68,7 @@ const USContact: React.FC<USContactProps> = ({ form }) => {
                           { validator: (_, value) => value && englishNameValidator(value) ? Promise.resolve() : Promise.reject('姓氏只能包含英文字母和空格') }]}>
                   <Input 
                     style={{ width: '99%' }} 
-                    maxLength={33} 
+                    maxLength={maxLengths.name} 
                     disabled={!!watchNameNotKnown}
                     placeholder={!!watchNameNotKnown ? '' : '请输入姓氏'}
                   />
@@ -86,7 +86,7 @@ const USContact: React.FC<USContactProps> = ({ form }) => {
                           { validator: (_, value) => value && englishNameValidator(value) ? Promise.resolve() : Promise.reject('名字只能包含英文字母和空格') }]}>
                   <Input 
                     style={{ width: '99%' }} 
-                    maxLength={33} 
+                    maxLength={maxLengths.name} 
                     disabled={!!watchNameNotKnown}
                     placeholder={!!watchNameNotKnown ? '' : '请输入名字'}
                   />
