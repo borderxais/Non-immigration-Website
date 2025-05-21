@@ -13,6 +13,9 @@ import {
   driverLicensePatternMessage,
   explanationPattern,
   explanationPatternMessage,
+  yearValidatorAsync,
+  BEFORE_BIRTH_YEAR_MESSAGE,
+  FUTURE_YEAR_MESSAGE
 } from '../utils/validationRules';
 
 const { TextArea } = Input;
@@ -469,12 +472,21 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
                       <div className="block-inside-highlight">
                       <div className="question-row">
                         <div className="question-column">
-                          <QuestionItem
+                        <QuestionItem
                             question="签证丢失或被盗的年份"
                             name="visaLostYear"
-                            // validateNotFutureDate={true}
-                            // validateNotEarlierThanBirthDate={true}
-                            // birthDate={birthDate}
+                            pattern={/^\d{4}$/}
+                            patternMessage="请输入有效的4位数年份"
+                            validator={async (value) => {
+                              // Use the reusable yearValidatorAsync function
+                              try {
+                                await yearValidatorAsync(value, birthDate?.year);
+                                return true;
+                              } catch (error) {
+                                return false;
+                              }
+                            }}
+                            validatorMessage={birthDate?.year ? `${BEFORE_BIRTH_YEAR_MESSAGE}且${FUTURE_YEAR_MESSAGE}` : FUTURE_YEAR_MESSAGE}
                           >
                             <Input style={{ width: '98%' }} maxLength={maxLengths.year}/>
                           </QuestionItem>

@@ -336,36 +336,6 @@ export const notEarlierThanBirthDateValidator = (day: string, month: string, yea
 };
 
 /**
- * Validates that a year is not earlier than birth year and not later than current year
- * @param year The year to validate
- * @param birthYear The user's birth year (optional)
- * @returns True if the year is valid, false otherwise
- */
-export const yearValidator = (year: string, birthYear?: string) => {
-  if (!year) return true;
-  
-  // Validate year format (4 digits)
-  if (!/^\d{4}$/.test(year)) {
-    return false;
-  }
-  
-  const yearNum = parseInt(year);
-  const currentYear = new Date().getFullYear();
-  
-  // Check if year is not later than current year
-  if (yearNum > currentYear) {
-    return false;
-  }
-  
-  // Check if year is not earlier than birth year (if provided)
-  if (birthYear && yearNum < parseInt(birthYear)) {
-    return false;
-  }
-  
-  return true;
-};
-
-/**
  * Async version of yearValidator for use with Form.Item validation rules
  * @param year The year to validate
  * @param birthYear The user's birth year (optional)
