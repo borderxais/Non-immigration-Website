@@ -15,8 +15,6 @@ import {
   stateZipCodePatternMessage,
   locationValidator,
   locationPatternMessage,
-  socialMediaPattern,
-  socialMediaPatternMessage,
   numericValidator,
   numericPatternMessage
 } from '../utils/validationRules';

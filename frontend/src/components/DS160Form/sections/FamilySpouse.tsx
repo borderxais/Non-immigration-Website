@@ -3,6 +3,17 @@ import { Form, Input, Select } from 'antd';
 import QuestionItem from '../common/QuestionItem';
 import DateInput from '../common/DateInput';
 import { countryOptions, currentNationalityOptions, permanentResidenceOptions } from '../utils/formOptions';
+import {
+  maxLengths,
+  nameValidator, 
+  namePatternMessage,
+  locationValidator,
+  locationPatternMessage,
+  addressValidator,
+  addressPatternMessage,
+  stateZipCodeValidator,
+  stateZipCodePatternMessage
+} from '../utils/validationRules';
 
 interface FamilySpouseProps {
   form: any;
@@ -37,28 +48,28 @@ const FamilySpouse: React.FC<FamilySpouseProps> = ({ form }) => {
                   question="配偶的姓氏"
                   name="spouseSurname"
                   required={true}
+                  validator={nameValidator}
+                  validatorMessage={namePatternMessage}
                 >
                   <Input 
                     style={{ width: '99%' }} 
-                    maxLength={33} 
+                    maxLength={maxLengths.name} 
                   />
                 </QuestionItem>
-              </div>
-              
-              <div style={{ marginBottom: '24px' }}>
+
                 <QuestionItem
                   question="配偶的名字"
                   name="spouseGivenName"
                   required={true}
+                  validator={nameValidator}
+                  validatorMessage={namePatternMessage}
                 >
                   <Input 
                     style={{ width: '99%' }} 
-                    maxLength={33} 
+                    maxLength={maxLengths.name} 
                   />
                 </QuestionItem>
-              </div>
-              
-              <div style={{ marginBottom: '24px' }}>
+
                 <QuestionItem
                   question="配偶的出生日期"
                   name="spouseDob"
@@ -69,11 +80,11 @@ const FamilySpouse: React.FC<FamilySpouseProps> = ({ form }) => {
                     dayName={["spouseDob", "day"]}
                     monthName={["spouseDob", "month"]}
                     yearName={["spouseDob", "year"]}
+                    validateHistoricalDate={true}
+                    validateEarlierThanToday={true}
                   />
                 </QuestionItem>
-              </div>
-              
-              <div style={{ marginBottom: '24px' }}>
+
                 <QuestionItem
                   question="配偶的国家/地区（国籍）"
                   name="spouseNationality"
@@ -110,16 +121,16 @@ const FamilySpouse: React.FC<FamilySpouseProps> = ({ form }) => {
                   required={true}
                   hasNaCheckbox={true}
                   naCheckboxName="spousePobCity_na"
+                  validator={locationValidator}
+                  validatorMessage={locationPatternMessage}
                 >
                   <Input 
                     style={{ width: '99%' }} 
-                    maxLength={20} 
+                    maxLength={maxLengths.city} 
                     disabled={!!watchSpousePobCityNotKnown}
                   />
                 </QuestionItem>
-              </div>
-              
-              <div style={{ marginBottom: '24px' }}>
+
                 <QuestionItem
                   question="国家/地区"
                   name="spousePobCountry"
@@ -170,42 +181,41 @@ const FamilySpouse: React.FC<FamilySpouseProps> = ({ form }) => {
                       question="街道地址（第一行）"
                       name="spouseAddressLine1"
                       required={true}
+                      validator={addressValidator}
+                      validatorMessage={addressPatternMessage}
                     >
                       <Input 
                         style={{ width: '99%' }} 
-                        maxLength={40}
+                        maxLength={maxLengths.address}
                       />
                     </QuestionItem>
-                    <span>（不可将邮政信箱号码作为地址信息填写）</span>
-                  </div>
                   
-                  <div style={{ marginBottom: '24px' }}>
                     <QuestionItem
                       question="街道地址（第二行）"
                       name="spouseAddressLine2"
                       required={false}
+                      validator={addressValidator}
+                      validatorMessage={addressPatternMessage}
                     >
                       <Input 
                         style={{ width: '99%' }} 
-                        maxLength={40}
+                        maxLength={maxLengths.address}
                       />
                     </QuestionItem>
-                  </div>
                   
-                  <div style={{ marginBottom: '24px' }}>
                     <QuestionItem
                       question="城市"
                       name="spouseAddressCity"
                       required={true}
+                      validator={locationValidator}
+                      validatorMessage={locationPatternMessage}
                     >
                       <Input 
                         style={{ width: '99%' }} 
-                        maxLength={20}
+                        maxLength={maxLengths.city}
                       />
                     </QuestionItem>
-                  </div>
-                  
-                  <div style={{ marginBottom: '24px' }}>
+
                     <QuestionItem
                       question="州/省份"
                       name="spouseAddressState"
@@ -213,15 +223,15 @@ const FamilySpouse: React.FC<FamilySpouseProps> = ({ form }) => {
                       hasNaCheckbox={true}
                       naCheckboxName="spouseAddressState_na"
                       inlineCheckbox={true}
+                      validator={locationValidator}
+                      validatorMessage={locationPatternMessage}
                     >
                       <Input 
                         style={{ width: '90%' }} 
-                        maxLength={20}
+                        maxLength={maxLengths.state}
                       />
                     </QuestionItem>
-                  </div>
-                  
-                  <div style={{ marginBottom: '24px' }}>
+
                     <QuestionItem
                       question="邮政区域/邮政编码"
                       name="spouseAddressPostalCode"
@@ -229,10 +239,12 @@ const FamilySpouse: React.FC<FamilySpouseProps> = ({ form }) => {
                       hasNaCheckbox={true}
                       naCheckboxName="spouseAddressPostalCode_na"
                       inlineCheckbox={true}
+                      validator={stateZipCodeValidator}
+                      validatorMessage={stateZipCodePatternMessage}
                     >
                       <Input 
                         style={{ width: '90%' }} 
-                        maxLength={10}
+                        maxLength={maxLengths.zipCode}
                       />
                     </QuestionItem>
                   </div>
@@ -244,7 +256,8 @@ const FamilySpouse: React.FC<FamilySpouseProps> = ({ form }) => {
                       required={true}
                     >
                       <Select 
-                        style={{ width: '99%' }} 
+                        style={{ width: '99%' }}
+                        showSearch
                         options={permanentResidenceOptions }
                         placeholder="- 请选择一个 -"
                       />

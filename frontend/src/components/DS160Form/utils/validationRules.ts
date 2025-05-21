@@ -98,6 +98,7 @@ export const FUTURE_YEAR_MESSAGE = '年份不能晚于当前年份';
 export const BEFORE_BIRTH_YEAR_MESSAGE = '年份不能早于出生年份';
 export const EARLIER_THAN_TODAY_MESSAGE = '日期不能早于今天';
 export const EARLIER_THAN_BIRTH_DATE_MESSAGE = '日期必须早于你的出生日期';
+export const MUST_BE_EARLIER_THAN_TODAY_MESSAGE = '日期必须早于今天';
 
 // Current date (for maximum date validation)
 export const CURRENT_DATE = new Date();
@@ -219,7 +220,7 @@ export const driverLicenseValidator = (value: any) => {
   return driverLicensePattern.test(value);
 };
 
-// Validator for date fields to ensure they are not earlier than May 15, 1915
+// Validator to ensure a date is not earlier than May 15, 1915
 export const historicalDateValidator = (day: string, month: string, year: string) => {
   if (!day || !month || !year) return true; // Empty values are handled by required rule
   
@@ -375,6 +376,37 @@ export const earlierThanBirthDateValidator = (day: string, month: string, year: 
   
   // Check if the input date is earlier than birth date
   return inputDate < birthDate;
+};
+
+// Validator to ensure a date is earlier than today (in the past)
+export const earlierThanTodayValidator = (day: string, month: string, year: string) => {
+  if (!day || !month || !year) return true;
+  
+  const monthMap: { [key: string]: number } = {
+    'JAN': 0, 'FEB': 1, 'MAR': 2, 'APR': 3, 'MAY': 4, 'JUN': 5,
+    'JUL': 6, 'AUG': 7, 'SEP': 8, 'OCT': 9, 'NOV': 10, 'DEC': 11,
+    '01': 0, '02': 1, '03': 2, '04': 3, '05': 4, '06': 5,
+    '07': 6, '08': 7, '09': 8, '10': 9, '11': 10, '12': 11,
+    '1': 0, '2': 1, '3': 2, '4': 3, '5': 4, '6': 5,
+    '7': 6, '8': 7, '9': 8
+  };
+  
+  const monthNum = monthMap[month];
+  
+  if (monthNum === undefined) {
+    console.log('Invalid month format:', month);
+    return false;
+  }
+  
+  // Create date objects for the input date and today
+  const inputDate = new Date(parseInt(year), monthNum, parseInt(day));
+  const today = new Date();
+  
+  // Reset today's time to midnight for accurate date comparison
+  today.setHours(0, 0, 0, 0);
+  
+  // Check if the input date is strictly earlier than today
+  return inputDate < today;
 };
 
 /**
