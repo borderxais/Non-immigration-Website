@@ -13,8 +13,8 @@ export const englishNamePattern = /^[A-Za-z\s]+$/;
 export const englishNamePatternMessage = '只能包含英文字母和空格';
 
 // Address field patterns (allows more characters including numbers and punctuation)
-export const addressPattern = /^[A-Za-z0-9\u4e00-\u9fa5\s,.#\-/']+$/;
-export const addressPatternMessage = '只能包含英文、中文字符、数字和常见标点符号';
+export const addressPattern = /^[A-Z0-9#$*%&;!@^?><().,'\-\s]+$/;
+export const addressPatternMessage = "只能包含大写英文字母、数字、特殊字符(#、$、*、%、&、;、!、@、^、?、>、<)、括号、句点(.)、撇号(')、逗号(,)、连字符(-)和空格";
 
 // Numeric patterns
 export const numericPattern = /^\d+$/;

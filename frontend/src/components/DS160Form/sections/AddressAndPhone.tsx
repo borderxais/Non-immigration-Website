@@ -13,8 +13,8 @@ import {
   phonePatternMessage,
   emailValidator,
   emailPatternMessage,
-  zipCodeValidator,
-  zipCodePatternMessage,
+  stateZipCodeValidator,
+  stateZipCodePatternMessage,
   locationValidator,
   locationPatternMessage,
   socialMediaPattern,
@@ -102,15 +102,7 @@ const AddressAndPhone: React.FC<AddressAndPhoneProps> = ({ form }) => {
     <div className="address-phone-section">
       {/* Home Address Section */}
       <fieldset className="question-section">
-        <div className="question-row">
-          <div className="question-column">
-            <h3 className="section-header">家庭住址</h3>
-          </div>
-          <div className="explanation-column">
-            {/* Empty explanation column to maintain layout */}
-          </div>
-        </div>
-
+        <h3 className="section-header">家庭住址</h3>
         <div className="question-row">
           <div className="question-column">
             <QuestionItem
@@ -122,13 +114,7 @@ const AddressAndPhone: React.FC<AddressAndPhoneProps> = ({ form }) => {
             >
               <Input style={{ width: '99%' }} placeholder="" maxLength={maxLengths.address} />
             </QuestionItem>
-          </div>
-          <div className="explanation-column">
-          </div>
-        </div>
 
-        <div className="question-row">
-          <div className="question-column">
             <QuestionItem
               question="街道地址（第二行）"
               name="homeAddressStreet2"
@@ -139,13 +125,7 @@ const AddressAndPhone: React.FC<AddressAndPhoneProps> = ({ form }) => {
             >
               <Input style={{ width: '99%' }} maxLength={maxLengths.address} />
             </QuestionItem>
-          </div>
-          <div className="explanation-column">
-          </div>
-        </div>
 
-        <div className="question-row">
-          <div className="question-column">
             <QuestionItem
               question="城市"
               name="homeAddressCity"
@@ -155,14 +135,7 @@ const AddressAndPhone: React.FC<AddressAndPhoneProps> = ({ form }) => {
             >
               <Input style={{ width: '99%' }} maxLength={maxLengths.city} />
             </QuestionItem>
-          </div>
-          <div className="explanation-column">
-            {/* Empty explanation column to maintain layout */}
-          </div>
-        </div>
 
-        <div className="question-row">
-          <div className="question-column">
             <QuestionItem
               question="州/省/地区"
               name="homeAddressState"
@@ -175,34 +148,20 @@ const AddressAndPhone: React.FC<AddressAndPhoneProps> = ({ form }) => {
             >
               <Input style={{ width: '90%' }} maxLength={maxLengths.state}/>
             </QuestionItem>
-          </div>
-          <div className="explanation-column">
-            {/* Empty explanation column to maintain layout */}
-          </div>
-        </div>
 
-        <div className="question-row">
-          <div className="question-column">
             <QuestionItem
               question="邮政编码"
               name="homeAddressZipCode"
               maxLength={maxLengths.zipCode}
-              validator={zipCodeValidator}
-              validatorMessage={zipCodePatternMessage}
+              validator={stateZipCodeValidator}
+              validatorMessage={stateZipCodePatternMessage}
               hasNaCheckbox={true}
               naCheckboxName="homeAddressZipCode_na"
               inlineCheckbox={true}
             >
               <Input style={{ width: '80%' }} maxLength={maxLengths.zipCode}/>
             </QuestionItem>
-          </div>
-          <div className="explanation-column">
-            {/* Empty explanation column to maintain layout */}
-          </div>
-        </div>
 
-        <div className="question-row">
-          <div className="question-column">
             <QuestionItem
               question="国家/地区"
               name="homeAddressCountry"
@@ -244,78 +203,78 @@ const AddressAndPhone: React.FC<AddressAndPhoneProps> = ({ form }) => {
         {isMailingAddressSameAsHome === 'N' && (
           <>
             <fieldset className="question-section">
-                <h4 style={{ marginLeft: '14px' }}>请提供你的邮寄地址:</h4>
-                <div className="question-row">
-                    <div className="question-column">
-                        <div className="highlighted-block" style={{ marginLeft: '14px' }}>
-                            <QuestionItem
-                                question="街道地址（第一行）"
-                                name="mailingAddressStreet1"
-                                maxLength={maxLengths.address}
-                                validator={addressValidator}
-                                validatorMessage={addressPatternMessage}
-                                >
-                                <Input style={{ width: '99%' }} maxLength={maxLengths.address} />
-                            </QuestionItem>
+              <h4 style={{ marginLeft: '14px' }}>请提供你的邮寄地址:</h4>
+              <div className="question-row">
+                <div className="question-column">
+                  <div className="highlighted-block" style={{ marginLeft: '14px' }}>
+                    <QuestionItem
+                        question="街道地址（第一行）"
+                        name="mailingAddressStreet1"
+                        maxLength={maxLengths.address}
+                        validator={addressValidator}
+                        validatorMessage={addressPatternMessage}
+                        >
+                        <Input style={{ width: '99%' }} maxLength={maxLengths.address} />
+                    </QuestionItem>
 
-                            <QuestionItem
-                                question="街道地址（第二行）"
-                                name="mailingAddressStreet2"
-                                required={false}
-                                maxLength={maxLengths.address}
-                                validator={addressValidator}
-                                validatorMessage={addressPatternMessage}
-                                >
-                                <Input style={{ width: '99%' }} maxLength={maxLengths.address} />
-                            </QuestionItem>
+                    <QuestionItem
+                        question="街道地址（第二行）"
+                        name="mailingAddressStreet2"
+                        required={false}
+                        maxLength={maxLengths.address}
+                        validator={addressValidator}
+                        validatorMessage={addressPatternMessage}
+                        >
+                        <Input style={{ width: '99%' }} maxLength={maxLengths.address} />
+                    </QuestionItem>
 
-                            <QuestionItem
-                                question="城市"
-                                name="mailingAddressCity"
-                                maxLength={maxLengths.city}
-                                validator={locationValidator}
-                                validatorMessage={locationPatternMessage}
-                                >
-                                <Input style={{ width: '99%' }} maxLength={maxLengths.city}/>
-                                </QuestionItem>
+                    <QuestionItem
+                        question="城市"
+                        name="mailingAddressCity"
+                        maxLength={maxLengths.city}
+                        validator={locationValidator}
+                        validatorMessage={locationPatternMessage}
+                        >
+                        <Input style={{ width: '99%' }} maxLength={maxLengths.city}/>
+                        </QuestionItem>
 
-                            <QuestionItem
-                                question="州/省/地区"
-                                name="mailingAddressState"
-                                maxLength={maxLengths.state}
-                                hasNaCheckbox={true}
-                                naCheckboxName="mailingAddressState_na"
-                                inlineCheckbox={true}
-                                >
-                                <Input style={{ width: '90%' }} maxLength={maxLengths.state}/>
-                            </QuestionItem>
+                    <QuestionItem
+                        question="州/省/地区"
+                        name="mailingAddressState"
+                        maxLength={maxLengths.state}
+                        hasNaCheckbox={true}
+                        naCheckboxName="mailingAddressState_na"
+                        inlineCheckbox={true}
+                        >
+                        <Input style={{ width: '90%' }} maxLength={maxLengths.state}/>
+                    </QuestionItem>
 
-                            <QuestionItem
-                                question="邮政编码"
-                                name="mailingAddressZipCode"
-                                maxLength={maxLengths.zipCode}
-                                hasNaCheckbox={true}
-                                naCheckboxName="mailingAddressZipCode_na"
-                                inlineCheckbox={true}
-                                >
-                                <Input style={{ width: '80%' }} maxLength={maxLengths.zipCode}/>
-                            </QuestionItem>
+                    <QuestionItem
+                        question="邮政编码"
+                        name="mailingAddressZipCode"
+                        maxLength={maxLengths.zipCode}
+                        hasNaCheckbox={true}
+                        naCheckboxName="mailingAddressZipCode_na"
+                        inlineCheckbox={true}
+                        >
+                        <Input style={{ width: '80%' }} maxLength={maxLengths.zipCode}/>
+                    </QuestionItem>
 
-                            <QuestionItem
-                                question="国家/地区"
-                                name="mailingAddressCountry"
-                                >
-                                <Select 
-                                    options={permanentResidenceOptions} 
-                                    placeholder="- 请选择一个 -" 
-                                    style={{ width: '99%' }}
-                                />
-                            </QuestionItem>
-                        </div>
-                    </div>
-                    <div className="explanation-column">
-                    </div>
+                    <QuestionItem
+                        question="国家/地区"
+                        name="mailingAddressCountry"
+                        >
+                        <Select 
+                            options={permanentResidenceOptions} 
+                            placeholder="- 请选择一个 -" 
+                            style={{ width: '99%' }}
+                        />
+                    </QuestionItem>
+                  </div>
                 </div>
+                <div className="explanation-column">
+                </div>
+              </div>
             </fieldset>
           </>
         )}
