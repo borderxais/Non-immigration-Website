@@ -6,9 +6,11 @@ import {
   notFutureDateValidator,
   futureDateValidator,
   notEarlierThanBirthDateValidator,
+  notEarlierThanTodayValidator,
   MIN_HISTORICAL_DATE_MESSAGE,
   FUTURE_DATE_MESSAGE,
-  AFTER_BIRTH_DATE_MESSAGE
+  AFTER_BIRTH_DATE_MESSAGE,
+  EARLIER_THAN_TODAY_MESSAGE
 } from '../utils/validationRules';
 
 // Format for month dropdown options
@@ -80,6 +82,7 @@ interface DateInputProps {
   validateNotFutureDate?: boolean; // Validate date is not in the future
   validateFutureDate?: boolean; // Validate date is strictly after today
   validateNotEarlierThanBirthDate?: boolean; // Validate date is not earlier than birth date
+  validateNotEarlierThanToday?: boolean; // Validate date is today or in the future
   naCheckboxName?: string | (string | number)[]; // Name of the N/A checkbox to check
 }
 
@@ -95,6 +98,7 @@ const DateInput: React.FC<DateInputProps> = ({
   validateNotFutureDate = false,
   validateFutureDate = false,
   validateNotEarlierThanBirthDate = false,
+  validateNotEarlierThanToday = false,
   naCheckboxName,
 }) => {
   const dateBlockStyle = {
@@ -138,9 +142,14 @@ const DateInput: React.FC<DateInputProps> = ({
         return Promise.reject(FUTURE_DATE_MESSAGE);
       }
 
+      // Validate date is today or future if required
+      if (validateNotEarlierThanToday && !notEarlierThanTodayValidator(day, month, year)) {
+        return Promise.reject(EARLIER_THAN_TODAY_MESSAGE);
+      }
+      
       // Validate future date if required
       if (validateFutureDate && !futureDateValidator(day, month, year)) {
-        return Promise.reject('日期必须晚于今天');
+        return Promise.reject('日期必须是未来日期');
       }
 
       // Validate not earlier than birth date if required
@@ -166,9 +175,9 @@ const DateInput: React.FC<DateInputProps> = ({
           noStyle
           rules={required && !isNaChecked ? [
             { required: true, message: '请选择日期' },
-            ...(validateHistoricalDate || validateNotFutureDate || validateFutureDate || validateNotEarlierThanBirthDate ? [validateDate()] : [])
+            ...(validateHistoricalDate || validateNotFutureDate || validateFutureDate || validateNotEarlierThanBirthDate || validateNotEarlierThanToday ? [validateDate()] : [])
           ] : [
-            ...(validateHistoricalDate || validateNotFutureDate || validateFutureDate || validateNotEarlierThanBirthDate ? [validateDate()] : [])
+            ...(validateHistoricalDate || validateNotFutureDate || validateFutureDate || validateNotEarlierThanBirthDate || validateNotEarlierThanToday ? [validateDate()] : [])
           ]}
           dependencies={[monthName, yearName]}
         >
@@ -185,9 +194,9 @@ const DateInput: React.FC<DateInputProps> = ({
           noStyle
           rules={required && !isNaChecked ? [
             { required: true, message: '请选择月份' },
-            ...(validateHistoricalDate || validateNotFutureDate || validateFutureDate || validateNotEarlierThanBirthDate ? [validateDate()] : [])
+            ...(validateHistoricalDate || validateNotFutureDate || validateFutureDate || validateNotEarlierThanBirthDate || validateNotEarlierThanToday ? [validateDate()] : [])
           ] : [
-            ...(validateHistoricalDate || validateNotFutureDate || validateFutureDate || validateNotEarlierThanBirthDate ? [validateDate()] : [])
+            ...(validateHistoricalDate || validateNotFutureDate || validateFutureDate || validateNotEarlierThanBirthDate || validateNotEarlierThanToday ? [validateDate()] : [])
           ]}
           dependencies={[dayName, yearName]}
         >
@@ -205,10 +214,10 @@ const DateInput: React.FC<DateInputProps> = ({
           rules={required && !isNaChecked ? [
             { required: true, message: '请输入年份' },
             { pattern: /^\d{4}$/, message: '请输入4位数年份' },
-            ...(validateHistoricalDate || validateNotFutureDate || validateFutureDate || validateNotEarlierThanBirthDate ? [validateDate()] : [])
+            ...(validateHistoricalDate || validateNotFutureDate || validateFutureDate || validateNotEarlierThanBirthDate || validateNotEarlierThanToday ? [validateDate()] : [])
           ] : [
             { pattern: /^\d{4}$/, message: '请输入4位数年份' },
-            ...(validateHistoricalDate || validateNotFutureDate || validateFutureDate || validateNotEarlierThanBirthDate ? [validateDate()] : [])
+            ...(validateHistoricalDate || validateNotFutureDate || validateFutureDate || validateNotEarlierThanBirthDate || validateNotEarlierThanToday ? [validateDate()] : [])
           ]}
           dependencies={[dayName, monthName]}
         >

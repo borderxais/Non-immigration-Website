@@ -13,8 +13,8 @@ export const englishNamePattern = /^[A-Za-z\s]+$/;
 export const englishNamePatternMessage = '只能包含英文字母和空格';
 
 // Address field patterns (allows more characters including numbers and punctuation)
-export const addressPattern = /^[A-Z0-9#$*%&;!@^?><().,'\-\s]+$/;
-export const addressPatternMessage = "只能包含大写英文字母、数字、特殊字符(#、$、*、%、&、;、!、@、^、?、>、<)、括号、句点(.)、撇号(')、逗号(,)、连字符(-)和空格";
+export const addressPattern = /^[A-Z0-9\u4e00-\u9fa5#$*%&;!@^?><().,'\-\s]+$/;
+export const addressPatternMessage = "只能包含大写英文字母、数字、中文字符、特殊字符(#、$、*、%、&、;、!、@、^、?、>、<)、括号、句点(.)、撇号(')、逗号(,)、连字符(-)和空格";
 
 // Numeric patterns
 export const numericPattern = /^\d+$/;
@@ -92,6 +92,7 @@ export const FUTURE_DATE_MESSAGE = '日期不能是未来日期';
 export const AFTER_BIRTH_DATE_MESSAGE = '日期不能早于出生日期';
 export const FUTURE_YEAR_MESSAGE = '年份不能晚于当前年份';
 export const BEFORE_BIRTH_YEAR_MESSAGE = '年份不能早于出生年份';
+export const EARLIER_THAN_TODAY_MESSAGE = '日期不能早于今天';
 
 // Current date (for maximum date validation)
 export const CURRENT_DATE = new Date();
@@ -270,7 +271,43 @@ export const futureDateValidator = (day: string, month: string, year: string) =>
   return inputDate > today;
 };
 
-// Validator to ensure a date is not earlier than birth date
+// Validator to ensure a date is not earlier than today (today or in the future)
+export const notEarlierThanTodayValidator = (day: string, month: string, year: string) => {
+  if (!day || !month || !year) return true;
+  
+  const monthMap: { [key: string]: number } = {
+    'JAN': 0, 'FEB': 1, 'MAR': 2, 'APR': 3, 'MAY': 4, 'JUN': 5,
+    'JUL': 6, 'AUG': 7, 'SEP': 8, 'OCT': 9, 'NOV': 10, 'DEC': 11,
+    '01': 0, '02': 1, '03': 2, '04': 3, '05': 4, '06': 5,
+    '07': 6, '08': 7, '09': 8, '10': 9, '11': 10, '12': 11,
+    '1': 0, '2': 1, '3': 2, '4': 3, '5': 4, '6': 5,
+    '7': 6, '8': 7, '9': 8
+  };
+  
+  const monthNum = monthMap[month];
+  
+  if (monthNum === undefined) {
+    console.log('Invalid month format:', month);
+    return false;
+  }
+  
+  // Create date objects for the input date and today
+  const inputDate = new Date(parseInt(year), monthNum, parseInt(day));
+  const today = new Date();
+  
+  // Reset today's time to midnight for accurate date comparison
+  today.setHours(0, 0, 0, 0);
+  
+  console.log('Comparing dates for notEarlierThanTodayValidator:', { 
+    inputDate: inputDate.toISOString(), 
+    today: today.toISOString(),
+    result: inputDate >= today
+  });
+  
+  // Check if the input date is today or in the future
+  return inputDate >= today;
+};
+
 // Validator to ensure a date is earlier than user's birth date
 export const earlierThanUserBirthDateValidator = (day: string, month: string, year: string, userBirthDay: string, userBirthMonth: string, userBirthYear: string) => {
   if (!day || !month || !year || !userBirthDay || !userBirthMonth || !userBirthYear) return true;
@@ -292,6 +329,7 @@ export const earlierThanUserBirthDateValidator = (day: string, month: string, ye
   return inputDate < userBirthDate;
 };
 
+// Validator to ensure a date is not earlier than birth date
 export const notEarlierThanBirthDateValidator = (day: string, month: string, year: string, birthDay: string, birthMonth: string, birthYear: string) => {
   console.log('notEarlierThanBirthDateValidator called with:', {
     inputDate: { day, month, year },
@@ -379,7 +417,7 @@ export const maxLengths = {
   idDocument: 20,     // Common max length for passport, national ID, taxpayer ID
   receiptNumber: 13,  // Receipt number
   explanation: 4000,  // Explanation text areas
-  socialMedia: 30,    // Social media identifiers
+  socialMedia: 40,    // Social media identifiers
   telecode: 20,       // Telecode fields
   flightNumber: 20,   // Flight numbers
   zipCode: 10,        // ZIP codes

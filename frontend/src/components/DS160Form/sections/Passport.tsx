@@ -6,7 +6,17 @@ import '../ds160Form.css';
 import DateInput from '../common/DateInput';
 import RepeatableFormItem from '../common/RepeatableFormItem';
 import { FormListFieldData } from 'antd/lib/form/FormList';
-import { idDocumentPatternMessage, idDocumentValidator, historicalDateValidator, notFutureDateValidator, futureDateValidator, maxLengths, notEarlierThanBirthDateValidator } from '../utils/validationRules';
+import { 
+  idDocumentPatternMessage, 
+  idDocumentValidator, 
+  historicalDateValidator, 
+  notFutureDateValidator, 
+  futureDateValidator, 
+  locationPatternMessage,
+  locationValidator,
+  maxLengths, 
+  notEarlierThanBirthDateValidator
+} from '../utils/validationRules';
 
 const { TextArea } = Input;
 
@@ -106,7 +116,6 @@ const Passport: React.FC<PassportProps> = ({ form }) => {
               name="passportNumber"
               validator={idDocumentValidator}
               validatorMessage={idDocumentPatternMessage}
-              maxLength={maxLengths.idDocument}
             >
               <Input style={{ width: '99%' }} maxLength={maxLengths.idDocument} />
             </QuestionItem>
@@ -127,7 +136,6 @@ const Passport: React.FC<PassportProps> = ({ form }) => {
               hasNaCheckbox={true}
               naCheckboxName="passportBookNumber_na"
               inlineCheckbox={true}
-              maxLength={maxLengths.idDocument}
               validator={idDocumentValidator}
               validatorMessage={idDocumentPatternMessage}
             >
@@ -169,6 +177,8 @@ const Passport: React.FC<PassportProps> = ({ form }) => {
                 <QuestionItem
                     question="城市"
                     name="passportIssuedCity"
+                    validator={locationValidator}
+                    validatorMessage={locationPatternMessage}
                 >
                     <Input style={{ width: '99%' }} maxLength={25} />
                 </QuestionItem>
@@ -184,6 +194,8 @@ const Passport: React.FC<PassportProps> = ({ form }) => {
                 <QuestionItem
                     question="国家/地区"
                     name="passportIssuedInCountry"
+                    validator={locationValidator}
+                    validatorMessage={locationPatternMessage}
                 >
                     <Select 
                         options={permanentResidenceOptions}
@@ -202,27 +214,14 @@ const Passport: React.FC<PassportProps> = ({ form }) => {
               question="签发日期"
               name="passportIssuedDate"
               required={true}
-              validator={(value) => {
-                if (!historicalDateValidator(value.day, value.month, value.year)) return false;
-                if (!notFutureDateValidator(value.day, value.month, value.year)) return false;
-                if (watchSelfBirthDate) {
-                  if (!notEarlierThanBirthDateValidator(
-                    value.day,
-                    value.month,
-                    value.year,
-                    watchSelfBirthDate.day,
-                    watchSelfBirthDate.month,
-                    watchSelfBirthDate.year
-                  )) return false;
-                }
-                return true;
-              }}
-              validatorMessage={"签发日期必须在1915年5月15日之后，不能是未来日期，且不能早于出生日期"}
             >
               <DateInput
                 dayName={["passportIssuedDate", "day"]}
                 monthName={["passportIssuedDate", "month"]}
                 yearName={["passportIssuedDate", "year"]}
+                validateNotFutureDate={true}
+                validateNotEarlierThanBirthDate={true}
+                birthDate={watchSelfBirthDate}
               />
             </QuestionItem>
           </div>
@@ -240,14 +239,13 @@ const Passport: React.FC<PassportProps> = ({ form }) => {
               naCheckboxName="passportExpirationDate_na"
               inlineCheckbox={true}
               required={true}
-              validator={(value) => futureDateValidator(value.day, value.month, value.year)}
-              validatorMessage="失效日期必须是未来日期"
             >
               <DateInput
                 dayName={["passportExpirationDate", "day"]}
                 monthName={["passportExpirationDate", "month"]}
                 yearName={["passportExpirationDate", "year"]}
                 naCheckboxName="passportExpirationDate_na"
+                validateNotEarlierThanToday={true}
               />
             </QuestionItem>
           </div>

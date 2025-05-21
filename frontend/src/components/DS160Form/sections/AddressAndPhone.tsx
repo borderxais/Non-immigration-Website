@@ -9,8 +9,6 @@ import {
   maxLengths, 
   addressValidator,
   addressPatternMessage,
-  phoneValidator,
-  phonePatternMessage,
   emailValidator,
   emailPatternMessage,
   stateZipCodeValidator,
@@ -18,7 +16,9 @@ import {
   locationValidator,
   locationPatternMessage,
   socialMediaPattern,
-  socialMediaPatternMessage
+  socialMediaPatternMessage,
+  numericValidator,
+  numericPatternMessage
 } from '../utils/validationRules';
 
 interface AddressAndPhoneProps {
@@ -245,6 +245,8 @@ const AddressAndPhone: React.FC<AddressAndPhoneProps> = ({ form }) => {
                         hasNaCheckbox={true}
                         naCheckboxName="mailingAddressState_na"
                         inlineCheckbox={true}
+                        validator={locationValidator}
+                        validatorMessage={locationPatternMessage}
                         >
                         <Input style={{ width: '90%' }} maxLength={maxLengths.state}/>
                     </QuestionItem>
@@ -256,6 +258,8 @@ const AddressAndPhone: React.FC<AddressAndPhoneProps> = ({ form }) => {
                         hasNaCheckbox={true}
                         naCheckboxName="mailingAddressZipCode_na"
                         inlineCheckbox={true}
+                        validator={stateZipCodeValidator}
+                        validatorMessage={stateZipCodePatternMessage}
                         >
                         <Input style={{ width: '80%' }} maxLength={maxLengths.zipCode}/>
                     </QuestionItem>
@@ -290,9 +294,8 @@ const AddressAndPhone: React.FC<AddressAndPhoneProps> = ({ form }) => {
             <QuestionItem
               question="主要电话号码"
               name="primaryPhone"
-              maxLength={maxLengths.phone}
-              validator={phoneValidator}
-              validatorMessage={phonePatternMessage}
+              validator={numericValidator}
+              validatorMessage={numericPatternMessage}
             >
               <Input style={{ width: '60%' }} maxLength={maxLengths.phone} minLength={5} />
             </QuestionItem>
@@ -301,8 +304,8 @@ const AddressAndPhone: React.FC<AddressAndPhoneProps> = ({ form }) => {
               question="备用电话号码"
               name="secondaryPhone"
               maxLength={maxLengths.phone}
-              validator={phoneValidator}
-              validatorMessage={phonePatternMessage}
+              validator={numericValidator}
+              validatorMessage={numericPatternMessage}
               hasNaCheckbox={true}
               naCheckboxName="secondaryPhone_na"
               inlineCheckbox={true}
@@ -314,8 +317,8 @@ const AddressAndPhone: React.FC<AddressAndPhoneProps> = ({ form }) => {
               question="工作电话号码"
               name="workPhone"
               maxLength={maxLengths.phone}
-              validator={phoneValidator}
-              validatorMessage={phonePatternMessage}
+              validator={numericValidator}
+              validatorMessage={numericPatternMessage}
               hasNaCheckbox={true}
               naCheckboxName="workPhone_na"
               inlineCheckbox={true}
@@ -359,8 +362,8 @@ const AddressAndPhone: React.FC<AddressAndPhoneProps> = ({ form }) => {
                     question="电话号码"
                     name={[field.name,"phoneNumber"]}
                     maxLength={maxLengths.phone}
-                    validator={phoneValidator}
-                    validatorMessage={phonePatternMessage}
+                    validator={numericValidator}
+                    validatorMessage={numericPatternMessage}
                   >
                     <Input style={{ width: '60%' }} maxLength={maxLengths.phone} minLength={5} placeholder="例如：5555555555" />
                   </QuestionItem>
@@ -380,21 +383,17 @@ const AddressAndPhone: React.FC<AddressAndPhoneProps> = ({ form }) => {
           <div className="question-column">
             <h3 className="section-header">
               <span>电子邮件</span>
-            </h3>
-            
+            </h3>        
             <div className="highlighted-block">
               <QuestionItem
                 question="电子邮件地址"
                 name="emailAddress"
-                maxLength={maxLengths.email}
                 validator={emailValidator}
                 validatorMessage={emailPatternMessage}
               >
-                <Input style={{ width: '95%' }} maxLength={50} />
+                <Input style={{ width: '95%' }} maxLength={maxLengths.email} />
               </QuestionItem>
-              <div className="hint" style={{ marginTop: 4, color: '#666' }}>
-                <span>(e.g., emailaddress@example.com)</span>
-              </div>
+              <p>(例如：emailaddress@example.com)</p>
             </div>
           </div>
           <div className="explanation-column">
@@ -432,11 +431,10 @@ const AddressAndPhone: React.FC<AddressAndPhoneProps> = ({ form }) => {
                   <QuestionItem
                     question="电子邮件地址"
                     name={[field.name,"emailAddress"]}
-                    maxLength={maxLengths.email}
                     validator={emailValidator}
                     validatorMessage={emailPatternMessage}
                   >
-                    <Input style={{ width: '95%' }} maxLength={50} placeholder="例如：example@email.com" />
+                    <Input style={{ width: '95%' }} maxLength={maxLengths.email} placeholder="例如：example@email.com" />
                   </QuestionItem>
                 )}
               </RepeatableFormItem>
@@ -519,8 +517,7 @@ const AddressAndPhone: React.FC<AddressAndPhoneProps> = ({ form }) => {
                             {...field}
                             name={[field.name, 'identifier']}
                             label="用户名/标识符"
-                            rules={[{ required: !isDisabled, message: '请输入用户名或标识符' },
-                              { pattern: socialMediaPattern, message: socialMediaPatternMessage }]}
+                            rules={[{ required: !isDisabled, message: '请输入用户名或标识符' }]}
                             style={{ marginBottom: '16px' }}
                           >
                             <Input 
@@ -530,6 +527,7 @@ const AddressAndPhone: React.FC<AddressAndPhoneProps> = ({ form }) => {
                               }} 
                               disabled={isDisabled}
                               placeholder="例如：username123" 
+                              maxLength={50}
                             />
                           </Form.Item>
                         );
@@ -570,7 +568,6 @@ const AddressAndPhone: React.FC<AddressAndPhoneProps> = ({ form }) => {
                       <QuestionItem
                         question="其他社交媒体平台"
                         name={[field.name, 'otherPlatform']}
-                        maxLength={maxLengths.socialMedia}
                       >
                         <Input style={{ width: '95%' }} maxLength={maxLengths.socialMedia} />
                       </QuestionItem>
@@ -578,9 +575,6 @@ const AddressAndPhone: React.FC<AddressAndPhoneProps> = ({ form }) => {
                       <QuestionItem
                         question="其他社交媒体平台的用户名/标识符"
                         name={[field.name, 'otherIdentifier']}
-                        maxLength={maxLengths.socialMedia}
-                        validator={(value: string) => socialMediaPattern.test(value)}
-                        validatorMessage={socialMediaPatternMessage}
                       >
                         <Input style={{ width: '95%' }} maxLength={maxLengths.socialMedia} />
                       </QuestionItem>
