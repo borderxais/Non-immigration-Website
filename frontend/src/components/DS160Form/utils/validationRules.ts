@@ -351,5 +351,7 @@ export const maxLengths = {
   telecode: 20,       // Telecode fields
   flightNumber: 20,   // Flight numbers
   zipCode: 10,        // ZIP codes
-  driverLicenseNumber: 20 // Driver's license numbers
+  driverLicenseNumber: 20, // Driver's license numbers
+  visaNumber: 12,
+  year: 4
 };

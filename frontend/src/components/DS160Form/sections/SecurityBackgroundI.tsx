@@ -62,7 +62,6 @@ const SecurityBackground: React.FC<SecurityBackgroundProps> = ({ form }) => {
                     <div className="highlighted-block">
                       <Form.Item
                           name="diseaseExplanation"
-                          noStyle
                           rules={[
                             { pattern: explanationPattern, message: explanationPatternMessage }
                           ]}
