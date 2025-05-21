@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Radio, Input, Form } from 'antd';
 import QuestionItem from '../common/QuestionItem';
+import { maxLengths, explanationPattern, explanationPatternMessage } from '../utils/validationRules';
 
 interface SecurityBackgroundIIIProps {
   form: any;
@@ -115,12 +116,14 @@ const SecurityBackgroundIII: React.FC<SecurityBackgroundIIIProps> = ({ form }) =
                     <div className="highlighted-block">
                       <Form.Item
                         name="illegalActivityExplanation"
-                        noStyle
+                        rules={[
+                          { pattern: explanationPattern, message: explanationPatternMessage }
+                        ]}
                       >
                         <TextArea 
                           style={{ width: '99%' }} 
                           rows={4} 
-                          maxLength={4000}
+                          maxLength={maxLengths.explanation}
                           required={true}
                         />
                       </Form.Item>
@@ -157,12 +160,14 @@ const SecurityBackgroundIII: React.FC<SecurityBackgroundIIIProps> = ({ form }) =
                     <div className="highlighted-block">
                       <Form.Item
                         name="terroristActivityExplanation"
-                        noStyle
+                        rules={[
+                          { pattern: explanationPattern, message: explanationPatternMessage }
+                        ]}
                       >
                         <TextArea 
                           style={{ width: '99%' }} 
                           rows={4} 
-                          maxLength={4000}
+                          maxLength={maxLengths.explanation}
                           required={true}
                         />
                       </Form.Item>
@@ -199,12 +204,14 @@ const SecurityBackgroundIII: React.FC<SecurityBackgroundIIIProps> = ({ form }) =
                     <div className="highlighted-block">
                       <Form.Item
                         name="terroristSupportExplanation"
-                        noStyle
+                        rules={[
+                          { pattern: explanationPattern, message: explanationPatternMessage }
+                        ]}
                       >
                         <TextArea 
                           style={{ width: '99%' }} 
                           rows={4} 
-                          maxLength={4000}
+                          maxLength={maxLengths.explanation}
                           required={true}
                         />
                       </Form.Item>
@@ -241,12 +248,14 @@ const SecurityBackgroundIII: React.FC<SecurityBackgroundIIIProps> = ({ form }) =
                     <div className="highlighted-block">
                       <Form.Item
                         name="terroristOrgExplanation"
-                        noStyle
+                        rules={[
+                          { pattern: explanationPattern, message: explanationPatternMessage }
+                        ]}
                       >
                         <TextArea 
                           style={{ width: '99%' }} 
                           rows={4} 
-                          maxLength={4000}
+                          maxLength={maxLengths.explanation}
                           required={true}
                         />
                       </Form.Item>
@@ -283,12 +292,14 @@ const SecurityBackgroundIII: React.FC<SecurityBackgroundIIIProps> = ({ form }) =
                     <div className="highlighted-block">
                       <Form.Item
                         name="terroristRelExplanation"
-                        noStyle
+                        rules={[
+                          { pattern: explanationPattern, message: explanationPatternMessage }
+                        ]}
                       >
                         <TextArea 
                           style={{ width: '99%' }} 
                           rows={4} 
-                          maxLength={4000}
+                          maxLength={maxLengths.explanation}
                           required={true}
                         />
                       </Form.Item>
@@ -325,12 +336,14 @@ const SecurityBackgroundIII: React.FC<SecurityBackgroundIIIProps> = ({ form }) =
                     <div className="highlighted-block">
                       <Form.Item
                         name="genocideExplanation"
-                        noStyle
+                        rules={[
+                          { pattern: explanationPattern, message: explanationPatternMessage }
+                        ]}
                       >
                         <TextArea 
                           style={{ width: '99%' }} 
                           rows={4} 
-                          maxLength={4000}
+                          maxLength={maxLengths.explanation}
                           required={true}
                         />
                       </Form.Item>
@@ -367,12 +380,14 @@ const SecurityBackgroundIII: React.FC<SecurityBackgroundIIIProps> = ({ form }) =
                     <div className="highlighted-block">
                       <Form.Item
                         name="tortureExplanation"
-                        noStyle
+                        rules={[
+                          { pattern: explanationPattern, message: explanationPatternMessage }
+                        ]}
                       >
                         <TextArea 
                           style={{ width: '99%' }} 
                           rows={4} 
-                          maxLength={4000}
+                          maxLength={maxLengths.explanation}
                           required={true}
                         />
                       </Form.Item>
@@ -409,12 +424,14 @@ const SecurityBackgroundIII: React.FC<SecurityBackgroundIIIProps> = ({ form }) =
                     <div className="highlighted-block">
                       <Form.Item
                         name="exViolenceExplanation"
-                        noStyle
+                        rules={[
+                          { pattern: explanationPattern, message: explanationPatternMessage }
+                        ]}
                       >
                         <TextArea 
                           style={{ width: '99%' }} 
                           rows={4} 
-                          maxLength={4000}
+                          maxLength={maxLengths.explanation}
                           required={true}
                         />
                       </Form.Item>
@@ -451,12 +468,14 @@ const SecurityBackgroundIII: React.FC<SecurityBackgroundIIIProps> = ({ form }) =
                     <div className="highlighted-block">
                       <Form.Item
                         name="childSoldierExplanation"
-                        noStyle
+                        rules={[
+                          { pattern: explanationPattern, message: explanationPatternMessage }
+                        ]}
                       >
                         <TextArea 
                           style={{ width: '99%' }} 
                           rows={4} 
-                          maxLength={4000}
+                          maxLength={maxLengths.explanation}
                           required={true}
                         />
                       </Form.Item>
@@ -493,12 +512,14 @@ const SecurityBackgroundIII: React.FC<SecurityBackgroundIIIProps> = ({ form }) =
                     <div className="highlighted-block">
                       <Form.Item
                         name="religiousFreedomExplanation"
-                        noStyle
+                        rules={[
+                          { pattern: explanationPattern, message: explanationPatternMessage }
+                        ]}
                       >
                         <TextArea 
                           style={{ width: '99%' }} 
                           rows={4} 
-                          maxLength={4000}
+                          maxLength={maxLengths.explanation}
                           required={true}
                         />
                       </Form.Item>
@@ -535,12 +556,14 @@ const SecurityBackgroundIII: React.FC<SecurityBackgroundIIIProps> = ({ form }) =
                     <div className="highlighted-block">
                       <Form.Item
                         name="populationControlsExplanation"
-                        noStyle
+                        rules={[
+                          { pattern: explanationPattern, message: explanationPatternMessage }
+                        ]}
                       >
                         <TextArea 
                           style={{ width: '99%' }} 
                           rows={4} 
-                          maxLength={4000}
+                          maxLength={maxLengths.explanation}
                           required={true}
                         />
                       </Form.Item>
@@ -577,12 +600,14 @@ const SecurityBackgroundIII: React.FC<SecurityBackgroundIIIProps> = ({ form }) =
                     <div className="highlighted-block">
                       <Form.Item
                         name="transplantExplanation"
-                        noStyle
+                        rules={[
+                          { pattern: explanationPattern, message: explanationPatternMessage }
+                        ]}
                       >
                         <TextArea 
                           style={{ width: '99%' }} 
                           rows={4} 
-                          maxLength={4000}
+                          maxLength={maxLengths.explanation}
                           required={true}
                         />
                       </Form.Item>

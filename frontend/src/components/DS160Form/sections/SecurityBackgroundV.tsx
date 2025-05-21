@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Radio, Input, Form } from 'antd';
 import QuestionItem from '../common/QuestionItem';
+import { maxLengths, explanationPattern, explanationPatternMessage } from '../utils/validationRules';
 
 interface SecurityBackgroundVProps {
   form: any;
@@ -61,12 +62,14 @@ const SecurityBackgroundV: React.FC<SecurityBackgroundVProps> = ({ form }) => {
                     <div className="highlighted-block">
                       <Form.Item
                         name="childCustodyExplanation"
-                        noStyle
+                        rules={[
+                          { pattern: explanationPattern, message: explanationPatternMessage }
+                        ]}
                       >
                         <TextArea 
                           style={{ width: '99%' }} 
                           rows={4} 
-                          maxLength={4000}
+                          maxLength={maxLengths.explanation}
                           required={true}
                         />
                       </Form.Item>
@@ -103,12 +106,14 @@ const SecurityBackgroundV: React.FC<SecurityBackgroundVProps> = ({ form }) => {
                     <div className="highlighted-block">
                       <Form.Item
                         name="votingViolationExplanation"
-                        noStyle
+                        rules={[
+                          { pattern: explanationPattern, message: explanationPatternMessage }
+                        ]}
                       >
                         <TextArea 
                           style={{ width: '99%' }} 
                           rows={4} 
-                          maxLength={4000}
+                          maxLength={maxLengths.explanation}
                           required={true}
                         />
                       </Form.Item>
@@ -145,12 +150,14 @@ const SecurityBackgroundV: React.FC<SecurityBackgroundVProps> = ({ form }) => {
                     <div className="highlighted-block">
                       <Form.Item
                         name="renouncedExplanation"
-                        noStyle
+                        rules={[
+                          { pattern: explanationPattern, message: explanationPatternMessage }
+                        ]}
                       >
                         <TextArea 
                           style={{ width: '99%' }} 
                           rows={4} 
-                          maxLength={4000}
+                          maxLength={maxLengths.explanation}
                           required={true}
                         />
                       </Form.Item>

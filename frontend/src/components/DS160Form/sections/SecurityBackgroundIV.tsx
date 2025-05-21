@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Radio, Input, Form } from 'antd';
 import QuestionItem from '../common/QuestionItem';
+import { maxLengths, explanationPattern, explanationPatternMessage } from '../utils/validationRules';
 
 interface SecurityBackgroundIVProps {
   form: any;
@@ -55,12 +56,14 @@ const SecurityBackgroundIV: React.FC<SecurityBackgroundIVProps> = ({ form }) => 
                     <div className="highlighted-block">
                       <Form.Item
                         name="immigrationFraudExplanation"
-                        noStyle
+                        rules={[
+                          { pattern: explanationPattern, message: explanationPatternMessage }
+                        ]}
                       >
                         <TextArea 
                           style={{ width: '99%' }} 
                           rows={4} 
-                          maxLength={4000}
+                          maxLength={maxLengths.explanation}
                           required={true}
                         />
                       </Form.Item>
@@ -97,12 +100,14 @@ const SecurityBackgroundIV: React.FC<SecurityBackgroundIVProps> = ({ form }) => 
                     <div className="highlighted-block">
                       <Form.Item
                         name="deportationExplanation"
-                        noStyle
+                        rules={[
+                          { pattern: explanationPattern, message: explanationPatternMessage }
+                        ]}
                       >
                         <TextArea 
                           style={{ width: '99%' }} 
                           rows={4} 
-                          maxLength={4000}
+                          maxLength={maxLengths.explanation}
                           required={true}
                         />
                       </Form.Item>

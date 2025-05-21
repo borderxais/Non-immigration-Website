@@ -106,7 +106,6 @@ const SecurityBackground: React.FC<SecurityBackgroundProps> = ({ form }) => {
                     <div className="question-column">
                       <Form.Item
                         name="disorderExplanation"
-                        noStyle
                         rules={[
                           { pattern: explanationPattern, message: explanationPatternMessage }
                         ]}
@@ -150,7 +149,6 @@ const SecurityBackground: React.FC<SecurityBackgroundProps> = ({ form }) => {
                     <div className="question-column">
                       <Form.Item
                         name="drugUserExplanation"
-                        noStyle
                         rules={[
                           { pattern: explanationPattern, message: explanationPatternMessage }
                         ]}

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Radio, Input, Form } from 'antd';
 import QuestionItem from '../common/QuestionItem';
+import { maxLengths, explanationPattern, explanationPatternMessage } from '../utils/validationRules';
 
 interface SecurityBackgroundIIProps {
   form: any;
@@ -85,12 +86,14 @@ const SecurityBackgroundII: React.FC<SecurityBackgroundIIProps> = ({ form }) => 
                     <div className="highlighted-block">
                       <Form.Item
                         name="arrestExplanation"
-                        noStyle
+                        rules={[
+                          { pattern: explanationPattern, message: explanationPatternMessage }
+                        ]}
                       >
                         <TextArea 
                           style={{ width: '99%' }} 
                           rows={4} 
-                          maxLength={4000}
+                          maxLength={maxLengths.explanation}
                           required={true}
                         />
                       </Form.Item>
@@ -127,12 +130,14 @@ const SecurityBackgroundII: React.FC<SecurityBackgroundIIProps> = ({ form }) => 
                     <div className="highlighted-block">
                       <Form.Item
                         name="controlledSubstancesExplanation"
-                        noStyle
+                        rules={[
+                          { pattern: explanationPattern, message: explanationPatternMessage }
+                        ]}
                       >
                         <TextArea 
                           style={{ width: '99%' }} 
                           rows={4} 
-                          maxLength={4000}
+                          maxLength={maxLengths.explanation}
                           required={true}
                         />
                       </Form.Item>
@@ -169,12 +174,14 @@ const SecurityBackgroundII: React.FC<SecurityBackgroundIIProps> = ({ form }) => 
                     <div className="highlighted-block">
                       <Form.Item
                         name="prostitutionExplanation"
-                        noStyle
+                        rules={[
+                          { pattern: explanationPattern, message: explanationPatternMessage }
+                        ]}
                       >
                         <TextArea 
                           style={{ width: '99%' }} 
                           rows={4} 
-                          maxLength={4000}
+                          maxLength={maxLengths.explanation}
                           required={true}
                         />
                       </Form.Item>
@@ -210,12 +217,14 @@ const SecurityBackgroundII: React.FC<SecurityBackgroundIIProps> = ({ form }) => 
                     <div className="highlighted-block">
                       <Form.Item
                         name="moneyLaunderingExplanation"
-                        noStyle
+                        rules={[
+                          { pattern: explanationPattern, message: explanationPatternMessage }
+                        ]}
                       >
                         <TextArea 
                           style={{ width: '99%' }} 
                           rows={4} 
-                          maxLength={4000}
+                          maxLength={maxLengths.explanation}
                           required={true}
                         />
                       </Form.Item>
@@ -252,12 +261,14 @@ const SecurityBackgroundII: React.FC<SecurityBackgroundIIProps> = ({ form }) => 
                     <div className="highlighted-block">
                       <Form.Item
                         name="humanTraffickingExplanation"
-                        noStyle
+                        rules={[
+                          { pattern: explanationPattern, message: explanationPatternMessage }
+                        ]}
                       >
                         <TextArea 
                           style={{ width: '99%' }} 
                           rows={4} 
-                          maxLength={4000}
+                          maxLength={maxLengths.explanation}
                           required={true}
                         />
                       </Form.Item>
@@ -294,12 +305,14 @@ const SecurityBackgroundII: React.FC<SecurityBackgroundIIProps> = ({ form }) => 
                     <div className="highlighted-block">
                       <Form.Item
                         name="assistedTraffickingExplanation"
-                        noStyle
+                        rules={[
+                          { pattern: explanationPattern, message: explanationPatternMessage }
+                        ]}
                       >
                         <TextArea 
                           style={{ width: '99%' }} 
                           rows={4} 
-                          maxLength={4000}
+                          maxLength={maxLengths.explanation}
                           required={true}
                         />
                       </Form.Item>
@@ -336,12 +349,14 @@ const SecurityBackgroundII: React.FC<SecurityBackgroundIIProps> = ({ form }) => 
                     <div className="highlighted-block">
                       <Form.Item
                         name="traffickingRelatedExplanation"
-                        noStyle
+                        rules={[
+                          { pattern: explanationPattern, message: explanationPatternMessage }
+                        ]}
                       >
                         <TextArea 
                           style={{ width: '99%' }} 
                           rows={4} 
-                          maxLength={4000}
+                          maxLength={maxLengths.explanation}
                           required={true}
                         />
                       </Form.Item>
