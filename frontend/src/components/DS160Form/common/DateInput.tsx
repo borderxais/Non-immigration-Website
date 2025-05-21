@@ -1,9 +1,9 @@
 import React from 'react';
 import { Form, Select, Input } from 'antd';
 import { NamePath } from 'antd/lib/form/interface';
-import { 
-  historicalDateValidator, 
-  notFutureDateValidator, 
+import {
+  historicalDateValidator,
+  notFutureDateValidator,
   futureDateValidator,
   notEarlierThanBirthDateValidator,
   MIN_HISTORICAL_DATE_MESSAGE,
@@ -68,11 +68,12 @@ interface DateInputProps {
   dayName: NamePath;
   monthName: NamePath;
   yearName: NamePath;
-  birthDate?: { 
+  birthDate?: {
     day: string;
     month: string;
     year: string;
   };
+  listName?: NamePath;
   required?: boolean;
   disabled?: boolean;
   validateHistoricalDate?: boolean; // Validate date is not earlier than May 15, 1915
@@ -87,6 +88,7 @@ const DateInput: React.FC<DateInputProps> = ({
   monthName,
   yearName,
   birthDate,
+  listName,
   required = true,
   disabled = false,
   validateHistoricalDate = false,
@@ -102,7 +104,7 @@ const DateInput: React.FC<DateInputProps> = ({
   };
 
   const form = Form.useFormInstance();
-  
+
   // Check if the N/A checkbox is checked
   const isNaChecked = naCheckboxName ? form.getFieldValue(naCheckboxName) : false;
 
@@ -113,11 +115,14 @@ const DateInput: React.FC<DateInputProps> = ({
       if (isNaChecked) {
         return Promise.resolve();
       }
-      
-      const day = form.getFieldValue(dayName);
-      const month = form.getFieldValue(monthName);
-      const year = form.getFieldValue(yearName);
 
+      const day = form.getFieldValue(listName ? [listName, ...dayName] : dayName);
+      const month = form.getFieldValue(listName ? [listName, ...monthName] : monthName);
+      const year = form.getFieldValue(listName ? [listName, ...yearName] : yearName);
+      console.log(day, month, year);
+      console.log(listName ? [listName, ...dayName] : dayName);
+      console.log(listName ? [listName, ...monthName] : monthName);
+      console.log(listName ? [listName, ...yearName] : yearName);
       // Skip validation if any field is empty
       if (!day || !month || !year) {
         return Promise.resolve();
@@ -141,7 +146,7 @@ const DateInput: React.FC<DateInputProps> = ({
       // Validate not earlier than birth date if required
       if (validateNotEarlierThanBirthDate && birthDate) {
         if (!notEarlierThanBirthDateValidator(
-          day, month, year, 
+          day, month, year,
           birthDate.day, birthDate.month, birthDate.year
         )) {
           return Promise.reject(AFTER_BIRTH_DATE_MESSAGE);
@@ -155,8 +160,9 @@ const DateInput: React.FC<DateInputProps> = ({
   return (
     <div>
       <div style={dateBlockStyle}>
-        <Form.Item 
-          name={dayName} 
+
+        <Form.Item
+          name={dayName}
           noStyle
           rules={required && !isNaChecked ? [
             { required: true, message: '请选择日期' },
@@ -166,16 +172,16 @@ const DateInput: React.FC<DateInputProps> = ({
           ]}
           dependencies={[monthName, yearName]}
         >
-          <Select 
-            options={dayOptions} 
-            style={{ width: 70 }} 
-            placeholder="日" 
+          <Select
+            options={dayOptions}
+            style={{ width: 70 }}
+            placeholder="日"
             disabled={disabled || isNaChecked}
           />
         </Form.Item>
 
-        <Form.Item 
-          name={monthName} 
+        <Form.Item
+          name={monthName}
           noStyle
           rules={required && !isNaChecked ? [
             { required: true, message: '请选择月份' },
@@ -185,16 +191,16 @@ const DateInput: React.FC<DateInputProps> = ({
           ]}
           dependencies={[dayName, yearName]}
         >
-          <Select 
-            options={monthOptions} 
-            style={{ width: 80 }} 
-            placeholder="月" 
+          <Select
+            options={monthOptions}
+            style={{ width: 80 }}
+            placeholder="月"
             disabled={disabled || isNaChecked}
           />
         </Form.Item>
 
-        <Form.Item 
-          name={yearName} 
+        <Form.Item
+          name={yearName}
           noStyle
           rules={required && !isNaChecked ? [
             { required: true, message: '请输入年份' },
@@ -206,15 +212,15 @@ const DateInput: React.FC<DateInputProps> = ({
           ]}
           dependencies={[dayName, monthName]}
         >
-          <Input 
-            placeholder="年" 
-            style={{ width: '60px' }} 
-            maxLength={4} 
+          <Input
+            placeholder="年"
+            style={{ width: '60px' }}
+            maxLength={4}
             disabled={disabled || isNaChecked}
           />
         </Form.Item>
       </div>
-      
+
       <div style={{ fontSize: '12px', color: '#666', marginTop: '4px' }}>
         (格式: DD-MM-YYYY)
       </div>

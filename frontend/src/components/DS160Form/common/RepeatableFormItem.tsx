@@ -5,7 +5,7 @@ import { FormListFieldData } from 'antd/lib/form/FormList';
 
 interface RepeatableFormItemProps {
   name: string;
-  children: (field: FormListFieldData) => React.ReactNode;
+  children: (field: FormListFieldData, listName: string) => React.ReactNode;
   addButtonText?: string;
   removeButtonText?: string;
   blockStyle?: 'highlighted' | 'white';
@@ -50,7 +50,7 @@ const RepeatableFormItem: React.FC<RepeatableFormItemProps> = ({
               <React.Fragment key={field.key}>
                 {/* Content block */}
                 <div className={blockStyle === 'highlighted' ? "highlighted-block" : "block-inside-highlight"}>
-                  {children(field)}
+                  {children(field, name)}
                 </div>
                 
                 {/* Buttons right below this content block */}

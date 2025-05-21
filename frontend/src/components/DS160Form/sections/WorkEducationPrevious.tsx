@@ -74,7 +74,7 @@ const WorkEducationPrevious: React.FC<WorkEducationPreviousProps> = ({ form, rea
                   addButtonText="增加另一个"
                   removeButtonText="移走"
                 >
-                  {(field: FormListFieldData) => {
+                  {(field: FormListFieldData, listName: string) => {
                     return (
                       <>
                         <div style={{ marginBottom: '24px' }}>
@@ -266,6 +266,7 @@ const WorkEducationPrevious: React.FC<WorkEducationPreviousProps> = ({ form, rea
                               monthName={[field.name, 'employmentStart', 'month']}
                               yearName={[field.name, 'employmentStart', 'year']}
                               disabled={readOnly}
+                              listName={listName}
                             />
                           </QuestionItem>
                         </div>
@@ -280,6 +281,7 @@ const WorkEducationPrevious: React.FC<WorkEducationPreviousProps> = ({ form, rea
                               monthName={[field.name, 'employmentEnd', 'month']}
                               yearName={[field.name, 'employmentEnd', 'year']}
                               disabled={readOnly}
+                              listName={listName}
                             />
                           </QuestionItem>
                         </div>
@@ -334,7 +336,7 @@ const WorkEducationPrevious: React.FC<WorkEducationPreviousProps> = ({ form, rea
                   addButtonText="增加另一个"
                   removeButtonText="移走"
                 >
-                  {(field) => {
+                  {(field: FormListFieldData, listName: string) => {
                     return (
                       <>
                         <div style={{ marginBottom: '24px' }}>
@@ -472,6 +474,7 @@ const WorkEducationPrevious: React.FC<WorkEducationPreviousProps> = ({ form, rea
                               monthName={[field.name, 'attendanceStart', 'month']}
                               yearName={[field.name, 'attendanceStart', 'year']}
                               disabled={readOnly}
+                              listName={listName}
                             />
                           </QuestionItem>
                         </div>
@@ -486,6 +489,7 @@ const WorkEducationPrevious: React.FC<WorkEducationPreviousProps> = ({ form, rea
                               monthName={[field.name, 'attendanceEnd', 'month']}
                               yearName={[field.name, 'attendanceEnd', 'year']}
                               disabled={readOnly}
+                              listName={listName}
                             />
                           </QuestionItem>
                         </div>

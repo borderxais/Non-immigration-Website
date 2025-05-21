@@ -332,7 +332,7 @@ const WorkEducationAdditional: React.FC<WorkEducationAdditionalProps> = ({ form,
                   addButtonText="增加另一个"
                   removeButtonText="移走"
                 >
-                  {(field: FormListFieldData) => {
+                  {(field: FormListFieldData, listName: string) => {
                     return (
                       <>
                         <div style={{ marginBottom: '24px' }}>
@@ -406,6 +406,7 @@ const WorkEducationAdditional: React.FC<WorkEducationAdditionalProps> = ({ form,
                               monthName={[field.name, 'serviceFrom', 'month']}
                               yearName={[field.name, 'serviceFrom', 'year']}
                               disabled={readOnly}
+                              listName={listName}
                             />
                           </QuestionItem>
                         </div>
@@ -420,6 +421,7 @@ const WorkEducationAdditional: React.FC<WorkEducationAdditionalProps> = ({ form,
                               monthName={[field.name, 'serviceTo', 'month']}
                               yearName={[field.name, 'serviceTo', 'year']}
                               disabled={readOnly}
+                              listName={listName}
                             />
                           </QuestionItem>
                         </div>

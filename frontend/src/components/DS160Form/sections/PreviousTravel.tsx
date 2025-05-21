@@ -260,7 +260,7 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
                     removeButtonText="移走"
                     blockStyle="white"
                   >
-                    {(field: FormListFieldData) => (
+                    {(field: FormListFieldData, listName: string) => (
                       <>
                         <QuestionItem
                           question="到达日期"
@@ -270,6 +270,7 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
                             dayName={[field.name, 'arrivalDate', 'day']}
                             monthName={[field.name, 'arrivalDate', 'month']}
                             yearName={[field.name, 'arrivalDate', 'year']}
+                            listName={listName}
                             required={true}
                             validateNotFutureDate={true}
                             validateNotEarlierThanBirthDate={!!birthDate}
