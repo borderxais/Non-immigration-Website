@@ -90,6 +90,8 @@ export const MIN_HISTORICAL_DATE = new Date(1915, 4, 15); // May 15, 1915
 export const MIN_HISTORICAL_DATE_MESSAGE = '日期不能早于1915年5月15日';
 export const FUTURE_DATE_MESSAGE = '日期不能是未来日期';
 export const AFTER_BIRTH_DATE_MESSAGE = '日期不能早于出生日期';
+export const FUTURE_YEAR_MESSAGE = '年份不能晚于当前年份';
+export const BEFORE_BIRTH_YEAR_MESSAGE = '年份不能早于出生年份';
 
 // Current date (for maximum date validation)
 export const CURRENT_DATE = new Date();
@@ -331,6 +333,66 @@ export const notEarlierThanBirthDateValidator = (day: string, month: string, yea
   
   // Check if the input date is not earlier than birth date
   return inputDate >= birthDate;
+};
+
+/**
+ * Validates that a year is not earlier than birth year and not later than current year
+ * @param year The year to validate
+ * @param birthYear The user's birth year (optional)
+ * @returns True if the year is valid, false otherwise
+ */
+export const yearValidator = (year: string, birthYear?: string) => {
+  if (!year) return true;
+  
+  // Validate year format (4 digits)
+  if (!/^\d{4}$/.test(year)) {
+    return false;
+  }
+  
+  const yearNum = parseInt(year);
+  const currentYear = new Date().getFullYear();
+  
+  // Check if year is not later than current year
+  if (yearNum > currentYear) {
+    return false;
+  }
+  
+  // Check if year is not earlier than birth year (if provided)
+  if (birthYear && yearNum < parseInt(birthYear)) {
+    return false;
+  }
+  
+  return true;
+};
+
+/**
+ * Async version of yearValidator for use with Form.Item validation rules
+ * @param year The year to validate
+ * @param birthYear The user's birth year (optional)
+ * @returns Promise that resolves if valid, rejects with error message if invalid
+ */
+export const yearValidatorAsync = async (year: string, birthYear?: string) => {
+  if (!year) return Promise.resolve();
+  
+  // Validate year format (4 digits)
+  if (!/^\d{4}$/.test(year)) {
+    return Promise.reject('请输入有效的4位数年份');
+  }
+  
+  const yearNum = parseInt(year);
+  const currentYear = new Date().getFullYear();
+  
+  // Check if year is not later than current year
+  if (yearNum > currentYear) {
+    return Promise.reject(FUTURE_YEAR_MESSAGE);
+  }
+  
+  // Check if year is not earlier than birth year (if provided)
+  if (birthYear && yearNum < parseInt(birthYear)) {
+    return Promise.reject(BEFORE_BIRTH_YEAR_MESSAGE);
+  }
+  
+  return Promise.resolve();
 };
 
 /**
