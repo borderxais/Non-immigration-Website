@@ -9,13 +9,11 @@ import { FormListFieldData } from 'antd/lib/form/FormList';
 import { 
   idDocumentPatternMessage, 
   idDocumentValidator, 
-  historicalDateValidator, 
-  notFutureDateValidator, 
-  futureDateValidator, 
   locationPatternMessage,
   locationValidator,
   maxLengths, 
-  notEarlierThanBirthDateValidator
+  explanationPattern,
+  explanationPatternMessage,
 } from '../utils/validationRules';
 
 const { TextArea } = Input;
@@ -301,7 +299,6 @@ const Passport: React.FC<PassportProps> = ({ form }) => {
                         parentFieldName="lostPassports"
                         validator={idDocumentValidator}
                         validatorMessage={idDocumentPatternMessage}
-                        maxLength={maxLengths.idDocument}
                     >
                         <Input 
                           style={{ width: '95%' }} 
@@ -338,8 +335,9 @@ const Passport: React.FC<PassportProps> = ({ form }) => {
                   <div className="question-column">
                     <Form.Item
                       name={[field.name, 'explanation']}
-                      noStyle
-                      rules={[{ required: true, message: '请说明护照遗失情况' }]}
+                      rules={[
+                        { required: true, message: '请说明护照遗失情况' }, 
+                        { pattern: explanationPattern, message: explanationPatternMessage }]}
                     >
                       <TextArea 
                         style={{ width: '99%' }} 

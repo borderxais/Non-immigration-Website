@@ -8,13 +8,17 @@
 export const namePattern = /^[A-Z\u4e00-\u9fa5]+(?: [A-Z\u4e00-\u9fa5]+)*$/;
 export const namePatternMessage = '只能包含大写英文字母、中文字符和名字之间的单个空格';
 
-// English-only name patterns (for passport fields)
-export const englishNamePattern = /^[A-Za-z\s]+$/;
-export const englishNamePatternMessage = '只能包含英文字母和空格';
+// English-only name patterns
+export const englishNamePattern = /^[A-Z]+(?: [A-Z]+)*$/;
+export const englishNamePatternMessage = '只能包含大写英文字母和名字之间的单个空格';
 
 // Address field patterns (allows more characters including numbers and punctuation)
 export const addressPattern = /^[A-Z0-9\u4e00-\u9fa5#$*%&;!@^?><().,'\-\s]+$/;
 export const addressPatternMessage = "只能包含大写英文字母、数字、中文字符、特殊字符(#、$、*、%、&、;、!、@、^、?、>、<)、括号、句点(.)、撇号(')、逗号(,)、连字符(-)和空格";
+
+// English-only address patterns
+export const englishAddressPattern = /^[A-Z0-9#$*%&;!@^?><().,'\-\s]+$/;
+export const englishAddressPatternMessage = "只能包含大写英文字母、数字、特殊字符(#、$、*、%、&、;、!、@、^、?、>、<)、括号、句点(.)、撇号(')、逗号(,)、连字符(-)和空格";
 
 // Numeric patterns
 export const numericPattern = /^\d+$/;
@@ -89,19 +93,14 @@ export const driverLicensePatternMessage = '只能包含大写字母、数字、
 export const MIN_HISTORICAL_DATE = new Date(1915, 4, 15); // May 15, 1915
 export const MIN_HISTORICAL_DATE_MESSAGE = '日期不能早于1915年5月15日';
 export const FUTURE_DATE_MESSAGE = '日期不能是未来日期';
-export const AFTER_BIRTH_DATE_MESSAGE = '日期不能早于出生日期';
+export const AFTER_BIRTH_DATE_MESSAGE = '日期不能早于你的出生日期';
 export const FUTURE_YEAR_MESSAGE = '年份不能晚于当前年份';
 export const BEFORE_BIRTH_YEAR_MESSAGE = '年份不能早于出生年份';
 export const EARLIER_THAN_TODAY_MESSAGE = '日期不能早于今天';
+export const EARLIER_THAN_BIRTH_DATE_MESSAGE = '日期必须早于你的出生日期';
 
 // Current date (for maximum date validation)
 export const CURRENT_DATE = new Date();
-
-// Date validation error messages
-export const historicalDatePatternMessage = '日期不能早于1915年5月15日';
-export const notFutureDatePatternMessage = '日期不能晚于今天';
-export const earlierThanUserBirthDatePatternMessage = '日期必须早于申请人出生日期';
-export const notEarlierThanBirthDatePatternMessage = '日期不能早于出生日期';
 
 /**
  * Common field validation functions
@@ -123,6 +122,11 @@ export const englishNameValidator = (value: any) => {
 export const addressValidator = (value: any) => {
   if (!value) return true;
   return addressPattern.test(value);
+};
+
+export const englishAddressValidator = (value: any) => {
+  if (!value) return true;
+  return englishAddressPattern.test(value);
 };
 
 // Validator for numeric fields
@@ -308,27 +312,6 @@ export const notEarlierThanTodayValidator = (day: string, month: string, year: s
   return inputDate >= today;
 };
 
-// Validator to ensure a date is earlier than user's birth date
-export const earlierThanUserBirthDateValidator = (day: string, month: string, year: string, userBirthDay: string, userBirthMonth: string, userBirthYear: string) => {
-  if (!day || !month || !year || !userBirthDay || !userBirthMonth || !userBirthYear) return true;
-  
-  const monthMap: { [key: string]: number } = {
-    'JAN': 0, 'FEB': 1, 'MAR': 2, 'APR': 3, 'MAY': 4, 'JUN': 5,
-    'JUL': 6, 'AUG': 7, 'SEP': 8, 'OCT': 9, 'NOV': 10, 'DEC': 11
-  };
-  
-  const monthNum = monthMap[month];
-  const userBirthMonthNum = monthMap[userBirthMonth];
-  
-  if (monthNum === undefined || userBirthMonthNum === undefined) return false;
-  
-  const inputDate = new Date(parseInt(year), monthNum, parseInt(day));
-  const userBirthDate = new Date(parseInt(userBirthYear), userBirthMonthNum, parseInt(userBirthDay));
-  
-  // Check if the input date is earlier than user's birth date
-  return inputDate < userBirthDate;
-};
-
 // Validator to ensure a date is not earlier than birth date
 export const notEarlierThanBirthDateValidator = (day: string, month: string, year: string, birthDay: string, birthMonth: string, birthYear: string) => {
   console.log('notEarlierThanBirthDateValidator called with:', {
@@ -371,6 +354,27 @@ export const notEarlierThanBirthDateValidator = (day: string, month: string, yea
   
   // Check if the input date is not earlier than birth date
   return inputDate >= birthDate;
+};
+
+// Validator to ensure a date is earlier than birth date
+export const earlierThanBirthDateValidator = (day: string, month: string, year: string, birthDay: string, birthMonth: string, birthYear: string) => {
+  if (!day || !month || !year || !birthDay || !birthMonth || !birthYear) return true;
+  
+  const monthMap: { [key: string]: number } = {
+    'JAN': 0, 'FEB': 1, 'MAR': 2, 'APR': 3, 'MAY': 4, 'JUN': 5,
+    'JUL': 6, 'AUG': 7, 'SEP': 8, 'OCT': 9, 'NOV': 10, 'DEC': 11
+  };
+  
+  const monthNum = monthMap[month];
+  const birthMonthNum = monthMap[birthMonth];
+  
+  if (monthNum === undefined || birthMonthNum === undefined) return false;
+  
+  const inputDate = new Date(parseInt(year), monthNum, parseInt(day));
+  const birthDate = new Date(parseInt(birthYear), birthMonthNum, parseInt(birthDay));
+  
+  // Check if the input date is earlier than birth date
+  return inputDate < birthDate;
 };
 
 /**

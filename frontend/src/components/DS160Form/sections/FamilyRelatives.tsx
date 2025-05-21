@@ -4,7 +4,11 @@ import QuestionItem from '../common/QuestionItem';
 import DateInput from '../common/DateInput';
 import RepeatableFormItem from '../common/RepeatableFormItem';
 import { relationshipOptions, usStatusOptions } from '../utils/formOptions';
-import { englishNameValidator, englishNamePatternMessage, maxLengths, historicalDateValidator, notFutureDateValidator, earlierThanUserBirthDateValidator } from '../utils/validationRules';
+import { 
+  nameValidator, 
+  namePatternMessage, 
+  maxLengths
+} from '../utils/validationRules';
 
 interface FamilyInfoProps {
   form: any;
@@ -33,7 +37,7 @@ const FamilyInfo: React.FC<FamilyInfoProps> = ({ form }) => {
   // 监听申请人出生日期
   const formValues = form.getFieldsValue(true);
   const dobData = formValues?.dob;
-  const watchSelfBirthDate = dobData ? {
+  const birthDate = dobData ? {
     day: dobData.day,
     month: dobData.month,
     year: dobData.year
@@ -89,45 +93,39 @@ const FamilyInfo: React.FC<FamilyInfoProps> = ({ form }) => {
         <div className="question-row">
           <div className="question-column">
             <div className="highlighted-block">
-              <div style={{ marginBottom: '24px' }}>
-                <QuestionItem
-                  question="姓氏"
-                  name="fatherSurname"
-                  required={true}
-                  hasNaCheckbox={true}
-                  naCheckboxName="fatherSurnameNotKnown"
-                  validator={englishNameValidator}
-                  validatorMessage={englishNamePatternMessage}
-                  maxLength={maxLengths.name}
-                >
-                  <Input 
-                    style={{ width: '99%' }} 
-                    maxLength={maxLengths.name} 
-                    disabled={!!watchFatherSurnameNotKnown}
-                    placeholder={!!watchFatherSurnameNotKnown ? '' : '请输入父亲姓氏'}
-                  />
-                </QuestionItem>
-              </div>
-              
-              <div style={{ marginBottom: '24px' }}>
-                <QuestionItem
-                  question="名字"
-                  name="fatherGivenName"
-                  required={true}
-                  hasNaCheckbox={true}
-                  naCheckboxName="fatherGivenNameNotKnown"
-                  validator={englishNameValidator}
-                  validatorMessage={englishNamePatternMessage}
-                  maxLength={maxLengths.name}
-                >
-                  <Input 
-                    style={{ width: '99%' }} 
-                    maxLength={maxLengths.name} 
-                    disabled={!!watchFatherGivenNameNotKnown}
-                    placeholder={!!watchFatherGivenNameNotKnown ? '' : '请输入父亲名字'}
-                  />
-                </QuestionItem>
-              </div>
+              <QuestionItem
+                question="姓氏"
+                name="fatherSurname"
+                required={true}
+                hasNaCheckbox={true}
+                naCheckboxName="fatherSurnameNotKnown"
+                validator={nameValidator}
+                validatorMessage={namePatternMessage}
+              >
+                <Input 
+                  style={{ width: '99%' }} 
+                  maxLength={maxLengths.name} 
+                  disabled={!!watchFatherSurnameNotKnown}
+                  placeholder={!!watchFatherSurnameNotKnown ? '' : '请输入父亲姓氏'}
+                />
+              </QuestionItem>
+
+              <QuestionItem
+                question="名字"
+                name="fatherGivenName"
+                required={true}
+                hasNaCheckbox={true}
+                naCheckboxName="fatherGivenNameNotKnown"
+                validator={nameValidator}
+                validatorMessage={namePatternMessage}
+              >
+                <Input 
+                  style={{ width: '99%' }} 
+                  maxLength={maxLengths.name} 
+                  disabled={!!watchFatherGivenNameNotKnown}
+                  placeholder={!!watchFatherGivenNameNotKnown ? '' : '请输入父亲名字'}
+                />
+              </QuestionItem>
               
               {/* Only show these fields if at least one name field is known */}
               {!(watchFatherSurnameNotKnown && watchFatherGivenNameNotKnown) && (
@@ -140,41 +138,15 @@ const FamilyInfo: React.FC<FamilyInfoProps> = ({ form }) => {
                       hasNaCheckbox={true}
                       naCheckboxName="fatherDobNotKnown"
                       inlineCheckbox={true}
-                      validator={(value) => {
-                        if (!value) return true;
-                        const { day, month, year } = value;
-                        
-                        // Check historical date
-                        if (!historicalDateValidator(day, month, year)) {
-                          return false;
-                        }
-                        
-                        // Check not future date
-                        if (!notFutureDateValidator(day, month, year)) {
-                          return false;
-                        }
-
-                        // Check earlier than user birth date
-                        if (watchSelfBirthDate) {
-                          if (!earlierThanUserBirthDateValidator(
-                            day, month, year,
-                            watchSelfBirthDate.day,
-                            watchSelfBirthDate.month,
-                            watchSelfBirthDate.year
-                          )) {
-                            return false;
-                          }
-                        }
-                        
-                        return true;
-                      }}
-                      validatorMessage="日期无效，请确保日期不早于1915年5月15日，不晚于今天，且早于申请人出生日期"
                     >
                       <DateInput
                         dayName={["fatherDob", "day"]}
                         monthName={["fatherDob", "month"]}
                         yearName={["fatherDob", "year"]}
                         disabled={!!watchFatherDobNotKnown}
+                        validateHistoricalDate={true}
+                        validateEarlierThanBirthDate={true}
+                        birthDate={birthDate}
                       />
                     </QuestionItem>
 
@@ -196,13 +168,11 @@ const FamilyInfo: React.FC<FamilyInfoProps> = ({ form }) => {
                           name="fatherStatus"
                           required={true}
                         >
-                          <Select style={{ width: '100%' }}>
-                            {usStatusOptions.map(option => (
-                              <Select.Option key={option.value} value={option.value}>
-                                {option.label}
-                              </Select.Option>
-                            ))}
-                          </Select>
+                          <Select 
+                            options={usStatusOptions} 
+                            style={{ width: '95%' }} 
+                            placeholder="- 请选择一个 -" 
+                          />
                         </QuestionItem>
                       </div>
                     )}
@@ -224,45 +194,39 @@ const FamilyInfo: React.FC<FamilyInfoProps> = ({ form }) => {
         <div className="question-row">
           <div className="question-column">
             <div className="highlighted-block">
-              <div style={{ marginBottom: '24px' }}>
-                <QuestionItem
-                  question="姓氏"
-                  name="motherSurname"
-                  required={true}
-                  hasNaCheckbox={true}
-                  naCheckboxName="motherSurnameNotKnown"
-                  validator={englishNameValidator}
-                  validatorMessage={englishNamePatternMessage}
-                  maxLength={maxLengths.name}
-                >
-                  <Input 
-                    style={{ width: '99%' }} 
-                    maxLength={33} 
-                    disabled={!!watchMotherSurnameNotKnown}
-                    placeholder={!!watchMotherSurnameNotKnown ? '' : '请输入母亲姓氏'}
-                  />
-                </QuestionItem>
-              </div>
-              
-              <div style={{ marginBottom: '24px' }}>
-                <QuestionItem
-                  question="名字"
-                  name="motherGivenName"
-                  required={true}
-                  hasNaCheckbox={true}
-                  naCheckboxName="motherGivenNameNotKnown"
-                  validator={englishNameValidator}
-                  validatorMessage={englishNamePatternMessage}
-                  maxLength={maxLengths.name}
-                >
-                  <Input 
-                    style={{ width: '99%' }} 
-                    maxLength={33} 
-                    disabled={!!watchMotherGivenNameNotKnown}
-                    placeholder={!!watchMotherGivenNameNotKnown ? '' : '请输入母亲名字'}
-                  />
-                </QuestionItem>
-              </div>
+              <QuestionItem
+                question="姓氏"
+                name="motherSurname"
+                required={true}
+                hasNaCheckbox={true}
+                naCheckboxName="motherSurnameNotKnown"
+                validator={nameValidator}
+                validatorMessage={namePatternMessage}
+              >
+                <Input 
+                  style={{ width: '99%' }} 
+                  maxLength={33} 
+                  disabled={!!watchMotherSurnameNotKnown}
+                  placeholder={!!watchMotherSurnameNotKnown ? '' : '请输入母亲姓氏'}
+                />
+              </QuestionItem>
+
+              <QuestionItem
+                question="名字"
+                name="motherGivenName"
+                required={true}
+                hasNaCheckbox={true}
+                naCheckboxName="motherGivenNameNotKnown"
+                validator={nameValidator}
+                validatorMessage={namePatternMessage}
+              >
+                <Input 
+                  style={{ width: '99%' }} 
+                  maxLength={33} 
+                  disabled={!!watchMotherGivenNameNotKnown}
+                  placeholder={!!watchMotherGivenNameNotKnown ? '' : '请输入母亲名字'}
+                />
+              </QuestionItem>
               
               {/* Only show these fields if at least one name field is known */}
               {!(watchMotherSurnameNotKnown && watchMotherGivenNameNotKnown) && (
@@ -274,42 +238,15 @@ const FamilyInfo: React.FC<FamilyInfoProps> = ({ form }) => {
                       required={true}
                       hasNaCheckbox={true}
                       naCheckboxName="motherDobNotKnown"
-                      validator={({ day, month, year }) => {
-                        if (!day || !month || !year) {
-                          return true;
-                        }
-                        
-                        // Check historical date
-                        if (!historicalDateValidator(day, month, year)) {
-                          return false;
-                        }
-                        
-                        // Check not future date
-                        if (!notFutureDateValidator(day, month, year)) {
-                          return false;
-                        }
-
-                        // Check earlier than user birth date
-                        if (watchSelfBirthDate) {
-                          if (!earlierThanUserBirthDateValidator(
-                            day, month, year,
-                            watchSelfBirthDate.day,
-                            watchSelfBirthDate.month,
-                            watchSelfBirthDate.year
-                          )) {
-                            return false;
-                          }
-                        }
-                        
-                        return true;
-                      }}
-                      validatorMessage="日期无效，请确保日期不早于1915年5月15日，不晚于今天，且早于申请人出生日期"
                     >
                       <DateInput
                         dayName={["motherDob", "day"]}
                         monthName={["motherDob", "month"]}
                         yearName={["motherDob", "year"]}
                         disabled={!!watchMotherDobNotKnown}
+                        validateHistoricalDate={true}
+                        validateEarlierThanBirthDate={true}
+                        birthDate={birthDate}
                       />
                     </QuestionItem>
                   </div>
@@ -333,13 +270,11 @@ const FamilyInfo: React.FC<FamilyInfoProps> = ({ form }) => {
                           name="motherStatus"
                           required={true}
                         >
-                          <Select style={{ width: '100%' }}>
-                            {usStatusOptions.map(option => (
-                              <Select.Option key={option.value} value={option.value}>
-                                {option.label}
-                              </Select.Option>
-                            ))}
-                          </Select>
+                          <Select 
+                            options={usStatusOptions} 
+                            style={{ width: '95%' }} 
+                            placeholder="- 请选择一个 -" 
+                          />
                         </QuestionItem>
                       </div>
                     )}
@@ -381,8 +316,10 @@ const FamilyInfo: React.FC<FamilyInfoProps> = ({ form }) => {
                           question="姓氏"
                           name={[field.name, 'surname']}
                           required={true}
+                          validator={nameValidator}
+                          validatorMessage={namePatternMessage}
                         >
-                          <Input style={{ width: '95%' }}/>
+                          <Input style={{ width: '95%' }} maxLength={maxLengths.name}/>
                         </QuestionItem>
                       </div>
                       
@@ -391,8 +328,10 @@ const FamilyInfo: React.FC<FamilyInfoProps> = ({ form }) => {
                           question="名字"
                           name={[field.name, 'givenName']}
                           required={true}
+                          validator={nameValidator}
+                          validatorMessage={namePatternMessage}
                         >
-                          <Input style={{ width: '95%' }}/>
+                          <Input style={{ width: '95%' }} maxLength={maxLengths.name}/>
                         </QuestionItem>
                       </div>
                       

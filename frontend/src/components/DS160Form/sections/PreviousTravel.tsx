@@ -35,6 +35,8 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
   const [visaLostStolen, setVisaLostStolen] = useState<string | null>(form.getFieldValue('visaLostStolen') || null);
   const [visaCancelled, setVisaCancelled] = useState<string | null>(form.getFieldValue('visaCancelled') || null);
   const [immigrantPetition, setImmigrantPetition] = useState<string | null>(form.getFieldValue('immigrantPetition') || null);
+  const [legalPermanentResident, setLegalPermanentResident] = useState<string | null>(form.getFieldValue('legalPermanentResident') || null);
+  const [estaDenied, setEstaDenied] = useState<string | null>(form.getFieldValue('estaDenied') || null);
 
   // Watch birth date fields for changes - try multiple possible paths
   const birthDayDirect = Form.useWatch(['dob', 'day'], form);
@@ -88,6 +90,8 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
       setTenPrinted(form.getFieldValue('tenPrinted'));
       setVisaLostStolen(form.getFieldValue('visaLostStolen'));
       setVisaCancelled(form.getFieldValue('visaCancelled'));
+      setLegalPermanentResident(form.getFieldValue('legalPermanentResident'));
+      setEstaDenied(form.getFieldValue('estaDenied'));
     };
     
     // Initial update
@@ -228,6 +232,28 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
       visaCancelledExplanation: undefined
     });
     setVisaCancelled(value);
+  };
+
+  const handleLegalPermanentResidentChange = (e: any) => {
+    const value = e.target.value;
+    // Reset all dependent fields
+    form.setFieldsValue({
+      legalPermanentResident: value,
+      // Reset fields that appear when legalPermanentResident is 'Y'
+      legalPermanentResidentInfo: undefined
+    });
+    setLegalPermanentResident(value);
+  };
+
+  const handleEstaDeniedChange = (e: any) => {
+    const value = e.target.value;
+    // Reset all dependent fields
+    form.setFieldsValue({
+      estaDenied: value,
+      // Reset fields that appear when estaDenied is 'Y'
+      estaDeniedInfo: undefined
+    });
+    setEstaDenied(value);
   };
 
   return (
@@ -613,7 +639,96 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
         </div>
       </fieldset>
 
+      <fieldset className="question-section">
+        <div className="question-row">
+          <div className="question-column">
+            <QuestionItem
+              question="您是否曾经被美国国土安全部通过电子旅行授权系统（ESTA）拒绝过旅行授权？"
+              name="estaDenied"
+            >
+              <Radio.Group onChange={handleEstaDeniedChange}>
+                <Radio value="Y">是 (Yes)</Radio>
+                <Radio value="N">否 (No)</Radio>
+              </Radio.Group>
+            </QuestionItem>
+            
+            {estaDenied === 'Y' && (
+              <>
+                <h4>解释说明</h4>
+                <div className="question-row">
+                  <div className="question-column">
+                    <div className="highlighted-block">
+                      <Form.Item
+                        name="estaDeniedInfo"
+                        rules={[
+                          { required: true, message: '请说明您被拒绝ESTA授权的详细信息' },
+                          { pattern: explanationPattern, message: explanationPatternMessage }
+                        ]}
+                      >
+                        <TextArea 
+                          style={{ width: '99%' }}
+                          rows={4}
+                          maxLength={maxLengths.explanation}
+                        />
+                      </Form.Item>
+                    </div>
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
+          
+          <div className="explanation-column">
+            {/* Empty explanation column to maintain layout */}
+          </div>
+        </div>
+      </fieldset>
 
+      {/* Legal Permanent Resident Question */}
+      <fieldset className="question-section">
+        <div className="question-row">
+          <div className="question-column">
+            <QuestionItem
+              question="您现在是或曾经是美国合法永久居民吗？"
+              name="legalPermanentResident"
+            >
+              <Radio.Group onChange={handleLegalPermanentResidentChange}>
+                <Radio value="Y">是 (Yes)</Radio>
+                <Radio value="N">否 (No)</Radio>
+              </Radio.Group>
+            </QuestionItem>
+
+            {legalPermanentResident === 'Y' && (
+              <>
+                <h4>解释说明</h4>
+                <div className="question-row">
+                  <div className="question-column">
+                    <div className="highlighted-block">
+                      <Form.Item
+                        name="legalPermanentResidentInfo"
+                        rules={[
+                          { required: true, message: '请说明您的永久居民身份的详细信息' },
+                          { pattern: explanationPattern, message: explanationPatternMessage }
+                        ]}
+                      >
+                        <TextArea 
+                          style={{ width: '99%' }} 
+                          rows={4} 
+                          maxLength={maxLengths.explanation}
+                        />
+                      </Form.Item>
+                    </div>
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
+
+          <div className="explanation-column">
+            {/* Empty explanation column to maintain layout */}
+          </div>
+        </div>
+      </fieldset>
 
       {/* Immigrant Petition Question */}
       <fieldset className="question-section">
