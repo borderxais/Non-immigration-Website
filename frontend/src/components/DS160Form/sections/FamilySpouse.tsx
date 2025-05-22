@@ -74,12 +74,12 @@ const FamilySpouse: React.FC<FamilySpouseProps> = ({ form }) => {
                   question="配偶的出生日期"
                   name="spouseDob"
                   hasNaCheckbox={true}
-                  naCheckboxName="spouseDob_na"
                 >
                   <DateInput
                     dayName={["spouseDob", "day"]}
                     monthName={["spouseDob", "month"]}
                     yearName={["spouseDob", "year"]}
+                    naCheckboxName="spouseDob_na"
                     validateHistoricalDate={true}
                     validateEarlierThanToday={true}
                   />
@@ -94,6 +94,9 @@ const FamilySpouse: React.FC<FamilySpouseProps> = ({ form }) => {
                     style={{ width: '99%' }} 
                     placeholder="- 请选择一个 -"
                     showSearch
+                    filterOption={(input, option) => 
+                      (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+                    }
                     optionFilterProp="children"
                     options={currentNationalityOptions }
                   />
@@ -140,8 +143,9 @@ const FamilySpouse: React.FC<FamilySpouseProps> = ({ form }) => {
                     style={{ width: '99%' }} 
                     placeholder="- 请选择一个 -"
                     showSearch
-                    optionFilterProp="children"
-                    options={countryOptions} 
+                    filterOption={(input, option) => 
+                      (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+                    }                    options={countryOptions} 
                   />
                 </QuestionItem>
               </div>
@@ -258,6 +262,9 @@ const FamilySpouse: React.FC<FamilySpouseProps> = ({ form }) => {
                       <Select 
                         style={{ width: '99%' }}
                         showSearch
+                        filterOption={(input, option) => 
+                          (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+                        }
                         options={permanentResidenceOptions }
                         placeholder="- 请选择一个 -"
                       />

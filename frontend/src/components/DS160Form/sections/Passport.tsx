@@ -234,7 +234,6 @@ const Passport: React.FC<PassportProps> = ({ form }) => {
               question="失效日期"
               name="passportExpirationDate"
               hasNaCheckbox={true}
-              naCheckboxName="passportExpirationDate_na"
               inlineCheckbox={true}
               required={true}
             >
@@ -289,26 +288,26 @@ const Passport: React.FC<PassportProps> = ({ form }) => {
             {(field: FormListFieldData) => (
                 <>
                 <div className="question-row">
-                    <div className="question-column">
+                  <div className="question-column">
                     <QuestionItem
-                        question="护照号码"
-                        name={[field.name, 'passportNumber']}
-                        hasNaCheckbox={true}
-                        naCheckboxName={[field.name, 'passportNumber_na']}
-                        inlineCheckbox={true}
-                        parentFieldName="lostPassports"
-                        validator={idDocumentValidator}
-                        validatorMessage={idDocumentPatternMessage}
-                    >
-                        <Input 
-                          style={{ width: '95%' }} 
-                          maxLength={maxLengths.idDocument} 
-                        />
+                      question="护照号码"
+                      name={[field.name, 'passportNumber']}
+                      hasNaCheckbox={true}
+                      naCheckboxName={[field.name, 'passportNumber_na']}
+                      inlineCheckbox={true}
+                      parentFieldName="lostPassports"
+                      validator={idDocumentValidator}
+                      validatorMessage={idDocumentPatternMessage}
+                  >
+                      <Input 
+                        style={{ width: '95%' }} 
+                        maxLength={maxLengths.idDocument} 
+                      />
                     </QuestionItem>
-                    </div>
-                    <div className="explanation-column">
-                    {/* Empty explanation column to maintain layout */}
-                    </div>
+                  </div>
+                  <div className="explanation-column">
+                  {/* Empty explanation column to maintain layout */}
+                  </div>
                 </div>
                 
                 <div className="question-row">

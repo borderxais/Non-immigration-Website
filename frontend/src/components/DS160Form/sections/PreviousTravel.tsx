@@ -38,45 +38,15 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
   const [legalPermanentResident, setLegalPermanentResident] = useState<string | null>(form.getFieldValue('legalPermanentResident') || null);
   const [estaDenied, setEstaDenied] = useState<string | null>(form.getFieldValue('estaDenied') || null);
 
-  // Watch birth date fields for changes - try multiple possible paths
-  const birthDayDirect = Form.useWatch(['dob', 'day'], form);
-  const birthMonthDirect = Form.useWatch(['dob', 'month'], form);
-  const birthYearDirect = Form.useWatch(['dob', 'year'], form);
-
-  // Get birth date from form data
-  const [birthDate, setBirthDate] = useState<{day: string, month: string, year: string} | undefined>(() => {
-    // Initialize with direct path values if available
-    const directDay = form.getFieldValue(['dob', 'day']);
-    const directMonth = form.getFieldValue(['dob', 'month']);
-    const directYear = form.getFieldValue(['dob', 'year']);
-    
-    if (directDay && directMonth && directYear) {
-      console.log('Birth date initialized (direct path):', { directDay, directMonth, directYear });
-      return {
-        day: directDay,
-        month: directMonth,
-        year: directYear
-      };
-    }
-    
-    console.log('Birth date not found during initialization');
-    return undefined;
-  });
+  // 监听申请人出生日期
+  const formValues = form.getFieldsValue(true);
+  const dobData = formValues?.dob;
+  const birthDate = dobData ? {
+    day: dobData.day,
+    month: dobData.month,
+    year: dobData.year
+  } : undefined;
   
-  // Update birth date when watched fields change
-  useEffect(() => {
-    // Try direct path first
-    if (birthDayDirect && birthMonthDirect && birthYearDirect) {
-      setBirthDate({
-        day: birthDayDirect,
-        month: birthMonthDirect,
-        year: birthYearDirect
-      });
-      console.log('Birth date updated (direct watch):', { birthDayDirect, birthMonthDirect, birthYearDirect });
-    } 
-    
-  }, [birthDayDirect, birthMonthDirect, birthYearDirect]);
-
   // Update state when form values change
   useEffect(() => {
     const updateFromForm = () => {
@@ -304,7 +274,7 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
                             listName={listName}
                             required={true}
                             validateNotFutureDate={true}
-                            validateNotEarlierThanBirthDate={!!birthDate}
+                            validateNotEarlierThanBirthDate={true}
                             birthDate={birthDate}
                           />
                         </QuestionItem>
@@ -435,7 +405,7 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
                         yearName={["lastVisaIssueDate", "year"]}
                         required={true}
                         validateNotFutureDate={true}
-                        validateNotEarlierThanBirthDate={!!birthDate}
+                        validateNotEarlierThanBirthDate={true}
                         birthDate={birthDate}
                       />
                     </QuestionItem>

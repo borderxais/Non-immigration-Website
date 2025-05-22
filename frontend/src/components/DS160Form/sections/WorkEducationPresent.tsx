@@ -3,6 +3,17 @@ import { Form, Input, Select } from 'antd';
 import QuestionItem from '../common/QuestionItem';
 import DateInput from '../common/DateInput';
 import { permanentResidenceOptions , occupationOptions } from '../utils/formOptions';
+import {
+  maxLengths,
+  organizationNameValidator,
+  organizationNamePatternMessage,
+  addressValidator,
+  addressPatternMessage,
+  locationValidator,
+  locationPatternMessage,
+  numericValidator,
+  numericPatternMessage,
+} from '../utils/validationRules';
 
 interface WorkEducationProps {
   form: any;
@@ -15,6 +26,15 @@ const WorkEducation: React.FC<WorkEducationProps> = ({ form, readOnly = false })
   // 监听职业选择
   const watchOccupation = Form.useWatch('presentOccupation', form);
   
+  // 监听申请人出生日期
+  const formValues = form.getFieldsValue(true);
+  const dobData = formValues?.dob;
+  const birthDate = dobData ? {
+    day: dobData.day,
+    month: dobData.month,
+    year: dobData.year
+  } : undefined;
+
   // 判断是否显示额外字段
   const shouldShowEmploymentDetails = () => {
     if (!watchOccupation) return false;
@@ -66,12 +86,11 @@ const WorkEducation: React.FC<WorkEducationProps> = ({ form, readOnly = false })
                 <Form.Item
                   name="otherOccupationExplanation"
                   rules={[{ required: true, message: '请说明您的具体职业' }]}
-                  noStyle
                 >
                   <TextArea 
                     style={{ width: '99%' }} 
                     rows={4} 
-                    maxLength={1000}
+                    maxLength={maxLengths.explanation}
                     required={true}
                     disabled={readOnly}
                   />
@@ -79,6 +98,8 @@ const WorkEducation: React.FC<WorkEducationProps> = ({ form, readOnly = false })
                 </div>
                 </div>
             )}
+          </div>
+          <div className="explanation-column">
           </div>
         </div>
      
@@ -95,12 +116,11 @@ const WorkEducation: React.FC<WorkEducationProps> = ({ form, readOnly = false })
                   <div>  
                     <Form.Item
                       name="unemploymentExplanation"
-                      noStyle
                     >
                       <TextArea 
                         style={{ width: '99%' }} 
                         rows={4} 
-                        maxLength={4000}
+                        maxLength={maxLengths.explanation}
                         required={true}
                         disabled={readOnly}
                       />
@@ -114,6 +134,8 @@ const WorkEducation: React.FC<WorkEducationProps> = ({ form, readOnly = false })
                       question="当前工作单位或学校的名称"
                       name="employerSchoolName"
                       required={true}
+                      validator={organizationNameValidator}
+                      validatorMessage={organizationNamePatternMessage}
                     >
                       <Input 
                         style={{ width: '99%' }} 
@@ -131,47 +153,47 @@ const WorkEducation: React.FC<WorkEducationProps> = ({ form, readOnly = false })
                         question="街道地址（第一行）"
                         name="employerAddressLine1"
                         required={true}
+                        validator={addressValidator}
+                        validatorMessage={addressPatternMessage}
                       >
                         <Input 
                           style={{ width: '99%' }} 
-                          maxLength={40}
+                          maxLength={maxLengths.address}
                           placeholder="请输入地址"
                           disabled={readOnly}
                         />
                       </QuestionItem>
-                    </div>
-                    
-                    <div style={{ marginBottom: '24px' }}>
+
                       <QuestionItem
                         question="街道地址（第二行）"
                         name="employerAddressLine2"
                         required={false}
+                        validator={addressValidator}
+                        validatorMessage={addressPatternMessage}
                       >
                         <Input 
                           style={{ width: '99%' }} 
-                          maxLength={40}
+                          maxLength={maxLengths.address}
                           placeholder="请输入地址"
                           disabled={readOnly}
                         />
                       </QuestionItem>
-                    </div>
-                    
-                    <div style={{ marginBottom: '24px' }}>
+
                       <QuestionItem
                         question="城市"
                         name="employerCity"
                         required={true}
+                        validator={locationValidator}
+                        validatorMessage={locationPatternMessage}
                       >
                         <Input 
                           style={{ width: '99%' }} 
-                          maxLength={20}
+                          maxLength={maxLengths.city}
                           placeholder="请输入城市"
                           disabled={readOnly}
                         />
                       </QuestionItem>
-                    </div>
-                    
-                    <div style={{ marginBottom: '24px' }}>
+
                       <QuestionItem
                         question="州/省份"
                         name="employerState"
@@ -179,17 +201,17 @@ const WorkEducation: React.FC<WorkEducationProps> = ({ form, readOnly = false })
                         hasNaCheckbox={true}
                         naCheckboxName="employerState_na"
                         inlineCheckbox={true}
+                        validator={locationValidator}
+                        validatorMessage={locationPatternMessage}
                       >
                         <Input 
                           style={{ width: '90%' }} 
-                          maxLength={20}
+                          maxLength={maxLengths.state}
                           placeholder="请输入州/省"
                           disabled={readOnly}
                         />
                       </QuestionItem>
-                    </div>
-                    
-                    <div style={{ marginBottom: '24px' }}>
+
                       <QuestionItem
                         question="邮政区域/邮政编码"
                         name="employerPostalCode"
@@ -197,33 +219,33 @@ const WorkEducation: React.FC<WorkEducationProps> = ({ form, readOnly = false })
                         hasNaCheckbox={true}
                         naCheckboxName="employerPostalCode_na"
                         inlineCheckbox={true}
+                        validator={locationValidator}
+                        validatorMessage={locationPatternMessage}
                       >
                         <Input 
                           style={{ width: '90%' }} 
-                          maxLength={10}
+                          maxLength={maxLengths.zipCode}
                           placeholder="请输入邮编"
                           disabled={readOnly}
                         />
                       </QuestionItem>
-                    </div>
-                    
-                    <div style={{ marginBottom: '24px' }}>
+
                       <QuestionItem
                         question="电话号码"
                         name="employerPhone"
                         required={true}
+                        validator={numericValidator}
+                        validatorMessage={numericPatternMessage}
                       >
                         <Input 
                           style={{ width: '65%' }} 
-                          maxLength={15}
+                          maxLength={maxLengths.phone}
                           minLength={10}
                           placeholder="请输入电话号码"
                           disabled={readOnly}
                         />
                       </QuestionItem>
-                    </div>
-                    
-                    <div style={{ marginBottom: '24px' }}>
+
                       <QuestionItem
                         question="国家/地区"
                         name="employerCountry"
@@ -253,11 +275,12 @@ const WorkEducation: React.FC<WorkEducationProps> = ({ form, readOnly = false })
                         monthName={["employerStart", "month"]}
                         yearName={["employerStart", "year"]}
                         disabled={readOnly}
+                        validateEarlierThanToday={true}
+                        validateNotEarlierThanBirthDate={true}
+                        birthDate={birthDate}
                       />
                     </QuestionItem>
-                  </div>
-                  
-                  <div style={{ marginBottom: '24px' }}>
+
                     <QuestionItem
                       question="月收入（如有工作，当地货币）"
                       name="monthlySalary"
@@ -265,6 +288,8 @@ const WorkEducation: React.FC<WorkEducationProps> = ({ form, readOnly = false })
                       hasNaCheckbox={true}
                       naCheckboxName="monthlySalary_na"
                       inlineCheckbox={true}
+                      validator={numericValidator}
+                      validatorMessage={numericPatternMessage}
                     >
                       <Input 
                         style={{ width: '90%' }} 
@@ -273,9 +298,7 @@ const WorkEducation: React.FC<WorkEducationProps> = ({ form, readOnly = false })
                         disabled={readOnly}
                       />
                     </QuestionItem>
-                  </div>
-                  
-                  <div>
+
                     <p>请简单说明你的职责：</p>
                     <Form.Item
                       name="jobDuties"

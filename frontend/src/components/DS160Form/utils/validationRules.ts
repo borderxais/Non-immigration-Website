@@ -54,17 +54,13 @@ export const zipCodePatternMessage = '邮政编码格式不正确 (例如: 12345
 
 // Location pattern (for city and state/province fields)
 // A-Z, 0-9, $, ?, period (.), apostrophe ('), comma (,), hyphen (-), space, and Chinese characters
-export const locationPattern = /^[A-Za-z0-9$?.',-\s\u4e00-\u9fa5·]+$/;
-export const locationPatternMessage = "只能包含字母、数字、中文字符、$、?、句点(.)、撇号(')、逗号(,)、连字符(-)和空格";
+export const locationPattern = /^[A-Z0-9$?.',-\s\u4e00-\u9fa5·]+$/;
+export const locationPatternMessage = "只能包含大写字母、数字、中文字符、$、?、句点(.)、撇号(')、逗号(,)、连字符(-)和空格";
 
 // Explanation field pattern (for security background explanations and other detailed text fields)
 // A-Z, 0-9, #, $, *, %, &, (;), !, @, ^, ?, >, <, parens (), period (.), apostrophe ('), comma (,), hyphen (-), and space
 export const explanationPattern = /^[A-Z0-9#$*%&;!@^?><().,'\-\s]+$/;
 export const explanationPatternMessage = "只能包含大写字母、数字、特殊符号(#, $, *, %, &, ;, !, @, ^, ?, >, <)、括号()、句点(.)、撇号(')、逗号(,)、连字符(-)和空格";
-
-// Social media identifier pattern (alphanumeric with some special characters)
-export const socialMediaPattern = /^[A-Za-z0-9_.\-@]+$/;
-export const socialMediaPatternMessage = '只能包含字母、数字和特殊字符(_、.、-、@)';
 
 // Receipt number pattern (only uppercase letters and numbers, no spaces)
 export const receiptNumberPattern = /^[A-Z0-9]+$/;
@@ -86,6 +82,10 @@ export const relationshipPatternMessage = '只能包含大写字母、数字、�
 export const driverLicensePattern = /^[A-Z0-9.\- ]+$/;
 export const driverLicensePatternMessage = '只能包含大写字母、数字、句点(.)、连字符(-)和空格';
 
+// Organization/employer name pattern (A-Z, 0-9, hyphen, apostrophe, ampersand, single spaces)
+export const organizationNamePattern = /^[A-Z0-9&'-]+(?: [A-Z0-9&'-]+)*$/;
+export const organizationNamePatternMessage = "只能包含大写字母、数字、连字符(-)、撇号(')、和号(&)和名称之间的单个空格";
+
 /**
  * Date validation constants
  */
@@ -99,9 +99,9 @@ export const BEFORE_BIRTH_YEAR_MESSAGE = '年份不能早于出生年份';
 export const EARLIER_THAN_TODAY_MESSAGE = '日期不能早于今天';
 export const EARLIER_THAN_BIRTH_DATE_MESSAGE = '日期必须早于你的出生日期';
 export const MUST_BE_EARLIER_THAN_TODAY_MESSAGE = '日期必须早于今天';
-
 // Current date (for maximum date validation)
 export const CURRENT_DATE = new Date();
+export const EARLIER_THAN_START_DATE_MESSAGE = '结束日期不能早于开始日期';
 
 /**
  * Common field validation functions
@@ -218,6 +218,12 @@ export const relationshipValidator = (value: any) => {
 export const driverLicenseValidator = (value: any) => {
   if (!value) return true; // Empty values are handled by required rule
   return driverLicensePattern.test(value);
+};
+
+// Validator for organization/employer names
+export const organizationNameValidator = (value: any) => {
+  if (!value) return true; // Empty values are handled by required rule
+  return organizationNamePattern.test(value);
 };
 
 // Validator to ensure a date is not earlier than May 15, 1915
@@ -409,6 +415,35 @@ export const earlierThanTodayValidator = (day: string, month: string, year: stri
   return inputDate < today;
 };
 
+// Validator to ensure a date is not earlier than another date (e.g., end date not earlier than start date)
+export const notEarlierThanStartDateValidator = (day: string, month: string, year: string, startDay: string, startMonth: string, startYear: string) => {
+  if (!day || !month || !year || !startDay || !startMonth || !startYear) return true;
+  
+  const monthMap: { [key: string]: number } = {
+    'JAN': 0, 'FEB': 1, 'MAR': 2, 'APR': 3, 'MAY': 4, 'JUN': 5,
+    'JUL': 6, 'AUG': 7, 'SEP': 8, 'OCT': 9, 'NOV': 10, 'DEC': 11,
+    '01': 0, '02': 1, '03': 2, '04': 3, '05': 4, '06': 5,
+    '07': 6, '08': 7, '09': 8, '10': 9, '11': 10, '12': 11,
+    '1': 0, '2': 1, '3': 2, '4': 3, '5': 4, '6': 5,
+    '7': 6, '8': 7, '9': 8
+  };
+  
+  const monthNum = monthMap[month];
+  const startMonthNum = monthMap[startMonth];
+  
+  if (monthNum === undefined || startMonthNum === undefined) {
+    console.log('Invalid month format:', month, startMonth);
+    return false;
+  }
+  
+  // Create date objects for the input date and start date
+  const inputDate = new Date(parseInt(year), monthNum, parseInt(day));
+  const startDate = new Date(parseInt(startYear), startMonthNum, parseInt(startDay));
+  
+  // Check if the input date is not earlier than the start date
+  return inputDate >= startDate;
+};
+
 /**
  * Async version of yearValidator for use with Form.Item validation rules
  * @param year The year to validate
@@ -448,6 +483,7 @@ export const maxLengths = {
   address: 40,        // Address fields
   city: 20,           // City names
   state: 20,          // State/province names
+  zipCode: 10,        // ZIP codes
   phone: 15,          // Phone numbers
   email: 50,          // Email addresses
   idDocument: 20,     // Common max length for passport, national ID, taxpayer ID
@@ -456,7 +492,7 @@ export const maxLengths = {
   socialMedia: 40,    // Social media identifiers
   telecode: 20,       // Telecode fields
   flightNumber: 20,   // Flight numbers
-  zipCode: 10,        // ZIP codes
+  
   driverLicenseNumber: 20, // Driver's license numbers
   visaNumber: 12,
   year: 4

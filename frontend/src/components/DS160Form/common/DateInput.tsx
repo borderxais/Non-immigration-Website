@@ -9,13 +9,15 @@ import {
   earlierThanBirthDateValidator,
   notEarlierThanTodayValidator,
   earlierThanTodayValidator,
+  notEarlierThanStartDateValidator,
 
   MIN_HISTORICAL_DATE_MESSAGE,
   FUTURE_DATE_MESSAGE,
   AFTER_BIRTH_DATE_MESSAGE,
   EARLIER_THAN_TODAY_MESSAGE,
   EARLIER_THAN_BIRTH_DATE_MESSAGE,
-  MUST_BE_EARLIER_THAN_TODAY_MESSAGE
+  MUST_BE_EARLIER_THAN_TODAY_MESSAGE,
+  EARLIER_THAN_START_DATE_MESSAGE
 } from '../utils/validationRules';
 
 // Format for month dropdown options
@@ -80,6 +82,11 @@ interface DateInputProps {
     month: string;
     year: string;
   };
+  startDate?: {
+    day: string;
+    month: string;
+    year: string;
+  };
   listName?: NamePath;
   required?: boolean;
   disabled?: boolean;
@@ -90,6 +97,7 @@ interface DateInputProps {
   validateNotEarlierThanToday?: boolean; // Validate date is today or in the future
   validateEarlierThanBirthDate?: boolean; // Validate date is earlier than birth date
   validateEarlierThanToday?: boolean; // Validate date is earlier than today (in the past)
+  validateNotEarlierThanStartDate?: boolean; // Validate date is not earlier than start date
   naCheckboxName?: string | (string | number)[]; // Name of the N/A checkbox to check
 }
 
@@ -98,6 +106,7 @@ const DateInput: React.FC<DateInputProps> = ({
   monthName,
   yearName,
   birthDate,
+  startDate,
   listName,
   required = true,
   disabled = false,
@@ -108,6 +117,7 @@ const DateInput: React.FC<DateInputProps> = ({
   validateNotEarlierThanToday = false,
   validateEarlierThanBirthDate = false,
   validateEarlierThanToday = false,
+  validateNotEarlierThanStartDate = false,
   naCheckboxName,
 }) => {
   const dateBlockStyle = {
@@ -176,6 +186,11 @@ const DateInput: React.FC<DateInputProps> = ({
         return Promise.reject(MUST_BE_EARLIER_THAN_TODAY_MESSAGE);
       }
 
+      // Validate date is not earlier than start date if required
+      if (validateNotEarlierThanStartDate && startDate && !notEarlierThanStartDateValidator(day, month, year, startDate.day, startDate.month, startDate.year)) {
+        return Promise.reject(EARLIER_THAN_START_DATE_MESSAGE);
+      }
+
       return Promise.resolve();
     }
   });
@@ -189,9 +204,9 @@ const DateInput: React.FC<DateInputProps> = ({
           noStyle
           rules={required && !isNaChecked ? [
             { required: true, message: '请选择日期' },
-            ...(validateHistoricalDate || validateNotFutureDate || validateFutureDate || validateNotEarlierThanBirthDate || validateNotEarlierThanToday || validateEarlierThanBirthDate || validateEarlierThanToday ? [validateDate()] : [])
+            ...(validateHistoricalDate || validateNotFutureDate || validateFutureDate || validateNotEarlierThanBirthDate || validateNotEarlierThanToday || validateEarlierThanBirthDate || validateEarlierThanToday || validateNotEarlierThanStartDate ? [validateDate()] : [])
           ] : [
-            ...(validateHistoricalDate || validateNotFutureDate || validateFutureDate || validateNotEarlierThanBirthDate || validateNotEarlierThanToday || validateEarlierThanBirthDate || validateEarlierThanToday ? [validateDate()] : [])
+            ...(validateHistoricalDate || validateNotFutureDate || validateFutureDate || validateNotEarlierThanBirthDate || validateNotEarlierThanToday || validateEarlierThanBirthDate || validateEarlierThanToday || validateNotEarlierThanStartDate ? [validateDate()] : [])
           ]}
           dependencies={[monthName, yearName]}
         >
@@ -208,9 +223,9 @@ const DateInput: React.FC<DateInputProps> = ({
           noStyle
           rules={required && !isNaChecked ? [
             { required: true, message: '请选择月份' },
-            ...(validateHistoricalDate || validateNotFutureDate || validateFutureDate || validateNotEarlierThanBirthDate || validateNotEarlierThanToday || validateEarlierThanBirthDate || validateEarlierThanToday ? [validateDate()] : [])
+            ...(validateHistoricalDate || validateNotFutureDate || validateFutureDate || validateNotEarlierThanBirthDate || validateNotEarlierThanToday || validateEarlierThanBirthDate || validateEarlierThanToday || validateNotEarlierThanStartDate ? [validateDate()] : [])
           ] : [
-            ...(validateHistoricalDate || validateNotFutureDate || validateFutureDate || validateNotEarlierThanBirthDate || validateNotEarlierThanToday || validateEarlierThanBirthDate || validateEarlierThanToday ? [validateDate()] : [])
+            ...(validateHistoricalDate || validateNotFutureDate || validateFutureDate || validateNotEarlierThanBirthDate || validateNotEarlierThanToday || validateEarlierThanBirthDate || validateEarlierThanToday || validateNotEarlierThanStartDate ? [validateDate()] : [])
           ]}
           dependencies={[dayName, yearName]}
         >
@@ -228,10 +243,10 @@ const DateInput: React.FC<DateInputProps> = ({
           rules={required && !isNaChecked ? [
             { required: true, message: '请输入年份' },
             { pattern: /^\d{4}$/, message: '请输入4位数年份' },
-            ...(validateHistoricalDate || validateNotFutureDate || validateFutureDate || validateNotEarlierThanBirthDate || validateNotEarlierThanToday || validateEarlierThanBirthDate || validateEarlierThanToday ? [validateDate()] : [])
+            ...(validateHistoricalDate || validateNotFutureDate || validateFutureDate || validateNotEarlierThanBirthDate || validateNotEarlierThanToday || validateEarlierThanBirthDate || validateEarlierThanToday || validateNotEarlierThanStartDate ? [validateDate()] : [])
           ] : [
             { pattern: /^\d{4}$/, message: '请输入4位数年份' },
-            ...(validateHistoricalDate || validateNotFutureDate || validateFutureDate || validateNotEarlierThanBirthDate || validateNotEarlierThanToday || validateEarlierThanBirthDate || validateEarlierThanToday ? [validateDate()] : [])
+            ...(validateHistoricalDate || validateNotFutureDate || validateFutureDate || validateNotEarlierThanBirthDate || validateNotEarlierThanToday || validateEarlierThanBirthDate || validateEarlierThanToday || validateNotEarlierThanStartDate ? [validateDate()] : [])
           ]}
           dependencies={[dayName, monthName]}
         >
