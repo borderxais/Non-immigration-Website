@@ -5,6 +5,11 @@ import DateInput from '../common/DateInput';
 import RepeatableFormItem from '../common/RepeatableFormItem';
 import { militaryServiceCountryOptions, permanentResidenceOptions } from '../utils/formOptions';
 import { FormListFieldData } from 'antd/lib/form/FormList';
+import {
+  maxLengths,
+  organizationNameValidator, 
+  organizationNamePatternMessage
+} from '../utils/validationRules';
 
 interface WorkEducationAdditionalProps {
   form: any;
@@ -110,7 +115,8 @@ const WorkEducationAdditional: React.FC<WorkEducationAdditionalProps> = ({ form,
                       question="宗族或者部落名称"
                       name="clanTribeName"
                       required={true}
-                    >
+                      validator={organizationNameValidator}
+                      validatorMessage={organizationNamePatternMessage}              >
                       <Input 
                         style={{ width: '99%' }} 
                         maxLength={80}
@@ -144,10 +150,12 @@ const WorkEducationAdditional: React.FC<WorkEducationAdditionalProps> = ({ form,
                         question="语言名字"
                         name={[field.name, 'languageName']}
                         required={true}
+                        validator={organizationNameValidator}
+                        validatorMessage={organizationNamePatternMessage}
                       >
                         <Input 
                           style={{ width: '99%' }} 
-                          maxLength={66}
+                          maxLength={maxLengths.organizationName}
                           disabled={readOnly}
                         />
                       </QuestionItem>
@@ -249,10 +257,12 @@ const WorkEducationAdditional: React.FC<WorkEducationAdditionalProps> = ({ form,
                             question="机构名称"
                             name={[field.name, 'organizationName']}
                             required={true}
+                            validator={organizationNameValidator}
+                            validatorMessage={organizationNamePatternMessage}
                           >
                             <Input 
                               style={{ width: '99%' }} 
-                              maxLength={66}
+                              maxLength={maxLengths.organizationName}
                               disabled={readOnly}
                             />
                           </QuestionItem>
@@ -295,7 +305,7 @@ const WorkEducationAdditional: React.FC<WorkEducationAdditionalProps> = ({ form,
                     <TextArea 
                       style={{ width: '99%' }} 
                       rows={4} 
-                      maxLength={4000}
+                      maxLength={maxLengths.explanation}
                       disabled={readOnly}
                       required={true}
                     />
@@ -352,13 +362,13 @@ const WorkEducationAdditional: React.FC<WorkEducationAdditionalProps> = ({ form,
                               disabled={readOnly}
                             />
                           </QuestionItem>
-                        </div>
-                        
-                        <div style={{ marginBottom: '24px' }}>
+
                           <QuestionItem
                             question="军种"
                             name={[field.name, 'serviceBranch']}
                             required={true}
+                            validator={organizationNameValidator}
+                            validatorMessage={organizationNamePatternMessage}
                           >
                             <Input 
                               style={{ width: '99%' }} 
@@ -366,13 +376,13 @@ const WorkEducationAdditional: React.FC<WorkEducationAdditionalProps> = ({ form,
                               disabled={readOnly}
                             />
                           </QuestionItem>
-                        </div>
-                        
-                        <div style={{ marginBottom: '24px' }}>
+
                           <QuestionItem
                             question="级别/职位"
                             name={[field.name, 'rank']}
                             required={true}
+                            validator={organizationNameValidator}
+                            validatorMessage={organizationNamePatternMessage}
                           >
                             <Input 
                               style={{ width: '99%' }} 
@@ -380,13 +390,13 @@ const WorkEducationAdditional: React.FC<WorkEducationAdditionalProps> = ({ form,
                               disabled={readOnly}
                             />
                           </QuestionItem>
-                        </div>
-                        
-                        <div style={{ marginBottom: '24px' }}>
+
                           <QuestionItem
                             question="军事特长"
                             name={[field.name, 'specialty']}
                             required={true}
+                            validator={organizationNameValidator}
+                            validatorMessage={organizationNamePatternMessage}
                           >
                             <Input 
                               style={{ width: '99%' }} 
@@ -394,9 +404,7 @@ const WorkEducationAdditional: React.FC<WorkEducationAdditionalProps> = ({ form,
                               disabled={readOnly}
                             />
                           </QuestionItem>
-                        </div>
-                        
-                        <div style={{ marginBottom: '24px' }}>
+
                           <QuestionItem
                             question="服役开始日期"
                             name={[field.name, 'serviceFrom']}
@@ -407,6 +415,8 @@ const WorkEducationAdditional: React.FC<WorkEducationAdditionalProps> = ({ form,
                               yearName={[field.name, 'serviceFrom', 'year']}
                               disabled={readOnly}
                               listName={listName}
+                              validateEarlierThanToday={true}
+                              validateNotEarlierThanBirthDate={true}
                             />
                           </QuestionItem>
                         </div>
@@ -422,6 +432,13 @@ const WorkEducationAdditional: React.FC<WorkEducationAdditionalProps> = ({ form,
                               yearName={[field.name, 'serviceTo', 'year']}
                               disabled={readOnly}
                               listName={listName}
+                              validateEarlierThanToday={true}
+                              validateNotEarlierThanStartDate={true}
+                              startDate={{
+                                day: form.getFieldValue([listName, field.name, 'serviceFrom', 'day']),
+                                month: form.getFieldValue([listName, field.name, 'serviceFrom', 'month']),
+                                year: form.getFieldValue([listName, field.name, 'serviceFrom', 'year'])
+                              }}
                             />
                           </QuestionItem>
                         </div>
@@ -463,7 +480,7 @@ const WorkEducationAdditional: React.FC<WorkEducationAdditionalProps> = ({ form,
                     <TextArea 
                       style={{ width: '99%' }} 
                       rows={4} 
-                      maxLength={4000}
+                      maxLength={maxLengths.explanation}
                       disabled={readOnly}
                       required={true}
                     />

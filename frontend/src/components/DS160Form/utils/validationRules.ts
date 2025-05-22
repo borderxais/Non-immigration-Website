@@ -492,8 +492,8 @@ export const maxLengths = {
   socialMedia: 40,    // Social media identifiers
   telecode: 20,       // Telecode fields
   flightNumber: 20,   // Flight numbers
-  
   driverLicenseNumber: 20, // Driver's license numbers
   visaNumber: 12,
-  year: 4
+  year: 4,
+  organizationName: 66
 };

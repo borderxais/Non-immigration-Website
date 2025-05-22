@@ -476,7 +476,7 @@ const WorkEducationPrevious: React.FC<WorkEducationPreviousProps> = ({ form, rea
                           >
                             <Input 
                               style={{ width: '95%' }} 
-                              maxLength={66}
+                              maxLength={maxLengths.organizationName}
                               disabled={readOnly}
                             />
                           </QuestionItem>
