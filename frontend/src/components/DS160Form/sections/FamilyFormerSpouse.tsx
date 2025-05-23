@@ -1,9 +1,9 @@
 import React from 'react';
-import { Form, Input, Select, Radio } from 'antd';
+import { Input, Select } from 'antd';
 import QuestionItem from '../common/QuestionItem';
 import DateInput from '../common/DateInput';
 import { countryOptions, nationalityOptions } from '../utils/formOptions';
-import { nameValidator, namePatternMessage, locationValidator, locationPatternMessage, maxLengths, explanationPattern, explanationPatternMessage } from '../utils/validationRules';
+import { nameValidator, namePatternMessage, locationValidator, locationPatternMessage, maxLengths } from '../utils/validationRules';
 
 const { TextArea } = Input;
 
@@ -13,13 +13,6 @@ interface FamilyFormerSpouseProps {
 }
 
 const FamilyFormerSpouse: React.FC<FamilyFormerSpouseProps> = ({ form, readOnly = false }) => {
-  // Handle "Do Not Know" checkbox for place of birth city
-  const handlePobCityDoNotKnowChange = (e: any) => {
-    const checked = e.target.checked;
-    if (checked) {
-      form.setFieldsValue({ 'formerSpouse.pobCity': undefined });
-    }
-  };
 
   return (
     <div className="ds160-section">
