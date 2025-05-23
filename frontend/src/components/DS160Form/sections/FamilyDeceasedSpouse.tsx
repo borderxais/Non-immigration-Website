@@ -12,14 +12,6 @@ interface FamilyDeceasedSpouseProps {
 
 const FamilyDeceasedSpouse: React.FC<FamilyDeceasedSpouseProps> = ({ form, readOnly = false }) => {
 
-  // Handle "Do Not Know" checkbox for place of birth city
-  const handlePobCityDoNotKnowChange = (e: any) => {
-    const checked = e.target.checked;
-    if (checked) {
-      form.setFieldsValue({ 'deceasedSpouse.pobCity': undefined });
-    }
-  };
-
   return (
     <div className="ds160-section">
       <h2>家庭信息：已故配偶</h2>
