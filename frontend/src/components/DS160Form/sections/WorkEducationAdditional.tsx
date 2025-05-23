@@ -9,8 +9,6 @@ import {
   maxLengths,
   organizationNameValidator, 
   organizationNamePatternMessage,
-  explanationPattern,
-  explanationPatternMessage
 } from '../utils/validationRules';
 
 interface WorkEducationAdditionalProps {

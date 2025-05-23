@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Input, Select, Checkbox } from 'antd';
+import { Input, Select } from 'antd';
 import QuestionItem from '../common/QuestionItem';
 import DateInput from '../common/DateInput';
 import { countryOptions, nationalityOptions } from '../utils/formOptions';
@@ -11,12 +11,6 @@ interface FamilyDeceasedSpouseProps {
 }
 
 const FamilyDeceasedSpouse: React.FC<FamilyDeceasedSpouseProps> = ({ form, readOnly = false }) => {
-  // Get birth date values for validation
-  const birthDate = {
-    day: form.getFieldValue('personalInfo.birthDay'),
-    month: form.getFieldValue('personalInfo.birthMonth'),
-    year: form.getFieldValue('personalInfo.birthYear')
-  };
 
   // Handle "Do Not Know" checkbox for place of birth city
   const handlePobCityDoNotKnowChange = (e: any) => {
