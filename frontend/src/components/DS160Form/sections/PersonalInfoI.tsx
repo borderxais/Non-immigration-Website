@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Input, Select, Radio, Form } from 'antd';
 import QuestionItem from '../common/QuestionItem';
 import DateInput from '../common/DateInput';
@@ -24,13 +24,34 @@ interface PersonalInfoIProps {
 }
 
 const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
-  const [hasOtherNames, setHasOtherNames] = useState<boolean>(false);
-  const [hasTelecode, setHasTelecode] = useState<boolean>(false);
-  const [maritalStatus, setMaritalStatus] = useState<string>('');
+  // Get form values
+  const formValues = form.getFieldsValue(true);
+  
+  // Initialize state from form values
+  const [hasOtherNames, setHasOtherNames] = useState<boolean>(formValues?.hasOtherNames === 'Y');
+  const [hasTelecode, setHasTelecode] = useState<boolean>(formValues?.hasTelecode === 'Y');
+  const [maritalStatus, setMaritalStatus] = useState<string>(formValues?.maritalStatus || '');
+
+  // Update state when form values change
+  useEffect(() => {
+    const values = form.getFieldsValue(true);
+    if (values.hasOtherNames !== undefined) {
+      setHasOtherNames(values.hasOtherNames === 'Y');
+    }
+    if (values.hasTelecode !== undefined) {
+      setHasTelecode(values.hasTelecode === 'Y');
+    }
+    if (values.maritalStatus !== undefined) {
+      setMaritalStatus(values.maritalStatus);
+    }
+  }, [form]);
 
   const handleOtherNamesChange = (e: any) => {
-    setHasOtherNames(e.target.value === 'Y');
-    if (e.target.value === 'N') {
+    const value = e.target.value;
+    setHasOtherNames(value === 'Y');
+    form.setFieldsValue({ hasOtherNames: value });
+    
+    if (value === 'N') {
       // Reset all other names fields when selecting No
       form.setFieldsValue({
         otherNames: undefined
@@ -39,8 +60,11 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
   };
 
   const handleTelecodeChange = (e: any) => {
-    setHasTelecode(e.target.value === 'Y');
-    if (e.target.value === 'N') {
+    const value = e.target.value;
+    setHasTelecode(value === 'Y');
+    form.setFieldsValue({ hasTelecode: value });
+    
+    if (value === 'N') {
       // Reset telecode fields when selecting No
       form.setFieldsValue({
         telecode: undefined
@@ -50,6 +74,8 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
 
   const handleMaritalStatusChange = (value: string) => {
     setMaritalStatus(value);
+    form.setFieldsValue({ maritalStatus: value });
+    
     // Reset other marital status field if not selecting "Other"
     if (value !== 'O') {  // O for Other
       form.setFieldsValue({

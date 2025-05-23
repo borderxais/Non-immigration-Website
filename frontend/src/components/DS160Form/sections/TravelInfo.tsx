@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Form, Input, Select, Radio } from 'antd';
 import type { FormListFieldData } from 'antd/es/form/FormList';
 import QuestionItem from '../common/QuestionItem';
@@ -35,25 +35,34 @@ interface TravelInfoProps {
 }
 
 const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
-  const [visaClass, setVisaClass] = useState<string | null>(form.getFieldValue('visaClass') || null);
-  const [specificPurpose, setSpecificPurpose] = useState<string | null>(form.getFieldValue('specificPurpose') || null);
-  const [hasSpecificPlans, setHasSpecificPlans] = useState<string | null>(form.getFieldValue('hasSpecificPlans') || null);
-  const [whoIsPaying, setWhoIsPaying] = useState<string | null>(form.getFieldValue('whoIsPaying') || null);
-  const [isSameAddress, setIsSameAddress] = useState<string | null>(form.getFieldValue('isSameAddress') || null);
+  // Get form values
+  const formValues = form.getFieldsValue(true);
+  
+  // Initialize state from form values
+  const [visaClass, setVisaClass] = useState<string | null>(formValues?.visaClass || null);
+  const [specificPurpose, setSpecificPurpose] = useState<string | null>(formValues?.specificPurpose || null);
+  const [hasSpecificPlans, setHasSpecificPlans] = useState<string | null>(formValues?.hasSpecificPlans || null);
+  const [whoIsPaying, setWhoIsPaying] = useState<string | null>(formValues?.whoIsPaying || null);
+  const [isSameAddress, setIsSameAddress] = useState<string | null>(formValues?.isSameAddress || null);
 
-  // Initialize state from form values when component mounts
-  React.useEffect(() => {
-    const formVisaClass = form.getFieldValue('visaClass');
-    const formSpecificPurpose = form.getFieldValue('specificPurpose');
-    const formHasSpecificPlans = form.getFieldValue('hasSpecificPlans');
-    const formWhoIsPaying = form.getFieldValue('whoIsPaying');
-    const formIsSameAddress = form.getFieldValue('isSameAddress');
-    
-    if (formVisaClass) setVisaClass(formVisaClass);
-    if (formSpecificPurpose) setSpecificPurpose(formSpecificPurpose);
-    if (formHasSpecificPlans) setHasSpecificPlans(formHasSpecificPlans);
-    if (formWhoIsPaying) setWhoIsPaying(formWhoIsPaying);
-    if (formIsSameAddress) setIsSameAddress(formIsSameAddress);
+  // Update state when form values change
+  useEffect(() => {
+    const values = form.getFieldsValue(true);
+    if (values.visaClass !== undefined) {
+      setVisaClass(values.visaClass);
+    }
+    if (values.specificPurpose !== undefined) {
+      setSpecificPurpose(values.specificPurpose);
+    }
+    if (values.hasSpecificPlans !== undefined) {
+      setHasSpecificPlans(values.hasSpecificPlans);
+    }
+    if (values.whoIsPaying !== undefined) {
+      setWhoIsPaying(values.whoIsPaying);
+    }
+    if (values.isSameAddress !== undefined) {
+      setIsSameAddress(values.isSameAddress);
+    }
   }, [form]);
 
   // Handle visa class change

@@ -177,8 +177,8 @@ const SecurityBackgroundV: React.FC<SecurityBackgroundVProps> = ({ form }) => {
         </div>
       </fieldset>
 
-            {/* Public School Attendance Section */}
-            <fieldset className="question-section">
+      {/* Public School Attendance Section */}
+      <fieldset className="question-section">
         <div className="question-row">
           <div className="question-column">
             <QuestionItem

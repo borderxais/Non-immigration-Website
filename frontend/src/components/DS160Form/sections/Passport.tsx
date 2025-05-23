@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Input, Select, Radio, Form } from 'antd';
 import QuestionItem from '../common/QuestionItem';
 import { passportIssuingOptions, permanentResidenceOptions } from '../utils/formOptions';
@@ -31,8 +31,21 @@ const Passport: React.FC<PassportProps> = ({ form }) => {
     month: dobData.month,
     year: dobData.year
   } : undefined;
-  const [hasLostPassport, setHasLostPassport] = useState<string | null>(null);
-  const [passportType, setPassportType] = useState<string>('');
+  
+  // Initialize state from form values
+  const [hasLostPassport, setHasLostPassport] = useState<string | null>(formValues?.hasLostPassport || null);
+  const [passportType, setPassportType] = useState<string>(formValues?.passportType || '');
+
+  // Update state when form values change
+  useEffect(() => {
+    const values = form.getFieldsValue(true);
+    if (values.hasLostPassport) {
+      setHasLostPassport(values.hasLostPassport);
+    }
+    if (values.passportType) {
+      setPassportType(values.passportType);
+    }
+  }, [form]);
 
   // Handle lost passport change
   const handleLostPassportChange = (e: any) => {
@@ -46,6 +59,7 @@ const Passport: React.FC<PassportProps> = ({ form }) => {
 
   const handlePassportTypeChange = (value: string) => {
     setPassportType(value);
+    form.setFieldsValue({ passportType: value });
   };
 
   return (

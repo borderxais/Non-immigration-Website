@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Radio, Input, Form } from 'antd';
 import QuestionItem from '../common/QuestionItem';
 import { maxLengths, explanationPattern, explanationPatternMessage } from '../utils/validationRules';
@@ -10,25 +10,60 @@ interface SecurityBackgroundProps {
 const { TextArea } = Input;
 
 const SecurityBackground: React.FC<SecurityBackgroundProps> = ({ form }) => {
-  // State for conditional rendering
-  const [hasDisease, setHasDisease] = useState<string | null>(null);
-  const [hasDisorder, setHasDisorder] = useState<string | null>(null);
-  const [isDrugUser, setIsDrugUser] = useState<string | null>(null);
+  // Get form values
+  const formValues = form.getFieldsValue(true);
+  
+  // Initialize state from form values
+  const [hasDisease, setHasDisease] = useState<string | null>(formValues?.hasDisease || null);
+  const [hasDisorder, setHasDisorder] = useState<string | null>(formValues?.hasDisorder || null);
+  const [isDrugUser, setIsDrugUser] = useState<string | null>(formValues?.isDrugUser || null);
+
+  // Update state when form values change
+  useEffect(() => {
+    const values = form.getFieldsValue(true);
+    if (values.hasDisease !== undefined) {
+      setHasDisease(values.hasDisease);
+    }
+    if (values.hasDisorder !== undefined) {
+      setHasDisorder(values.hasDisorder);
+    }
+    if (values.isDrugUser !== undefined) {
+      setIsDrugUser(values.isDrugUser);
+    }
+  }, [form]);
 
   // Handle radio button changes
   const handleDiseaseChange = (e: any) => {
-    setHasDisease(e.target.value);
-    form.setFieldsValue({ hasDisease: e.target.value });
+    const value = e.target.value;
+    setHasDisease(value);
+    form.setFieldsValue({ hasDisease: value });
+    
+    // Clear explanation if "No" is selected
+    if (value === 'N') {
+      form.setFieldsValue({ diseaseExplanation: undefined });
+    }
   };
 
   const handleDisorderChange = (e: any) => {
-    setHasDisorder(e.target.value);
-    form.setFieldsValue({ hasDisorder: e.target.value });
+    const value = e.target.value;
+    setHasDisorder(value);
+    form.setFieldsValue({ hasDisorder: value });
+    
+    // Clear explanation if "No" is selected
+    if (value === 'N') {
+      form.setFieldsValue({ disorderExplanation: undefined });
+    }
   };
 
   const handleDrugUserChange = (e: any) => {
-    setIsDrugUser(e.target.value);
-    form.setFieldsValue({ isDrugUser: e.target.value });
+    const value = e.target.value;
+    setIsDrugUser(value);
+    form.setFieldsValue({ isDrugUser: value });
+    
+    // Clear explanation if "No" is selected
+    if (value === 'N') {
+      form.setFieldsValue({ drugUserExplanation: undefined });
+    }
   };
 
   return (

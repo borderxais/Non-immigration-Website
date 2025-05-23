@@ -166,7 +166,6 @@ const FamilyFormerSpouse: React.FC<FamilyFormerSpouseProps> = ({ form, readOnly 
                           validatorMessage={locationPatternMessage}
                         >
                           <Input 
-                            style={{ width: '95%' }} 
                             maxLength={maxLengths.city}
                             disabled={readOnly}
                           />

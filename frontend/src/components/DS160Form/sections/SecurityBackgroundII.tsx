@@ -1,58 +1,136 @@
-import React, { useState } from 'react';
-import { Radio, Input, Form } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Form, Radio, Input } from 'antd';
 import QuestionItem from '../common/QuestionItem';
-import { maxLengths, explanationPattern, explanationPatternMessage } from '../utils/validationRules';
-
-interface SecurityBackgroundIIProps {
-  form: any;
-}
+import { explanationPattern, explanationPatternMessage, maxLengths } from '../utils/validationRules';
 
 const { TextArea } = Input;
 
-const SecurityBackgroundII: React.FC<SecurityBackgroundIIProps> = ({ form }) => {
-  // State for conditional rendering
-  const [hasArrest, setHasArrest] = useState<string | null>(null);
-  const [hasControlledSubstances, setHasControlledSubstances] = useState<string | null>(null);
-  const [hasProstitution, setHasProstitution] = useState<string | null>(null);
-  const [hasMoneyLaundering, setHasMoneyLaundering] = useState<string | null>(null);
-  const [hasHumanTrafficking, setHasHumanTrafficking] = useState<string | null>(null);
-  const [hasAssistedTrafficking, setHasAssistedTrafficking] = useState<string | null>(null);
-  const [hasTraffickingRelated, setHasTraffickingRelated] = useState<string | null>(null);
+interface SecurityBackgroundIIProps {
+  form: any;
+  readOnly?: boolean;
+}
 
-  // Handle radio button changes
+const SecurityBackgroundII: React.FC<SecurityBackgroundIIProps> = ({ form, readOnly = false }) => {
+  // Get form values
+  const formValues = form.getFieldsValue(true);
+  
+  // Initialize state from form values
+  const [hasArrest, setHasArrest] = useState<string | null>(formValues?.hasArrest || null);
+  const [hasControlledSubstances, setHasControlledSubstances] = useState<string | null>(formValues?.hasControlledSubstances || null);
+  const [hasProstitution, setHasProstitution] = useState<string | null>(formValues?.hasProstitution || null);
+  const [hasMoneyLaundering, setHasMoneyLaundering] = useState<string | null>(formValues?.hasMoneyLaundering || null);
+  const [hasHumanTrafficking, setHasHumanTrafficking] = useState<string | null>(formValues?.hasHumanTrafficking || null);
+  const [hasAssistedTrafficking, setHasAssistedTrafficking] = useState<string | null>(formValues?.hasAssistedTrafficking || null);
+  const [hasTraffickingRelated, setHasTraffickingRelated] = useState<string | null>(formValues?.hasTraffickingRelated || null);
+
+  // Update state when form values change
+  useEffect(() => {
+    const values = form.getFieldsValue(true);
+    if (values.hasArrest !== undefined) {
+      setHasArrest(values.hasArrest);
+    }
+    if (values.hasControlledSubstances !== undefined) {
+      setHasControlledSubstances(values.hasControlledSubstances);
+    }
+    if (values.hasProstitution !== undefined) {
+      setHasProstitution(values.hasProstitution);
+    }
+    if (values.hasMoneyLaundering !== undefined) {
+      setHasMoneyLaundering(values.hasMoneyLaundering);
+    }
+    if (values.hasHumanTrafficking !== undefined) {
+      setHasHumanTrafficking(values.hasHumanTrafficking);
+    }
+    if (values.hasAssistedTrafficking !== undefined) {
+      setHasAssistedTrafficking(values.hasAssistedTrafficking);
+    }
+    if (values.hasTraffickingRelated !== undefined) {
+      setHasTraffickingRelated(values.hasTraffickingRelated);
+    }
+  }, [form]);
+
+  // Handle arrest change
   const handleArrestChange = (e: any) => {
-    setHasArrest(e.target.value);
-    form.setFieldsValue({ hasArrest: e.target.value });
+    const value = e.target.value;
+    setHasArrest(value);
+    form.setFieldsValue({ hasArrest: value });
+    
+    // Clear explanation if "No" is selected
+    if (value === 'N') {
+      form.setFieldsValue({ arrestExplanation: undefined });
+    }
   };
 
+  // Handle controlled substances change
   const handleControlledSubstancesChange = (e: any) => {
-    setHasControlledSubstances(e.target.value);
-    form.setFieldsValue({ hasControlledSubstances: e.target.value });
+    const value = e.target.value;
+    setHasControlledSubstances(value);
+    form.setFieldsValue({ hasControlledSubstances: value });
+    
+    // Clear explanation if "No" is selected
+    if (value === 'N') {
+      form.setFieldsValue({ controlledSubstancesExplanation: undefined });
+    }
   };
 
+  // Handle prostitution change
   const handleProstitutionChange = (e: any) => {
-    setHasProstitution(e.target.value);
-    form.setFieldsValue({ hasProstitution: e.target.value });
+    const value = e.target.value;
+    setHasProstitution(value);
+    form.setFieldsValue({ hasProstitution: value });
+    
+    // Clear explanation if "No" is selected
+    if (value === 'N') {
+      form.setFieldsValue({ prostitutionExplanation: undefined });
+    }
   };
 
+  // Handle money laundering change
   const handleMoneyLaunderingChange = (e: any) => {
-    setHasMoneyLaundering(e.target.value);
-    form.setFieldsValue({ hasMoneyLaundering: e.target.value });
+    const value = e.target.value;
+    setHasMoneyLaundering(value);
+    form.setFieldsValue({ hasMoneyLaundering: value });
+    
+    // Clear explanation if "No" is selected
+    if (value === 'N') {
+      form.setFieldsValue({ moneyLaunderingExplanation: undefined });
+    }
   };
 
+  // Handle human trafficking change
   const handleHumanTraffickingChange = (e: any) => {
-    setHasHumanTrafficking(e.target.value);
-    form.setFieldsValue({ hasHumanTrafficking: e.target.value });
+    const value = e.target.value;
+    setHasHumanTrafficking(value);
+    form.setFieldsValue({ hasHumanTrafficking: value });
+    
+    // Clear explanation if "No" is selected
+    if (value === 'N') {
+      form.setFieldsValue({ humanTraffickingExplanation: undefined });
+    }
   };
 
+  // Handle assisted trafficking change
   const handleAssistedTraffickingChange = (e: any) => {
-    setHasAssistedTrafficking(e.target.value);
-    form.setFieldsValue({ hasAssistedTrafficking: e.target.value });
+    const value = e.target.value;
+    setHasAssistedTrafficking(value);
+    form.setFieldsValue({ hasAssistedTrafficking: value });
+    
+    // Clear explanation if "No" is selected
+    if (value === 'N') {
+      form.setFieldsValue({ assistedTraffickingExplanation: undefined });
+    }
   };
 
+  // Handle trafficking related change
   const handleTraffickingRelatedChange = (e: any) => {
-    setHasTraffickingRelated(e.target.value);
-    form.setFieldsValue({ hasTraffickingRelated: e.target.value });
+    const value = e.target.value;
+    setHasTraffickingRelated(value);
+    form.setFieldsValue({ hasTraffickingRelated: value });
+    
+    // Clear explanation if "No" is selected
+    if (value === 'N') {
+      form.setFieldsValue({ traffickingRelatedExplanation: undefined });
+    }
   };
 
   return (

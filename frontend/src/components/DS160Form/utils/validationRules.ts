@@ -92,7 +92,7 @@ export const organizationNamePatternMessage = "只能包含大写字母、数字
 // Minimum date for historical dates (birthdays, issue dates, etc.)
 export const MIN_HISTORICAL_DATE = new Date(1915, 4, 15); // May 15, 1915
 export const MIN_HISTORICAL_DATE_MESSAGE = '日期不能早于1915年5月15日';
-export const FUTURE_DATE_MESSAGE = '日期不能是未来日期';
+export const FUTURE_DATE_MESSAGE = '日期必须是未来日期';
 export const AFTER_BIRTH_DATE_MESSAGE = '日期不能早于你的出生日期';
 export const FUTURE_YEAR_MESSAGE = '年份不能晚于当前年份';
 export const BEFORE_BIRTH_YEAR_MESSAGE = '年份不能早于出生年份';

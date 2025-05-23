@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Radio, Input, Form } from 'antd';
 import QuestionItem from '../common/QuestionItem';
 import { maxLengths, explanationPattern, explanationPatternMessage } from '../utils/validationRules';
@@ -10,44 +10,118 @@ interface SecurityBackgroundIIIProps {
 const { TextArea } = Input;
 
 const SecurityBackgroundIII: React.FC<SecurityBackgroundIIIProps> = ({ form }) => {
-  // State for conditional rendering
-  const [hasIllegalActivity, setHasIllegalActivity] = useState<string | null>(null);
-  const [hasTerroristActivity, setHasTerroristActivity] = useState<string | null>(null);
-  const [hasTerroristSupport, setHasTerroristSupport] = useState<string | null>(null);
-  const [hasTerroristOrg, setHasTerroristOrg] = useState<string | null>(null);
-  const [hasTerroristRel, setHasTerroristRel] = useState<string | null>(null);
-  const [hasGenocide, setHasGenocide] = useState<string | null>(null);
-  const [hasTorture, setHasTorture] = useState<string | null>(null);
-  const [hasExViolence, setHasExViolence] = useState<string | null>(null);
-  const [hasChildSoldier, setHasChildSoldier] = useState<string | null>(null);
-  const [hasReligiousFreedom, setHasReligiousFreedom] = useState<string | null>(null);
-  const [hasPopulationControls, setHasPopulationControls] = useState<string | null>(null);
-  const [hasTransplant, setHasTransplant] = useState<string | null>(null);
+  // Get form values
+  const formValues = form.getFieldsValue(true);
+  
+  // Initialize state from form values
+  const [hasIllegalActivity, setHasIllegalActivity] = useState<string | null>(formValues?.hasIllegalActivity || null);
+  const [hasTerroristActivity, setHasTerroristActivity] = useState<string | null>(formValues?.hasTerroristActivity || null);
+  const [hasTerroristSupport, setHasTerroristSupport] = useState<string | null>(formValues?.hasTerroristSupport || null);
+  const [hasTerroristOrg, setHasTerroristOrg] = useState<string | null>(formValues?.hasTerroristOrg || null);
+  const [hasTerroristRel, setHasTerroristRel] = useState<string | null>(formValues?.hasTerroristRel || null);
+  const [hasGenocide, setHasGenocide] = useState<string | null>(formValues?.hasGenocide || null);
+  const [hasTorture, setHasTorture] = useState<string | null>(formValues?.hasTorture || null);
+  const [hasExViolence, setHasExViolence] = useState<string | null>(formValues?.hasExViolence || null);
+  const [hasChildSoldier, setHasChildSoldier] = useState<string | null>(formValues?.hasChildSoldier || null);
+  const [hasReligiousFreedom, setHasReligiousFreedom] = useState<string | null>(formValues?.hasReligiousFreedom || null);
+  const [hasPopulationControls, setHasPopulationControls] = useState<string | null>(formValues?.hasPopulationControls || null);
+  const [hasTransplant, setHasTransplant] = useState<string | null>(formValues?.hasTransplant || null);
+
+  // Update state when form values change
+  useEffect(() => {
+    const values = form.getFieldsValue(true);
+    if (values.hasIllegalActivity !== undefined) {
+      setHasIllegalActivity(values.hasIllegalActivity);
+    }
+    if (values.hasTerroristActivity !== undefined) {
+      setHasTerroristActivity(values.hasTerroristActivity);
+    }
+    if (values.hasTerroristSupport !== undefined) {
+      setHasTerroristSupport(values.hasTerroristSupport);
+    }
+    if (values.hasTerroristOrg !== undefined) {
+      setHasTerroristOrg(values.hasTerroristOrg);
+    }
+    if (values.hasTerroristRel !== undefined) {
+      setHasTerroristRel(values.hasTerroristRel);
+    }
+    if (values.hasGenocide !== undefined) {
+      setHasGenocide(values.hasGenocide);
+    }
+    if (values.hasTorture !== undefined) {
+      setHasTorture(values.hasTorture);
+    }
+    if (values.hasExViolence !== undefined) {
+      setHasExViolence(values.hasExViolence);
+    }
+    if (values.hasChildSoldier !== undefined) {
+      setHasChildSoldier(values.hasChildSoldier);
+    }
+    if (values.hasReligiousFreedom !== undefined) {
+      setHasReligiousFreedom(values.hasReligiousFreedom);
+    }
+    if (values.hasPopulationControls !== undefined) {
+      setHasPopulationControls(values.hasPopulationControls);
+    }
+    if (values.hasTransplant !== undefined) {
+      setHasTransplant(values.hasTransplant);
+    }
+  }, [form]);
 
   // Handle radio button changes
   const handleIllegalActivityChange = (e: any) => {
-    setHasIllegalActivity(e.target.value);
-    form.setFieldsValue({ hasIllegalActivity: e.target.value });
+    const value = e.target.value;
+    setHasIllegalActivity(value);
+    form.setFieldsValue({ hasIllegalActivity: value });
+    
+    // Clear explanation if "No" is selected
+    if (value === 'N') {
+      form.setFieldsValue({ illegalActivityExplanation: undefined });
+    }
   };
 
   const handleTerroristActivityChange = (e: any) => {
-    setHasTerroristActivity(e.target.value);
-    form.setFieldsValue({ hasTerroristActivity: e.target.value });
+    const value = e.target.value;
+    setHasTerroristActivity(value);
+    form.setFieldsValue({ hasTerroristActivity: value });
+    
+    // Clear explanation if "No" is selected
+    if (value === 'N') {
+      form.setFieldsValue({ terroristActivityExplanation: undefined });
+    }
   };
 
   const handleTerroristSupportChange = (e: any) => {
-    setHasTerroristSupport(e.target.value);
-    form.setFieldsValue({ hasTerroristSupport: e.target.value });
+    const value = e.target.value;
+    setHasTerroristSupport(value);
+    form.setFieldsValue({ hasTerroristSupport: value });
+    
+    // Clear explanation if "No" is selected
+    if (value === 'N') {
+      form.setFieldsValue({ terroristSupportExplanation: undefined });
+    }
   };
 
   const handleTerroristOrgChange = (e: any) => {
-    setHasTerroristOrg(e.target.value);
-    form.setFieldsValue({ hasTerroristOrg: e.target.value });
+    const value = e.target.value;
+    setHasTerroristOrg(value);
+    form.setFieldsValue({ hasTerroristOrg: value });
+    
+    // Clear explanation if "No" is selected
+    if (value === 'N') {
+      form.setFieldsValue({ terroristOrgExplanation: undefined });
+    }
   };
 
   const handleTerroristRelChange = (e: any) => {
-    setHasTerroristRel(e.target.value);
-    form.setFieldsValue({ hasTerroristRel: e.target.value });
+    const value = e.target.value;
+    setHasTerroristRel(value);
+    form.setFieldsValue({ hasTerroristRel: value });
+    
+    // Clear explanation if "No" is selected
+    if (value === 'N') {
+      form.setFieldsValue({ terroristRelExplanation: undefined });
+    }
   };
 
   const handleGenocideChange = (e: any) => {
