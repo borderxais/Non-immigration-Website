@@ -1,9 +1,9 @@
 import React from 'react';
-import { Input, Select } from 'antd';
+import { Form, Input, Select } from 'antd';
 import QuestionItem from '../common/QuestionItem';
 import DateInput from '../common/DateInput';
 import { countryOptions, nationalityOptions } from '../utils/formOptions';
-import { nameValidator, namePatternMessage, locationValidator, locationPatternMessage, maxLengths } from '../utils/validationRules';
+import { englishNameValidator, englishNamePatternMessage, locationValidator, locationPatternMessage, maxLengths } from '../utils/validationRules';
 
 const { TextArea } = Input;
 
@@ -29,8 +29,8 @@ const FamilyFormerSpouse: React.FC<FamilyFormerSpouseProps> = ({ form, readOnly 
               question="姓氏"
               name="formerSpouseSurname"
               required={true}
-              validator={nameValidator}
-              validatorMessage={namePatternMessage}
+              validator={englishNameValidator}
+              validatorMessage={englishNamePatternMessage}
             >
               <Input 
                 style={{ width: '95%' }} 
@@ -38,21 +38,13 @@ const FamilyFormerSpouse: React.FC<FamilyFormerSpouseProps> = ({ form, readOnly 
                 disabled={readOnly}
               />
             </QuestionItem>
-          </div>
-          <div className="explanation-column">
-            <h4 className="help-header">帮助：</h4>
-            <p>请输入您前配偶的姓氏。如果您不确定确切的拼写，请尽可能准确地输入。</p>
-          </div>
-        </div>
-        
-        <div className="question-row">
-          <div className="question-column">
+          
             <QuestionItem
               question="名字"
               name="formerSpouseGivenName"
               required={true}
-              validator={nameValidator}
-              validatorMessage={namePatternMessage}
+              validator={englishNameValidator}
+              validatorMessage={englishNamePatternMessage}
             >
               <Input 
                 style={{ width: '95%' }} 
@@ -60,15 +52,7 @@ const FamilyFormerSpouse: React.FC<FamilyFormerSpouseProps> = ({ form, readOnly 
                 disabled={readOnly}
               />
             </QuestionItem>
-          </div>
-          <div className="explanation-column">
-            <h4 className="help-header">帮助：</h4>
-            <p>请输入您前配偶的名字。如果您不确定确切的拼写，请尽可能准确地输入。</p>
-          </div>
-        </div>
-        
-        <div className="question-row">
-          <div className="question-column">
+          
             <QuestionItem
               question="出生日期"
               name="formerSpouseBirth"
@@ -80,17 +64,10 @@ const FamilyFormerSpouse: React.FC<FamilyFormerSpouseProps> = ({ form, readOnly 
                 yearName={["formerSpouseBirth", "year"]}
                 disabled={readOnly}
                 validateEarlierThanToday={true}
+                validateHistoricalDate={true}
               />
             </QuestionItem>
-          </div>
-          <div className="explanation-column">
-            <h4 className="help-header">帮助：</h4>
-            <p>请输入您前配偶的出生日期。如果您不知道确切日期，请尽可能准确地估计。</p>
-          </div>
-        </div>
-        
-        <div className="question-row">
-          <div className="question-column">
+
             <QuestionItem
               question="所属国家/地区（国籍）"
               name="formerSpouseNationality"
@@ -109,15 +86,13 @@ const FamilyFormerSpouse: React.FC<FamilyFormerSpouseProps> = ({ form, readOnly 
             </QuestionItem>
           </div>
           <div className="explanation-column">
-            <h4 className="help-header">帮助：</h4>
-            <p>请选择您前配偶的国籍。</p>
           </div>
         </div>
 
         <h4>前配偶的出生地</h4>
-        <div className="highlighted-block">
-          <div className="question-row">
-            <div className="question-column">
+        <div className="question-row">
+          <div className="question-column">
+            <div className="highlighted-block">
               <QuestionItem
                 question="城市"
                 name="formerSpousePobCity"
@@ -133,12 +108,7 @@ const FamilyFormerSpouse: React.FC<FamilyFormerSpouseProps> = ({ form, readOnly 
                   disabled={readOnly}
                 />
               </QuestionItem>
-            </div>
-            <div className="explanation-column"></div>
-          </div>
-          
-          <div className="question-row">
-            <div className="question-column">
+
               <QuestionItem
                 question="国家/地区"
                 name="formerSpousePobCountry"
@@ -156,8 +126,8 @@ const FamilyFormerSpouse: React.FC<FamilyFormerSpouseProps> = ({ form, readOnly 
                 />
               </QuestionItem>
             </div>
-            <div className="explanation-column"></div>
           </div>
+          <div className="explanation-column"></div>
         </div>
         
         <div className="question-row">
@@ -175,15 +145,7 @@ const FamilyFormerSpouse: React.FC<FamilyFormerSpouseProps> = ({ form, readOnly 
                 validateEarlierThanToday={true}
               />
             </QuestionItem>
-          </div>
-          <div className="explanation-column">
-            <h4 className="help-header">帮助：</h4>
-            <p>请输入您与前配偶的结婚日期。</p>
-          </div>
-        </div>
-        
-        <div className="question-row">
-          <div className="question-column">
+          
             <QuestionItem
               question="婚姻结束日期"
               name="formerSpouseMarriageEndDate"
@@ -197,37 +159,20 @@ const FamilyFormerSpouse: React.FC<FamilyFormerSpouseProps> = ({ form, readOnly 
                 validateEarlierThanToday={true}
               />
             </QuestionItem>
-          </div>
-          <div className="explanation-column">
-            <h4 className="help-header">帮助：</h4>
-            <p>请输入您与前配偶的婚姻结束日期。</p>
-          </div>
-        </div>
-        
-        <div className="question-row">
-          <div className="question-column">
-            <QuestionItem
-              question="婚姻如何结束"
+          
+            <h4>婚姻如何结束:</h4>
+            <Form.Item
               name="formerSpouseMarriageEndReason"
-              required={true}
             >
               <TextArea 
                 style={{ width: '99%' }} 
                 rows={4} 
                 maxLength={maxLengths.explanation}
+                required={true}
                 disabled={readOnly}
-                placeholder="请描述您的婚姻如何结束，例如：离婚、婚姻无效等"
               />
-            </QuestionItem>
-          </div>
-          <div className="explanation-column">
-            <h4 className="help-header">帮助：</h4>
-            <p>请简要说明您的婚姻如何结束，例如：离婚、婚姻无效等。</p>
-          </div>
-        </div>
-        
-        <div className="question-row">
-          <div className="question-column">
+            </Form.Item>
+          
             <QuestionItem
               question="婚姻终止的国家/地区"
               name="formerSpouseMarriageEndCountry"
@@ -245,10 +190,7 @@ const FamilyFormerSpouse: React.FC<FamilyFormerSpouseProps> = ({ form, readOnly 
               />
             </QuestionItem>
           </div>
-          <div className="explanation-column">
-            <h4 className="help-header">帮助：</h4>
-            <p>请选择您的婚姻终止的国家或地区。</p>
-          </div>
+          <div className="explanation-column"></div>
         </div>
       </fieldset>
     </div>
