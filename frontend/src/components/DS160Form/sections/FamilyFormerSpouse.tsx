@@ -4,7 +4,16 @@ import QuestionItem from '../common/QuestionItem';
 import DateInput from '../common/DateInput';
 import RepeatableFormItem from '../common/RepeatableFormItem';
 import { countryOptions, nationalityOptions } from '../utils/formOptions';
-import { englishNameValidator, englishNamePatternMessage, locationValidator, locationPatternMessage, maxLengths, numericValidator } from '../utils/validationRules';
+import { 
+  englishNameValidator, 
+  englishNamePatternMessage, 
+  locationValidator, 
+  locationPatternMessage, 
+  maxLengths, 
+  numericValidator,
+  explanationPattern,
+  explanationPatternMessage
+ } from '../utils/validationRules';
 import { FormListFieldData } from 'antd/lib/form/FormList';
 
 const { TextArea } = Input;
@@ -234,8 +243,9 @@ const FamilyFormerSpouse: React.FC<FamilyFormerSpouseProps> = ({ form, readOnly 
                       <h4>婚姻如何结束:</h4>
                       <Form.Item
                         name="marriageEndReason"
-                        noStyle
-                        rules={[{ required: true, message: '请说明婚姻如何结束' }]}
+                        rules={[{ required: true, message: '请说明婚姻如何结束' },
+                          { pattern: explanationPattern, message: explanationPatternMessage }
+                        ]}
                       >
                         <TextArea 
                           style={{ width: '99%' }} 
