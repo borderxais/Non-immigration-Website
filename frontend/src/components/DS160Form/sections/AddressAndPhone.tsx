@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Input, Select, Radio, Form } from 'antd';
 import QuestionItem from '../common/QuestionItem';
 import { permanentResidenceOptions } from '../utils/formOptions';
@@ -24,12 +24,33 @@ interface AddressAndPhoneProps {
 }
 
 const AddressAndPhone: React.FC<AddressAndPhoneProps> = ({ form }) => {
-  const [isMailingAddressSameAsHome, setIsMailingAddressSameAsHome] = useState<string | null>(null);
-  const [hasOtherEmailAddresses, setHasOtherEmailAddresses] = useState<string | null>(null);
-  const [hasOtherPhoneNumbers, setHasOtherPhoneNumbers] = useState<string | null>(null);
-  const [hasOtherSocialMedia, setHasOtherSocialMedia] = useState<string | null>(null);
+  // Get form values
+  const formValues = form.getFieldsValue(true);
+  
+  // Initialize state from form values
+  const [isMailingAddressSameAsHome, setIsMailingAddressSameAsHome] = useState<string | null>(formValues?.isMailingAddressSameAsHome || null);
+  const [hasOtherEmailAddresses, setHasOtherEmailAddresses] = useState<string | null>(formValues?.hasOtherEmails || null);
+  const [hasOtherPhoneNumbers, setHasOtherPhoneNumbers] = useState<string | null>(formValues?.hasOtherPhones || null);
+  const [hasOtherSocialMedia, setHasOtherSocialMedia] = useState<string | null>(formValues?.hasOtherSocialMedia || null);
 
-  // Handle mailing address same as home address change
+  // Update state when form values change
+  useEffect(() => {
+    const values = form.getFieldsValue(true);
+    if (values.isMailingAddressSameAsHome !== undefined) {
+      setIsMailingAddressSameAsHome(values.isMailingAddressSameAsHome);
+    }
+    if (values.hasOtherEmails !== undefined) {
+      setHasOtherEmailAddresses(values.hasOtherEmails);
+    }
+    if (values.hasOtherPhones !== undefined) {
+      setHasOtherPhoneNumbers(values.hasOtherPhones);
+    }
+    if (values.hasOtherSocialMedia !== undefined) {
+      setHasOtherSocialMedia(values.hasOtherSocialMedia);
+    }
+  }, [form]);
+
+  // Handle mailing address same as home change
   const handleSameAddressChange = (e: any) => {
     const value = e.target.value;
     

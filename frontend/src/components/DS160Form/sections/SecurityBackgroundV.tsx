@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Radio, Input, Form } from 'antd';
 import QuestionItem from '../common/QuestionItem';
 import { maxLengths, explanationPattern, explanationPatternMessage } from '../utils/validationRules';
@@ -10,32 +10,77 @@ interface SecurityBackgroundVProps {
 const { TextArea } = Input;
 
 const SecurityBackgroundV: React.FC<SecurityBackgroundVProps> = ({ form }) => {
-  // State for conditional rendering
-  const [hasChildCustody, setHasChildCustody] = useState<string | null>(null);
-  const [hasVotingViolation, setHasVotingViolation] = useState<string | null>(null);
-  const [hasRenounced, setHasRenounced] = useState<string | null>(null);
-  const [hasAttendedWithoutReimbursement, setHasAttendedWithoutReimbursement] = useState<string | null>(null);
+  // Get form values
+  const formValues = form.getFieldsValue(true);
+  
+  // Initialize state from form values
+  const [hasChildCustody, setHasChildCustody] = useState<string | null>(formValues?.hasChildCustody || null);
+  const [hasVotingViolation, setHasVotingViolation] = useState<string | null>(formValues?.hasVotingViolation || null);
+  const [hasRenounced, setHasRenounced] = useState<string | null>(formValues?.hasRenounced || null);
+  const [hasAttendedWithoutReimbursement, setHasAttendedWithoutReimbursement] = useState<string | null>(formValues?.hasAttendedWithoutReimbursement || null);
+
+  // Update state when form values change
+  useEffect(() => {
+    const values = form.getFieldsValue(true);
+    if (values.hasChildCustody !== undefined) {
+      setHasChildCustody(values.hasChildCustody);
+    }
+    if (values.hasVotingViolation !== undefined) {
+      setHasVotingViolation(values.hasVotingViolation);
+    }
+    if (values.hasRenounced !== undefined) {
+      setHasRenounced(values.hasRenounced);
+    }
+    if (values.hasAttendedWithoutReimbursement !== undefined) {
+      setHasAttendedWithoutReimbursement(values.hasAttendedWithoutReimbursement);
+    }
+  }, [form]);
 
   // Handle radio button changes
   const handleChildCustodyChange = (e: any) => {
-    setHasChildCustody(e.target.value);
-    form.setFieldsValue({ hasChildCustody: e.target.value });
+    const value = e.target.value;
+    setHasChildCustody(value);
+    form.setFieldsValue({ hasChildCustody: value });
+    
+    // Clear explanation if "No" is selected
+    if (value === 'N') {
+      form.setFieldsValue({ childCustodyExplanation: undefined });
+    }
   };
 
   const handleVotingViolationChange = (e: any) => {
-    setHasVotingViolation(e.target.value);
-    form.setFieldsValue({ hasVotingViolation: e.target.value });
+    const value = e.target.value;
+    setHasVotingViolation(value);
+    form.setFieldsValue({ hasVotingViolation: value });
+    
+    // Clear explanation if "No" is selected
+    if (value === 'N') {
+      form.setFieldsValue({ votingViolationExplanation: undefined });
+    }
   };
 
   const handleRenouncedChange = (e: any) => {
-    setHasRenounced(e.target.value);
-    form.setFieldsValue({ hasRenounced: e.target.value });
+    const value = e.target.value;
+    setHasRenounced(value);
+    form.setFieldsValue({ hasRenounced: value });
+    
+    // Clear explanation if "No" is selected
+    if (value === 'N') {
+      form.setFieldsValue({ renouncedExplanation: undefined });
+    }
   };
 
   const handleAttendedWithoutReimbursementChange = (e: any) => {
-    setHasAttendedWithoutReimbursement(e.target.value);
-    form.setFieldsValue({ hasAttendedWithoutReimbursement: e.target.value });
+    const value = e.target.value;
+    setHasAttendedWithoutReimbursement(value);
+    form.setFieldsValue({ hasAttendedWithoutReimbursement: value });
+    
+    // Clear explanation if "No" is selected
+    if (value === 'N') {
+      form.setFieldsValue({ attendedWithoutReimbursementExplanation: undefined });
+    }
   };
+
   return (
     <div className="ds160-section">
       <h2>安全和背景: 第五部分</h2>

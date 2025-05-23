@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Form, Select, Radio, Input } from 'antd';
 import { FormInstance } from 'antd/lib/form';
 import QuestionItem from '../common/QuestionItem';
@@ -20,45 +20,91 @@ interface PersonalInfoIIProps {
 }
 
 const PersonalInfoII: React.FC<PersonalInfoIIProps> = ({ form }) => {
-  const [hasOtherNationality, setHasOtherNationality] = useState<boolean>(false);
-  const [isPermResOtherCountry, setIsPermResOtherCountry] = useState<boolean>(false);
-  const [hasOtherPassports, setHasOtherPassports] = useState<{ [key: number]: boolean }>({});
+  // Get form values
+  const formValues = form.getFieldsValue(true);
+  
+  // Initialize state from form values
+  const [hasOtherNationality, setHasOtherNationality] = useState<boolean>(formValues?.hasOtherNationality === 'Y');
+  const [isPermResOtherCountry, setIsPermResOtherCountry] = useState<boolean>(formValues?.isPermResOtherCountry === 'Y');
+  const [hasOtherPassports, setHasOtherPassports] = useState<{ [key: number]: boolean }>(
+    formValues?.otherNationalities?.reduce((acc: { [key: number]: boolean }, _: any, index: number) => {
+      acc[index] = formValues?.otherNationalities?.[index]?.hasPassport === 'Y';
+      return acc;
+    }, {}) || {}
+  );
 
-  const handleOtherNationalityChange = (e: any) => {
-    setHasOtherNationality(e.target.value === 'Y');
-    if (e.target.value === 'N') {
-      setHasOtherPassports({});
-      // Reset other nationality and passport related fields
-      form.setFieldsValue({
-        otherNationalities: undefined
+  // Update state when form values change
+  useEffect(() => {
+    const values = form.getFieldsValue(true);
+    if (values.hasOtherNationality !== undefined) {
+      setHasOtherNationality(values.hasOtherNationality === 'Y');
+    }
+    if (values.isPermResOtherCountry !== undefined) {
+      setIsPermResOtherCountry(values.isPermResOtherCountry === 'Y');
+    }
+    if (values.otherNationalities) {
+      const newHasOtherPassports = { ...hasOtherPassports };
+      values.otherNationalities.forEach((nat: any, index: number) => {
+        if (nat?.hasPassport !== undefined) {
+          newHasOtherPassports[index] = nat.hasPassport === 'Y';
+        }
       });
+      setHasOtherPassports(newHasOtherPassports);
+    }
+  }, [form, hasOtherPassports]);
+
+  // Handle other nationality change
+  const handleOtherNationalityChange = (e: any) => {
+    const value = e.target.value;
+    setHasOtherNationality(value === 'Y');
+    form.setFieldsValue({ hasOtherNationality: value });
+    
+    // Clear other nationalities if "No" is selected
+    if (value === 'N') {
+      form.setFieldsValue({ otherNationalities: undefined });
     }
   };
 
+  // Handle permanent residence change
+  const handlePermResChange = (e: any) => {
+    const value = e.target.value;
+    setIsPermResOtherCountry(value === 'Y');
+    form.setFieldsValue({ isPermResOtherCountry: value });
+    
+    // Clear permanent residence country if "No" is selected
+    if (value === 'N') {
+      form.setFieldsValue({ permResCountry: undefined });
+    }
+  };
+
+  // Handle other passport change
   const handleOtherPassportChange = (fieldIndex: number) => (e: any) => {
+    const value = e.target.value;
     setHasOtherPassports(prev => ({
       ...prev,
-      [fieldIndex]: e.target.value === 'Y'
+      [fieldIndex]: value === 'Y'
     }));
-    if (e.target.value === 'N') {
-      const currentNationalities = form.getFieldValue('otherNationalities') || [];
-      currentNationalities[fieldIndex] = {
-        ...currentNationalities[fieldIndex],
-        passportNumber: undefined
-      };
+    
+    // Update the form value
+    const otherNationalities = form.getFieldValue('otherNationalities') || [];
+    if (otherNationalities[fieldIndex]) {
       form.setFieldsValue({
-        otherNationalities: currentNationalities
+        otherNationalities: otherNationalities.map((nat: any, i: number) => 
+          i === fieldIndex ? { ...nat, hasPassport: value } : nat
+        )
       });
-    }
-  };
-
-  const handlePermResChange = (e: any) => {
-    setIsPermResOtherCountry(e.target.value === 'Y');
-    if (e.target.value === 'N') {
-      // Reset permanent residence related fields
-      form.setFieldsValue({
-        permanentResidences: undefined
-      });
+      
+      // Clear passport number if "No" is selected
+      if (value === 'N') {
+        const updatedNationalities = [...otherNationalities];
+        if (updatedNationalities[fieldIndex]) {
+          updatedNationalities[fieldIndex] = {
+            ...updatedNationalities[fieldIndex],
+            passportNumber: undefined
+          };
+          form.setFieldsValue({ otherNationalities: updatedNationalities });
+        }
+      }
     }
   };
 

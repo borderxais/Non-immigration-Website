@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Radio, Input, Form } from 'antd';
 import QuestionItem from '../common/QuestionItem';
 import { maxLengths, explanationPattern, explanationPatternMessage } from '../utils/validationRules';
@@ -10,39 +10,91 @@ interface SecurityBackgroundIVProps {
 const { TextArea } = Input;
 
 const SecurityBackgroundIV: React.FC<SecurityBackgroundIVProps> = ({ form }) => {
-  // State for conditional rendering
-  const [hasImmigrationFraud, setHasImmigrationFraud] = useState<string | null>(null);
-  const [hasDeportation, setHasDeportation] = useState<string | null>(null);
-  const [hasRemovalHearing, setHasRemovalHearing] = useState<string | null>(null);
-  const [hasFailedToAttend, setHasFailedToAttend] = useState<string | null>(null);
-  const [hasViolatedVisa, setHasViolatedVisa] = useState<string | null>(null);
+  // Get form values
+  const formValues = form.getFieldsValue(true);
+  
+  // Initialize state from form values
+  const [hasImmigrationFraud, setHasImmigrationFraud] = useState<string | null>(formValues?.hasImmigrationFraud || null);
+  const [hasDeportation, setHasDeportation] = useState<string | null>(formValues?.hasDeportation || null);
+  const [hasRemovalHearing, setHasRemovalHearing] = useState<string | null>(formValues?.hasRemovalHearing || null);
+  const [hasFailedToAttend, setHasFailedToAttend] = useState<string | null>(formValues?.hasFailedToAttend || null);
+  const [hasViolatedVisa, setHasViolatedVisa] = useState<string | null>(formValues?.hasViolatedVisa || null);
+
+  // Update state when form values change
+  useEffect(() => {
+    const values = form.getFieldsValue(true);
+    if (values.hasImmigrationFraud !== undefined) {
+      setHasImmigrationFraud(values.hasImmigrationFraud);
+    }
+    if (values.hasDeportation !== undefined) {
+      setHasDeportation(values.hasDeportation);
+    }
+    if (values.hasRemovalHearing !== undefined) {
+      setHasRemovalHearing(values.hasRemovalHearing);
+    }
+    if (values.hasFailedToAttend !== undefined) {
+      setHasFailedToAttend(values.hasFailedToAttend);
+    }
+    if (values.hasViolatedVisa !== undefined) {
+      setHasViolatedVisa(values.hasViolatedVisa);
+    }
+  }, [form]);
 
   // Handle radio button changes
   const handleImmigrationFraudChange = (e: any) => {
-    setHasImmigrationFraud(e.target.value);
-    form.setFieldsValue({ hasImmigrationFraud: e.target.value });
+    const value = e.target.value;
+    setHasImmigrationFraud(value);
+    form.setFieldsValue({ hasImmigrationFraud: value });
+    
+    // Clear explanation if "No" is selected
+    if (value === 'N') {
+      form.setFieldsValue({ immigrationFraudExplanation: undefined });
+    }
   };
 
   const handleDeportationChange = (e: any) => {
-    setHasDeportation(e.target.value);
-    form.setFieldsValue({ hasDeportation: e.target.value });
+    const value = e.target.value;
+    setHasDeportation(value);
+    form.setFieldsValue({ hasDeportation: value });
+    
+    // Clear explanation if "No" is selected
+    if (value === 'N') {
+      form.setFieldsValue({ deportationExplanation: undefined });
+    }
   };
 
   const handleRemovalHearingChange = (e: any) => {
-    setHasRemovalHearing(e.target.value);
-    form.setFieldsValue({ hasRemovalHearing: e.target.value });
+    const value = e.target.value;
+    setHasRemovalHearing(value);
+    form.setFieldsValue({ hasRemovalHearing: value });
+    
+    // Clear explanation if "No" is selected
+    if (value === 'N') {
+      form.setFieldsValue({ removalHearingExplanation: undefined });
+    }
   };
 
   const handleFailedToAttendChange = (e: any) => {
-    setHasFailedToAttend(e.target.value);
-    form.setFieldsValue({ hasFailedToAttend: e.target.value });
+    const value = e.target.value;
+    setHasFailedToAttend(value);
+    form.setFieldsValue({ hasFailedToAttend: value });
+    
+    // Clear explanation if "No" is selected
+    if (value === 'N') {
+      form.setFieldsValue({ failedToAttendExplanation: undefined });
+    }
   };
 
   const handleViolatedVisaChange = (e: any) => {
-    setHasViolatedVisa(e.target.value);
-    form.setFieldsValue({ hasViolatedVisa: e.target.value });
+    const value = e.target.value;
+    setHasViolatedVisa(value);
+    form.setFieldsValue({ hasViolatedVisa: value });
+    
+    // Clear explanation if "No" is selected
+    if (value === 'N') {
+      form.setFieldsValue({ violatedVisaExplanation: undefined });
+    }
   };
-
 
   return (
     <div className="ds160-section">
