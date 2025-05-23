@@ -54,96 +54,96 @@ const formSections: FormSection[] = [
     title: '个人信息 I',
     component: PersonalInfoI
   },
-  {
-    key: 'personalInfo2',
-    title: '个人信息 II',
-    component: PersonalInfoII
-  },
-  {
-    key: 'travelInfo',
-    title: '旅行信息',
-    component: TravelInfo
-  },
-  {
-    key: 'travelCompanions',
-    title: '同行人',
-    component: TravelCompanions
-  },
-  {
-    key: 'previousTravel',
-    title: '以前的旅行',
-    component: PreviousTravel
-  },
-  {
-    key: 'addressAndPhone',
-    title: '地址和电话',
-    component: AddressAndPhone
-  },
-  {
-    key: 'passport',
-    title: '护照信息',
-    component: Passport
-  },
-  {
-    key: 'usContact',
-    title: '美国联系人',
-    component: USContact
-  },
-  {
-    key: 'familyRelatives',
-    title: '家庭信息：亲属',
-    component: FamilyRelatives
-  },
-  {
-    key: 'familySpouse',
-    title: '家庭信息：配偶',
-    component: FamilySpouse
-  },
-  {
-    key: 'workEducation',
-    title: '当前工作和教育',
-    component: WorkEducationPresent
-  },
-  {
-    key: 'workEducationPrevious',
-    title: '以往工作和教育',
-    component: WorkEducationPrevious
-  },
+  // {
+  //   key: 'personalInfo2',
+  //   title: '个人信息 II',
+  //   component: PersonalInfoII
+  // },
+  // {
+  //   key: 'travelInfo',
+  //   title: '旅行信息',
+  //   component: TravelInfo
+  // },
+  // {
+  //   key: 'travelCompanions',
+  //   title: '同行人',
+  //   component: TravelCompanions
+  // },
+  // {
+  //   key: 'previousTravel',
+  //   title: '以前的旅行',
+  //   component: PreviousTravel
+  // },
+  // {
+  //   key: 'addressAndPhone',
+  //   title: '地址和电话',
+  //   component: AddressAndPhone
+  // },
+  // {
+  //   key: 'passport',
+  //   title: '护照信息',
+  //   component: Passport
+  // },
+  // {
+  //   key: 'usContact',
+  //   title: '美国联系人',
+  //   component: USContact
+  // },
+  // {
+  //   key: 'familyRelatives',
+  //   title: '家庭信息：亲属',
+  //   component: FamilyRelatives
+  // },
+  // {
+  //   key: 'familySpouse',
+  //   title: '家庭信息：配偶',
+  //   component: FamilySpouse
+  // },
+  // {
+  //   key: 'workEducation',
+  //   title: '当前工作和教育',
+  //   component: WorkEducationPresent
+  // },
+  // {
+  //   key: 'workEducationPrevious',
+  //   title: '以往工作和教育',
+  //   component: WorkEducationPrevious
+  // },
   {
     key: 'workEducationAdditional',
     title: '额外工作和教育信息',
     component: WorkEducationAdditional
   },
-  {
-    key: 'securityBackground',
-    title: '安全和背景: 第一部分',
-    component: SecurityBackgroundI
-  },
-  {
-    key: 'securityBackground2',
-    title: '安全和背景: 第二部分',
-    component: SecurityBackgroundII
-  },
-  {
-    key: 'securityBackground3',
-    title: '安全和背景: 第三部分',
-    component: SecurityBackgroundIII
-  },
-  {
-    key: 'securityBackground4',
-    title: '安全和背景: 第四部分',
-    component: SecurityBackgroundIV
-  },
-  {
-    key: 'securityBackground5',
-    title: '安全和背景: 第五部分',
-    component: SecurityBackgroundV
-  },
-  {
-    key: 'studentContact',
-    title: '额外联络人信息',
-    component: StudentContact
-  },
+  // {
+  //   key: 'securityBackground',
+  //   title: '安全和背景: 第一部分',
+  //   component: SecurityBackgroundI
+  // },
+  // {
+  //   key: 'securityBackground2',
+  //   title: '安全和背景: 第二部分',
+  //   component: SecurityBackgroundII
+  // },
+  // {
+  //   key: 'securityBackground3',
+  //   title: '安全和背景: 第三部分',
+  //   component: SecurityBackgroundIII
+  // },
+  // {
+  //   key: 'securityBackground4',
+  //   title: '安全和背景: 第四部分',
+  //   component: SecurityBackgroundIV
+  // },
+  // {
+  //   key: 'securityBackground5',
+  //   title: '安全和背景: 第五部分',
+  //   component: SecurityBackgroundV
+  // },
+  // {
+  //   key: 'studentContact',
+  //   title: '额外联络人信息',
+  //   component: StudentContact
+  // },
   {
     key: 'review',
     title: '审核提交',

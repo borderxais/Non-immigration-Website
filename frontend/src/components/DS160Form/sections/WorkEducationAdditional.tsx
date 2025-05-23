@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Form, Input, Select, Radio } from 'antd';
 import QuestionItem from '../common/QuestionItem';
 import DateInput from '../common/DateInput';
@@ -14,12 +14,22 @@ import {
 interface WorkEducationAdditionalProps {
   form: any;
   readOnly?: boolean;
+  formValues?: any;
 }
 
 const { TextArea } = Input;
 
-const WorkEducationAdditional: React.FC<WorkEducationAdditionalProps> = ({ form, readOnly = false }) => {
-  // 监听各个问题的回答
+const WorkEducationAdditional: React.FC<WorkEducationAdditionalProps> = ({ form, readOnly = false, formValues }) => {
+  // State variables for conditional rendering
+  const [clanTribeInd, setClanTribeInd] = useState<string>(formValues?.clanTribeInd || '');
+  const [countriesVisitedInd, setCountriesVisitedInd] = useState<string>(formValues?.countriesVisitedInd || '');
+  const [organizationInd, setOrganizationInd] = useState<string>(formValues?.organizationInd || '');
+  const [specializedSkillsInd, setSpecializedSkillsInd] = useState<string>(formValues?.specializedSkillsInd || '');
+  const [militaryServiceInd, setMilitaryServiceInd] = useState<string>(formValues?.militaryServiceInd || '');
+  const [insurgentOrgInd, setInsurgentOrgInd] = useState<string>(formValues?.insurgentOrgInd || '');
+  const [talibanMemberInd, setTalibanMemberInd] = useState<string>(formValues?.talibanMemberInd || '');
+  
+  // Watch form field changes
   const watchClanTribeInd = Form.useWatch('clanTribeInd', form);
   const watchCountriesVisitedInd = Form.useWatch('countriesVisitedInd', form);
   const watchOrganizationInd = Form.useWatch('organizationInd', form);
@@ -28,9 +38,52 @@ const WorkEducationAdditional: React.FC<WorkEducationAdditionalProps> = ({ form,
   const watchInsurgentOrgInd = Form.useWatch('insurgentOrgInd', form);
   const watchTalibanMemberInd = Form.useWatch('talibanMemberInd', form);
   
+  // Update state when form values change
+  useEffect(() => {
+    if (formValues) {
+      setClanTribeInd(formValues.clanTribeInd || '');
+      setCountriesVisitedInd(formValues.countriesVisitedInd || '');
+      setOrganizationInd(formValues.organizationInd || '');
+      setSpecializedSkillsInd(formValues.specializedSkillsInd || '');
+      setMilitaryServiceInd(formValues.militaryServiceInd || '');
+      setInsurgentOrgInd(formValues.insurgentOrgInd || '');
+      setTalibanMemberInd(formValues.talibanMemberInd || '');
+    }
+  }, [formValues]);
+
+  // Update state when form field changes
+  useEffect(() => {
+    setClanTribeInd(watchClanTribeInd || '');
+  }, [watchClanTribeInd]);
+
+  useEffect(() => {
+    setCountriesVisitedInd(watchCountriesVisitedInd || '');
+  }, [watchCountriesVisitedInd]);
+
+  useEffect(() => {
+    setOrganizationInd(watchOrganizationInd || '');
+  }, [watchOrganizationInd]);
+
+  useEffect(() => {
+    setSpecializedSkillsInd(watchSpecializedSkillsInd || '');
+  }, [watchSpecializedSkillsInd]);
+
+  useEffect(() => {
+    setMilitaryServiceInd(watchMilitaryServiceInd || '');
+  }, [watchMilitaryServiceInd]);
+
+  useEffect(() => {
+    setInsurgentOrgInd(watchInsurgentOrgInd || '');
+  }, [watchInsurgentOrgInd]);
+
+  useEffect(() => {
+    setTalibanMemberInd(watchTalibanMemberInd || '');
+  }, [watchTalibanMemberInd]);
+  
   // 处理各个问题的变化，当选择"否"时清除相关字段
   const handleClanTribeIndChange = (e: any) => {
     const value = e.target.value;
+    setClanTribeInd(value);
     if (value === 'N') {
       form.setFieldsValue({
         clanTribeName: undefined
@@ -40,6 +93,7 @@ const WorkEducationAdditional: React.FC<WorkEducationAdditionalProps> = ({ form,
   
   const handleCountriesVisitedIndChange = (e: any) => {
     const value = e.target.value;
+    setCountriesVisitedInd(value);
     if (value === 'N') {
       form.setFieldsValue({
         countriesVisited: undefined
@@ -49,6 +103,7 @@ const WorkEducationAdditional: React.FC<WorkEducationAdditionalProps> = ({ form,
   
   const handleOrganizationIndChange = (e: any) => {
     const value = e.target.value;
+    setOrganizationInd(value);
     if (value === 'N') {
       form.setFieldsValue({
         organizations: undefined
@@ -58,6 +113,7 @@ const WorkEducationAdditional: React.FC<WorkEducationAdditionalProps> = ({ form,
   
   const handleSpecializedSkillsIndChange = (e: any) => {
     const value = e.target.value;
+    setSpecializedSkillsInd(value);
     if (value === 'N') {
       form.setFieldsValue({
         specializedSkillsExpl: undefined
@@ -67,6 +123,7 @@ const WorkEducationAdditional: React.FC<WorkEducationAdditionalProps> = ({ form,
   
   const handleMilitaryServiceIndChange = (e: any) => {
     const value = e.target.value;
+    setMilitaryServiceInd(value);
     if (value === 'N') {
       form.setFieldsValue({
         militaryService: undefined
@@ -76,6 +133,7 @@ const WorkEducationAdditional: React.FC<WorkEducationAdditionalProps> = ({ form,
   
   const handleInsurgentOrgIndChange = (e: any) => {
     const value = e.target.value;
+    setInsurgentOrgInd(value);
     if (value === 'N') {
       form.setFieldsValue({
         insurgentOrgExpl: undefined
@@ -85,6 +143,7 @@ const WorkEducationAdditional: React.FC<WorkEducationAdditionalProps> = ({ form,
 
   const handleTalibanMemberIndChange = (e: any) => {
     const value = e.target.value;
+    setTalibanMemberInd(value);
     if (value === 'N') {
       form.setFieldsValue({
         talibanMemberExplanation: undefined
@@ -116,7 +175,7 @@ const WorkEducationAdditional: React.FC<WorkEducationAdditionalProps> = ({ form,
             </QuestionItem>
             
             {/* 当选择"是"时显示的输入框 */}
-            {watchClanTribeInd === 'Y' && (
+            {clanTribeInd === 'Y' && (
               <div style={{ marginTop: '20px' }}>
                 <h4>请提供以下信息：</h4>
                 <div className="highlighted-block">
@@ -195,7 +254,7 @@ const WorkEducationAdditional: React.FC<WorkEducationAdditionalProps> = ({ form,
             </QuestionItem>
             
             {/* 当选择"是"时显示的可重复表单项 */}
-            {watchCountriesVisitedInd === 'Y' && (
+            {countriesVisitedInd === 'Y' && (
               <div style={{ marginTop: '20px' }}>
                 <h4>请列出您访问过的国家</h4>
                 <RepeatableFormItem
@@ -251,7 +310,7 @@ const WorkEducationAdditional: React.FC<WorkEducationAdditionalProps> = ({ form,
             </QuestionItem>
             
             {/* 当选择"是"时显示的可重复表单项 */}
-            {watchOrganizationInd === 'Y' && (
+            {organizationInd === 'Y' && (
               <div style={{ marginTop: '20px' }}>
                 <h4>请提供机构列表</h4>
                 <RepeatableFormItem
@@ -306,7 +365,7 @@ const WorkEducationAdditional: React.FC<WorkEducationAdditionalProps> = ({ form,
             </QuestionItem>
             
             {/* 当选择"是"时显示的解释字段 */}
-            {watchSpecializedSkillsInd === 'Y' && (
+            {specializedSkillsInd === 'Y' && (
               <div style={{ marginTop: '20px' }}>
                 <h4>请提供详细解释：</h4>
                 <div className="highlighted-block">
@@ -345,7 +404,7 @@ const WorkEducationAdditional: React.FC<WorkEducationAdditionalProps> = ({ form,
             </QuestionItem>
             
             {/* 当选择"是"时显示的可重复表单项 */}
-            {watchMilitaryServiceInd === 'Y' && (
+            {militaryServiceInd === 'Y' && (
               <div style={{ marginTop: '20px' }}>
                 <h4>请提供以下信息：</h4>
                 <RepeatableFormItem
@@ -480,7 +539,7 @@ const WorkEducationAdditional: React.FC<WorkEducationAdditionalProps> = ({ form,
             </QuestionItem>
             
             {/* 当选择"是"时显示的输入框 */}
-            {watchTalibanMemberInd === 'Y' && (
+            {talibanMemberInd === 'Y' && (
               <div style={{ marginTop: '20px' }}>
                 <h4>请提供详细解释：</h4>
                 <div className="highlighted-block">
@@ -520,7 +579,7 @@ const WorkEducationAdditional: React.FC<WorkEducationAdditionalProps> = ({ form,
             </QuestionItem>
             
             {/* 当选择"是"时显示的解释字段 */}
-            {watchInsurgentOrgInd === 'Y' && (
+            {insurgentOrgInd === 'Y' && (
               <div style={{ marginTop: '20px' }}>
                 <h4>解释</h4>
                 <div className="highlighted-block">

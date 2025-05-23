@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Form, Input, Select } from 'antd';
 import QuestionItem from '../common/QuestionItem';
 import DateInput from '../common/DateInput';
@@ -17,14 +17,28 @@ import {
 
 interface FamilySpouseProps {
   form: any;
+  formValues?: any;
 }
 
-const FamilySpouse: React.FC<FamilySpouseProps> = ({ form }) => {
-  // 监听配偶信息复选框状态
-  const watchSpousePobCityNotKnown = Form.useWatch('spousePobCityNotKnown', form);
+const FamilySpouse: React.FC<FamilySpouseProps> = ({ form, formValues }) => {
+  // State variables for conditional rendering
+  const [spouseAddressType, setSpouseAddressType] = useState<string>(formValues?.spouseAddressType || '');
   
-  // 监听配偶地址类型
+  // Watch form field changes
+  const watchSpousePobCityNotKnown = Form.useWatch('spousePobCityNotKnown', form);
   const watchSpouseAddressType = Form.useWatch('spouseAddressType', form);
+  
+  // Update state when form values change
+  useEffect(() => {
+    if (formValues) {
+      setSpouseAddressType(formValues.spouseAddressType || '');
+    }
+  }, [formValues]);
+
+  // Update state when form field changes
+  useEffect(() => {
+    setSpouseAddressType(watchSpouseAddressType || '');
+  }, [watchSpouseAddressType]);
   
   return (
     <div className="ds160-section">
@@ -167,6 +181,22 @@ const FamilySpouse: React.FC<FamilySpouseProps> = ({ form }) => {
               <Select 
                 style={{ width: '99%' }} 
                 placeholder="- 请选择一个 -"
+                onChange={(value) => {
+                  setSpouseAddressType(value);
+                  if (value !== 'O') {
+                    // Reset form fields when not selecting "Other"
+                    form.setFieldsValue({
+                      spouseAddressLine1: undefined,
+                      spouseAddressLine2: undefined,
+                      spouseAddressCity: undefined,
+                      spouseAddressState: undefined,
+                      spouseAddressState_na: undefined,
+                      spouseAddressPostalCode: undefined,
+                      spouseAddressPostalCode_na: undefined,
+                      spouseAddressCountry: undefined
+                    });
+                  }
+                }}
               >
                 <Select.Option value="">- 请选择一个 -</Select.Option>
                 <Select.Option value="H">与家庭住址相同</Select.Option>
@@ -177,7 +207,7 @@ const FamilySpouse: React.FC<FamilySpouseProps> = ({ form }) => {
               </Select>
             </QuestionItem>
             
-            {watchSpouseAddressType === 'O' && (
+            {spouseAddressType === 'O' && (
               <div style={{ marginTop: '20px' }}>
                 <div className="highlighted-block">
                   <div style={{ marginBottom: '24px' }}>
