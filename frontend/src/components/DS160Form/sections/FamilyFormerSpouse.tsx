@@ -25,9 +25,6 @@ interface FamilyFormerSpouseProps {
 
 const FamilyFormerSpouse: React.FC<FamilyFormerSpouseProps> = ({ form, readOnly = false }) => {
   const [formerSpouseCount, setFormerSpouseCount] = useState<number>(1);
-  
-  // Watch the formerSpouses array to sync with count
-  const formerSpouses = Form.useWatch('formerSpouses', form) || [];
 
   // Update the form value when count changes
   useEffect(() => {
@@ -52,21 +49,6 @@ const FamilyFormerSpouse: React.FC<FamilyFormerSpouseProps> = ({ form, readOnly 
         });
       }
     }
-  };
-
-  // Validator to check if the number of former spouses matches the count
-  const validateFormerSpouseCount = (_: any, value: number) => {
-    if (!value) {
-      return Promise.reject('请输入前配偶数量');
-    }
-    
-    const currentSpouses = form.getFieldValue('formerSpouses') || [];
-    
-    if (currentSpouses.length !== value) {
-      return Promise.reject(`请确保添加了 ${value} 个前配偶信息`);
-    }
-    
-    return Promise.resolve();
   };
 
   return (
