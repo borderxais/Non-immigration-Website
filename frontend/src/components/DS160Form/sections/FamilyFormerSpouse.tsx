@@ -1,9 +1,11 @@
-import React from 'react';
-import { Form, Input, Select } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Form, Input, Select, InputNumber } from 'antd';
 import QuestionItem from '../common/QuestionItem';
 import DateInput from '../common/DateInput';
+import RepeatableFormItem from '../common/RepeatableFormItem';
 import { countryOptions, nationalityOptions } from '../utils/formOptions';
-import { englishNameValidator, englishNamePatternMessage, locationValidator, locationPatternMessage, maxLengths } from '../utils/validationRules';
+import { englishNameValidator, englishNamePatternMessage, locationValidator, locationPatternMessage, maxLengths, numericValidator } from '../utils/validationRules';
+import { FormListFieldData } from 'antd/lib/form/FormList';
 
 const { TextArea } = Input;
 
@@ -13,6 +15,50 @@ interface FamilyFormerSpouseProps {
 }
 
 const FamilyFormerSpouse: React.FC<FamilyFormerSpouseProps> = ({ form, readOnly = false }) => {
+  const [formerSpouseCount, setFormerSpouseCount] = useState<number>(1);
+  
+  // Watch the formerSpouses array to sync with count
+  const formerSpouses = Form.useWatch('formerSpouses', form) || [];
+
+  // Update the form value when count changes
+  useEffect(() => {
+    form.setFieldsValue({ 
+      formerSpouseCount: formerSpouseCount 
+    });
+  }, [formerSpouseCount, form]);
+
+  // Handle count change
+  const handleCountChange = (value: number | null) => {
+    if (value !== null) {
+      setFormerSpouseCount(value);
+      
+      // Get current former spouses
+      const currentSpouses = form.getFieldValue('formerSpouses') || [];
+      
+      // If increasing, no need to do anything as RepeatableFormItem will handle it
+      // If decreasing, we need to trim the array
+      if (value < currentSpouses.length) {
+        form.setFieldsValue({
+          formerSpouses: currentSpouses.slice(0, value)
+        });
+      }
+    }
+  };
+
+  // Validator to check if the number of former spouses matches the count
+  const validateFormerSpouseCount = (_: any, value: number) => {
+    if (!value) {
+      return Promise.reject('请输入前配偶数量');
+    }
+    
+    const currentSpouses = form.getFieldValue('formerSpouses') || [];
+    
+    if (currentSpouses.length !== value) {
+      return Promise.reject(`请确保添加了 ${value} 个前配偶信息`);
+    }
+    
+    return Promise.resolve();
+  };
 
   return (
     <div className="ds160-section">
@@ -26,171 +72,205 @@ const FamilyFormerSpouse: React.FC<FamilyFormerSpouseProps> = ({ form, readOnly 
         <div className="question-row">
           <div className="question-column">
             <QuestionItem
-              question="姓氏"
-              name="formerSpouseSurname"
+              question="前配偶数量"
+              name="formerSpouseCount"
               required={true}
-              validator={englishNameValidator}
-              validatorMessage={englishNamePatternMessage}
+              validator={numericValidator}
             >
-              <Input 
-                style={{ width: '95%' }} 
-                maxLength={maxLengths.name}
+              <InputNumber
+                max={2}
+                value={formerSpouseCount}
+                onChange={handleCountChange}
+                style={{ width: '100px' }}
                 disabled={readOnly}
               />
             </QuestionItem>
-          
-            <QuestionItem
-              question="名字"
-              name="formerSpouseGivenName"
-              required={true}
-              validator={englishNameValidator}
-              validatorMessage={englishNamePatternMessage}
-            >
-              <Input 
-                style={{ width: '95%' }} 
-                maxLength={maxLengths.name}
-                disabled={readOnly}
-              />
-            </QuestionItem>
-          
-            <QuestionItem
-              question="出生日期"
-              name="formerSpouseBirth"
-              required={true}
-            >
-              <DateInput
-                dayName={["formerSpouseBirth", "day"]}
-                monthName={["formerSpouseBirth", "month"]}
-                yearName={["formerSpouseBirth", "year"]}
-                disabled={readOnly}
-                validateEarlierThanToday={true}
-                validateHistoricalDate={true}
-              />
-            </QuestionItem>
-
-            <QuestionItem
-              question="所属国家/地区（国籍）"
-              name="formerSpouseNationality"
-              required={true}
-            >
-              <Select
-                style={{ width: '99%' }}
-                options={nationalityOptions}
-                placeholder="- 请选择 -"
-                showSearch
-                filterOption={(input, option) => 
-                  (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
-                }
-                disabled={readOnly}
-              />
-            </QuestionItem>
-          </div>
-          <div className="explanation-column">
-          </div>
-        </div>
-
-        <h4>前配偶的出生地</h4>
-        <div className="question-row">
-          <div className="question-column">
-            <div className="highlighted-block">
-              <QuestionItem
-                question="城市"
-                name="formerSpousePobCity"
-                required={true}
-                naCheckboxName="formerSpousePobCityNa"
-                hasNaCheckbox={true}
-                validator={locationValidator}
-                validatorMessage={locationPatternMessage}
-              >
-                <Input 
-                  style={{ width: '95%' }} 
-                  maxLength={maxLengths.city}
-                  disabled={readOnly}
-                />
-              </QuestionItem>
-
-              <QuestionItem
-                question="国家/地区"
-                name="formerSpousePobCountry"
-                required={true}
-              >
-                <Select
-                  style={{ width: '99%' }}
-                  options={countryOptions}
-                  placeholder="- 请选择 -"
-                  showSearch
-                  filterOption={(input, option) => 
-                    (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
-                  }
-                  disabled={readOnly}
-                />
-              </QuestionItem>
-            </div>
           </div>
           <div className="explanation-column"></div>
         </div>
         
+        <h4>前配偶信息</h4>
         <div className="question-row">
           <div className="question-column">
-            <QuestionItem
-              question="结婚日期"
-              name="formerSpouseMarriageDate"
-              required={true}
+            <RepeatableFormItem 
+              name="formerSpouses"
+              addButtonText="添加另一个前配偶"
+              removeButtonText="移除此前配偶"
             >
-              <DateInput
-                dayName={["formerSpouseMarriageDate", "day"]}
-                monthName={["formerSpouseMarriageDate", "month"]}
-                yearName={["formerSpouseMarriageDate", "year"]}
-                disabled={readOnly}
-                validateEarlierThanToday={true}
-              />
-            </QuestionItem>
-          
-            <QuestionItem
-              question="婚姻结束日期"
-              name="formerSpouseMarriageEndDate"
-              required={true}
-            >
-              <DateInput
-                dayName={["formerSpouseMarriageEndDate", "day"]}
-                monthName={["formerSpouseMarriageEndDate", "month"]}
-                yearName={["formerSpouseMarriageEndDate", "year"]}
-                disabled={readOnly}
-                validateEarlierThanToday={true}
-              />
-            </QuestionItem>
-          
-            <h4>婚姻如何结束:</h4>
-            <Form.Item
-              name="formerSpouseMarriageEndReason"
-            >
-              <TextArea 
-                style={{ width: '99%' }} 
-                rows={4} 
-                maxLength={maxLengths.explanation}
-                required={true}
-                disabled={readOnly}
-              />
-            </Form.Item>
-          
-            <QuestionItem
-              question="婚姻终止的国家/地区"
-              name="formerSpouseMarriageEndCountry"
-              required={true}
-            >
-              <Select
-                style={{ width: '99%' }}
-                options={countryOptions}
-                placeholder="- 请选择 -"
-                showSearch
-                filterOption={(input, option) => 
-                  (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
-                }
-                disabled={readOnly}
-              />
-            </QuestionItem>
+              {(field: FormListFieldData, listName: string) => (
+                <div>
+                  <div className="question-row">
+                    <div className="question-column">
+                      <QuestionItem
+                        question="姓氏"
+                        name={[field.name, 'surname']}
+                        required={true}
+                        validator={englishNameValidator}
+                        validatorMessage={englishNamePatternMessage}
+                      >
+                        <Input 
+                          style={{ width: '95%' }} 
+                          maxLength={maxLengths.name}
+                          disabled={readOnly}
+                        />
+                      </QuestionItem>
+                    
+                      <QuestionItem
+                        question="名字"
+                        name={[field.name, 'givenName']}
+                        required={true}
+                        validator={englishNameValidator}
+                        validatorMessage={englishNamePatternMessage}
+                      >
+                        <Input 
+                          style={{ width: '95%' }} 
+                          maxLength={maxLengths.name}
+                          disabled={readOnly}
+                        />
+                      </QuestionItem>
+                    
+                      <QuestionItem
+                        question="出生日期"
+                        name={[field.name, 'birth']}
+                        required={true}
+                      >
+                        <DateInput
+                          dayName={[field.name, 'birth', 'day']}
+                          monthName={[field.name, 'birth', 'month']}
+                          yearName={[field.name, 'birth', 'year']}
+                          validateEarlierThanToday={true}
+                          validateHistoricalDate={true}
+                          listName={listName}
+                        />
+                      </QuestionItem>
+
+                      <QuestionItem
+                        question="所属国家/地区（国籍）"
+                        name={[field.name, 'nationality']}
+                        required={true}
+                      >
+                        <Select
+                          style={{ width: '99%' }}
+                          options={nationalityOptions}
+                          placeholder="- 请选择 -"
+                          showSearch
+                          filterOption={(input, option) => 
+                            (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+                          }
+                          disabled={readOnly}
+                        />
+                      </QuestionItem>
+                    </div>
+                  </div>
+
+                  <div className="question-row">
+                    <div className="question-column">
+                      <h4>出生地</h4>
+                      <div className="block-inside-highlight">
+                        <QuestionItem
+                          question="城市"
+                          name={[field.name, 'pobCity']}
+                          required={true}
+                          validator={locationValidator}
+                          validatorMessage={locationPatternMessage}
+                        >
+                          <Input 
+                            style={{ width: '95%' }} 
+                            maxLength={maxLengths.city}
+                            disabled={readOnly}
+                          />
+                        </QuestionItem>
+
+                        <QuestionItem
+                          question="国家/地区"
+                          name={[field.name, 'pobCountry']}
+                          required={true}
+                        >
+                          <Select
+                            style={{ width: '99%' }}
+                            options={countryOptions}
+                            placeholder="- 请选择 -"
+                            showSearch
+                            filterOption={(input, option) => 
+                              (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+                            }
+                            disabled={readOnly}
+                          />
+                        </QuestionItem>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="question-row">
+                    <div className="question-column">
+                      <QuestionItem
+                        question="结婚日期"
+                        name={[field.name, 'marriageDate']}
+                        required={true}
+                      >
+                        <DateInput
+                          dayName={[field.name, 'marriageDate', 'day']}
+                          monthName={[field.name, 'marriageDate', 'month']}
+                          yearName={[field.name, 'marriageDate', 'year']}
+                          validateEarlierThanToday={true}
+                          listName={listName}
+                        />
+                      </QuestionItem>
+                      
+                      <QuestionItem
+                        question="婚姻结束日期"
+                        name={[field.name, 'marriageEndDate']}
+                        required={true}
+                      >
+                        <DateInput
+                          dayName={[field.name, 'marriageEndDate', 'day']}
+                          monthName={[field.name, 'marriageEndDate', 'month']}
+                          yearName={[field.name, 'marriageEndDate', 'year']}
+                          validateEarlierThanToday={true}
+                          listName={listName}
+                        />
+                      </QuestionItem>
+                      
+                      <h4>婚姻如何结束:</h4>
+                      <Form.Item
+                        name="marriageEndReason"
+                        noStyle
+                        rules={[{ required: true, message: '请说明婚姻如何结束' }]}
+                      >
+                        <TextArea 
+                          style={{ width: '99%' }} 
+                          rows={4} 
+                          maxLength={maxLengths.explanation}
+                          placeholder="请详细说明您的婚姻如何结束"
+                        />
+                      </Form.Item>
+                      
+                      <QuestionItem
+                        question="婚姻终止的国家/地区"
+                        name={[field.name, 'marriageEndCountry']}
+                        required={true}
+                      >
+                        <Select
+                          style={{ width: '99%' }}
+                          options={countryOptions}
+                          placeholder="- 请选择 -"
+                          showSearch
+                          filterOption={(input, option) => 
+                            (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+                          }
+                          disabled={readOnly}
+                        />
+                      </QuestionItem>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </RepeatableFormItem>
           </div>
-          <div className="explanation-column"></div>
+          <div className="explanation-column">
+            <h4 className="help-header">帮助：</h4>
+            <p>请输入您拥有的前配偶数量，并确保添加相应数量的前配偶信息。</p>
+          </div>
         </div>
       </fieldset>
     </div>
