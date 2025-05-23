@@ -14,6 +14,7 @@ const SecurityBackgroundV: React.FC<SecurityBackgroundVProps> = ({ form }) => {
   const [hasChildCustody, setHasChildCustody] = useState<string | null>(null);
   const [hasVotingViolation, setHasVotingViolation] = useState<string | null>(null);
   const [hasRenounced, setHasRenounced] = useState<string | null>(null);
+  const [hasAttendedWithoutReimbursement, setHasAttendedWithoutReimbursement] = useState<string | null>(null);
 
   // Handle radio button changes
   const handleChildCustodyChange = (e: any) => {
@@ -31,6 +32,10 @@ const SecurityBackgroundV: React.FC<SecurityBackgroundVProps> = ({ form }) => {
     form.setFieldsValue({ hasRenounced: e.target.value });
   };
 
+  const handleAttendedWithoutReimbursementChange = (e: any) => {
+    setHasAttendedWithoutReimbursement(e.target.value);
+    form.setFieldsValue({ hasAttendedWithoutReimbursement: e.target.value });
+  };
   return (
     <div className="ds160-section">
       <h2>安全和背景: 第五部分</h2>
@@ -171,6 +176,53 @@ const SecurityBackgroundV: React.FC<SecurityBackgroundVProps> = ({ form }) => {
           </div>
         </div>
       </fieldset>
+
+            {/* Public School Attendance Section */}
+            <fieldset className="question-section">
+        <div className="question-row">
+          <div className="question-column">
+            <QuestionItem
+              question="您是否曾经在1996年11月30日之后以学生身份（F类签证持有人）到美国的一公立小学或公立中学就读而没有向学校补交费用？"
+              name="hasAttendedWithoutReimbursement"
+            >
+              <Radio.Group onChange={handleAttendedWithoutReimbursementChange}>
+                <Radio value="Y">是 (Yes)</Radio>
+                <Radio value="N">否 (No)</Radio>
+              </Radio.Group>
+            </QuestionItem>
+
+            {hasAttendedWithoutReimbursement === 'Y' && (
+              <>
+                <h4>解释说明</h4>
+                <div className="question-row">
+                  <div className="question-column">
+                    <div className="highlighted-block">
+                      <Form.Item
+                        name="attendedWithoutReimbursementExplanation"
+                        rules={[
+                          { required: true, message: '请提供解释' },
+                          { pattern: explanationPattern, message: explanationPatternMessage }
+                        ]}
+                      >
+                        <TextArea
+                          rows={4}
+                          maxLength={maxLengths.explanation}
+                          placeholder="请提供详细信息"
+                        />
+                      </Form.Item>
+                    </div>
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
+          <div className="explanation-column">
+            <h4 className="help-header">帮助：公立学校就读</h4>
+            <p>如果您曾经以F签证身份在美国公立中小学就读且未支付学费，请选择"是"。根据美国法律，F签证持有人在公立中小学就读必须支付全额学费。</p>
+          </div>
+        </div>
+      </fieldset>
+
     </div>
   );
 };

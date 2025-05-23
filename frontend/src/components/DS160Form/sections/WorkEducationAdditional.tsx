@@ -8,7 +8,9 @@ import { FormListFieldData } from 'antd/lib/form/FormList';
 import {
   maxLengths,
   organizationNameValidator, 
-  organizationNamePatternMessage
+  organizationNamePatternMessage,
+  explanationPattern,
+  explanationPatternMessage
 } from '../utils/validationRules';
 
 interface WorkEducationAdditionalProps {
@@ -26,6 +28,7 @@ const WorkEducationAdditional: React.FC<WorkEducationAdditionalProps> = ({ form,
   const watchSpecializedSkillsInd = Form.useWatch('specializedSkillsInd', form);
   const watchMilitaryServiceInd = Form.useWatch('militaryServiceInd', form);
   const watchInsurgentOrgInd = Form.useWatch('insurgentOrgInd', form);
+  const watchTalibanMemberInd = Form.useWatch('talibanMemberInd', form);
   
   // 处理各个问题的变化，当选择"否"时清除相关字段
   const handleClanTribeIndChange = (e: any) => {
@@ -78,6 +81,15 @@ const WorkEducationAdditional: React.FC<WorkEducationAdditionalProps> = ({ form,
     if (value === 'N') {
       form.setFieldsValue({
         insurgentOrgExpl: undefined
+      });
+    }
+  };
+
+  const handleTalibanMemberIndChange = (e: any) => {
+    const value = e.target.value;
+    if (value === 'N') {
+      form.setFieldsValue({
+        talibanMemberExplanation: undefined
       });
     }
   };
@@ -277,6 +289,8 @@ const WorkEducationAdditional: React.FC<WorkEducationAdditionalProps> = ({ form,
           <div className="explanation-column"></div>
         </div>
       </fieldset>
+
+      
       
       {/* 专业技能 */}
       <fieldset className="question-section" style={{marginTop: '30px'}}>
@@ -296,11 +310,10 @@ const WorkEducationAdditional: React.FC<WorkEducationAdditionalProps> = ({ form,
             {/* 当选择"是"时显示的解释字段 */}
             {watchSpecializedSkillsInd === 'Y' && (
               <div style={{ marginTop: '20px' }}>
-                <h4>解释</h4>
+                <h4>请提供详细解释：</h4>
                 <div className="highlighted-block">
                   <Form.Item
                     name="specializedSkillsExpl"
-                    noStyle
                   >
                     <TextArea 
                       style={{ width: '99%' }} 
@@ -453,6 +466,46 @@ const WorkEducationAdditional: React.FC<WorkEducationAdditionalProps> = ({ form,
         </div>
       </fieldset>
       
+      {/* 塔利班成员问题 */}
+      <fieldset className="question-section" style={{marginTop: '20px'}}>
+        <div className="question-row">
+          <div className="question-column">
+            <QuestionItem
+              question="您曾经是塔利班成员吗？"
+              name="talibanMemberInd"
+              required={true}
+            >
+              <Radio.Group disabled={readOnly} onChange={handleTalibanMemberIndChange}>
+                <Radio value="Y">是 (Yes)</Radio>
+                <Radio value="N">否 (No)</Radio>
+              </Radio.Group>
+            </QuestionItem>
+            
+            {/* 当选择"是"时显示的输入框 */}
+            {watchTalibanMemberInd === 'Y' && (
+              <div style={{ marginTop: '20px' }}>
+                <h4>请提供详细解释：</h4>
+                <div className="highlighted-block">
+                  <Form.Item
+                    name="talibanMemberExplanation"
+                  >
+                    <TextArea 
+                      style={{ width: '99%' }} 
+                      rows={4} 
+                      maxLength={maxLengths.explanation}
+                      disabled={readOnly}
+                      required={true}
+                    />
+                  </Form.Item>
+                </div>
+              </div>
+            )}
+          </div>
+          <div className="explanation-column">
+          </div>
+        </div>
+      </fieldset>
+      
       {/* 叛乱组织成员资格 */}
       <fieldset className="question-section" style={{marginTop: '30px'}}>
         <div className="question-row">
@@ -475,7 +528,6 @@ const WorkEducationAdditional: React.FC<WorkEducationAdditionalProps> = ({ form,
                 <div className="highlighted-block">
                   <Form.Item
                     name="insurgentOrgExpl"
-                    noStyle
                   >
                     <TextArea 
                       style={{ width: '99%' }} 
