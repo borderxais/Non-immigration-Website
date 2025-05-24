@@ -86,6 +86,10 @@ export const driverLicensePatternMessage = '只能包含大写字母、数字、
 export const organizationNamePattern = /^[A-Z0-9&'-]+(?: [A-Z0-9&'-]+)*$/;
 export const organizationNamePatternMessage = "只能包含大写字母、数字、连字符(-)、撇号(')、和号(&)和名称之间的单个空格";
 
+// Sevis ID pattern (N followed by 10 digits)
+export const sevisIdPattern = /^N\d{10}$/;
+export const sevisIdPatternMessage = 'SEVIS ID 必须以 N 开头，后跟 10 位数字';
+
 /**
  * Date validation constants
  */
@@ -224,6 +228,12 @@ export const driverLicenseValidator = (value: any) => {
 export const organizationNameValidator = (value: any) => {
   if (!value) return true; // Empty values are handled by required rule
   return organizationNamePattern.test(value);
+};
+
+// Validator for sevis ID
+export const sevisIdValidator = (value: any) => {
+  if (!value) return true; // Empty values are handled by required rule
+  return sevisIdPattern.test(value);
 };
 
 // Validator to ensure a date is not earlier than May 15, 1915
