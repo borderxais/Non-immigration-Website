@@ -8,7 +8,8 @@ import {
   HomeOutlined,
   UserOutlined,
   LogoutOutlined,
-  LockOutlined
+  LockOutlined,
+  RobotOutlined
 } from '@ant-design/icons';
 import { useAuth } from '../contexts/AuthContext';
 import type { MenuProps } from 'antd';
@@ -80,6 +81,11 @@ const Navigation: React.FC = () => {
           label: 'APP下载(即将推出)',
         },
       ]
+    },
+    {
+      key: '/evaluation',
+      icon: <RobotOutlined />,
+      label: '評測'
     },
     {
       key: '/admin/login',

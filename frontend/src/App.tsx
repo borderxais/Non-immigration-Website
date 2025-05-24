@@ -24,6 +24,9 @@ import PlatformWechat from './pages/PlatformWechat';
 import PlatformApp from './pages/PlatformApp';
 import Profile from './pages/Profile';
 import PrivacyPolicy from './pages/PrivacyPolicy';
+import Evaluation from './pages/Evaluation';
+import EvaluationFree from './pages/EvaluationFree';
+import EvaluationPay from './pages/EvaluationPay';
 
 // Auth Pages
 import Login from './pages/auth/Login';
@@ -94,6 +97,11 @@ const App: React.FC = () => {
                   <Route path="/profile" element={<Profile />} />
                   <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                   
+                  {/* Evaluation Routes */}
+                  <Route path="/evaluation" element={<Evaluation />} />
+                  <Route path="/evaluation/free" element={<EvaluationFree />} />
+                  <Route path="/evaluation/pay" element={<EvaluationPay />} />
+
                   {/* Admin Routes */}
                   <Route path="/admin/login" element={<AdminLogin />} />
                   <Route path="/admin" element={<AdminLayout />}>
