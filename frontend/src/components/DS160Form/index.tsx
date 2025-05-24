@@ -109,11 +109,11 @@ const formSections: FormSection[] = [
   //   title: '以往工作和教育',
   //   component: WorkEducationPrevious
   // },
-  {
-    key: 'workEducationAdditional',
-    title: '额外工作和教育信息',
-    component: WorkEducationAdditional
-  },
+  // {
+  //   key: 'workEducationAdditional',
+  //   title: '额外工作和教育信息',
+  //   component: WorkEducationAdditional
+  // },
   // {
   //   key: 'securityBackground',
   //   title: '安全和背景: 第一部分',
@@ -139,11 +139,11 @@ const formSections: FormSection[] = [
   //   title: '安全和背景: 第五部分',
   //   component: SecurityBackgroundV
   // },
-  // {
-  //   key: 'studentContact',
-  //   title: '额外联络人信息',
-  //   component: StudentContact
-  // },
+  {
+    key: 'studentContact',
+    title: '额外联络人信息',
+    component: StudentContact
+  },
   {
     key: 'review',
     title: '审核提交',
