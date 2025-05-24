@@ -8,8 +8,6 @@ import {
   englishNamePatternMessage, 
   locationValidator, 
   locationPatternMessage, 
-  zipCodeValidator, 
-  zipCodePatternMessage, 
   numPhoneValidator, 
   numPhonePatternMessage, 
   emailValidator, 
