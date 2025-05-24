@@ -59,7 +59,6 @@ const StudentContact: React.FC<StudentContactProps> = ({ form, readOnly = false 
               validatorMessage={englishNamePatternMessage}
             >
               <Input 
-                style={{ width: '95%' }} 
                 maxLength={maxLengths.name}
                 disabled={readOnly}
               />
@@ -73,7 +72,6 @@ const StudentContact: React.FC<StudentContactProps> = ({ form, readOnly = false 
               validatorMessage={englishNamePatternMessage}
             >
               <Input 
-                style={{ width: '95%' }} 
                 maxLength={maxLengths.name}
                 disabled={readOnly}
               />
@@ -87,7 +85,6 @@ const StudentContact: React.FC<StudentContactProps> = ({ form, readOnly = false 
               validatorMessage={englishAddressPatternMessage}
             >
               <Input 
-                style={{ width: '95%' }} 
                 maxLength={maxLengths.address}
                 disabled={readOnly}
               />
@@ -128,6 +125,8 @@ const StudentContact: React.FC<StudentContactProps> = ({ form, readOnly = false 
               hasNaCheckbox={true}
               naCheckboxName={[field.name, 'state_na']}
               inlineCheckbox={true}
+              validator={locationValidator}
+              validatorMessage={locationPatternMessage}
             >
               <Input 
                 maxLength={maxLengths.state}
@@ -140,12 +139,12 @@ const StudentContact: React.FC<StudentContactProps> = ({ form, readOnly = false 
               required={true}
               hasNaCheckbox={true}
               naCheckboxName={[field.name, 'postalCode_na']}
-              validator={zipCodeValidator}
-              validatorMessage={zipCodePatternMessage}
+              validator={locationValidator}
+              validatorMessage={locationPatternMessage}
               inlineCheckbox={true}
             >
               <Input 
-                maxLength={10}
+                maxLength={maxLengths.zipCode}
               />
             </QuestionItem>
             
@@ -179,6 +178,7 @@ const StudentContact: React.FC<StudentContactProps> = ({ form, readOnly = false 
               <Input 
                 maxLength={maxLengths.phone}
                 minLength={5}
+                max={maxLengths.phone}
                 placeholder="例如：5555555555"
               />
             </QuestionItem>
