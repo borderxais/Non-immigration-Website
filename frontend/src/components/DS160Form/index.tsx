@@ -26,6 +26,7 @@ import SecurityBackgroundIII from './sections/SecurityBackgroundIII';
 import SecurityBackgroundIV from './sections/SecurityBackgroundIV';
 import SecurityBackgroundV from './sections/SecurityBackgroundV';
 import StudentContact from './sections/StudentContact';
+import SevisInformation from './sections/SevisInformation';
 
 import DS160ReviewPage from './sections/DS160ReviewPage';
 
@@ -145,6 +146,11 @@ const formSections: FormSection[] = [
     component: StudentContact
   },
   {
+    key: 'sevisInformation',
+    title: 'SEVIS 信息',
+    component: SevisInformation
+  },
+  {
     key: 'review',
     title: '审核提交',
     component: DS160ReviewPage as unknown as React.FC<SectionProps>
@@ -166,6 +172,19 @@ const DS160Form: React.FC = () => {
 
   // Watch the marital status field to determine which spouse component to show
   const maritalStatus = Form.useWatch('maritalStatus', form);
+  
+  // Watch the travelPurposes field to determine if student-related components should be shown
+  const travelPurposes = Form.useWatch('travelPurposes', form);
+
+  // Check if the user has selected F1-F1 visa type
+  const hasF1Visa = useCallback(() => {
+    if (!travelPurposes || !Array.isArray(travelPurposes)) {
+      return false;
+    }
+    
+    // Check if any travel purpose has specificPurpose equal to 'F1-F1'
+    return travelPurposes.some(purpose => purpose?.specificPurpose === 'F1-F1');
+  }, [travelPurposes]);
 
   // Determine which spouse component to show based on marital status
   const getSpouseComponent = useCallback(() => {
@@ -208,13 +227,27 @@ const DS160Form: React.FC = () => {
       };
     }
 
+    // Find the indices of the StudentContact and SevisInformation sections
+    const studentContactIndex = dynamicSections.findIndex(section => section.key === 'studentContact');
+    const sevisInfoIndex = dynamicSections.findIndex(section => section.key === 'sevisInformation');
+
+    // If the user has not selected F1-F1 visa type, remove the StudentContact and SevisInformation sections
+    if (!hasF1Visa()) {
+      if (studentContactIndex !== -1) {
+        dynamicSections.splice(studentContactIndex, 1);
+      }
+      if (sevisInfoIndex !== -1) {
+        dynamicSections.splice(sevisInfoIndex, 1);
+      }
+    }
+
     return dynamicSections;
-  }, [maritalStatus, getSpouseComponent]);
+  }, [maritalStatus, getSpouseComponent, hasF1Visa]);
 
   // Store dynamic form sections in a ref to avoid unnecessary re-renders
   const dynamicFormSectionsRef = useRef(getDynamicFormSections());
 
-  // Update dynamic sections when maritalStatus changes
+  // Update dynamic sections when maritalStatus or travelPurposes changes
   useEffect(() => {
     dynamicFormSectionsRef.current = getDynamicFormSections();
   }, [getDynamicFormSections]);
