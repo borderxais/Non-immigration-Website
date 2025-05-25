@@ -32,7 +32,6 @@ const Evaluation: React.FC = () => {
             <ul style={{ marginBottom: '24px' }}>
               <li>7个基础问题</li>
               <li>即时评估结果</li>
-              <li>基础申请建议</li>
               <li>完全免费</li>
             </ul>
             <Button type="primary" size="large" block>
