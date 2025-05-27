@@ -11,8 +11,6 @@ type WeightRecord = Record<string, number>;
 const typedCoefficients = coefficients as Record<string, CoefficientRecord>;
 const typedWeights = weights as WeightRecord;
 
-type QuestionKey = 'Q1' | 'Q2' | 'Q3' | 'Q4' | 'Q5' | 'Q6' | 'Q7';
-
 export interface EvaluationFormData {
   Q1: string;     // 全职角色稳定性
   Q2: string;     // 旅行费用比例

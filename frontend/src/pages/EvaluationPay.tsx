@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { Card, Typography, List, Button, Tag, message, Table, Divider, Collapse, Space, Modal } from 'antd';
-import { CheckCircleOutlined, DollarOutlined, QuestionCircleOutlined, FileTextOutlined } from '@ant-design/icons';
+import { Typography, List, Button, Table, Divider, Collapse, Space, Modal } from 'antd';
+import { CheckCircleOutlined, QuestionCircleOutlined, FileTextOutlined } from '@ant-design/icons';
 
-const { Title, Paragraph, Text } = Typography;
+const { Title, Paragraph } = Typography;
 const { Panel } = Collapse;
 
 const EvaluationPay: React.FC = () => {
-  const [loading, setLoading] = useState(false);
+  
   const [disclaimerVisible, setDisclaimerVisible] = useState(false);
   
   // LeoNexus Model table data
@@ -157,58 +157,6 @@ const EvaluationPay: React.FC = () => {
     },
   ];
 
-  const plans = [
-    {
-      title: '基础评估',
-      price: '299',
-      features: [
-        '详细的DS-160表格分析',
-        'M-01结构化评估',
-        '签证申请成功率评估',
-        '基础申请建议',
-        '3个工作日内出具评估报告'
-      ],
-      recommended: false
-    },
-    {
-      title: '专业评估',
-      price: '599',
-      features: [
-        '所有基础评估内容',
-        'M-02关键信息分析',
-        '个性化申请策略制定',
-        '材料准备清单及建议',
-        '面签问题重点提示',
-        '1对1在线咨询30分钟',
-        '2个工作日内出具评估报告'
-      ],
-      recommended: true
-    },
-    {
-      title: 'VIP评估',
-      price: '999',
-      features: [
-        '所有专业评估内容',
-        'M-03面试偏误雷达',
-        'RSP信任度检查',
-        '材料审核及优化建议',
-        '模拟面签演练',
-        '签证官提问重点分析',
-        '1对1在线咨询60分钟',
-        '1个工作日内出具评估报告',
-        '额外30天咨询支持',
-        '214(b)拒签代码解析（如需）'
-      ],
-      recommended: false
-    }
-  ];
-
-  const handlePurchase = (plan: string, price: string) => {
-    setLoading(true);
-    // TODO: Implement payment integration
-    message.info(`即将跳转到${plan}支付页面，价格${price}元`);
-    setLoading(false);
-  };
 
   return (
     <div style={{ maxWidth: 1200, margin: '0 auto', padding: '24px' }}>
