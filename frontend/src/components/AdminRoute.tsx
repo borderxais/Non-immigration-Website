@@ -15,8 +15,15 @@ const AdminRoute: React.FC<AdminRouteProps> = ({ children }) => {
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
       message.warning('请先登录');
-      navigate('/admin/login');
+      navigate('/auth/login', { 
+        state: { 
+          from: '/admin/home', 
+          message: '请登录以访问管理员页面' // Please login to access admin pages
+        } 
+      });
     } else if (!isLoading && isAuthenticated && user?.role !== UserRole.ADMIN) {
+      console.log('User:', user);
+      console.log(user?.role);
       message.error('没有管理员权限');
       navigate('/');
     }

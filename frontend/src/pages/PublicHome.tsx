@@ -1,12 +1,8 @@
 import React from 'react';
-import { Typography, Card, Row, Col, Button, Space, Divider, Statistic, message } from 'antd';
+import { Typography, Card, Row, Col, Button, Space, Divider, Statistic } from 'antd';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
 import {
-  FormOutlined,
   RobotOutlined,
-  TeamOutlined,
-  MobileOutlined,
   CheckCircleOutlined,
   SafetyOutlined,
   GlobalOutlined
@@ -14,66 +10,22 @@ import {
 
 const { Title, Paragraph } = Typography;
 
-const Home: React.FC = () => {
+const PublicHome: React.FC = () => {
   const navigate = useNavigate();
-  const { isAuthenticated } = useAuth();
 
-  const handleStartDS160 = () => {
-    if (isAuthenticated) {
-      navigate('/admin/ds160');
-    } else {
-      message.info('请先登录以开始填写DS-160表格');
-      navigate('/auth/login', { state: { from: '/admin/ds160', message: '请先登录以开始填写DS-160表格' } });
-    }
+  const handleStartEvaluation = () => {
+    navigate('/evaluation');
   };
 
   const features = [
     {
-      title: 'DS-160表格',
-      icon: <FormOutlined style={{ fontSize: '32px', color: '#1890ff' }} />,
-      description: '智能表格填写系统，中英文自动翻译，实时保存进度，确保填写准确无误',
-      link: '/admin/ds160/form',
-      color: '#e6f7ff',
-      onClick: () => handleStartDS160(),
-    },
-    {
-      title: '签证咨询',
+      title: '签证评估',
       icon: <RobotOutlined style={{ fontSize: '32px', color: '#52c41a' }} />,
-      description: '智能问答系统，专业签证评估，基于大数据分析提供个性化建议',
-      link: '#',
+      description: '智能评估系统，基于大数据分析提供个性化签证申请建议',
+      link: '/evaluation',
       color: '#f6ffed',
-      onClick: () => {
-        // Open the floating chat widget instead of navigating
-        const chatButton = document.querySelector('.floating-chat-button .chat-button') as HTMLElement;
-        if (chatButton) {
-          chatButton.click();
-        } else {
-          message.info('签证咨询功能即将推出，敬请期待！');
-        }
-      }
-    },
-    {
-      title: '模拟面签',
-      icon: <TeamOutlined style={{ fontSize: '32px', color: '#722ed1' }} />,
-      description: 'AI模拟面试官，真实场景对话，提升面签通过率',
-      link: '/interview/practice',
-      color: '#f9f0ff',
-      comingSoon: true,
-      onClick: () => {
-        message.info('模拟面签功能即将推出，敬请期待！');
-      }
-    },
-    {
-      title: '多端支持',
-      icon: <MobileOutlined style={{ fontSize: '32px', color: '#fa8c16' }} />,
-      description: '支持网页、小程序多平台访问，随时随地处理签证事务',
-      link: '/platform/wechat',
-      color: '#fff7e6',
-      comingSoon: true,
-      onClick: () => {
-        message.info('多端支持功能即将推出，敬请期待！');
-      }
-    },
+      onClick: () => navigate('/evaluation'),
+    }
   ];
 
   const statistics = [
@@ -110,11 +62,11 @@ const Home: React.FC = () => {
           美国非移民签证智能辅助系统
         </Title>
         <Paragraph style={{ fontSize: '18px', color: '#666' }}>
-          基于AI技术，为您提供专业、高效、便捷的签证申请服务
+          基于AI技术，为您提供专业、高效、便捷的签证评估服务
         </Paragraph>
         <Space size="large">
-          <Button type="primary" size="large" onClick={handleStartDS160}>
-            开始填写DS-160
+          <Button type="primary" size="large" onClick={handleStartEvaluation}>
+            开始签证评估
           </Button>
           <Button 
             size="large" 
@@ -150,9 +102,9 @@ const Home: React.FC = () => {
       <Title level={2} style={{ textAlign: 'center', marginBottom: 48 }}>
         我们的服务
       </Title>
-      <Row gutter={[24, 24]}>
+      <Row gutter={[24, 24]} justify="center">
         {features.map((feature, index) => (
-          <Col xs={24} sm={12} md={6} key={index}>
+          <Col xs={24} sm={12} md={8} key={index}>
             <Card
               hoverable
               style={{ 
@@ -167,7 +119,6 @@ const Home: React.FC = () => {
               </div>
               <Title level={4} style={{ textAlign: 'center', marginBottom: 16 }}>
                 {feature.title}
-                {feature.comingSoon && <span style={{ fontSize: 12, color: '#999' }}> (即将推出)</span>}
               </Title>
               <Paragraph style={{ textAlign: 'center' }}>
                 {feature.description}
@@ -202,7 +153,7 @@ const Home: React.FC = () => {
             </div>
             <Title level={4} style={{ textAlign: 'center' }}>便捷高效</Title>
             <Paragraph style={{ textAlign: 'center' }}>
-              智能填表系统，多平台支持，随时随地处理签证事务
+              智能评估系统，快速获取专业签证申请建议
             </Paragraph>
           </Card>
         </Col>
@@ -213,7 +164,7 @@ const Home: React.FC = () => {
             </div>
             <Title level={4} style={{ textAlign: 'center' }}>全程服务</Title>
             <Paragraph style={{ textAlign: 'center' }}>
-              从DS-160填写到面签准备，提供完整的签证申请解决方案
+              提供签证评估和咨询服务，助您顺利完成签证申请
             </Paragraph>
           </Card>
         </Col>
@@ -222,4 +173,4 @@ const Home: React.FC = () => {
   );
 };
 
-export default Home;
+export default PublicHome;

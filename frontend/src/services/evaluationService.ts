@@ -1,5 +1,6 @@
 import weights from '../config/weights.json';
 import coefficients from '../config/optionCoefficients.json';
+import api from './api';
 
 // Type definitions for the JSON data
 type CoefficientValue = number | { value: number; override: boolean };
@@ -29,6 +30,15 @@ export interface EvaluationResult {
     [key: string]: number
   };
   contactEmail?: string;      // Optional user email for follow-up
+}
+
+export interface SaveEvaluationRequest {
+  email: string;              // User email
+  name?: string;              // Optional user name
+  phone?: string;             // Optional user phone
+  score: number;              // Risk score
+  riskLevel: string;          // Risk level
+  formData: any;              // Original form data
 }
 
 /**
@@ -112,8 +122,106 @@ const calculateEvaluation = (formData: EvaluationFormData): EvaluationResult => 
   };
 };
 
+/**
+ * Save evaluation result to the backend
+ */
+const saveEvaluationResult = async (data: SaveEvaluationRequest): Promise<any> => {
+  try {
+    const response = await api.post('/evaluation/result', data);
+    return response.data;
+  } catch (error) {
+    console.error('Error saving evaluation result:', error);
+    throw error;
+  }
+};
+
+/**
+ * Get all evaluation results (admin only)
+ */
+const getAllEvaluationResults = async (): Promise<any> => {
+  try {
+    const response = await api.get('/evaluation/results');
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching evaluation results:', error);
+    throw error;
+  }
+};
+
+/**
+ * Get user's evaluation results
+ */
+const getUserEvaluationResults = async (): Promise<any> => {
+  try {
+    const response = await api.get('/evaluation/results/user');
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching user evaluation results:', error);
+    throw error;
+  }
+};
+
+/**
+ * Create a new user account from evaluation email (admin only)
+ */
+const createUserFromEvaluation = async (email: string): Promise<any> => {
+  try {
+    const response = await api.post('/evaluation/create-user', { email });
+    return response.data;
+  } catch (error) {
+    console.error('Error creating user from evaluation:', error);
+    throw error;
+  }
+};
+
+/**
+ * Check if a user exists with the given email
+ */
+const checkUserExists = async (email: string): Promise<boolean> => {
+  try {
+    const response = await api.get(`/evaluation/check-user?email=${encodeURIComponent(email)}`);
+    return response.data.exists;
+  } catch (error) {
+    console.error('Error checking if user exists:', error);
+    throw error;
+  }
+};
+
+/**
+ * Get all temporary user credentials (admin only)
+ */
+const getTempCredentials = async (): Promise<any> => {
+  try {
+    const response = await api.get('/evaluation/temp-credentials');
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching temporary credentials:', error);
+    throw error;
+  }
+};
+
+/**
+ * Mark temporary credentials as used (admin only)
+ */
+const markCredentialAsUsed = async (credentialId: number): Promise<any> => {
+  try {
+    const response = await api.post('/evaluation/temp-credentials', { credential_id: credentialId });
+    return response.data;
+  } catch (error) {
+    console.error('Error marking credential as used:', error);
+    throw error;
+  }
+};
+
 const evaluationService = {
-  calculateEvaluation
+  calculateEvaluation,
+  saveEvaluationResult,
+  getAllEvaluationResults,
+  getUserEvaluationResults,
+  createUserFromEvaluation,
+  getTempCredentials,
+  markCredentialAsUsed,
+  checkUserExists
 };
 
 export default evaluationService;

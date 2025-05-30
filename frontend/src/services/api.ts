@@ -5,7 +5,7 @@ const API_ENDPOINT = process.env.REACT_APP_SERVER_API_URL || 'https://visasuppor
 const API_URL = `${API_ENDPOINT}/api`;
 
 
-// Use local backend for development and testing
+// //Use local backend for development and testing
 // const API_ENDPOINT = 'http://localhost:5000';
 // const API_URL = `${API_ENDPOINT}/api`;
 

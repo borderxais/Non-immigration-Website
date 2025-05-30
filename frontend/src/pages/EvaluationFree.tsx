@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Card, Typography, Form, Button, Space, Radio, Checkbox, Modal, message, Tooltip, Input } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { InfoCircleOutlined } from '@ant-design/icons';
-import evaluationService, { EvaluationFormData, EvaluationResult } from '../services/evaluationService';
+import evaluationService, { EvaluationFormData, EvaluationResult, SaveEvaluationRequest } from '../services/evaluationService';
 
 const { Title, Paragraph, Text } = Typography;
 
@@ -14,9 +14,11 @@ interface Question {
   type: 'radio' | 'checkbox';
 }
 
-// Extend the imported EvaluationFormData interface to include email
+// Extend the imported EvaluationFormData interface to include email and contact info
 type ExtendedEvaluationFormData = EvaluationFormData & {
   email: string;  // 用户邮箱
+  name: string;  // 用户姓名
+  phone: string; // 用户电话
 };
 
 const EvaluationFree: React.FC = () => {
@@ -106,6 +108,26 @@ const EvaluationFree: React.FC = () => {
       const result: EvaluationResult = evaluationService.calculateEvaluation(values);
       console.log('Evaluation result:', result);
       
+      // Save evaluation result to backend
+      if (values.email) {
+        try {
+          const saveData: SaveEvaluationRequest = {
+            email: values.email,
+            name: values.name as string || '',
+            phone: values.phone as string || '',
+            score: result.score,
+            riskLevel: result.riskLevel,
+            formData: values
+          };
+          
+          await evaluationService.saveEvaluationResult(saveData);
+          console.log('Evaluation result saved to backend');
+        } catch (error) {
+          console.error('Failed to save evaluation result:', error);
+          // Continue with displaying results even if saving fails
+        }
+      }
+      
       // Display result to user
       Modal.success({
         title: '签证风险评估结果',
@@ -115,50 +137,17 @@ const EvaluationFree: React.FC = () => {
               <p style={{ fontSize: '16px', fontWeight: 'bold', color: '#52c41a', marginBottom: '8px' }}>
                 评估报告已生成！
               </p>
-              <p>详细报告将发送至您的邮箱: <strong>{values.email}</strong></p>
-            </div>
-            
-            <div style={{ marginBottom: '15px' }}>
-              <p style={{ fontSize: '18px', fontWeight: 'bold' }}>风险评估概要：</p>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '15px' }}>
-                <div style={{ textAlign: 'center', padding: '10px', width: '48%', backgroundColor: '#f5f5f5', borderRadius: '4px' }}>
-                  <p style={{ margin: 0, fontSize: '14px' }}>风险分数</p>
-                  <p style={{ margin: 0, fontSize: '24px', fontWeight: 'bold', color: result.score > 60 ? '#ff4d4f' : result.score > 30 ? '#faad14' : '#52c41a' }}>
-                    {result.score}/100
-                  </p>
-                </div>
-                <div style={{ textAlign: 'center', padding: '10px', width: '48%', backgroundColor: '#f5f5f5', borderRadius: '4px' }}>
-                  <p style={{ margin: 0, fontSize: '14px' }}>风险级别</p>
-                  <p style={{ margin: 0, fontSize: '24px', fontWeight: 'bold', color: result.score > 60 ? '#ff4d4f' : result.score > 30 ? '#faad14' : '#52c41a' }}>
-                    {result.riskLevel}
-                  </p>
-                </div>
-              </div>
-            </div>
-            
-            <div>
-              <p style={{ fontSize: '16px', fontWeight: 'bold' }}>分类分数详情：</p>
-              <ul style={{ paddingLeft: '20px' }}>
-                {Object.entries(result.categoryScores).map(([category, score]) => (
-                  <li key={category} style={{ marginBottom: '8px' }}>
-                    <span style={{ fontWeight: 'bold' }}>{questions.find(q => q.key === category)?.question}:</span> 
-                    <span style={{ marginLeft: '8px', color: score > 6 ? '#ff4d4f' : score > 3 ? '#faad14' : '#52c41a' }}>
-                      {score.toFixed(1)}
-                    </span>
-                  </li>
-                ))}
-              </ul>
+              <p>24-48小时之内会将评估结果发到您的邮箱: <strong>{values.email}</strong></p>
             </div>
           </div>
         ),
         width: 700,
+        onOk: () => {
+          navigate('/');
+        }
       });
       
-      // Save email for future contact if provided
-      if (values.email) {
-        console.log('Saving email for future contact:', values.email);
-        // TODO: Add API call to save email
-      }
+      // Email has already been saved with the evaluation result
       
       message.success('评估完成！');
     } catch (error: any) {
@@ -300,19 +289,34 @@ const EvaluationFree: React.FC = () => {
             </Form.Item>
           ))}
 
+          <Title level={4} style={{ margin: '20px 0 10px 0' }}>联系信息</Title>
+          <Paragraph style={{ marginBottom: '20px' }}>
+            请留下您的联系信息，以便我们发送详细的评估报告和后续服务
+          </Paragraph>
+
+          <Form.Item
+            name="name"
+            label="姓名"
+            rules={[
+              { required: true, message: '请输入您的姓名' }
+            ]}
+          >
+            <Input placeholder="请输入您的姓名" />
+          </Form.Item>
+
+          <Form.Item
+            name="phone"
+            label="电话"
+            rules={[
+              { required: true, message: '请输入您的电话号码' }
+            ]}
+          >
+            <Input placeholder="请输入您的电话号码" />
+          </Form.Item>
+
           <Form.Item
             name="email"
-            label={
-              <Space direction="vertical" style={{ width: '100%' }}>
-                <Title level={4} style={{ margin: 0 }}>您的邮箱：</Title>
-                <Space>
-                  请留下您的邮箱，以便我们发送详细的评估报告
-                  <Tooltip title="您的邮箱将仅用于发送评估报告和相关信息，我们不会将其用于其他目的。">
-                    <InfoCircleOutlined style={{ color: '#1890ff' }} />
-                  </Tooltip>
-                </Space>
-              </Space>
-            }
+            label="邮箱"
             rules={[
               { type: 'email', message: '请输入有效的邮箱地址' },
               { required: true, message: '请输入您的邮箱' }

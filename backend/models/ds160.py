@@ -11,6 +11,7 @@ class DS160Form(db.Model):
     form_data = db.Column(db.JSON)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    target_user_id = db.Column(db.Integer)
 
     def to_dict(self):
         return {
@@ -20,7 +21,8 @@ class DS160Form(db.Model):
             'status': self.status,
             'form_data': self.form_data,
             'created_at': self.created_at.isoformat(),
-            'updated_at': self.updated_at.isoformat()
+            'updated_at': self.updated_at.isoformat(),
+            'target_user_id': self.target_user_id
         }
 
 

@@ -3,7 +3,8 @@ import { Layout, ConfigProvider as AntApp } from 'antd';
 import { 
   BrowserRouter as Router, 
   Routes, 
-  Route
+  Route,
+  
 } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
 import PageHeader from './components/PageHeader';
@@ -11,9 +12,11 @@ import FloatingChatButton from './components/Chat/FloatingChatButton';
 
 // Pages
 import Home from './pages/Home';
+import PublicHome from './pages/PublicHome';
 import DS160Landing from './pages/DS160Landing';
 import DS160Upload from './pages/DS160Upload';
 import DS160History from './pages/DS160History';
+import DS160AdminHistory from './pages/DS160AdminHistory';
 import DS160Success from './pages/DS160Success';
 import DS160Form from './components/DS160Form/index';
 import DS160View from './pages/DS160View'; // Fix the import path
@@ -27,6 +30,8 @@ import PrivacyPolicy from './pages/PrivacyPolicy';
 import Evaluation from './pages/Evaluation';
 import EvaluationFree from './pages/EvaluationFree';
 import EvaluationPay from './pages/EvaluationPay';
+import TempCredentials from './pages/TempCredentials';
+import EvaluationAdmin from './pages/EvaluationAdmin';
 
 // Auth Pages
 import Login from './pages/auth/Login';
@@ -34,7 +39,6 @@ import Register from './pages/auth/Register';
 import ForgotPassword from './pages/auth/ForgotPassword';
 
 // Admin Pages
-import AdminLogin from './pages/admin/AdminLogin';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminApplicationView from './pages/admin/AdminApplicationView';
 import AdminLayout from './layouts/AdminLayout';
@@ -71,25 +75,11 @@ const App: React.FC = () => {
             <Content style={{ padding: '0 50px' }}>
               <div style={{ background: '#fff', padding: 24, minHeight: 280 }}>
                 <Routes>
-                  <Route path="/" element={<Home />} />
+                  <Route path="/" element={<PublicHome />} />
                   
-                  {/* DS-160 Routes */}
-                  <Route path="/ds160" element={<DS160Landing />} />
-                  <Route path="/ds160/form/:id" element={<DS160Form />} />
-                  <Route path="/ds160/view/:id" element={<DS160View />} />
-                  <Route path="/ds160/upload" element={<DS160Upload />} />
+                  {/* Regular User Routes */}
                   <Route path="/ds160/history" element={<DS160History />} />
-                  <Route path="/ds160-success" element={<DS160Success />} />
-                  
-                  {/* Interview Routes */}
-                  <Route path="/interview/practice" element={<InterviewPractice />} />
-                  <Route path="/interview/evaluation" element={<InterviewEvaluation />} />
-                  <Route path="/interview/simulation" element={<InterviewSimulation />} />
-                  
-                  {/* Platform Routes */}
-                  <Route path="/platform/wechat" element={<PlatformWechat />} />
-                  <Route path="/platform/app" element={<PlatformApp />} />
-
+                  <Route path="/ds160/view/:id" element={<DS160View />} />
                   {/* Auth Routes */}
                   <Route path="/auth/login" element={<Login />} />
                   <Route path="/auth/register" element={<Register />} />
@@ -103,10 +93,33 @@ const App: React.FC = () => {
                   <Route path="/evaluation/pay" element={<EvaluationPay />} />
 
                   {/* Admin Routes */}
-                  <Route path="/admin/login" element={<AdminLogin />} />
                   <Route path="/admin" element={<AdminLayout />}>
+
+                    <Route path="home" element={<Home />} />
+                    {/* DS-160 Routes */}
+                    <Route path="ds160" element={<DS160Landing />} />
+                    <Route path="ds160/form/:id" element={<DS160Form />} />
+                    <Route path="ds160/view/:id" element={<DS160View />} />
+                    <Route path="ds160/upload" element={<DS160Upload />} />
+                    <Route path="ds160/history" element={<DS160AdminHistory />} />
+                    <Route path="ds160-success" element={<DS160Success />} />
+                    
+                    {/* Interview Routes */}
+                    <Route path="interview/practice" element={<InterviewPractice />} />
+                    <Route path="interview/evaluation" element={<InterviewEvaluation />} />
+                    <Route path="interview/simulation" element={<InterviewSimulation />} />
+                    
+                    {/* Platform Routes */}
+                    <Route path="platform/wechat" element={<PlatformWechat />} />
+                    <Route path="platform/app" element={<PlatformApp />} />
+
+                    {/* Admin Dashboard Routes */}
                     <Route path="dashboard" element={<AdminDashboard />} />
                     <Route path="applications/:id" element={<AdminApplicationView />} />
+                    
+                    {/* Evaluation Admin Routes */}
+                    <Route path="temp-credentials" element={<TempCredentials />} />
+                    <Route path="evaluations" element={<EvaluationAdmin />} />
                   </Route>
                 </Routes>
               </div>

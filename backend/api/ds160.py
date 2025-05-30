@@ -89,6 +89,7 @@ class DS160FormResource(Resource):
         
         # Extract form_data and other fields
         form_data = data.get('form_data', {})
+        
         status = data.get('status', 'draft')
         
         # Ensure consistent handling of application_id
@@ -105,7 +106,8 @@ class DS160FormResource(Resource):
             user_id=user.id, 
             form_data=form_data, 
             status=status,
-            application_id=application_id
+            application_id=application_id,
+            target_user_id=form_data.get('target_user_id')
         )
         
         db.session.add(form)
@@ -169,6 +171,37 @@ class DS160FormResource(Resource):
         
         # Return the complete form data including the application_id
         return form.to_dict(), 201
+
+
+@api.route("/users")
+class DS160UsersResource(Resource):
+    @jwt_required()
+    def get(self):
+        """Get all users for DS-160 form selection"""
+        try:
+            # Check if user is admin
+            current_user_id = get_jwt_identity()
+            current_user = User.query.get(current_user_id)
+            
+            if not current_user or current_user.role != 'admin':
+                return {"error": "Unauthorized"}, 403
+            
+            # Get all users
+            users = User.query.all()
+            user_list = [
+                {
+                    "id": str(user.id),
+                    "username": user.username,
+                    "email": user.email
+                }
+                for user in users
+            ]
+            
+            print('DS160 Users List:', user_list)
+            return user_list, 200
+        except Exception as e:
+            print(f"Error fetching users: {str(e)}")
+            return {"error": str(e)}, 500
 
 
 @api.route("/form/<string:application_id>")
@@ -304,7 +337,7 @@ class UserDS160FormsResource(Resource):
         """Get all DS-160 forms for the current user"""
         current_user_id = get_jwt_identity()
         forms = (
-            DS160Form.query.filter_by(user_id=current_user_id)
+            DS160Form.query.filter_by(target_user_id=current_user_id)
             .order_by(DS160Form.created_at.desc())
             .all()
         )
@@ -619,10 +652,20 @@ class DS160FormByApplicationIDResource(Resource):
         """Retrieve a DS-160 form by its application_id"""
         current_user_id = get_jwt_identity()
         
+        # Get the current user to check if they're an admin
+        current_user = User.query.get(current_user_id)
+        
         # Find the form by application_id
-        form = DS160Form.query.filter_by(
-            application_id=application_id, user_id=current_user_id
-        ).first()
+        if current_user and current_user.role == 'admin':
+            # Admins can access any form
+            form = DS160Form.query.filter_by(
+                application_id=application_id
+            ).first()
+        else:
+            # Regular users can only access their own forms
+            form = DS160Form.query.filter_by(
+                application_id=application_id, user_id=current_user_id
+            ).first()
         
         if not form:
             return {"error": "Form not found with the given application ID"}, 404

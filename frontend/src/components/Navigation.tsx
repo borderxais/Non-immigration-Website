@@ -8,7 +8,6 @@ import {
   HomeOutlined,
   UserOutlined,
   LogoutOutlined,
-  LockOutlined,
   RobotOutlined
 } from '@ant-design/icons';
 import { useAuth } from '../contexts/AuthContext';
@@ -26,73 +25,126 @@ const Navigation: React.FC = () => {
     window.location.reload();
   };
 
-  const menuItems = [
+  // Check if user is an admin or regular user
+  const isAdmin = isAuthenticated && user?.role === 'admin';
+  const isRegularUser = isAuthenticated && user?.role === 'user';
+
+  // Public home tab
+  const homeTab = {
+    key: '/',
+    icon: <HomeOutlined />,
+    label: '首页'
+  };
+  // Evaluation tab that's always visible
+  const evaluationTab = {
+    key: '/evaluation',
+    icon: <RobotOutlined />,
+    label: '評測'
+  };
+  // DS160 History tab for regular users
+  const ds160HistoryTab = {
+    key: '/ds160/history',
+    icon: <FormOutlined />,
+    label: 'DS-160申请历史'
+  };
+
+  // Base menu items for all users
+  let baseMenuItems = [
+    homeTab,
+    evaluationTab
+  ];
+  
+  // Add DS160 history tab for regular users
+  if (isRegularUser) {
+    baseMenuItems.push(ds160HistoryTab);
+  }
+
+  // Additional menu items only for admin users
+  const adminMenuItems = [
+    
     {
       key: '/',
       icon: <HomeOutlined />,
       label: '首页',
     },
     {
-      key: 'ds160-menu',
+      key: '/admin/evaluation-menu',
+      icon: <RobotOutlined />,
+      label: '评估管理',
+      children: [
+        {
+          key: '/admin/evaluations',
+          label: '评估结果',
+        },
+        {
+          key: '/admin/temp-credentials',
+          label: '临时凭证',
+        }
+      ]
+    },
+    {
+      key: '/admin/ds160-menu',
       icon: <FormOutlined />,
       label: 'DS-160服务',
       children: [
         {
-          key: '/ds160',
+          key: '/admin/ds160',
           icon: <FormOutlined />,
           label: '填写DS-160'
         },
         {
-          key: '/ds160/upload',
+          key: '/admin/ds160/history',
+          label: '管理DS-160申请',
+        },
+        {
+          key: '/admin/ds160/upload',
           label: '上传DS-160',
         }
       ]
     },
     {
-      key: '/interview',
+      key: '/admin/interview',
       icon: <TeamOutlined />,
       label: '模拟面签',
       children: [
         {
-          key: '/interview/practice',
+          key: '/admin/interview/practice',
           label: '面签练习',
         },
         {
-          key: '/interview/evaluation',
+          key: '/admin/interview/evaluation',
           label: '面签评估',
         },
         {
-          key: '/interview/simulation',
+          key: '/admin/interview/simulation',
           label: '面签模拟',
         },
       ]
     },
     {
-      key: '/platform',
+      key: '/admin/platform',
       icon: <MobileOutlined />,
       label: '多端支持',
       children: [
         {
-          key: '/platform/wechat',
+          key: '/admin/platform/wechat',
           label: '微信小程序',
         },
         {
-          key: '/platform/app',
+          key: '/admin/platform/app',
           label: 'APP下载(即将推出)',
         },
       ]
     },
-    {
-      key: '/evaluation',
-      icon: <RobotOutlined />,
-      label: '評測'
-    },
-    {
-      key: '/admin/login',
-      icon: <LockOutlined />,
-      label: '管理员入口',
-    },
+    //{
+      //key: '/admin/dashboard',
+      //icon: <TeamOutlined />,
+      //label: '管理仪表盘',
+    //},
   ];
+
+  // Final menu items based on user role
+  const menuItems = isAdmin ? adminMenuItems : baseMenuItems;
 
   // User dropdown menu items
   const userMenuItems: MenuProps['items'] = [

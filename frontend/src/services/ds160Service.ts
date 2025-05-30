@@ -8,6 +8,7 @@ export interface DS160Form {
   status: 'draft' | 'submitted' | 'approved' | 'rejected';
   created_at?: string;
   updated_at?: string;
+  target_user_id?: number;   // ID of the user for whom the form is created
 }
 
 export interface ValidationResult {
@@ -160,8 +161,34 @@ const getAllForms = async (): Promise<DS160Form[]> => {
   try {
     const response = await api.get('/ds160/admin/forms');
     return response.data;
-  } catch (error: any) {
-    console.error('Error getting all forms:', error);
+  } catch (error) {
+    console.error('Error fetching forms:', error);
+    throw error;
+  }
+};
+
+/**
+ * Get all users for DS160 form selection (admin only)
+ */
+const getAllUsers = async () => {
+  try {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error('No token found');
+      throw new Error('Authentication required');
+    }
+    
+    console.log('DS160: Fetching all users');
+    const response = await api.get(`/ds160/users`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    
+    console.log('DS160: All users:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching users:', error);
     throw error;
   }
 };
@@ -171,11 +198,12 @@ const ds160Service = {
   updateForm,
   getFormById,
   getUserForms,
-  getAllForms,  // Add the admin function
+  getAllForms,
   deleteForm,
   validateForm,
   generatePDF,
-  saveFormDraft
+  saveFormDraft,
+  getAllUsers
 };
 
 export default ds160Service;

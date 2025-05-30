@@ -1,5 +1,5 @@
 // import axios from 'axios';
-import { LoginCredentials, RegisterData, User } from '../types/auth';
+import { LoginCredentials, RegisterData, User, UserRole } from '../types/auth';
 import api from './api';
 
 export interface AuthResponse {
@@ -21,6 +21,12 @@ const register = async (data: RegisterData): Promise<AuthResponse> => {
 const login = async (credentials: LoginCredentials): Promise<AuthResponse> => {
   const response = await api.post(`/auth/login`, credentials);
   console.log('Login response:', response);
+  
+  // If user is admin, store this information in localStorage
+  if (response.data.user && response.data.user.role === UserRole.ADMIN) {
+    localStorage.setItem('userRole', UserRole.ADMIN);
+  }
+  
   return response.data;
 };
 
@@ -33,7 +39,20 @@ const validateToken = async (token: string): Promise<User> => {
       Authorization: `Bearer ${token}`
     }
   });
-  return response.data;
+  
+  // Get the stored role from localStorage
+  const storedRole = localStorage.getItem('userRole');
+  
+  // Make sure user has a role property
+  const userData = response.data;
+  const userWithRole = {
+    ...userData,
+    // If we previously stored that this user is an admin, preserve that information
+    role: storedRole === UserRole.ADMIN ? UserRole.ADMIN : (userData.role || UserRole.USER)
+  };
+  
+  console.log('Validated user with role:', userWithRole);
+  return userWithRole;
 };
 
 /**
@@ -65,6 +84,12 @@ const updateProfile = async (userData: Partial<User>): Promise<User> => {
       Authorization: `Bearer ${token}`
     }
   });
+  
+  // If updating role to admin, store in localStorage
+  if (userData.role === UserRole.ADMIN) {
+    localStorage.setItem('userRole', UserRole.ADMIN);
+  }
+  
   return response.data;
 };
 
@@ -85,6 +110,32 @@ const changePassword = async (currentPassword: string, newPassword: string): Pro
   return response.data;
 };
 
+/**
+ * Get all users (admin only)
+ */
+const getAllUsers = async (): Promise<User[]> => {
+  try {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error('No token found');
+      throw new Error('Authentication required');
+    }
+    
+    console.log('Checkpoint1: Token found, making API call');
+    const response = await api.get(`/auth/users`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    
+    console.log('All users:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching users:', error);
+    throw error;
+  }
+};
+
 const authService = {
   register,
   login,
@@ -92,7 +143,8 @@ const authService = {
   requestPasswordReset,
   completePasswordReset,
   updateProfile,
-  changePassword
+  changePassword,
+  getAllUsers
 };
 
 export default authService;

@@ -105,12 +105,9 @@ const DS160History: React.FC = () => {
       render: (_: any, record: DS160Form) => (
         <Space size="middle">
           {record.status === 'draft' ? (
-            <Button type="primary" onClick={() => {
-              console.log('DS160History - Continuing draft application:', record.application_id);
-              navigate(`/ds160/view/${record.application_id}?resume=true`);
-            }}>
-              继续编辑
-            </Button>
+            <span style={{ color: '#999' }}>
+              尚未提交無法查看
+            </span>
           ) : (
             <Button onClick={() => navigate(`/ds160/view/${record.application_id}`)}>
               查看详情
@@ -139,9 +136,7 @@ const DS160History: React.FC = () => {
           {applications.length === 0 ? (
             <div style={{ textAlign: 'center', padding: '40px 0' }}>
               <p>您还没有任何DS-160申请记录</p>
-              <Button type="primary" onClick={() => navigate('/ds160')}>
-                开始新申请
-              </Button>
+              
             </div>
           ) : (
             <Table 

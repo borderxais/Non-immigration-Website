@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { AuthContextType, AuthState, LoginCredentials, RegisterData } from '../types/auth';
+import { AuthContextType, AuthState, LoginCredentials, RegisterData, UserRole } from '../types/auth';
 import authService from '../services/authService';
 
 const initialState: AuthState = {
@@ -49,9 +49,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const response = await authService.login(credentials);
       const { user, token } = response;
 
+      // Make sure user has a role property, defaulting to USER if not present
+      const userWithRole = {
+        ...user,
+        role: user.role || UserRole.USER
+      };
+
+      console.log('User with role:', userWithRole);
+
       localStorage.setItem('token', token);
       setState({
-        user,
+        user: userWithRole,
         token,
         isAuthenticated: true,
         isLoading: false,
@@ -80,6 +88,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const logout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('userRole'); // Also clear the stored role
     setState({
       user: null,
       token: null,
