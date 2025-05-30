@@ -222,6 +222,7 @@ class DS160FormDetailResource(Resource):
         """Retrieve a DS-160 form"""
         try:
             form = DS160Form.query.filter_by(application_id=application_id).first()
+            print('DS160 Form:', form)
             if not form:
                 return {"error": "Form not found"}, 404
 
@@ -664,7 +665,7 @@ class DS160FormByApplicationIDResource(Resource):
         else:
             # Regular users can only access their own forms
             form = DS160Form.query.filter_by(
-                application_id=application_id, user_id=current_user_id
+                application_id=application_id, target_user_id=current_user_id
             ).first()
         
         if not form:
