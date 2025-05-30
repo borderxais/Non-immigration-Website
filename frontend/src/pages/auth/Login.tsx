@@ -163,13 +163,7 @@ const Login: React.FC = () => {
         >
           微信登录
         </Button>
-
-        <div style={{ textAlign: 'center', marginTop: 16 }}>
-          <Text>还没有账号？</Text>
-          <Button type="link" onClick={() => navigate('/auth/register')}>
-            立即注册
-          </Button>
-        </div>
+        
       </Card>
     </div>
   );

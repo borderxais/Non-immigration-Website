@@ -191,7 +191,7 @@ const Navigation: React.FC = () => {
             icon={<UserOutlined />}
             onClick={() => navigate('/auth/login')}
           >
-            登录/注册
+            登录
           </Button>
         )}
       </Space>
