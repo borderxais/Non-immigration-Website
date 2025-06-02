@@ -1,5 +1,5 @@
 import React from 'react';
-import { Typography, Card, Row, Col, Button, Space, Divider, Statistic } from 'antd';
+import { Typography, Card, Row, Col, Button, Space, Divider } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import {
   RobotOutlined,
@@ -26,24 +26,6 @@ const PublicHome: React.FC = () => {
       color: '#f6ffed',
       onClick: () => navigate('/evaluation'),
     }
-  ];
-
-  const statistics = [
-    {
-      title: '服务用户',
-      value: '10000+',
-      suffix: '人',
-    },
-    {
-      title: '签证通过率',
-      value: 98.2,
-      suffix: '%',
-    },
-    {
-      title: '用户好评',
-      value: 99.5,
-      suffix: '%',
-    },
   ];
 
   const handleFeatureClick = (feature: any) => {
@@ -81,22 +63,6 @@ const PublicHome: React.FC = () => {
           </Button>
         </Space>
       </div>
-
-      {/* Statistics Section */}
-      <Row justify="center" style={{ marginBottom: 48 }}>
-        {statistics.map((stat, index) => (
-          <Col key={index} span={6}>
-            <Card style={{ textAlign: 'center', margin: '0 12px' }}>
-              <Statistic
-                title={stat.title}
-                value={stat.value}
-                suffix={stat.suffix}
-                valueStyle={{ color: '#1890ff' }}
-              />
-            </Card>
-          </Col>
-        ))}
-      </Row>
 
       {/* Features Section */}
       <Title level={2} style={{ textAlign: 'center', marginBottom: 48 }}>
