@@ -408,7 +408,7 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
                 validator={locationValidator}
                 validatorMessage={locationPatternMessage}
               >
-                <Input placeholder="例如：北京" style={{ width: '99%' }} />
+                <Input placeholder="例如：BEIJING" style={{ width: '99%' }} />
               </QuestionItem>
             </div>
             <div className="explanation-column">

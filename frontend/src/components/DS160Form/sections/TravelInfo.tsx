@@ -660,7 +660,7 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                     <Input 
                       style={{ width: '99%' }} 
                       maxLength={maxLengths.city} 
-                      placeholder="例如: New York"
+                      placeholder="例如: NEW YORK"
                     />
                   </QuestionItem>
                 
@@ -695,7 +695,7 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                     <Input 
                       style={{ width: '99%' }} 
                       maxLength={maxLengths.city}
-                      placeholder="例如: Los Angeles"
+                      placeholder="例如: LOS ANGELES"
                     />
                   </QuestionItem>
                 </div>

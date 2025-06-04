@@ -32,12 +32,11 @@ api.interceptors.request.use(
       config.headers['Access-Control-Request-Method'] = 'POST,PUT';
       config.headers['Access-Control-Request-Headers'] = 'content-type,authorization';
     }
-    
+      
     return config;
   },
   (error) => Promise.reject(error)
 );
-
 // Search API functions
 export const searchAPI = {
   // Search in both databases

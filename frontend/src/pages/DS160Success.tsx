@@ -19,7 +19,7 @@ const DS160Success: React.FC = () => {
           <Button type="primary" key="home" onClick={() => navigate('/')}>
             返回首页
           </Button>,
-          <Button key="forms" onClick={() => navigate('/ds160-history')}>
+          <Button key="forms" onClick={() => navigate('admin/ds160/history')}>
             查看我的申请
           </Button>,
         ]}
