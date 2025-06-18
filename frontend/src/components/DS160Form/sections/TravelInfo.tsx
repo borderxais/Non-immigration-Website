@@ -44,7 +44,6 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
   const [hasSpecificPlans, setHasSpecificPlans] = useState<string | null>(formValues?.hasSpecificPlans || null);
   const [whoIsPaying, setWhoIsPaying] = useState<string | null>(formValues?.whoIsPaying || null);
   const [isSameAddress, setIsSameAddress] = useState<string | null>(formValues?.isSameAddress || null);
-  const [hasVisaClassA, setHasVisaClassA] = useState<boolean>(false);
 
   // Update state when form values change
   useEffect(() => {
@@ -64,19 +63,6 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
     if (values.isSameAddress !== undefined) {
       setIsSameAddress(values.isSameAddress);
     }
-  }, [form]);
-  
-  // Check if any travel purpose has visa class A
-  useEffect(() => {
-    const values = form.getFieldsValue(true);
-    const travelPurposes = values.travelPurposes || [];
-    
-    // Check if any travel purpose has visa class 'A'
-    const hasAnyVisaClassA = travelPurposes.some(
-      (purpose: any) => purpose && purpose.visaClass === 'A'
-    );
-    
-    setHasVisaClassA(hasAnyVisaClassA);
   }, [form]);
 
   // Handle visa class change
@@ -104,22 +90,8 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
       missionZipCode: undefined,
       missionPhoneNumber: undefined
     });
-    
-    // Update local state
     setVisaClass(value);
     setSpecificPurpose(null);
-    
-    // Check if any travel purpose has visa class A after this change
-    setTimeout(() => {
-      const values = form.getFieldsValue(true);
-      const travelPurposes = values.travelPurposes || [];
-      
-      const hasAnyVisaClassA = travelPurposes.some(
-        (purpose: any) => purpose && purpose.visaClass === 'A'
-      );
-      
-      setHasVisaClassA(hasAnyVisaClassA);
-    }, 0);
   };
 
   // Handle specific purpose change
@@ -872,7 +844,7 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
       </fieldset>
 
       {/* Mission Information Section */}
-      {hasVisaClassA && specificPurpose && !isDependentSelection(specificPurpose) && (
+      {visaClass === 'A' && specificPurpose && !isDependentSelection(specificPurpose) && (
         <fieldset className="question-section">
           <h4 style={{ marginBottom: '16px', fontWeight: 'normal' }}>使团信息</h4>
           <div className="question-row">
