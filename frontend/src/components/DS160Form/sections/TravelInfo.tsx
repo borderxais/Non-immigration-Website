@@ -445,6 +445,8 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                       name={[field.name, 'visaClass']}
                     >
                       <Select 
+  showSearch
+  filterOption={(input, option) => (option?.label ?? '').toLowerCase().includes(input.toLowerCase())} 
                         placeholder="- 请选择一个 -" 
                         style={{ width: '95%' }}
                         onChange={(value) => handleVisaClassChange(value, field.name)}
@@ -486,6 +488,8 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                         name={[field.name, 'specificPurpose']}
                       >
                         <Select 
+  showSearch
+  filterOption={(input, option) => (option?.label ?? '').toLowerCase().includes(input.toLowerCase())} 
                           placeholder="- 请选择一个 -" 
                           style={{ width: '95%' }}
                           onChange={(value) => handleSpecificPurposeChange(value, field.name)}
@@ -769,6 +773,8 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                     <Form.Item name="stayDurationType" noStyle 
                       rules={[{ required: true, message: '请选择单位' }]}>
                       <Select 
+  showSearch
+  filterOption={(input, option) => (option?.label ?? '').toLowerCase().includes(input.toLowerCase())} 
                         options={losUnitOptions} 
                         style={{ width: '120px' }}
                         placeholder="- 请选择一个 -"
@@ -820,6 +826,8 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                   name="state"
                 >
                   <Select 
+  showSearch
+  filterOption={(input, option) => (option?.label ?? '').toLowerCase().includes(input.toLowerCase())} 
                     options={usStateOptions}
                     style={{ width: '99%' }}
                     placeholder="- 请选择一个 -"
@@ -904,6 +912,8 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                   name="missionState"
                 >
                   <Select 
+  showSearch
+  filterOption={(input, option) => (option?.label ?? '').toLowerCase().includes(input.toLowerCase())} 
                     options={usStateOptions} 
                     style={{ width: '99%' }} 
                     placeholder="- 请选择一个 -" 
@@ -946,6 +956,8 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
               name="whoIsPaying"
             >
               <Select 
+  showSearch
+  filterOption={(input, option) => (option?.label ?? '').toLowerCase().includes(input.toLowerCase())} 
                 className="select-input" 
                 placeholder="- 请选择一个 -"
                 onChange={handleWhoIsPayingChange}
@@ -1020,6 +1032,8 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                     name="payerRelationship"
                   >
                     <Select 
+  showSearch
+  filterOption={(input, option) => (option?.label ?? '').toLowerCase().includes(input.toLowerCase())} 
                       className="select-input" 
                       placeholder="- 请选择一个 -"
                       options={[
@@ -1105,7 +1119,9 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                               question="国家/地区"
                               name="payerCountry"
                             >
-                              <Select options={permanentResidenceOptions } placeholder="- 请选择一个 -" style={{ width: '98%' }} />
+                              <Select 
+  showSearch
+  filterOption={(input, option) => (option?.label ?? '').toLowerCase().includes(input.toLowerCase())} options={permanentResidenceOptions } placeholder="- 请选择一个 -" style={{ width: '98%' }} />
                             </QuestionItem>
                           </div>
                         </div>
@@ -1217,7 +1233,9 @@ const TravelInfo: React.FC<TravelInfoProps> = ({ form }) => {
                             question="国家/地区"
                             name="companyCountry"
                           >
-                            <Select options={permanentResidenceOptions} placeholder="- 请选择一个 -" style={{ width: '98%' }} />
+                            <Select 
+  showSearch
+  filterOption={(input, option) => (option?.label ?? '').toLowerCase().includes(input.toLowerCase())} options={permanentResidenceOptions} placeholder="- 请选择一个 -" style={{ width: '98%' }} />
                           </QuestionItem>
                         </div>
                       </div>

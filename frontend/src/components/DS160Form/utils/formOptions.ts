@@ -62,6 +62,7 @@ export const usStateOptions = [
 // Format for country dropdown options
 export const countryOptions = [
   { value: '', label: '- 请选择一个 -' },
+  { value: 'CHIN', label: '中国' },
   { value: 'AFGH', label: '阿富汗' },
   { value: 'ALB', label: '阿尔巴尼亚' },
   { value: 'ALGR', label: '阿尔及利亚' },
@@ -105,7 +106,6 @@ export const countryOptions = [
   { value: 'CAFR', label: '中非共和国' },
   { value: 'CHAD', label: '乍得' },
   { value: 'CHIL', label: '智利' },
-  { value: 'CHIN', label: '中国' },
   { value: 'CHRI', label: '圣诞岛' },
   { value: 'COCI', label: '科科斯（基林）群岛' },
   { value: 'COL', label: '哥伦比亚' },
@@ -349,6 +349,7 @@ export const countryOptions = [
 
 export const currentNationalityOptions = [
   { value: '', label: '- 请选择一个 -' },
+  { value: 'CHIN', label: '中国' },
   { value: 'AFGH', label: '阿富汗' },
   { value: 'ALB', label: '阿尔巴尼亚' },
   { value: 'ALGR', label: '阿尔及利亚' },
@@ -388,7 +389,6 @@ export const currentNationalityOptions = [
   { value: 'CAFR', label: '中非共和国' },
   { value: 'CHAD', label: '乍得' },
   { value: 'CHIL', label: '智利' },
-  { value: 'CHIN', label: '中国' },
   { value: 'COL', label: '哥伦比亚' },
   { value: 'COMO', label: '科摩罗' },
   { value: 'COD', label: '刚果民主共和国' },
@@ -564,6 +564,7 @@ export const currentNationalityOptions = [
 
 export const nationalityOptions = [
   { value: '', label: '- 请选择一项 -' },
+  { value: 'CHIN', label: '中国' },
   { value: 'AFGH', label: '阿富汗' },
   { value: 'ALB', label: '阿尔巴尼亚' },
   { value: 'ALGR', label: '阿尔及利亚' },
@@ -603,7 +604,6 @@ export const nationalityOptions = [
   { value: 'CAFR', label: '中非共和国' },
   { value: 'CHAD', label: '乍得' },
   { value: 'CHIL', label: '智利' },
-  { value: 'CHIN', label: '中国' },
   { value: 'COL', label: '哥伦比亚' },
   { value: 'COMO', label: '科摩罗' },
   { value: 'COD', label: '刚果民主共和国' },
@@ -779,6 +779,7 @@ export const nationalityOptions = [
 
 export const permanentResidenceOptions = [
   { value: '', label: '- 请选择一项 -' },
+  { value: 'CHIN', label: '中国' },
   { value: 'AFGH', label: '阿富汗' },
   { value: 'ALB', label: '阿尔巴尼亚' },
   { value: 'ALGR', label: '阿尔及利亚' },
@@ -822,7 +823,6 @@ export const permanentResidenceOptions = [
   { value: 'CAFR', label: '中非共和国' },
   { value: 'CHAD', label: '乍得' },
   { value: 'CHIL', label: '智利' },
-  { value: 'CHIN', label: '中国' },
   { value: 'CHRI', label: '圣诞岛' },
   { value: 'COCI', label: '科科斯（基林）群岛' },
   { value: 'COL', label: '哥伦比亚' },
@@ -1035,6 +1035,7 @@ export const permanentResidenceOptions = [
 
 export const passportIssuingOptions = [
   { value: '', label: '- 请选择一项 -' },
+  { value: 'CHIN', label: '中国' },
   { value: 'AFGH', label: '阿富汗' },
   { value: 'ALB', label: '阿尔巴尼亚' },
   { value: 'ALGR', label: '阿尔及利亚' },
@@ -1076,7 +1077,6 @@ export const passportIssuingOptions = [
   { value: 'CAFR', label: '中非共和国' },
   { value: 'CHAD', label: '乍得' },
   { value: 'CHIL', label: '智利' },
-  { value: 'CHIN', label: '中国' },
   { value: 'COL', label: '哥伦比亚' },
   { value: 'COMO', label: '科摩罗' },
   { value: 'COD', label: '刚果民主共和国' },
@@ -1255,6 +1255,7 @@ export const passportIssuingOptions = [
 
 export const militaryServiceCountryOptions = [
   { value: '', label: '- 请选择一个 -' },
+  { value: 'CHIN', label: '中国' },
   { value: 'AFGH', label: '阿富汗' },
   { value: 'ALB', label: '阿尔巴尼亚' },
   { value: 'ALGR', label: '阿尔及利亚' },
@@ -1294,7 +1295,6 @@ export const militaryServiceCountryOptions = [
   { value: 'CAFR', label: '中非共和国' },
   { value: 'CHAD', label: '乍得' },
   { value: 'CHIL', label: '智利' },
-  { value: 'CHIN', label: '中国' },
   { value: 'COL', label: '哥伦比亚' },
   { value: 'COMO', label: '科摩罗' },
   { value: 'COD', label: '刚果民主共和国' },

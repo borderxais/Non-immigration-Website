@@ -118,7 +118,9 @@ const PersonalInfoII: React.FC<PersonalInfoIIProps> = ({ form }) => {
               question="所属国家/地区（国籍）"
               name="nationality"
             >
-              <Select options={currentNationalityOptions} placeholder="- 请选择一个 -" style={{ width: '98%' }} />
+              <Select 
+  showSearch
+  filterOption={(input, option) => (option?.label ?? '').toLowerCase().includes(input.toLowerCase())} options={currentNationalityOptions} placeholder="- 请选择一个 -" style={{ width: '98%' }} />
             </QuestionItem>
           </div>
           <div className="explanation-column">
@@ -160,7 +162,9 @@ const PersonalInfoII: React.FC<PersonalInfoIIProps> = ({ form }) => {
                             rules={[{ required: true, message: '请选择其他国籍' }]}
                             style={{ marginBottom: '16px' }}
                           >
-                           <Select options={nationalityOptions} placeholder="- 请选择一个 -" style={{ width: '98%' }} />
+                           <Select 
+  showSearch
+  filterOption={(input, option) => (option?.label ?? '').toLowerCase().includes(input.toLowerCase())} options={nationalityOptions} placeholder="- 请选择一个 -" style={{ width: '98%' }} />
                           </Form.Item>
 
                           <Form.Item
@@ -243,7 +247,9 @@ const PersonalInfoII: React.FC<PersonalInfoIIProps> = ({ form }) => {
                           label="永久居留国家/地区"
                           rules={[{ required: true, message: '请选择永久居留国家/地区' }]}
                         >
-                          <Select options={permanentResidenceOptions} placeholder="- 请选择一个 -" style={{ width: '98%' }} />
+                          <Select 
+  showSearch
+  filterOption={(input, option) => (option?.label ?? '').toLowerCase().includes(input.toLowerCase())} options={permanentResidenceOptions} placeholder="- 请选择一个 -" style={{ width: '98%' }} />
                         </Form.Item>
                       );
                     }}

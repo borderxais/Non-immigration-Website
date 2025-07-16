@@ -197,13 +197,11 @@ const WorkEducationPrevious: React.FC<WorkEducationPreviousProps> = ({ form, rea
                               required={true}
                             >
                               <Select 
+                                showSearch
+                                filterOption={(input, option) => (option?.label ?? '').toLowerCase().includes(input.toLowerCase())} 
                                 style={{ width: '95%' }} 
                                 options={permanentResidenceOptions}
                                 placeholder="- 请选择 -"
-                                showSearch
-                                filterOption={(input, option) => 
-                                  (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
-                                }
                                 disabled={readOnly}
                               />
                             </QuestionItem>
@@ -458,13 +456,11 @@ const WorkEducationPrevious: React.FC<WorkEducationPreviousProps> = ({ form, rea
                             required={true}
                           >
                             <Select 
+                              showSearch
+                              filterOption={(input, option) => (option?.label ?? '').toLowerCase().includes(input.toLowerCase())} 
                               style={{ width: '95%' }} 
                               options={permanentResidenceOptions}
                               placeholder="- 请选择 -"
-                              showSearch
-                              filterOption={(input, option) => 
-                                (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
-                              }
                               disabled={readOnly}
                             />
                           </QuestionItem>

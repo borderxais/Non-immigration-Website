@@ -104,16 +104,14 @@ const FamilySpouse: React.FC<FamilySpouseProps> = ({ form, formValues }) => {
                   name="spouseNationality"
                   required={true}
                 >
-                  <Select 
-                    style={{ width: '99%' }} 
-                    placeholder="- 请选择一个 -"
-                    showSearch
-                    filterOption={(input, option) => 
-                      (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
-                    }
-                    optionFilterProp="children"
-                    options={currentNationalityOptions }
-                  />
+                  <Select
+  showSearch
+  filterOption={(input, option) => typeof option?.label === 'string' && option.label.toLowerCase().includes(input.toLowerCase())}
+  style={{ width: '99%' }}
+  placeholder="- 请选择一个 -"
+  optionFilterProp="children"
+  options={currentNationalityOptions}
+/>
                 </QuestionItem>
               </div>
             </div>
@@ -153,14 +151,13 @@ const FamilySpouse: React.FC<FamilySpouseProps> = ({ form, formValues }) => {
                   name="spousePobCountry"
                   required={true}
                 >
-                  <Select 
-                    style={{ width: '99%' }} 
-                    placeholder="- 请选择一个 -"
-                    showSearch
-                    filterOption={(input, option) => 
-                      (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
-                    }                    options={countryOptions} 
-                  />
+                  <Select
+  showSearch
+  filterOption={(input, option) => typeof option?.label === 'string' && option.label.toLowerCase().includes(input.toLowerCase())}
+  style={{ width: '99%' }}
+  placeholder="- 请选择一个 -"
+  options={countryOptions}
+/>
                 </QuestionItem>
               </div>
             </div>
@@ -178,8 +175,10 @@ const FamilySpouse: React.FC<FamilySpouseProps> = ({ form, formValues }) => {
               name="spouseAddressType"
               required={true}
             >
-              <Select 
-                style={{ width: '99%' }} 
+              <Select
+                showSearch
+                filterOption={(input, option) => (option?.label ?? '').toString().toLowerCase().includes(input.toLowerCase())}
+                style={{ width: '99%' }}
                 placeholder="- 请选择一个 -"
                 onChange={(value) => {
                   setSpouseAddressType(value);
@@ -289,15 +288,13 @@ const FamilySpouse: React.FC<FamilySpouseProps> = ({ form, formValues }) => {
                       name="spouseAddressCountry"
                       required={true}
                     >
-                      <Select 
-                        style={{ width: '99%' }}
-                        showSearch
-                        filterOption={(input, option) => 
-                          (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
-                        }
-                        options={permanentResidenceOptions }
-                        placeholder="- 请选择一个 -"
-                      />
+                      <Select
+  showSearch
+  filterOption={(input, option) => typeof option?.label === 'string' && option.label.toLowerCase().includes(input.toLowerCase())}
+  style={{ width: '99%' }}
+  options={permanentResidenceOptions}
+  placeholder="- 请选择一个 -"
+/>
                     </QuestionItem>
                   </div>
                 </div>

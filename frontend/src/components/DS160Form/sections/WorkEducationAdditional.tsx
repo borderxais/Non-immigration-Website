@@ -271,14 +271,12 @@ const WorkEducationAdditional: React.FC<WorkEducationAdditionalProps> = ({ form,
                             name={[field.name, 'country']}
                             required={true}
                           >
-                            <Select 
-                              style={{ width: '95%' }} 
+                            <Select
+                              showSearch
+                              filterOption={(input, option) => typeof option?.label === 'string' && option.label.toLowerCase().includes(input.toLowerCase())}
+                              style={{ width: '95%' }}
                               options={permanentResidenceOptions}
                               placeholder="- 请选择 -"
-                              showSearch
-                              filterOption={(input, option) => 
-                                (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
-                              }
                               disabled={readOnly}
                             />
                           </QuestionItem>
@@ -422,13 +420,11 @@ const WorkEducationAdditional: React.FC<WorkEducationAdditionalProps> = ({ form,
                             required={true}
                           >
                             <Select 
+                              showSearch
+                              filterOption={(input, option) => (option?.label ?? '').toLowerCase().includes(input.toLowerCase())} 
                               style={{ width: '95%' }} 
                               options={militaryServiceCountryOptions}
                               placeholder="- 请选择 -"
-                              showSearch
-                              filterOption={(input, option) => 
-                                (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
-                              }
                               disabled={readOnly}
                             />
                           </QuestionItem>

@@ -151,14 +151,12 @@ const StudentContact: React.FC<StudentContactProps> = ({ form, readOnly = false 
               name={[field.name, 'country']}
               required={true}
             >
-              <Select
+              <Select 
+                showSearch
+                filterOption={(input, option) => (option?.label ?? '').toLowerCase().includes(input.toLowerCase())} 
                 style={{ width: '99%' }}
                 options={countryOptions}
                 placeholder="- 请选择一个 -"
-                showSearch
-                filterOption={(input, option) => 
-                  (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
-                }
                 disabled={readOnly}
               />
             </QuestionItem>

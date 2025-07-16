@@ -140,14 +140,12 @@ const FamilyFormerSpouse: React.FC<FamilyFormerSpouseProps> = ({ form, readOnly 
                         name={[field.name, 'nationality']}
                         required={true}
                       >
-                        <Select
+                        <Select 
+                          showSearch
+                          filterOption={(input, option) => (option?.label ?? '').toLowerCase().includes(input.toLowerCase())} 
                           style={{ width: '99%' }}
                           options={nationalityOptions}
                           placeholder="- 请选择 -"
-                          showSearch
-                          filterOption={(input, option) => 
-                            (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
-                          }
                           disabled={readOnly}
                         />
                       </QuestionItem>
@@ -176,14 +174,12 @@ const FamilyFormerSpouse: React.FC<FamilyFormerSpouseProps> = ({ form, readOnly 
                           name={[field.name, 'pobCountry']}
                           required={true}
                         >
-                          <Select
+                          <Select 
+                            showSearch
+                            filterOption={(input, option) => (option?.label ?? '').toLowerCase().includes(input.toLowerCase())} 
                             style={{ width: '99%' }}
                             options={countryOptions}
                             placeholder="- 请选择 -"
-                            showSearch
-                            filterOption={(input, option) => 
-                              (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
-                            }
                             disabled={readOnly}
                           />
                         </QuestionItem>
@@ -241,14 +237,12 @@ const FamilyFormerSpouse: React.FC<FamilyFormerSpouseProps> = ({ form, readOnly 
                         name={[field.name, 'marriageEndCountry']}
                         required={true}
                       >
-                        <Select
+                        <Select 
+                          showSearch
+                          filterOption={(input, option) => (option?.label ?? '').toLowerCase().includes(input.toLowerCase())} 
                           style={{ width: '99%' }}
                           options={countryOptions}
                           placeholder="- 请选择 -"
-                          showSearch
-                          filterOption={(input, option) => 
-                            (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
-                          }
                           disabled={readOnly}
                         />
                       </QuestionItem>

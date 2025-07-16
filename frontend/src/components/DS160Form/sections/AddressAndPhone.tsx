@@ -186,6 +186,8 @@ const AddressAndPhone: React.FC<AddressAndPhoneProps> = ({ form }) => {
               name="homeAddressCountry"
             >
               <Select 
+  showSearch
+  filterOption={(input, option) => (option?.label ?? '').toLowerCase().includes(input.toLowerCase())} 
                 options={permanentResidenceOptions } 
                 placeholder="- 请选择一个 -" 
                 style={{ width: '99%' }}
@@ -288,6 +290,8 @@ const AddressAndPhone: React.FC<AddressAndPhoneProps> = ({ form }) => {
                         name="mailingAddressCountry"
                         >
                         <Select 
+  showSearch
+  filterOption={(input, option) => (option?.label ?? '').toLowerCase().includes(input.toLowerCase())} 
                             options={permanentResidenceOptions} 
                             placeholder="- 请选择一个 -" 
                             style={{ width: '99%' }}

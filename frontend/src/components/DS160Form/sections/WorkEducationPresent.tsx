@@ -70,12 +70,14 @@ const WorkEducation: React.FC<WorkEducationProps> = ({ form, readOnly = false })
               name="presentOccupation"
               required={true}
             >
-              <Select 
-                style={{ width: '99%' }} 
-                options={occupationOptions}
-                placeholder="请选择您的主要职业"
-                disabled={readOnly}
-              />
+              <Select
+  showSearch
+  filterOption={(input, option) => typeof option?.label === 'string' && option.label.toLowerCase().includes(input.toLowerCase())}
+  style={{ width: '99%' }}
+  options={occupationOptions}
+  placeholder="请选择您的主要职业"
+  disabled={readOnly}
+/>
             </QuestionItem>
             
             {/* 当选择"其他"时显示的文本框 */}
@@ -251,16 +253,14 @@ const WorkEducation: React.FC<WorkEducationProps> = ({ form, readOnly = false })
                         name="employerCountry"
                         required={true}
                       >
-                        <Select 
-                          style={{ width: '95%' }} 
-                          options={permanentResidenceOptions }
-                          placeholder="请选择国家/地区"
-                          showSearch
-                          filterOption={(input, option) => 
-                            (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
-                          }
-                          disabled={readOnly}
-                        />
+                        <Select
+  showSearch
+  filterOption={(input, option) => typeof option?.label === 'string' && option.label.toLowerCase().includes(input.toLowerCase())}
+  style={{ width: '95%' }}
+  options={permanentResidenceOptions}
+  placeholder="请选择国家/地区"
+  disabled={readOnly}
+/>
                       </QuestionItem>
                     </div>
                   </div>

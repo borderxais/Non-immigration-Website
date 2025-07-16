@@ -422,7 +422,15 @@ const PersonalInfoI: React.FC<PersonalInfoIProps> = ({ form }) => {
                 question="国家/地区"
                 name="birthCountry"
               >
-                <Select options={countryOptions} placeholder="- 请选择一个 -" style={{ width: '98%' }} />
+                <Select
+  options={countryOptions}
+  placeholder="- 请选择一个 -"
+  style={{ width: '98%' }}
+  showSearch
+  filterOption={(input, option) =>
+    (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+  }
+/>
               </QuestionItem>
             </div>
             <div className="explanation-column">

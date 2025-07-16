@@ -54,8 +54,8 @@ export const zipCodePatternMessage = '邮政编码格式不正确 (例如: 12345
 
 // Location pattern (for city and state/province fields)
 // A-Z, 0-9, $, ?, period (.), apostrophe ('), comma (,), hyphen (-), space
-export const locationPattern = /^[A-Z0-9$?.',-\s]+$/;
-export const locationPatternMessage = "只能包含大写字母、数字、$、?、句点(.)、撇号(')、逗号(,)、连字符(-)和空格";
+export const locationPattern = /^[\u3400-\u4DBF\u4E00-\u9FFF\uF900-\uFAFF0-9$?.',-\s]+$/;
+export const locationPatternMessage = "只能包含中文字符、数字、$、?、句点(.)、撇号(')、逗号(,)、连字符(-)和空格";
 
 // Explanation field pattern (for security background explanations and other detailed text fields)
 // A-Z, 0-9, #, $, *, %, &, (;), !, @, ^, ?, >, <, parens (), period (.), apostrophe ('), comma (,), hyphen (-), and space
