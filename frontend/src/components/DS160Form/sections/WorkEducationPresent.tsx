@@ -294,7 +294,7 @@ const WorkEducation: React.FC<WorkEducationProps> = ({ form, readOnly = false })
                       <Input 
                         style={{ width: '90%' }} 
                         maxLength={15}
-                        placeholder="请输入月薪（美元）"
+                        placeholder="请输入月薪（人民币）"
                         disabled={readOnly}
                       />
                     </QuestionItem>

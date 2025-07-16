@@ -83,8 +83,8 @@ export const driverLicensePattern = /^[A-Z0-9.\- ]+$/;
 export const driverLicensePatternMessage = '只能包含大写字母、数字、句点(.)、连字符(-)和空格';
 
 // Organization/employer name pattern (A-Z, 0-9, hyphen, apostrophe, ampersand, single spaces)
-export const organizationNamePattern = /^[A-Z0-9&'-]+(?: [A-Z0-9&'-]+)*$/;
-export const organizationNamePatternMessage = "只能包含大写字母、数字、连字符(-)、撇号(')、和号(&)和名称之间的单个空格";
+export const organizationNamePattern = /^[\u3400-\u4DBF\u4E00-\u9FFF\uF900-\uFAFF0-9$?.',-\s]+$/;
+export const organizationNamePatternMessage = "只能包含中文字符、数字、$、?、句点(.)、撇号(')、逗号(,)、连字符(-)和空格";
 
 // Sevis ID pattern (N followed by 10 digits)
 export const sevisIdPattern = /^N\d{10}$/;

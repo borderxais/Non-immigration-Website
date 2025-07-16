@@ -346,7 +346,13 @@ const PreviousTravel: React.FC<PreviousTravelProps> = ({ form }) => {
                               name={[field.name, 'driver_license_issue_state']}
                               parentFieldName="driverLicenses"
                             >
-                              <Select options={usStateOptions} style={{ width: '95%' }} placeholder="- 请选择一个 -"/>
+                              <Select
+  options={usStateOptions}
+  style={{ width: '95%' }}
+  placeholder="- 请选择一个 -"
+  showSearch
+  filterOption={(input, option) => typeof option?.label === 'string' && option.label.toLowerCase().includes(input.toLowerCase())}
+/>
                             </QuestionItem>
                           </>
                         )}

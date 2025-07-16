@@ -9,6 +9,7 @@ interface RepeatableFormItemProps {
   addButtonText?: string;
   removeButtonText?: string;
   blockStyle?: 'highlighted' | 'white';
+  maxItems?: number;
 }
 
 const RepeatableFormItem: React.FC<RepeatableFormItemProps> = ({
@@ -16,8 +17,11 @@ const RepeatableFormItem: React.FC<RepeatableFormItemProps> = ({
   children,
   addButtonText = "添加另一个",
   removeButtonText = "移除",
-  blockStyle = 'highlighted'
+  blockStyle = 'highlighted',
+  maxItems = Infinity
 }) => {
+  // Ensure maxItems is a number
+  const maxItemsValue = typeof maxItems === 'number' ? maxItems : Infinity;
   // Create a reference to store the Form.List's add function
   const addFieldRef = useRef<any>(null);
   // Get the form instance at the component level
@@ -35,8 +39,11 @@ const RepeatableFormItem: React.FC<RepeatableFormItemProps> = ({
       }
     }, 0);
     
+    // Debug maxItems value
+    console.log(`RepeatableFormItem ${name} maxItems:`, maxItemsValue);
+    
     return () => clearTimeout(timer);
-  }, [form, name]);
+  }, [form, name, maxItemsValue]);
 
   return (
     <Form.List name={name}>
@@ -55,13 +62,23 @@ const RepeatableFormItem: React.FC<RepeatableFormItemProps> = ({
                 
                 {/* Buttons right below this content block */}
                 <div className="button-container">
-                  <Button
-                    type="link"
-                    onClick={() => add()}
-                    icon={<PlusOutlined />}
-                  >
-                    {addButtonText}
-                  </Button>
+                    <Button
+                      type="link"
+                      onClick={() => {
+                        console.log('Current fields length:', fields.length, 'maxItems:', maxItemsValue);
+                        if (fields.length < maxItemsValue) {
+                          add();
+                        } else {
+                          // Alert the user they've reached the limit
+                          alert(`最多只能添加${maxItemsValue}个项目`);
+                        }
+                      }}
+                      icon={<PlusOutlined />}
+                      disabled={fields.length >= maxItemsValue}
+                    >
+                      {addButtonText}
+                      {fields.length >= maxItemsValue ? ` (已达上限${maxItemsValue}个)` : ''}
+                    </Button>
                   
                   <Button 
                     type="link" 

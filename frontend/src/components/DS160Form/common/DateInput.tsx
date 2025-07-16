@@ -215,6 +215,10 @@ const DateInput: React.FC<DateInputProps> = ({
             style={{ width: 70 }}
             placeholder="日"
             disabled={disabled || isNaChecked}
+            showSearch
+            filterOption={(input, option) => 
+              option?.label?.toString().toLowerCase().includes(input.toLowerCase()) || false
+            }
           />
         </Form.Item>
 

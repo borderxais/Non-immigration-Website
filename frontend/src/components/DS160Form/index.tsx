@@ -26,7 +26,7 @@ import SecurityBackgroundIII from './sections/SecurityBackgroundIII';
 import SecurityBackgroundIV from './sections/SecurityBackgroundIV';
 import SecurityBackgroundV from './sections/SecurityBackgroundV';
 import StudentContact from './sections/StudentContact';
-import SevisInformation from './sections/SevisInformation';
+// import SevisInformation from './sections/SevisInformation';
 
 import DS160ReviewPage from './sections/DS160ReviewPage';
 
@@ -145,11 +145,11 @@ const formSections: FormSection[] = [
     title: '额外联络人信息',
     component: StudentContact
   },
-  {
-    key: 'sevisInformation',
-    title: 'SEVIS 信息',
-    component: SevisInformation
-  },
+  // {
+  //   key: 'sevisInformation',
+  //   title: 'SEVIS 信息',
+  //   component: SevisInformation
+  // },
   {
     key: 'review',
     title: '审核提交',

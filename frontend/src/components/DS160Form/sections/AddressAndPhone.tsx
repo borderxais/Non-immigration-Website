@@ -494,11 +494,11 @@ const AddressAndPhone: React.FC<AddressAndPhoneProps> = ({ form }) => {
                       rules={[{ required: true, message: '请选择社交媒体平台' }]}
                       style={{ marginBottom: '16px' }}
                     >
-                      <Select 
-                        style={{ width: '99%' }} 
-                        placeholder="- 请选择一个 -"
-                        onChange={(value) => handleSocialMediaPlatformChange(value, field.name)}
-                      >
+                      <Select
+  style={{ width: '99%' }}
+  placeholder="- 请选择一个 -"
+  onChange={(value) => handleSocialMediaPlatformChange(value, field.name)}
+>
                         <Select.Option value="SONE">- 请选择一个 -</Select.Option>
                         <Select.Option value="ASKF">ASK.FM</Select.Option>
                         <Select.Option value="DUBN">豆瓣 (DOUBAN)</Select.Option>

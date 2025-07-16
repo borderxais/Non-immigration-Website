@@ -147,6 +147,7 @@ const FamilyInfo: React.FC<FamilyInfoProps> = ({ form }) => {
                         validateHistoricalDate={true}
                         validateEarlierThanBirthDate={true}
                         birthDate={birthDate}
+                        naCheckboxName="fatherDobNotKnown"
                       />
                     </QuestionItem>
 
@@ -247,6 +248,7 @@ const FamilyInfo: React.FC<FamilyInfoProps> = ({ form }) => {
                         validateHistoricalDate={true}
                         validateEarlierThanBirthDate={true}
                         birthDate={birthDate}
+                        naCheckboxName="motherDobNotKnown"
                       />
                     </QuestionItem>
                   </div>

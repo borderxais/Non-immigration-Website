@@ -96,15 +96,16 @@ const WorkEducationPrevious: React.FC<WorkEducationPreviousProps> = ({ form, rea
                   name="previousEmployments"
                   addButtonText="增加另一个"
                   removeButtonText="移走"
+                  maxItems={3}
                 >
                   {(field: FormListFieldData, listName: string) => {
                     return (
                       <>
-                        <div style={{ marginBottom: '24px' }}>
-                          <QuestionItem
-                            question="单位名称"
-                            name={[field.name, 'employerName']}
-                            required={true}
+                              <div style={{ marginBottom: '24px' }}>
+                                <QuestionItem
+                                  question="单位名称"
+                                  name={[field.name, 'employerName']}
+                                  required={true}
                             validator={organizationNameValidator}
                             validatorMessage={organizationNamePatternMessage}
                           >
