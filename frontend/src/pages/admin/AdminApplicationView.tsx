@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Card, Typography, Button, Descriptions, Alert, Spin, Space, message } from 'antd';
-import { DownloadOutlined } from '@ant-design/icons';
 import ds160Service from '../../services/ds160Service';
 
 const { Title } = Typography;
@@ -36,7 +35,6 @@ const AdminApplicationView: React.FC = () => {
   const [formData, setFormData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [formStatus, setFormStatus] = useState<string>('');
-  const [pdfLoading, setPdfLoading] = useState<boolean>(false);
   
   useEffect(() => {
     if (id) {
@@ -211,38 +209,6 @@ const AdminApplicationView: React.FC = () => {
     message.success(`申请状态已更新为 ${newStatus === 'approved' ? '已批准' : '已拒绝'}`);
   };
   
-  const handleDownloadPDF = async () => {
-    if (!id) return;
-    
-    try {
-      setPdfLoading(true);
-      const pdfBlob = await ds160Service.generatePDF(id);
-      
-      // Create a URL for the blob
-      const url = window.URL.createObjectURL(pdfBlob);
-      
-      // Create a temporary link element
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `DS160-${id}.pdf`;
-      
-      // Append to the document, click it, and remove it
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      
-      // Clean up the URL object
-      window.URL.revokeObjectURL(url);
-      
-      message.success('PDF下载成功');
-    } catch (error) {
-      console.error('Error downloading PDF:', error);
-      message.error('PDF下载失败，请稍后再试');
-    } finally {
-      setPdfLoading(false);
-    }
-  };
-  
   if (loading) {
     return (
       <div style={{ textAlign: 'center', padding: '40px 0' }}>
@@ -273,14 +239,6 @@ const AdminApplicationView: React.FC = () => {
             disabled={formStatus === 'rejected'}
           >
             拒绝申请
-          </Button>
-          <Button
-            type="primary"
-            icon={<DownloadOutlined />}
-            onClick={handleDownloadPDF}
-            loading={pdfLoading}
-          >
-            下载PDF
           </Button>
         </Space>
       </div>
