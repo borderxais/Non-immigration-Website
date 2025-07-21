@@ -521,6 +521,31 @@ class DS160ClientResource(Resource):
         
         return client_data
 
+@api.route("/client/all")
+class DS160ClientAllResource(Resource):
+    @jwt_required()
+    def get(self):
+        """Get all DS-160 form translations"""
+        try:
+            # Query all translations ordered by updated_at date (most recent first)
+            translations = DS160FormTranslation.query.order_by(DS160FormTranslation.updated_at.desc()).all()
+            
+            if not translations:
+                return [], 200
+            
+            # Format the response similar to the single application endpoint
+            result = []
+            for translation in translations:
+                result.append({
+                    "application_id": translation.original_form_application_id
+                })
+            
+            return result, 200
+            
+        except Exception as e:
+            logger.error(f"Error retrieving translations: {str(e)}")
+            return {"error": "Failed to retrieve translations"}, 500
+
 @api.route("/client-data/by-application-id/<string:application_id>")
 class DS160ClientDataByApplicationIDResource(Resource):
     @jwt_required()
