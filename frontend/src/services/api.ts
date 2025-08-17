@@ -1,12 +1,15 @@
 import axios from 'axios';
 
 // Define the API URL based on environment
-const API_ENDPOINT = process.env.REACT_APP_SERVER_API_URL || 'https://visasupport-dot-overseabiz-453023.wl.r.appspot.com';
+// const API_ENDPOINT = process.env.REACT_APP_SERVER_API_URL || 'https://visasupport-dot-overseabiz-453023.wl.r.appspot.com';
+// const API_URL = `${API_ENDPOINT}/api`;
+
+// AWS App Runner
+const API_ENDPOINT = 'https://qmvyvjztpb.us-west-2.awsapprunner.com/';
 const API_URL = `${API_ENDPOINT}/api`;
 
-
 // //Use local backend for development and testing
-// const API_ENDPOINT = 'http://localhost:5000';
+// const API_ENDPOINT = 'http://localhost:8000';
 // const API_URL = `${API_ENDPOINT}/api`;
 
 // Create axios instance with base URL
